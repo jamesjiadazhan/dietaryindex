@@ -7,7 +7,7 @@ library(dplyr)
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
 #' @param FRT_SERV The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
 #' @param WGRAIN_SERV The serving size of whole grains, unit=grams/day
-#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL)
+#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
 #' @param N3FAT_SERV The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)
 #' @param PUFA_SERV The serving size of PUFA, unit=\% of energy
 #' @param SSB_FRTJ_SERV The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
@@ -112,7 +112,7 @@ AHEI = function(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param FRT_FRTJ_SERV The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
-#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), servings/day = 1 srv=1oz (28.35 g) of nuts ot 1 TBLSP peanut butter (15 mL)
+#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
 #' @param WGRAIN_SERV The serving size of whole grains, unit=1oz
 #' @param LOWF_DAIRY_SERV The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
 #' @param SODIUM_SERV The serving size of sodium, unit=mg/day
@@ -172,7 +172,7 @@ DASH = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, L
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
 #' @param FRT_SERV The serving size of All whole fruits + 100\% juice,  unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
-#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts ot 1 TBLSP peanut butter (15 mL)
+#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
 #' @param LOWFATDAIRY_SERV The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
 #' @param WGRAIN_SERV The serving size of whole grains, unit=1oz
 #' @param ALLMEAT_SERV The serving size of all meat consumption, including meat, fish, and poultry, unit=servings/day = 1oz
@@ -257,7 +257,7 @@ DASHI = function(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, 
 #' @param FRT_FRTJ_SERV The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
 #' @param VEG_SERV The serving size of All vegetables except potatoes and legumes, unit=0.5 c of vege; 1 cup of green leafy
 #' @param WGRAIN_SERV The serving size of whole grains, including Whole-grain ready-to-eat cereals, cooked cereals, crackers, dark breads, brown rice, other grains, wheat germ, bran, popcorn, unit=1oz
-#' @param LEGUMES_SERV The serving size of legumes, including Tofu, string beans, peas, beans, unit=1cup
+#' @param LEGUMES_SERV The serving size of legumes, including Tofu, string beans, peas, beans, unit=*oz, 1 cup legume = 4 oz
 #' @param NUTS_SERV The serving size of nuts, including Nuts, peanut butter, unit=1oz
 #' @param FISH_SERV The serving size of all fish, including Fish and shrimp, breaded fish, unit=4oz
 #' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)
@@ -312,7 +312,7 @@ MED = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NU
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param FRT_FRTJ_SERV The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
 #' @param VEG_SERV The serving size of All raw and cooked vegetables, unit=0.5 c of vege; 1 cup of green leafy
-#' @param LEGUMES_SERV The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL)
+#' @param LEGUMES_SERV The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
 #' @param WGRAIN_SERV The serving size of whole grains, including Whole wheat bread and flour, whole wheat pasta, brown rice, rusks,  whole grain breakfast cereals, couscous, semolina, unit=1 oz
 #' @param FISH_SERV The serving size of all fish, including Fresh-water and sea-water fish; preserved fish such as salted fish, canned fish; shellfish (squid, prawns, mollusks), unit=serving (4 oz)
 #' @param DAIRY_SERV The serving size of all dairy, including Milk, yogurt, cheese, custard, milk puddings, other milk products, unit=1 serving = 1 cup milk, 1 cup yogurt, 1 ½ ounces hard cheese (cheddar, mozzarella, Swiss, Parmesan), 1/3 cup shredded cheese, 2 ounces processed cheese (American), ½ cup ricotta cheese, 2 cups cottage cheese, 1 cup pudding made with milk, 1 cup frozen yogurt, 1 ½ cups ice cream
@@ -436,9 +436,9 @@ AHEIP = function(SERV_DATA, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TR
 #' @param TOTALFRT_SERV The serving size of total fruits including fruit juice, unit= cup eq.
 #' @param FRT_SERV The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.
 #' @param VEG_SERV The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
-#' @param GREEN_N_BEAN_SERV The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
-#' @param TOTALPRO_SERV The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq.
-#' @param SEAPLANTPRO_SERV The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq.
+#' @param GREENNBEAN_SERV The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
+#' @param TOTALPRO_SERV The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz
+#' @param SEAPLANTPRO_SERV The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz
 #' @param WHOLEGRAIN_SERV The serving size of whole grains, unit=oz. eq.
 #' @param DAIRY_SERV The serving size of all dairy, unit=cup eq.
 #' @param FATTYACID_SERV The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g
@@ -452,7 +452,7 @@ AHEIP = function(SERV_DATA, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TR
 #' @export
 
 #Score calculation for HEI2015
-HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREEN_N_BEAN_SERV, TOTALPRO_SERV,
+HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,
                    SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,
                    SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV){
 

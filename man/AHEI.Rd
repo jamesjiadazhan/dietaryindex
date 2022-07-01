@@ -45,7 +45,7 @@ AHEI(
 \item{ALCOHOL_SERV}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz. beer; 5 oz. wine; 1.5 oz. spirits) 1 oz = 28.35 g}
 }
 \value{
-The AHEI index/score
+The AHEI index/score, AHEI
 }
 \description{
 Calculate the AHEI dietary index, Alternative Healthy Eating Index, using given the serving sizes of foods and nutrients consumed per 1 day
