@@ -2,7 +2,7 @@
 
 ### Overview
 ___
-The goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently if serving sizes for each food and nutrient have been calculated previously. The serving sizes have to be calculated ahead. **dietaryindex** would work for all existing dietary assessment tools (e.g. FFQ, ASA24) once the serving sizes are available.
+The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently if serving sizes for each food and nutrient have been calculated previously. The serving sizes have to be calculated ahead except for the BLOCK FFQ. **dietaryindex** would work for all existing dietary assessment tools (e.g. FFQ, ASA24) once the serving sizes are available.
 
 ### Installation
 ___
@@ -22,7 +22,7 @@ ___
 library(dietaryindex)
 ```
 
-The **dietaryindex** package currently contains 8 key functions:
+The **dietaryindex** package currently contains 14 key functions:
 >`HEI2015()`, Healthy Eating Index 2015 (https://www.fns.usda.gov/how-hei-scored)
 
 >`AHEI()`, alternative healthy eating index (https://pubmed.ncbi.nlm.nih.gov/22513989/)
@@ -36,12 +36,26 @@ The **dietaryindex** package currently contains 8 key functions:
 >`MED()`, Mediterranean diet (https://pubmed.ncbi.nlm.nih.gov/33574608/)
 
 >`MEDI()`, Mediterranean diet index, serving size-based (https://pubmed.ncbi.nlm.nih.gov/28160450/)
+
+>`HEI2015_SERV()`, Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day
+
+>`AHEI_SERV()`, Calculate the serving sizes needed for calculating the AHEI dietary index per 1 day
+
+>`AHEIP_SERV()` ,Calculate the serving sizes needed for calculating the AHEIP dietary index per 1 day
+
+>`DASH_SERV()`, Calculate the serving sizes needed for calculating the DASH dietary index per 1 day
+
+>`DASHI_SERV()`, Calculate the serving sizes needed for calculating the DASHI dietary index per 1 day
+
+>`MED_SERV()`, Calculate the serving sizes needed for calculating the MED dietary index per 1 day
+
+>`MEDI_SERV()`, Calculate the serving sizes needed for calculating the MEDI dietary index per 1 day
   
   
 ### Related Work
 ___
 
-**dietaryindex** is intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It would work for all types of food frequency questionnaires and even 24-hours dietary recalls, but you would have to calculate the serving size before using the package. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above), as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
+**dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It would work for all types of food frequency questionnaires and even 24-hours dietary recalls, but you would have to calculate the serving size before using the package except for the BLOCK FFQ. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above), as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
 
 This package requires the **dplyr** package to be installed. Library statement of the dplyr package is included though for your convenience. 
 
