@@ -587,7 +587,7 @@ AHEI_SERV = function(RAW_DATA, TYPE){
         SODIUM_SERV = DT_SODI
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK")
   }
 }
 
@@ -650,7 +650,7 @@ DASH_SERV = function(RAW_DATA, TYPE){
         SSB_FRTJ_SERV = (GROUP_SUGARYBEVG_TOTAL_GRAMS / 240) + F_JUICE - JUICE100
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK")
   }
 }
 
@@ -712,7 +712,7 @@ DASHI_SERV = function(RAW_DATA, TYPE){
         SODIUM_SERV = DT_SODI
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK")
   }
 }
 
@@ -754,7 +754,7 @@ MED_SERV = function(RAW_DATA, TYPE){
         ALCOHOL_SERV=A_BEV
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK")
   }
 }
 
@@ -787,7 +787,7 @@ MEDI_SERV = function(RAW_DATA, TYPE){
         ALCOHOL_SERV=A_BEV
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK")
   }
 }
 
@@ -829,7 +829,7 @@ AHEIP_SERV = function(RAW_DATA, TYPE){
         IRON_SERV = DT_IRON
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK")
   }
 }
 
@@ -884,6 +884,6 @@ HEI2015_SERV = function(RAW_DATA, TYPE){
         SATFAT_SERV = ((fatsaturated*9)/calories)*100
       ) 
   } else{
-    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK, AARP")
   }
 }
