@@ -46,5 +46,5 @@ The DASHI index/score
 Calculate the DASHI dietary index (serving size-based), Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-DASHI = function(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
+DASHI(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
 }

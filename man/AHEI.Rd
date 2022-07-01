@@ -51,5 +51,5 @@ The AHEI index/score, AHEI
 Calculate the AHEI dietary index, Alternative Healthy Eating Index, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-AHEI = function(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
+AHEI(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
 }

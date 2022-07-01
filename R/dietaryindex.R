@@ -17,7 +17,7 @@ library(dplyr)
 #' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz. beer; 5 oz. wine; 1.5 oz. spirits) 1 oz = 28.35 g
 #' @return The AHEI index/score, AHEI
 #' @examples
-#' AHEI = function(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
+#' AHEI(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
 #' @export
 
 #Score calculation for AHEI
@@ -120,7 +120,7 @@ AHEI = function(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_
 #' @param SSB_FRTJ_SERV The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The DASH index/score
 #' @examples
-#' DASH = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV, SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV)
+#' DASH(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV, SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV)
 #' @export
 
 #Score calculation for DASH
@@ -182,7 +182,7 @@ DASH = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, L
 #' @param SODIUM_SERV The serving size of sodium, unit=mg/day
 #' @return The DASHI index/score
 #' @examples
-#' DASHI = function(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
+#' DASHI(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
 #' @export
 
 #Score calculation for DASHI
@@ -265,7 +265,7 @@ DASHI = function(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, 
 #' @param ALCOHOL_SERV The serving size of alcohol, unit=13g
 #' @return The MED index/score
 #' @examples
-#' MED = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
+#' MED(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
 #' @export
 
 #Score calculation for MED
@@ -322,7 +322,7 @@ MED = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NU
 #' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=13g
 #' @return The MEDI index/score
 #' @examples
-#' MED = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
+#' MED(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
 #' @export
 
 #Score calculation for MEDI
@@ -364,7 +364,7 @@ MEDI = function(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, WGRAIN_SERV, F
 #' @param IRON_SERV The serving size of iron, unit=mg/day
 #' @return The AHEIP index/score
 #' @examples
-#' AHEIP = function(SERV_DATA, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TRANS_SERV, POLYSAT_RT, CALCIUM_SERV, FOLATE_SERV, IRON_SERV)
+#' AHEIP(SERV_DATA, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TRANS_SERV, POLYSAT_RT, CALCIUM_SERV, FOLATE_SERV, IRON_SERV)
 #' @export
 
 
@@ -448,7 +448,7 @@ AHEIP = function(SERV_DATA, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TR
 #' @param SATFAT_SERV The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal
 #' @return The HEI2015 index/score
 #' @examples
-#' HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREEN_N_BEAN_SERV, TOTALPRO_SERV,  SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,  SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
+#' HEI2015(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREEN_N_BEAN_SERV, TOTALPRO_SERV,  SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,  SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
 #' @export
 
 #Score calculation for HEI2015
@@ -536,4 +536,344 @@ HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV
         HEI2015_SATFAT
     )%>%
     select(HEI2015_ALL)
+}
+
+#Functions to match actual food frequency and portion to the standards
+foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
+  ref[match(actual, ref[,1]),2]
+}
+
+foodport = function(actual, ref=STD_FOOD_PORT_DF){
+  ref[match(actual, ref[,1]),2]
+}
+
+#' AHEI_SERV Calculation
+#'
+#' Calculate the serving sizes needed for calculating the AHEI dietary index per 1 day
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @return The serving sizes for the AHEI index/score
+#' @examples
+#' AHEI_SERV(RAW_DATA, TYPE="BLOCK")
+#' @export
+
+AHEI_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Serving calculation for AHEI 2010
+    RAW_DATA %>%
+      mutate(
+        VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+        F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+        F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+        FRT_SERV = F_WHOLE,
+        WGRAIN_SERV = G_WHL/0.035274,
+        NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
+        N3FAT_SERV = (DT_FA205 + DT_FA226)*1000,
+        PUFA_SERV = (((DT_TOTN6 + DT_TOTN3 - DT_FA205 - DT_FA226)*9)/ DT_KCAL)*100,
+        SSB_FRTJ_SERV = (GROUP_SUGARYBEVG_TOTAL_GRAMS / 240) + F_JUICE,
+        REDPROC_MEAT_SERV = (M_FRANK /1.5) + (M_MEAT/4),
+        TRANS_SERV = ((DT_TRFAT * 9) / DT_KCAL)*100,
+        ALCOHOL_SERV=A_BEV,
+        SODIUM_SERV = DT_SODI
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
+}
+
+#' DASH_SERV Calculation
+#'
+#' Calculate the serving sizes needed for calculating the DASH dietary index per 1 day
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @return The serving sizes for the DASH index/score
+#' @examples
+#' DASH_SERV(RAW_DATA, TYPE="BLOCK")
+#' @export
+
+DASH_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Match participant response food frequency to the standard food frequency response code
+    YOGURT_FOOD_PORT = c(2, 3)
+    YOGURT_PORT_SERV = c(0.5, 1)
+    YOGURT_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    BUTTERMILK_FOOD_PORT = c(1, 2, 3, 4)
+    BUTTERMILK_PORT_SERV = c(0.25, 0.5, 1, 2)
+    BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    RAW_DATA %>%
+      mutate(
+        F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+        F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+        FRT_FRTJ_SERV = F_WHOLE + JUICE100,
+        VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+        NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
+        WGRAIN_SERV = G_WHL,
+        LOWF_MILK_SERV = ifelse(MILKTYPE==2 | MILKTYPE==3 | MILKTYPE==4,
+                                foodfreq(MILKFREQ) * MILKQUAN, 
+                                0),
+        YOGURT_SERV = (foodfreq(YOGURTONLYFREQ) * 
+                         foodport(YOGURTONLYQUAN, ref=YOGURT_PORT_DF)) +
+          (foodfreq(BUTTERMILKFREQ) * 
+             foodport(BUTTERMILKQUAN, ref=BUTTERMILK_PORT_DF)),
+        LOWF_ICECREAMFROYO_SERV = ifelse(ICECREAMFROYOTYPE == 2, 
+                                         foodfreq(ICECREAMFROYOFREQ) * 
+                                           foodport(ICECREAMFROYOQUAN)*2,
+                                         0),
+        LOWF_CHEESE_SERV = ifelse(CHEESETYPE == 1, 
+                                  foodfreq(CHEESEFREQ) * CHEESEQUAN, 
+                                  0),
+        LOWF_DAIRY_SERV = LOWF_MILK_SERV+YOGURT_SERV+LOWF_ICECREAMFROYO_SERV+LOWF_CHEESE_SERV,
+        SODIUM_SERV = DT_SODI,
+        REDPROC_MEAT_SERV = (M_FRANK /1.5) + (M_MEAT/4),
+        SSB_FRTJ_SERV = (GROUP_SUGARYBEVG_TOTAL_GRAMS / 240) + F_JUICE - JUICE100
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
+}
+
+#' DASHI_SERV Calculation
+#'
+#' Calculate the serving sizes needed for calculating the DASHI dietary index per 1 day
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @return The serving sizes for the DASHI index/score
+#' @examples
+#' DASHI_SERV(RAW_DATA, TYPE="BLOCK")
+#' @export
+
+DASHI_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Match participant response food frequency to the standard food frequency response code
+    YOGURT_FOOD_PORT = c(2, 3)
+    YOGURT_PORT_SERV = c(0.5, 1)
+    YOGURT_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    BUTTERMILK_FOOD_PORT = c(1, 2, 3, 4)
+    BUTTERMILK_PORT_SERV = c(0.25, 0.5, 1, 2)
+    BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    RAW_DATA %>%
+      mutate(
+        F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+        F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+        VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+        FRT_SERV = F_WHOLE + JUICE100,
+        NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
+        LOWF_MILK_SERV = ifelse(MILKTYPE==2 | MILKTYPE==3 | MILKTYPE==4,
+                                foodfreq(MILKFREQ) * MILKQUAN, 
+                                0),
+        YOGURT_SERV = (foodfreq(YOGURTONLYFREQ) * foodport(YOGURTONLYQUAN, ref=YOGURT_PORT_DF)) +
+          (foodfreq(BUTTERMILKFREQ) * foodport(BUTTERMILKQUAN, ref=BUTTERMILK_PORT_DF)),
+        LOWF_ICECREAMFROYO_SERV = ifelse(ICECREAMFROYOTYPE == 2, 
+                                         foodfreq(ICECREAMFROYOFREQ) * foodport(ICECREAMFROYOQUAN)*2,
+                                         0),
+        LOWF_CHEESE_SERV = ifelse(CHEESETYPE == 1, 
+                                  foodfreq(CHEESEFREQ) * CHEESEQUAN, 
+                                  0),
+        LOWFATDAIRY_SERV = LOWF_MILK_SERV+YOGURT_SERV+LOWF_ICECREAMFROYO_SERV+LOWF_CHEESE_SERV,
+        WGRAIN_SERV = G_WHL,
+        ALLMEAT_SERV = M_MPF,
+        REDPROC_MEAT_SERV = (M_FRANK /1.5) + (M_MEAT/4),
+        FATOIL_SERV = (DFAT_OIL+DFAT_SOL)/14,
+        ADDEDSUGAR_SERV = ((ADD_SUG*4*4) / DT_KCAL)*100,
+        SODIUM_SERV = DT_SODI
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
+}
+
+#' MED_SERV Calculation
+#'
+#' Calculate the serving sizes needed for calculating the MED dietary index per 1 day
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @return The serving sizes for the MED index/score
+#' @examples
+#' MED_SERV(RAW_DATA, TYPE="BLOCK")
+#' @export
+
+MED_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Match participant response food frequency to the standard food frequency response code
+    RAW_DATA %>%
+      mutate(
+        F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+        F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+        FRT_FRTJ_SERV = F_WHOLE + JUICE100,
+        VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+        WGRAIN_SERV = G_WHL,
+        LEGUMES_SERV = (LEGUMES*4) + M_SOY,
+        NUTS_SERV = M_NUTSD,
+        FISH_SERV = (M_FISH_HI+M_FISH_LO)/4,
+        REDPROC_MEAT_SERV = (M_FRANK/1.5) + (M_MEAT/4),
+        MONSATFAT_SERV = DT_MFAT/DT_SFAT,
+        ALCOHOL_SERV=A_BEV
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
+}
+
+MEDI_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Match participant response food frequency to the standard food frequency response code
+    RAW_DATA %>%
+      mutate(
+        F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+        F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+        FRT_FRTJ_SERV = F_WHOLE + JUICE100,
+        VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+        LEGUMES_SERV = (LEGUMES*4) + M_SOY,
+        WGRAIN_SERV = G_WHL,
+        FISH_SERV = (M_FISH_HI+M_FISH_LO)/4,
+        DAIRY_SERV = D_TOTAL,
+        REDPROC_MEAT_SERV = (M_FRANK/1.5) + (M_MEAT/4),
+        NUTS_SERV = M_NUTSD,
+        MONSATFAT_SERV = DT_MFAT/DT_SFAT,
+        ALCOHOL_SERV=A_BEV
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
+}
+
+#' AHEIP_SERV Calculation
+#'
+#' Calculate the serving sizes needed for calculating the AHEIP dietary index per 1 day
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @return The serving sizes for the AHEIP index/score
+#' @examples
+#' AHEIP_SERV(RAW_DATA, TYPE="BLOCK")
+#' @export
+
+AHEIP_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Match participant response food frequency to the standard food frequency response code
+    RAW_DATA %>%
+      mutate(
+        F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+        F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+        VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+        FRT_SERV = F_WHOLE,
+        WHITERED_RT_SERV = ((M_POULT+M_FISH_HI+M_FISH_LO)/4) /  ((M_FRANK /1.5) + (M_MEAT/4)),
+        FIBER_SERV = DT_FIBE,
+        TRANS_SERV = ((DT_TRFAT * 9) / DT_KCAL)*100,
+        POLYSAT_RT = DT_PFAT / DT_SFAT,
+        CALCIUM_SERV = DT_CALC,
+        FOLATE_SERV = DT_FOLFD,
+        IRON_SERV = DT_IRON
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
+}
+
+#' HEI2015_SERV Calculation
+#'
+#' Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @return The serving sizes for the HEI2015 index/score
+#' @examples
+#' HEI2015_SERV(RAW_DATA, TYPE="BLOCK")
+#' @export
+
+HEI2015_SERV = function(RAW_DATA, TYPE){
+  if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
+    #Match participant response food frequency to the standard food frequency response code
+    RAW_DATA %>%
+      mutate(
+        TOTALFRT_SERV = F_TOTAL/(DT_KCAL/1000),
+        FRT_SERV = F_SOLID/(DT_KCAL/1000),
+        VEG_SERV = (V_TOTAL+LEGUMES)/(DT_KCAL/1000),
+        GREEN_N_BEAN_SERV = (V_DRKGR+LEGUMES)/(DT_KCAL/1000),
+        TOTALPRO_SERV = (M_MPF+M_EGG+M_NUTSD+M_SOY+(LEGUMES*4))/(DT_KCAL/1000),
+        SEAPLANTPRO_SERV = (M_FISH_HI+M_FISH_LO+M_SOY+M_NUTSD+(LEGUMES*4))/(DT_KCAL/1000),
+        WHOLEGRAIN_SERV = G_WHL/(DT_KCAL/1000),
+        DAIRY_SERV = D_TOTAL/(DT_KCAL/1000),
+        FATTYACID_SERV = (DT_MFAT + DT_PFAT)/DT_SFAT,
+        
+        REFINEDGRAIN_SERV = G_NWHL/(DT_KCAL/1000),
+        SODIUM_SERV = (DT_SODI/1000)/(DT_KCAL/1000),
+        ADDEDSUGAR_SERV = ((ADD_SUG*4*4) / DT_KCAL)*100,
+        SATFAT_SERV = ((DT_SFAT*9)/DT_KCAL)*100
+      ) 
+  } else{
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
+  }
 }
