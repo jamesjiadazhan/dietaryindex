@@ -28,7 +28,7 @@ AHEI(
 
 \item{WGRAIN_SERV}{The serving size of whole grains, unit=grams/day}
 
-\item{NUTSLEG_SERV}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL)}
+\item{NUTSLEG_SERV}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
 
 \item{N3FAT_SERV}{The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)}
 

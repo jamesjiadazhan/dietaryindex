@@ -9,7 +9,7 @@ HEI2015(
   TOTALFRT_SERV,
   FRT_SERV,
   VEG_SERV,
-  GREEN_N_BEAN_SERV,
+  GREENNBEAN_SERV,
   TOTALPRO_SERV,
   SEAPLANTPRO_SERV,
   WHOLEGRAIN_SERV,
@@ -30,11 +30,11 @@ HEI2015(
 
 \item{VEG_SERV}{The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
 
-\item{GREEN_N_BEAN_SERV}{The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
+\item{GREENNBEAN_SERV}{The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
 
-\item{TOTALPRO_SERV}{The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq.}
+\item{TOTALPRO_SERV}{The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz}
 
-\item{SEAPLANTPRO_SERV}{The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq.}
+\item{SEAPLANTPRO_SERV}{The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz}
 
 \item{WHOLEGRAIN_SERV}{The serving size of whole grains, unit=oz. eq.}
 

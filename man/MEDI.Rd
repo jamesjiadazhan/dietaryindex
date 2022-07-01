@@ -25,7 +25,7 @@ MEDI(
 
 \item{VEG_SERV}{The serving size of All raw and cooked vegetables, unit=0.5 c of vege; 1 cup of green leafy}
 
-\item{LEGUMES_SERV}{The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL)}
+\item{LEGUMES_SERV}{The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
 
 \item{WGRAIN_SERV}{The serving size of whole grains, including Whole wheat bread and flour, whole wheat pasta, brown rice, rusks,  whole grain breakfast cereals, couscous, semolina, unit=1 oz}
 

@@ -26,7 +26,7 @@ MED(
 
 \item{WGRAIN_SERV}{The serving size of whole grains, including Whole-grain ready-to-eat cereals, cooked cereals, crackers, dark breads, brown rice, other grains, wheat germ, bran, popcorn, unit=1oz}
 
-\item{LEGUMES_SERV}{The serving size of legumes, including Tofu, string beans, peas, beans, unit=1cup}
+\item{LEGUMES_SERV}{The serving size of legumes, including Tofu, string beans, peas, beans, unit=*oz, 1 cup legume = 4 oz}
 
 \item{NUTS_SERV}{The serving size of nuts, including Nuts, peanut butter, unit=1oz}
 

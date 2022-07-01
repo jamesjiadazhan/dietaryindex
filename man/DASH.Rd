@@ -23,7 +23,7 @@ DASH(
 
 \item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
-\item{NUTSLEG_SERV}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), servings/day = 1 srv=1oz (28.35 g) of nuts ot 1 TBLSP peanut butter (15 mL)}
+\item{NUTSLEG_SERV}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
 
 \item{WGRAIN_SERV}{The serving size of whole grains, unit=1oz}
 
