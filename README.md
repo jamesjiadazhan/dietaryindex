@@ -61,4 +61,4 @@ This package requires the **dplyr** package to be installed. Library statement o
 
 ### Contributing
 
-**dietaryindex** is licensed under the [MIT License]. Questions, feature requests and bug reports are welcome via the [issue queue](https://github.com/jamesjiadazhan/dietaryindex/issues). The maintainer will review pull requests and incorporate contributions at his discretion.
+**dietaryindex** is licensed under the [MIT License]. Questions, feature requests and bug reports are welcome via the [issue queue](https://github.com/jamesjiadazhan/dietaryindex/issues). The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, James Jiada Zhan, via his email: jzha832@emory.edu.
