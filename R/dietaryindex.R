@@ -448,7 +448,7 @@ AHEIP = function(SERV_DATA, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TR
 #' @param SATFAT_SERV The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal
 #' @return The HEI2015 index/score
 #' @examples
-#' HEI2015(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREEN_N_BEAN_SERV, TOTALPRO_SERV,  SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,  SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
+#' HEI2015(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,  SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,  SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
 #' @export
 
 #Score calculation for HEI2015
@@ -467,8 +467,8 @@ HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV
   HEI2015_MAX_FRT_SERV = 0.4
   HEI2015_MIN_VEG_SERV = 0
   HEI2015_MAX_VEG_SERV = 1.1
-  HEI2015_MIN_GREEN_N_BEAN_SERV = 0
-  HEI2015_MAX_GREEN_N_BEAN_SERV = 0.2
+  HEI2015_MIN_GREENNBEAN_SERV = 0
+  HEI2015_MAX_GREENNBEAN_SERV = 0.2
   HEI2015_MIN_TOTALPRO_SERV = 0
   HEI2015_MAX_TOTALPRO_SERV = 2.5
   HEI2015_MIN_SEAPLANTPRO_SERV = 0
@@ -518,7 +518,7 @@ HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV
       HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
       HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
       HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
-      HEI2015_GREEN_N_BEAN = HEI2015_HEALTHY1(GREEN_N_BEAN_SERV, HEI2015_MIN_GREEN_N_BEAN_SERV, HEI2015_MAX_GREEN_N_BEAN_SERV),
+      HEI2015_GREENNBEAN = HEI2015_HEALTHY1(GREENNBEAN_SERV, HEI2015_MIN_GREENNBEAN_SERV, HEI2015_MAX_GREENNBEAN_SERV),
       HEI2015_TOTALPRO = HEI2015_HEALTHY1(TOTALPRO_SERV, HEI2015_MIN_TOTALPRO_SERV, HEI2015_MAX_TOTALPRO_SERV),
       HEI2015_SEAPLANTPRO = HEI2015_HEALTHY1(SEAPLANTPRO_SERV, HEI2015_MIN_SEAPLANTPRO_SERV, HEI2015_MAX_SEAPLANTPRO_SERV),
       HEI2015_WHOLEGRAIN = HEI2015_HEALTHY2(WHOLEGRAIN_SERV, HEI2015_MIN_WHOLEGRAIN_SERV, HEI2015_MAX_WHOLEGRAIN_SERV),
@@ -530,7 +530,7 @@ HEI2015 = function(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV
       HEI2015_ADDEDSUGAR = HEI2015_UNHEALTHY(ADDEDSUGAR_SERV, HEI2015_MIN_ADDEDSUGAR_SERV, HEI2015_MAX_ADDEDSUGAR_SERV),
       HEI2015_SATFAT = HEI2015_UNHEALTHY(SATFAT_SERV, HEI2015_MIN_SATFAT_SERV, HEI2015_MAX_SATFAT_SERV),
 
-      HEI2015_ALL= HEI2015_TOTALFRT + HEI2015_FRT + HEI2015_VEG + HEI2015_GREEN_N_BEAN +
+      HEI2015_ALL= HEI2015_TOTALFRT + HEI2015_FRT + HEI2015_VEG + HEI2015_GREENNBEAN +
         HEI2015_TOTALPRO + HEI2015_SEAPLANTPRO + HEI2015_WHOLEGRAIN + HEI2015_DAIRY +
         HEI2015_FATTYACID + HEI2015_REFINEDGRAIN + HEI2015_SODIUM + HEI2015_ADDEDSUGAR +
         HEI2015_SATFAT
@@ -837,24 +837,14 @@ AHEIP_SERV = function(RAW_DATA, TYPE){
 #'
 #' Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
-#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK, AARP.
 #' @return The serving sizes for the HEI2015 index/score
 #' @examples
-#' HEI2015_SERV(RAW_DATA, TYPE="BLOCK")
+#' HEI2015_SERV(RAW_DATA, TYPE="BLOCK"), HEI2015_SERV(RAW_DATA, TYPE="AARP")
 #' @export
 
 HEI2015_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
-    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
     #Match participant response food frequency to the standard food frequency response code
     RAW_DATA %>%
       mutate(
@@ -872,6 +862,26 @@ HEI2015_SERV = function(RAW_DATA, TYPE){
         SODIUM_SERV = (DT_SODI/1000)/(DT_KCAL/1000),
         ADDEDSUGAR_SERV = ((ADD_SUG*4*4) / DT_KCAL)*100,
         SATFAT_SERV = ((DT_SFAT*9)/DT_KCAL)*100
+      ) 
+  } else if(TYPE == "AARP"){
+    #Match participant response food frequency to the standard food frequency response code
+    RAW_DATA %>%
+      mutate(
+        mped_M_SOY=0,
+        TOTALFRT_SERV = mped_f_total/(calories/1000),
+        FRT_SERV = mped_f_nojuice/(calories/1000),
+        VEG_SERV = (mped_v_total+mped_legumes)/(calories/1000),
+        GREENNBEAN_SERV = (mped_v_drkgr+mped_legumes)/(calories/1000),
+        TOTALPRO_SERV = (mped_M_MPF+mped_M_EGG+mped_M_NUTSD+mped_M_SOY+(mped_legumes*4))/(calories/1000),
+        SEAPLANTPRO_SERV = (mped_M_FISH_HI+mped_M_FISH_LO+mped_M_SOY+(mped_legumes*4))/(calories/1000),
+        WHOLEGRAIN_SERV = mped_g_whl/(calories/1000),
+        DAIRY_SERV = mped_d_total/(calories/1000),
+        FATTYACID_SERV = (fatmono+fatpoly)/fatsaturated,
+        
+        REFINEDGRAIN_SERV = mped_G_NWHL/(calories/1000),
+        SODIUM_SERV = (SODIUM/1000)/(calories/1000),
+        ADDEDSUGAR_SERV = ((mped_add_sug*4*4) / calories)*100,
+        SATFAT_SERV = ((fatsaturated*9)/calories)*100
       ) 
   } else{
     print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK")
