@@ -835,16 +835,26 @@ AHEIP_SERV = function(RAW_DATA, TYPE){
 
 #' HEI2015_SERV Calculation
 #'
-#' Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day
+#' Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day. For NHANES_FPED, please first use NHANES_FPED_PRE_HEI15 to preprocess your data.
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
-#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK, AARP.
+#' @param TYPE The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK, AARP, NHANES_FPED.
 #' @return The serving sizes for the HEI2015 index/score
 #' @examples
-#' HEI2015_SERV(RAW_DATA, TYPE="BLOCK"), HEI2015_SERV(RAW_DATA, TYPE="AARP")
+#' HEI2015_SERV(RAW_DATA, TYPE="BLOCK"), HEI2015_SERV(RAW_DATA, TYPE="AARP"), HEI2015_SERV(RAW_DATA, TYPE="NHANES_FPED")
 #' @export
 
 HEI2015_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
+    #Standard food frequency and portion size response code
+    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+    STD_FOOD_PORT = c(1, 2, 3, 4)
+    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
+    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
+    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
+    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+    
     #Match participant response food frequency to the standard food frequency response code
     RAW_DATA %>%
       mutate(
@@ -879,11 +889,71 @@ HEI2015_SERV = function(RAW_DATA, TYPE){
         FATTYACID_SERV = (fatmono+fatpoly)/fatsaturated,
         
         REFINEDGRAIN_SERV = mped_G_NWHL/(calories/1000),
-        SODIUM_SERV = (SODIUM/1000)/(calories/1000),
+        SODIUM_SERV = SODIUM/(calories/1000),
         ADDEDSUGAR_SERV = ((mped_add_sug*4*4) / calories)*100,
         SATFAT_SERV = ((fatsaturated*9)/calories)*100
       ) 
+  } else if(TYPE == "NHANES_FPED"){
+    #Match participant response food frequency to the standard food frequency response code
+    RAW_DATA %>%
+      mutate(
+        TOTALFRT_SERV = DR1T_F_TOTAL/(DR1TKCAL/1000),
+        FRT_SERV = (DR1T_F_CITMLB+DR1T_F_OTHER)/(DR1TKCAL/1000),
+        VEG_SERV = (DR1T_V_TOTAL+DR1T_V_LEGUMES)/(DR1TKCAL/1000),
+        GREENNBEAN_SERV = (DR1T_V_DRKGR+DR1T_V_LEGUMES)/(DR1TKCAL/1000),
+        TOTALPRO_SERV = (DR1T_PF_MPS_TOTAL+DR1T_PF_EGGS+DR1T_PF_NUTSDS+DR1T_PF_SOY+DR1T_PF_LEGUMES)/(DR1TKCAL/1000),
+        SEAPLANTPRO_SERV = (DR1T_PF_SEAFD_HI+DR1T_PF_SEAFD_LOW+DR1T_PF_NUTSDS+DR1T_PF_SOY+DR1T_PF_LEGUMES)/(DR1TKCAL/1000),
+        WHOLEGRAIN_SERV = DR1T_G_WHOLE/(DR1TKCAL/1000),
+        DAIRY_SERV = DR1T_D_TOTAL/(DR1TKCAL/1000),
+        FATTYACID_SERV = (DR1TMFAT+DR1TPFAT)/DR1TSFAT,
+        
+        REFINEDGRAIN_SERV = DR1T_G_REFINED/(DR1TKCAL/1000),
+        SODIUM_SERV = DR1TSODI/(DR1TKCAL/1000),
+        ADDEDSUGAR_SERV = ((DR1T_ADD_SUGARS*4*4) / DR1TKCAL)*100,
+        SATFAT_SERV = ((DR1TSFAT*9)/DR1TKCAL)*100
+      ) 
   } else{
-    print("Sorry, your input type is not currently supported. Current supported types include: BLOCK, AARP")
+    print("Sorry, your input FFQ type is not currently supported. Current supported FFQs include: BLOCK, AARP, NHANES_FPED")
   }
+}
+
+#' NHANES_FPED_PRE_HEI15
+#'
+#' Prepare the NHANES_FPED data (after 2005) for calculating the serving sizes for HEI2015. 
+#' @param FPED_PATH The file path for the FPED data. The file name should be like: FPED.fped_dr1tot_1112.
+#' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: NH.DR1TOT_G.
+#' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: NH.DEMO_G.
+#' @return The cleaned data ready for calculating the serving sizes for HEI2015.
+#' @examples
+#' FPED_PATH = "/Users/james/Desktop/data/FPED.fped_dr1tot_1112.csv"
+#' NUTRIENT_PATH = "/Users/james/Desktop/data/NH.DR1TOT_G"
+#' DEMO_PATH = "/Users/james/Desktop/data/NH.DEMO_G"
+#' NHANES_FPED_PRE_HEI15 (FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+#' @export
+
+
+NHANES_FPED_PRE_HEI15 = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
+  FPED = read.csv(FPED_PATH)
+  NUTRIENT = read.csv(NUTRIENT_PATH)
+  DEMO = read.csv(DEMO_PATH)
+  
+  NUTRIENT = NUTRIENT %>%
+    fliter(DR1DRSTZ == 1) %>%
+    select(SEQN, WTDRD1, DR1TKCAL, DR1TSFAT, DR1TALCO, DR1TSODI, DR1DRSTZ, DR1TMFAT, DR1TPFAT) %>%
+    sort(SEQN)
+  
+  
+  DEMO = DEMO %>%
+    filter(RIDAGEYR >= 2) %>%
+    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    sort(SEQN)
+  
+  FPED = FPED %>%
+    sort(SEQN)
+  
+  COHORT = NUTRIENT %>%
+    inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
+    left_join(FPED, by = c("SEQN" = "SEQN"))
+  
+  return(COHORT)
 }

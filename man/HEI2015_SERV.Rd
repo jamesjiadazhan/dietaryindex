@@ -9,14 +9,14 @@ HEI2015_SERV(RAW_DATA, TYPE)
 \arguments{
 \item{RAW_DATA}{The raw data file that includes results and raw data of the dietary assessment}
 
-\item{TYPE}{The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK, AARP.}
+\item{TYPE}{The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK, AARP, NHANES_FPED.}
 }
 \value{
 The serving sizes for the HEI2015 index/score
 }
 \description{
-Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day
+Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day. For NHANES_FPED, please first use NHANES_FPED_PRE_HEI15 to preprocess your data.
 }
 \examples{
-HEI2015_SERV(RAW_DATA, TYPE="BLOCK"), HEI2015_SERV(RAW_DATA, TYPE="AARP")
+HEI2015_SERV(RAW_DATA, TYPE="BLOCK"), HEI2015_SERV(RAW_DATA, TYPE="AARP"), HEI2015_SERV(RAW_DATA, TYPE="NHANES_FPED")
 }
