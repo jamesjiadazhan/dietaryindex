@@ -603,6 +603,15 @@ AHEI_SERV = function(RAW_DATA, TYPE){
     STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV, stringsAsFactors=FALSE)
     STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV, stringsAsFactors=FALSE)
     
+    #Functions to match actual food frequency and portion to the standards
+    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
+      ref[match(actual, ref[,1]),2]
+    }
+    
+    foodport = function(actual, ref=STD_FOOD_PORT_DF){
+      ref[match(actual, ref[,1]),2]
+    }
+    
     #Serving calculation for AHEI 2010
     RAW_DATA %>%
       mutate(
