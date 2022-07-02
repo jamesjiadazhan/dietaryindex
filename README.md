@@ -2,7 +2,7 @@
 
 ### Overview
 ___
-The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently if serving sizes for each food and nutrient have been calculated previously. The serving sizes have to be calculated manually ahead except for the BLOCK FFQ. **dietaryindex** would work for all existing dietary assessment tools (e.g. FFQ, ASA24) once the serving sizes are available. The serving size calculation functions for HEI2015 are available for NIH-AARP and NHANES.
+The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently if serving sizes for each food and nutrient have been calculated previously. The serving sizes for most dietary indexes have to be calculated manually ahead except for the BLOCK (BLOCK FFQ), which has functions to calculate all dietary indexes. **dietaryindex** would work for all existing dietary assessment tools (e.g. FFQ, ASA24) once the serving sizes are available. The serving size calculation functions for HEI2015 are available for NIH-AARP and NHANES.
 
 ### Installation
 ___
@@ -52,7 +52,11 @@ The **dietaryindex** package currently contains 14 key functions:
 >`MEDI_SERV()`, Calculate the serving sizes needed for calculating the MEDI dietary index per 1 day
 
 >`NHANES_FPED_PRE_HEI15()`, Prepare the NHANES_FPED data (after 2005) for calculating the serving sizes for HEI2015
-  
+
+### Examples:
+
+___
+
 ### Related Work
 ___
 
