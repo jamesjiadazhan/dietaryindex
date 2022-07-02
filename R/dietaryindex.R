@@ -940,16 +940,16 @@ NHANES_FPED_PRE_HEI15 = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   NUTRIENT = NUTRIENT %>%
     fliter(DR1DRSTZ == 1) %>%
     select(SEQN, WTDRD1, DR1TKCAL, DR1TSFAT, DR1TALCO, DR1TSODI, DR1DRSTZ, DR1TMFAT, DR1TPFAT) %>%
-    sort(SEQN)
+    arrange(SEQN)
   
   
   DEMO = DEMO %>%
     filter(RIDAGEYR >= 2) %>%
     select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
-    sort(SEQN)
+    arrange(SEQN)
   
   FPED = FPED %>%
-    sort(SEQN)
+    arrange(SEQN)
   
   COHORT = NUTRIENT %>%
     inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
