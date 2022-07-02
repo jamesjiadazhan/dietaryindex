@@ -593,25 +593,6 @@ foodport = function(actual, reference=STD_FOOD_PORT_DF){
 
 AHEI_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV, stringsAsFactors=FALSE)
-    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV, stringsAsFactors=FALSE)
-    
-    #Functions to match actual food frequency and portion to the standards
-    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
-    foodport = function(actual, ref=STD_FOOD_PORT_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
     #Serving calculation for AHEI 2010
     RAW_DATA %>%
       mutate(
@@ -646,16 +627,6 @@ AHEI_SERV = function(RAW_DATA, TYPE){
 
 DASH_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
-    STD_FOOD_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
     #Match participant response food frequency to the standard food frequency response code
     YOGURT_FOOD_PORT = c(2, 3)
     YOGURT_PORT_SERV = c(0.5, 1)
@@ -664,15 +635,6 @@ DASH_SERV = function(RAW_DATA, TYPE){
     BUTTERMILK_FOOD_PORT = c(1, 2, 3, 4)
     BUTTERMILK_PORT_SERV = c(0.25, 0.5, 1, 2)
     BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
-    #Functions to match actual food frequency and portion to the standards
-    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
-    foodport = function(actual, ref=STD_FOOD_PORT_DF){
-      ref[match(actual, ref[,1]),2]
-    }
     
     RAW_DATA %>%
       mutate(
@@ -718,16 +680,6 @@ DASH_SERV = function(RAW_DATA, TYPE){
 
 DASHI_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV, stringsAsFactors=FALSE)
-    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV, stringsAsFactors=FALSE)
-    
     #Match participant response food frequency to the standard food frequency response code
     YOGURT_FOOD_PORT = c(2, 3)
     YOGURT_PORT_SERV = c(0.5, 1)
@@ -736,16 +688,7 @@ DASHI_SERV = function(RAW_DATA, TYPE){
     BUTTERMILK_FOOD_PORT = c(1, 2, 3, 4)
     BUTTERMILK_PORT_SERV = c(0.25, 0.5, 1, 2)
     BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
-    #Functions to match actual food frequency and portion to the standards
-    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
-    foodport = function(actual, ref=STD_FOOD_PORT_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
+
     RAW_DATA %>%
       mutate(
         F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
@@ -789,25 +732,6 @@ DASHI_SERV = function(RAW_DATA, TYPE){
 
 MED_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
-    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
-    #Functions to match actual food frequency and portion to the standards
-    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
-    foodport = function(actual, ref=STD_FOOD_PORT_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
     #Match participant response food frequency to the standard food frequency response code
     RAW_DATA %>%
       mutate(
@@ -830,25 +754,6 @@ MED_SERV = function(RAW_DATA, TYPE){
 
 MEDI_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
-    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
-    #Functions to match actual food frequency and portion to the standards
-    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
-    foodport = function(actual, ref=STD_FOOD_PORT_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
     #Match participant response food frequency to the standard food frequency response code
     RAW_DATA %>%
       mutate(
@@ -882,25 +787,6 @@ MEDI_SERV = function(RAW_DATA, TYPE){
 
 AHEIP_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    #Standard food frequency and portion size response code
-    STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-    STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-    STD_FOOD_PORT = c(1, 2, 3, 4)
-    STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-    STD_LUNCHMEAT_PORT_SERV = c(1, 2, 3, 4)
-    STD_HOTDOG_PORT_SERV = c(1, 2, 3)
-    STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV)
-    STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV)
-    
-    #Functions to match actual food frequency and portion to the standards
-    foodfreq = function(actual, ref=STD_FOOD_FREQ_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
-    foodport = function(actual, ref=STD_FOOD_PORT_DF){
-      ref[match(actual, ref[,1]),2]
-    }
-    
     #Match participant response food frequency to the standard food frequency response code
     RAW_DATA %>%
       mutate(
@@ -933,7 +819,6 @@ AHEIP_SERV = function(RAW_DATA, TYPE){
 
 HEI2015_SERV = function(RAW_DATA, TYPE){
   if (TYPE == "BLOCK"){
-    
     #Match participant response food frequency to the standard food frequency response code
     RAW_DATA %>%
       mutate(
