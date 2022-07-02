@@ -2,7 +2,7 @@
 
 ### Overview
 ___
-The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently if serving sizes for each food and nutrient have been calculated previously. The serving sizes have to be calculated manually ahead except for the BLOCK FFQ. **dietaryindex** would work for all existing dietary assessment tools (e.g. FFQ, ASA24) once the serving sizes are available.
+The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently if serving sizes for each food and nutrient have been calculated previously. The serving sizes have to be calculated manually ahead except for the BLOCK FFQ. **dietaryindex** would work for all existing dietary assessment tools (e.g. FFQ, ASA24) once the serving sizes are available. The serving size calculation functions for HEI2015 are available for NIH-AARP and NHANES.
 
 ### Installation
 ___
@@ -50,12 +50,13 @@ The **dietaryindex** package currently contains 14 key functions:
 >`MED_SERV()`, Calculate the serving sizes needed for calculating the MED dietary index per 1 day
 
 >`MEDI_SERV()`, Calculate the serving sizes needed for calculating the MEDI dietary index per 1 day
-  
+
+>`NHANES_FPED_PRE_HEI15()`, Prepare the NHANES_FPED data (after 2005) for calculating the serving sizes for HEI2015
   
 ### Related Work
 ___
 
-**dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It would work for all types of food frequency questionnaires and even 24-hours dietary recalls, but you would have to manually calculate the serving size before using the package except for the BLOCK FFQ. Currently, the serving size calculation functions are available for the BLOCK FFQ. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above), as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
+**dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It would work for all types of food frequency questionnaires and even 24-hours dietary recalls, but you would have to manually calculate the serving size before using the package except for the BLOCK FFQ. Currently, the serving size calculation functions are available for the BLOCK FFQ for all dietary indexes. The serving size calculation functions for HEI2015 are available for NIH-AARP and NHANES. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
 
 This package requires the **dplyr** package to be installed. Library statement of the dplyr package is included though for your convenience. 
 
