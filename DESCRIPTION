@@ -1,13 +1,14 @@
 Package: dietaryindex
 Type: Package
 Title: Dietary Pattern Index Calculation Package 
-Version: 0.1.0
+Version: 0.2.0
 Author: James Jiada Zhan, Nutrition and Health Sciences PhD Program, Emory University
 Maintainer: James Jiada Zhan <jzha832@emory.edu>
-Description: This package can help you calculating common dietary pattern indexes easily. 
+Description: This package can help you calculating common dietary pattern indexes easily for almost all dietary assessments. 
     It can calculate AHEI-2010, AHEIP, DASH, DASHI, MED, MEDI, and HEI2015.
-    All you need to do is to provide appropriate serving size for each food/nutrient category as indicated by the original article that created the index.
-    Currently, the package cannot calculate the serving size from FFQ given that there are a variety of FFQs available, and it is difficult to accommodate all of them. 
+    All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+    Currently, the package can calculate the serving sizes from BLOCK (BLOCKFFQ or NutritionQuest), AARP (NIH-AARP cohort), and NHANES_FPED (NHANES after year 2005).
+    For NHANES_FPED, data preprocess using the NHANES_FPED_PRE_HEI15() function is needed in addition to the serving size and dietary index calculation.
 License: MIT License
 Encoding: UTF-8
 LazyData: true
