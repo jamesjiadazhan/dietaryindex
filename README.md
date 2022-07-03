@@ -110,4 +110,4 @@ This package requires the **dplyr** and **readr** packages to be installed. Libr
 
 ### Contributing
 
-**dietaryindex** is licensed under the [MIT License]. Questions, feature requests and bug reports are welcome via the [issue queue](https://github.com/jamesjiadazhan/dietaryindex/issues). The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, James Jiada Zhan, via his email: jzha832@emory.edu.
+**dietaryindex** is licensed under the [MIT License]. Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, James Jiada Zhan, via his email: jzha832@emory.edu.
