@@ -8,6 +8,8 @@
 
 * If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/jamesjiadazhan/dietaryindex/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible.
 
+* If possible, use the relevant templates to create the issue.
+  * [**Bug** template](https://github.com/jamesjiadazhan/dietaryindex/blob/main/.github/ISSUE_TEMPLATE/bug_report.md)
 
 ### **Do you intend to add a new feature, change an existing one, or contribute to the dietaryindex in other ways?**
 
