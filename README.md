@@ -8,7 +8,7 @@ The main goal of this package **dietaryindex** is for calculating different diet
 1. Calculate the serving size of each food and nutrient category
 2. Calculate the individual dietary index
 
-Currently, **dietaryindex** can calculate AHEI, HEI2015, AHEIP, DASH, DASHI, MED, MEDI for the BLOCK FFQ and HEI2015 for NIH-AARP and NHANES. However, if you manually calculate the serving sizes, by using the second step of the **dietaryindex**, it would work for all existing dietary assessment tools (e.g. FFQ, ASA24, food record) to calculate all dietary indexes. 
+Currently, **dietaryindex** can calculate AHEI, HEI2015, AHEIP, DASH, DASHI, MED, MEDI for the BLOCK FFQ and HEI2015 for NIH-AARP, NHANES, and ASA24. However, if you manually calculate the serving sizes, by using the second step of the **dietaryindex**, it would work for all existing dietary assessment tools (e.g. FFQ, ASA24, food record) to calculate all dietary indexes. 
 
 The **dietaryindex** package relies on the **dplyr** and **readr** packages. Please install them ahead.
 
@@ -68,7 +68,9 @@ The **dietaryindex** package currently contains 14 key functions:
 
 >`MEDI_SERV()`, Calculate the serving sizes needed for calculating the MEDI dietary index per 1 day
 
->`NHANES_FPED_PRE_HEI15()`, Prepare the NHANES_FPED data (after 2005) for calculating the serving sizes for HEI2015
+>`HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
+
+>`HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
 
 ### Examples:
 ___
@@ -99,12 +101,7 @@ FPED_PATH = "/Users/james/Desktop/FPED.csv"
 NUTRIENT_PATH = "/Users/james/Desktop/NUTRIENT.csv"
 DEMO_PATH = "/Users/james/Desktop/DEMO.csv"
 
-PROCESS_DATA = NHANES_FPED_PRE_HEI15(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
-CLEAN_DATA = HEI2015_SERV(PROCESS_DATA, TYPE="NHANES_FPED") 
-HEI2015RESULT = HEI2015(CLEAN_DATA,   
-                        TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,
-                        SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV,
-                        REFINEDGRAIN_SERV, SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
+HEI2015RESULT = HEI2015(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 ```
 
 ### Related Work
