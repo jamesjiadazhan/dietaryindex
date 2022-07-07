@@ -37,6 +37,7 @@ To install **dplyr**, **readr**, and **haven** packages if you are new to R or d
 ```
 install.packages("dplyr")
 install.packages("readr")
+install.packages("haven")
 ```
 
 ### Getting Started
@@ -46,7 +47,6 @@ library(dietaryindex)
 library(dplyr)
 library(readr)
 library(haven)
-
 ```
 
 The **dietaryindex** package currently contains 14 key functions:
