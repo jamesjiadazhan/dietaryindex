@@ -2,15 +2,23 @@
 
 ### Overview
 ___
+
+Version 0.6.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data
+
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
 **dietaryindex** calculates dietary indexes by 2 steps:
 1. Calculate the serving size of each food and nutrient category
 2. Calculate the individual dietary index
 
-Currently, **dietaryindex** can calculate AHEI, HEI2015, AHEIP, DASH, DASHI, MED, MEDI for the BLOCK FFQ and HEI2015 for NIH-AARP, NHANES, and ASA24. However, if you manually calculate the serving sizes, by using the second step of the **dietaryindex**, it would work for all existing dietary assessment tools (e.g. FFQ, ASA24, food record) to calculate all dietary indexes. 
+Currently, the **dietaryindex** package can 3 things to calculate dietary indexes within 1-2 steps.
+    1. It can calculate AHEI, AHEIP, DASH, DASHI, MED, MEDI, and HEI2015 for the Block FFQ. 
+    2. It can calculate AHEI, DASH, MED, and HEI2015 for the NHANES_FPED (after 2005).
+    3. It can calculate HEI2015 for the ASA24
 
-The **dietaryindex** package relies on the **dplyr** and **readr** packages. Please install them ahead.
+This package can also help you calculating these dietary pattern indexes from all other dietary assessments (e.g. other FFQ, food record), if the relevant serving sizes for each food/nutrient category in the index are provided. All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+
+The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. Please install them ahead.
 
 ### Installation
 ___
@@ -25,7 +33,7 @@ To install the development version hosted on this GitHub repository, use the **d
 devtools::install_github("jamesjiadazhan/dietaryindex")
 ```
 
-To install the **dplyr** and **readr** packages if you are new to R or don't have them, use the following:
+To install **dplyr**, **readr**, and **haven** packages if you are new to R or don't have them, use the following:
 ```
 install.packages("dplyr")
 install.packages("readr")
@@ -37,6 +45,8 @@ ___
 library(dietaryindex)
 library(dplyr)
 library(readr)
+library(haven)
+
 ```
 
 The **dietaryindex** package currently contains 14 key functions:
@@ -70,6 +80,12 @@ The **dietaryindex** package currently contains 14 key functions:
 
 >`HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
 
+>`AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
+
+>`DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
+
+>`MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
+
 >`HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
 
 ### Examples:
@@ -97,9 +113,9 @@ AHEI_DATA2
 
 #### Calculating HEI2015 for NHANES_FPED
 ```
-FPED_PATH = "/Users/james/Desktop/FPED.csv"
-NUTRIENT_PATH = "/Users/james/Desktop/NUTRIENT.csv"
-DEMO_PATH = "/Users/james/Desktop/DEMO.csv"
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 HEI2015RESULT = HEI2015(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 ```
@@ -109,7 +125,7 @@ ___
 
 **dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
 
-This package requires the **dplyr** and **readr** packages to be installed. Library statements of the dplyr and readr packages are included for your convenience. 
+This package requires the **dplyr**, **readr**, and **haven** packages to be installed. Library statements of the dplyr, readr, and haven packages are included for your convenience. 
 
 ### Contributing
 
