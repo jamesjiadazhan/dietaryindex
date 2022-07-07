@@ -1044,8 +1044,11 @@ HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 
 
 HEI2015_ASA24 = function(DATA_PATH){
-  COHORT = read_csv(DATA_PATH)
+  library(dplyr)
+  library(readr)
+  library(haven)
   
+  COHORT = read_csv(DATA_PATH)
   
   COHORT = COHORT %>%
     mutate(
@@ -1170,6 +1173,345 @@ HEI2015_ASA24 = function(DATA_PATH){
            HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
            HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
            HEI2015_SATFAT)
-  
-  
 }
+
+#' AHEI_NHANES_FPED
+#'
+#' Calculate the AHEI for the NHANES_FPED data (after 2005) within 1 step  
+#' @param FPED_PATH The file path for the FPED data. The file name should be like: fped_dr1tot_1112.sas7bdat
+#' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
+#' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
+#' @return The AHEI and its component scores
+#' @examples
+#' FPED_PATH = "/Users/james/Desktop/data/fped_dr1tot_1112.sas7bdat"
+#' NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
+#' DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
+#' AHEI_NHANES_FPED (FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+#' @export
+
+AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
+  library(dplyr)
+  library(readr)
+  library(haven)
+  
+  FPED = read_sas(FPED_PATH)
+  NUTRIENT = read_xpt(NUTRIENT_PATH)
+  DEMO = read_xpt(DEMO_PATH)
+  
+  NUTRIENT = NUTRIENT %>%
+    filter(DR1DRSTZ == 1) %>%
+    arrange(SEQN)
+  
+  
+  DEMO = DEMO %>%
+    filter(RIDAGEYR >= 2) %>%
+    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    arrange(SEQN)
+  
+  FPED = FPED %>%
+    arrange(SEQN)
+  
+  COHORT = NUTRIENT %>%
+    inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
+    left_join(FPED, by = c("SEQN" = "SEQN"))
+  
+  COHORT = COHORT %>%
+    filter(DR1TKCAL > 0) %>%
+    mutate(
+      VEG_SERV = DR1T_V_REDOR_TOTAL + 0.5*DR1T_V_DRKGR + DR1T_V_OTHER + DR1T_V_STARCHY_OTHER,
+      FRT_SERV = DR1T_F_TOTAL - DR1T_F_JUICE,
+      WGRAIN_SERV = DR1T_G_WHOLE/0.035274,
+      NUTSLEG_SERV = (DR1T_V_LEGUMES*4) + DR1T_PF_NUTSDS + DR1T_PF_SOY,
+      N3FAT_SERV = (DR1TP205 + DR1TP226)*1000,
+      PUFA_SERV = (((DR1TPFAT - DR1TP205 - DR1TP226)*9)/ DR1TKCAL)*100,
+      SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 240),
+      REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN+DR1T_PF_POULT)/4),
+      TRANS_SERV = 0,
+      ALCOHOL_SERV=DR1T_A_DRINKS,
+      SODIUM_SERV = DR1TSODI
+    )
+  
+  
+  ##Create variables and functions needed for AHEI calculation
+  AHEI_MIN = 0
+  AHEI_MAX = 10
+  AHEI_MIN_VEG_SERV = 0
+  AHEI_MAX_VEG_SERV = 5
+  AHEI_MIN_FRT_SERV = 0
+  AHEI_MAX_FRT_SERV = 4
+  AHEI_MIN_WGRAIN_F_SERV = 0
+  AHEI_MAX_WGRAIN_F_SERV = 75
+  AHEI_MIN_NUTSLEG_SERV = 0
+  AHEI_MAX_NUTSLEG_SERV = 1
+  AHEI_MIN_N3FAT_SERV = 0
+  AHEI_MAX_N3FAT_SERV = 250
+  AHEI_MIN_PUFA_SERV = 2
+  AHEI_MAX_PUFA_SERV = 10
+  AHEI_MIN_SSB_FRTJ_SERV = 1
+  AHEI_MAX_SSB_FRTJ_SERV = 0
+  AHEI_MIN_REDPROC_MEAT_SERV = 1.5
+  AHEI_MAX_REDPROC_MEAT_SERV = 0
+  AHEI_MIN_TRANS_SERV = 4
+  AHEI_MAX_TRANS_SERV = 0.5
+  
+  SCORE_HEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score){
+    case_when(
+      actual_serv >= max_serv ~ max_score,
+      actual_serv <= min_serv ~ min_score,
+      TRUE ~ min_score+(actual_serv-min_serv)*max_score/(max_serv-min_serv)
+    )
+  }
+  
+  SCORE_UNHEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score){
+    case_when(
+      actual_serv >= min_serv ~ min_score ,
+      actual_serv <= max_serv ~ max_score,
+      TRUE ~ min_score+(actual_serv-min_serv)*max_score/(max_serv-min_serv)
+    )
+  }
+  
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  
+  ##AHEI calculation
+  COHORT %>%
+    mutate(
+      AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_WGRAIN_F = SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_NUTSLEG = SCORE_HEALTHY(NUTSLEG_SERV, AHEI_MIN_NUTSLEG_SERV, AHEI_MAX_NUTSLEG_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_N3FAT = SCORE_HEALTHY(N3FAT_SERV, AHEI_MIN_N3FAT_SERV, AHEI_MAX_N3FAT_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_PUFA = SCORE_HEALTHY(PUFA_SERV, AHEI_MIN_PUFA_SERV, AHEI_MAX_PUFA_SERV, AHEI_MIN, AHEI_MAX),
+      
+      AHEI_SSB_FRTJ = SCORE_UNHEALTHY(SSB_FRTJ_SERV, AHEI_MIN_SSB_FRTJ_SERV, AHEI_MAX_SSB_FRTJ_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_REDPROC_MEAT = SCORE_UNHEALTHY(REDPROC_MEAT_SERV, AHEI_MIN_REDPROC_MEAT_SERV, AHEI_MAX_REDPROC_MEAT_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
+      
+      AHEI_SODIUM = case_when(
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
+      ),
+      AHEI_ALCOHOL_F = case_when(
+        ALCOHOL_SERV >= 2.5 ~ 0,
+        ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
+        ALCOHOL_SERV <= 0.125 ~ 2.5,
+        TRUE ~  0 + (ALCOHOL_SERV-0)*10/(0.5-0)
+      ),
+      AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
+        AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL_F,
+      
+      AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
+        AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
+    ) %>%
+    select(AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
+           AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
+}
+
+#' DASH_NHANES_FPED
+#'
+#' Calculate the DASH for the NHANES_FPED data (after 2005) within 1 step  
+#' @param FPED_PATH The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat
+#' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
+#' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
+#' @param DBQ_PATH The file path for the Diet Behavior & Nutrition data. The file name should be like: DBQ_J.XPT
+#' @return The DASH and its component scores
+#' @examples
+#' FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
+#' NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
+#' DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
+#' DBQ_PATH = "/Users/james/Desktop/data/DBQ_J.XPT"
+#' DASH_NHANES_FPED (FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
+#' @export
+
+
+DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
+  library(dplyr)
+  library(readr)
+  library(haven)
+  
+  FPED = read_sas(FPED_PATH)
+  NUTRIENT = read_xpt(NUTRIENT_PATH)
+  DEMO = read_xpt(DEMO_PATH)
+  DBQ = read_xpt(DBQ_PATH)
+  
+  NUTRIENT = NUTRIENT %>%
+    filter(DR1DRSTZ == 1) %>%
+    arrange(SEQN)
+  
+  
+  DEMO = DEMO %>%
+    filter(RIDAGEYR >= 2) %>%
+    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    arrange(SEQN)
+  
+  FPED = FPED %>%
+    arrange(SEQN)
+  
+  COHORT = NUTRIENT %>%
+    inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
+    left_join(FPED, by = c("SEQN" = "SEQN")) %>%
+    left_join(DBQ, by = c("SEQN" = "SEQN"))
+  
+  
+  #Match participant response food frequency to the standard food frequency response code
+  COHORT = COHORT %>%
+    filter(DR1TKCAL > 0) %>%
+    mutate(
+      FRT_FRTJ_SERV = DR1T_F_TOTAL,
+      VEG_SERV = DR1T_V_REDOR_TOTAL + 0.5*DR1T_V_DRKGR + DR1T_V_OTHER + DR1T_V_STARCHY_OTHER,
+      NUTSLEG_SERV = (DR1T_V_LEGUMES*4) + DR1T_PF_NUTSDS + DR1T_PF_SOY,
+      WGRAIN_SERV = DR1T_G_WHOLE,
+      LOWF_DAIRY_SERV = case_when(
+        DBQ223C==12 | DBQ223D==13 ~ DR1T_D_MILK + DR1T_D_YOGURT + (2/40.2)*DR1T_D_CHEESE,
+        TRUE ~ DR1T_D_YOGURT + (2/40.2)*DR1T_D_CHEESE
+      ),
+      SODIUM_SERV = DR1TSODI,
+      REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN+DR1T_PF_POULT)/4),
+      SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 240)
+    ) 
+  
+  ##Create variables and functions needed for DASH calculation
+  quintile_healthy = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.2))
+    case_when(
+      actual <= quintile[6] & actual >= quintile[5] ~ 5,
+      actual < quintile[5] & actual >= quintile[4] ~ 4,
+      actual < quintile[4] & actual >= quintile[3] ~ 3,
+      actual < quintile[3] & actual >= quintile[2] ~ 2,
+      actual < quintile[2] & actual >= quintile[1] ~ 1
+    )
+  }
+  
+  quintile_unhealthy = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.2))
+    case_when(
+      actual <= quintile[6] & actual >= quintile[5] ~ 1,
+      actual < quintile[5] & actual >= quintile[4] ~ 2,
+      actual < quintile[4] & actual >= quintile[3] ~ 3,
+      actual < quintile[3] & actual >= quintile[2] ~ 4,
+      actual < quintile[2] & actual >= quintile[1] ~ 5
+    )
+  }
+  
+  ##DASH calculation
+  COHORT %>%
+    mutate(
+      DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
+      DASH_VEG = quintile_healthy(VEG_SERV),
+      DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
+      DASH_WGRAIN = quintile_healthy(WGRAIN_SERV),
+      DASH_LOWF_DAIRY = quintile_healthy(LOWF_DAIRY_SERV),
+      DASH_SODIUM = quintile_unhealthy(SODIUM_SERV),
+      DASH_REDPROC_MEAT = quintile_unhealthy(REDPROC_MEAT_SERV),
+      DASH_SSB_FRTJ = quintile_unhealthy(SSB_FRTJ_SERV),
+      DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
+        DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
+    )%>%
+    select(DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+           DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
+}
+
+#' MED_NHANES_FPED
+#'
+#' Calculate the MED for the NHANES_FPED data (after 2005) within 1 step  
+#' @param FPED_PATH The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat
+#' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
+#' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
+#' @return The MED and its component scores
+#' @examples
+#' FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
+#' NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
+#' DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
+#' MED_NHANES_FPED (FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+#' @export
+
+MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
+  library(dplyr)
+  library(readr)
+  library(haven)
+  
+  FPED = read_sas(FPED_PATH)
+  NUTRIENT = read_xpt(NUTRIENT_PATH)
+  DEMO = read_xpt(DEMO_PATH)
+  
+  NUTRIENT = NUTRIENT %>%
+    filter(DR1DRSTZ == 1) %>%
+    arrange(SEQN)
+  
+  
+  DEMO = DEMO %>%
+    filter(RIDAGEYR >= 2) %>%
+    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    arrange(SEQN)
+  
+  FPED = FPED %>%
+    arrange(SEQN)
+  
+  COHORT = NUTRIENT %>%
+    inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
+    left_join(FPED, by = c("SEQN" = "SEQN")) 
+  
+  
+  #Match participant response food frequency to the standard food frequency response code
+  
+  COHORT = COHORT %>%
+    filter(DR1TKCAL > 0) %>%
+    mutate(
+      FRT_FRTJ_SERV = DR1T_F_TOTAL,
+      VEG_SERV = DR1T_V_REDOR_TOTAL + 0.5*DR1T_V_DRKGR + DR1T_V_OTHER + DR1T_V_STARCHY_OTHER,
+      WGRAIN_SERV = DR1T_G_WHOLE,
+      LEGUMES_SERV = (DR1T_V_LEGUMES*4) + DR1T_PF_SOY,
+      NUTS_SERV = DR1T_PF_NUTSDS,
+      FISH_SERV = DR1T_PF_SEAFD_HI + DR1T_PF_SEAFD_LOW,
+      REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN+DR1T_PF_POULT)/4),
+      MONSATFAT_SERV = case_when(
+        DR1TSFAT == 0 ~ 0, 
+        TRUE ~ DR1TMFAT/DR1TSFAT
+      ),
+      ALCOHOL_SERV = DR1T_A_DRINKS
+    ) 
+  
+  ##Create variables and functions needed for MED
+  median_healthy = function(actual){
+    median_score = median(actual)
+    case_when(
+      actual < median_score ~ 0,
+      actual >= median_score ~ 1
+    )
+  }
+  
+  median_unhealthy = function(actual){
+    median_score = median(actual)
+    case_when(
+      actual < median_score ~ 1,
+      actual >= median_score ~ 0
+    )
+  }
+  
+  COHORT %>%
+    mutate(
+      MED_FRT = median_healthy(FRT_FRTJ_SERV),
+      MED_VEG = median_healthy(VEG_SERV),
+      MED_WGRAIN = median_healthy(WGRAIN_SERV),
+      MED_LEGUMES = median_healthy(LEGUMES_SERV),
+      MED_NUTS = median_healthy(NUTS_SERV),
+      MED_FISH = median_healthy(FISH_SERV),
+      MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV),
+      MED_MONSATFAT = median_healthy(MONSATFAT_SERV),
+      MED_ALCOHOL = ifelse(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10, 1, 0),
+      
+      MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
+      MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
+    )%>%
+    select(MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
+           MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
+}
+
