@@ -644,7 +644,7 @@ DASH_SERV = function(RAW_DATA, TYPE){
         VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
         NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
         WGRAIN_SERV = G_WHL,
-        LOWF_MILK_SERV = ifelse(MILKTYPE==2 | MILKTYPE==3 | MILKTYPE==4,
+        LOWF_MILK_SERV = ifelse(MILKTYPE==4,
                                 foodfreq(MILKFREQ) * MILKQUAN, 
                                 0),
         YOGURT_SERV = (foodfreq(YOGURTONLYFREQ) * 
@@ -886,9 +886,9 @@ HEI2015_SERV = function(RAW_DATA, TYPE){
 
 
 HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
-  FPED = read_csv(FPED_PATH)
-  NUTRIENT = read_csv(NUTRIENT_PATH)
-  DEMO = read_csv(DEMO_PATH)
+  FPED = read_sas(FPED_PATH)
+  NUTRIENT = read_xpt(NUTRIENT_PATH)
+  DEMO = read_xpt(DEMO_PATH)
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
