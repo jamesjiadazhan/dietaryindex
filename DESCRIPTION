@@ -1,7 +1,7 @@
 Package: dietaryindex
 Type: Package
 Title: Dietary Pattern Index Calculation Package 
-Version: 0.6.0
+Version: 0.7.0
 Author: James Jiada Zhan, Nutrition and Health Sciences PhD Program, Emory University
 Maintainer: James Jiada Zhan <jzha832@emory.edu>
 Description: Currently, the package can 3 things to calculate dietary indexes within 1-2 steps.
