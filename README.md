@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.7.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data
+Version 0.7.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data after 2005 (NHANES_FPED)
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -117,8 +117,47 @@ FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
 NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
 DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
-HEI2015RESULT = HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
 ```
+
+#### Calculating HEI2015 for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+
+HEI2015_ASA24(DATA_PATH)
+```
+
+#### Calculating AHEI for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+AHEI_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+```
+
+#### Calculating DASH for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
+DBQ_PATH = "/Users/james/Desktop/data/DBQ_J.XPT"
+
+DASH_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
+
+```
+
+#### Calculating MED for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+```
+
 
 ### Related Work
 ___
@@ -127,7 +166,11 @@ ___
 
 This package requires the **dplyr**, **readr**, and **haven** packages to be installed. Library statements of the dplyr, readr, and haven packages are included for your convenience. 
 
-For NHANES data, FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a zip file, so please unzip this file first to retrieve the SAS file. NUTRIENT file refers to the DR1TOT file in the Dietary Interview - Total Nutrient Intakes, First Day (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
+For NHANES data:
+FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a zip file, so please unzip this file first to retrieve the SAS file. 
+NUTRIENT file refers to the DR1TOT file in the Dietary Interview - Total Nutrient Intakes, First Day, Dietary Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). 
+DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
+DBQ file refers to the DBQ file in the Diet Behavior & Nutrition, Questionnaire Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Questionnaire&CycleBeginYear=2005)
 
 ### Contributing
 
