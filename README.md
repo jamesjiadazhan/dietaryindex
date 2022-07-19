@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.6.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data
+Version 0.7.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -117,7 +117,7 @@ FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
 NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
 DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
-HEI2015RESULT = HEI2015(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+HEI2015RESULT = HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 ```
 
 ### Related Work
@@ -126,6 +126,8 @@ ___
 **dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
 
 This package requires the **dplyr**, **readr**, and **haven** packages to be installed. Library statements of the dplyr, readr, and haven packages are included for your convenience. 
+
+For NHANES data, FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a zip file, so please unzip this file first to retrieve the SAS file. NUTRIENT file refers to the DR1TOT file in the Dietary Interview - Total Nutrient Intakes, First Day (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
 
 ### Contributing
 
