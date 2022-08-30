@@ -11,12 +11,14 @@ The main goal of this package **dietaryindex** is for calculating different diet
 1. Calculate the serving size of each food and nutrient category
 2. Calculate the individual dietary index
 
-Currently, the **dietaryindex** package works for the following 4 dietary assessment tools to calculate many dietary indexes within 1 steps.
-    1. It can calculate HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, and DII for the Block FFQ. 
-    2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
-    3. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
-    4. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NIH-AARP
+Currently, the **dietaryindex** package works for the following 4 dietary assessment tools to calculate many dietary indexes within 1 steps:
+1. It can calculate HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, and DII for the Block FFQ. 
+2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
+3. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
+4. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NIH-AARP
+
 This package can also help you calculating these dietary pattern indexes from all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+
 All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
 
 The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. Please install them ahead.
