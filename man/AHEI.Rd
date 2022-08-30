@@ -6,6 +6,7 @@
 \usage{
 AHEI(
   SERV_DATA,
+  RESPONDENTID,
   VEG_SERV,
   FRT_SERV,
   WGRAIN_SERV,
@@ -21,6 +22,8 @@ AHEI(
 }
 \arguments{
 \item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and nutrients}
+
+\item{RESPONDENTID}{The unique participant ID for each participant}
 
 \item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
@@ -51,5 +54,5 @@ The AHEI index/score, AHEI
 Calculate the AHEI dietary index, Alternative Healthy Eating Index, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-AHEI(SERV_DATA, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
+AHEI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
 }
