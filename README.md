@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.7.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data after 2005 (NHANES_FPED)
+Version 0.8.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data after 2005 (NHANES_FPED)
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -170,7 +170,7 @@ NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
 DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
-
+```
 
 #### Calculating AHEI for your own dietary assessment tool
 ```
