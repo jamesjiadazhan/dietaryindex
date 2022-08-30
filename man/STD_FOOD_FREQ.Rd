@@ -3,7 +3,7 @@
 \docType{data}
 \name{STD_FOOD_FREQ}
 \alias{STD_FOOD_FREQ}
-\title{AHEI_SERV Calculation}
+\title{AHEI_BLOCK Calculation}
 \format{
 An object of class \code{numeric} of length 9.
 }
@@ -11,17 +11,15 @@ An object of class \code{numeric} of length 9.
 STD_FOOD_FREQ
 }
 \arguments{
-\item{RAW_DATA}{The raw data file that includes results and raw data of the dietary assessment}
-
-\item{TYPE}{The type of dietary assessment you use. Current supported dietary assessment(s): BLOCK.}
+\item{RAW_DATA}{The raw data file that includes results and raw responses of the dietary assessment}
 }
 \value{
-The serving sizes for the AHEI index/score
+The AHEI and its component scores
 }
 \description{
-Calculate the serving sizes needed for calculating the AHEI dietary index per 1 day
+Calculate the AHEI dietary index for the Block FFQ (2013) per 1 day
 }
 \examples{
-AHEI_SERV(RAW_DATA, TYPE="BLOCK")
+AHEI_BLOCK(RAW_DATA)
 }
 \keyword{datasets}

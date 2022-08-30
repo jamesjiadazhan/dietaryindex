@@ -6,6 +6,7 @@
 \usage{
 DASHI(
   SERV_DATA,
+  RESPONDENTID,
   VEG_SERV,
   FRT_SERV,
   NUTSLEG_SERV,
@@ -20,6 +21,8 @@ DASHI(
 }
 \arguments{
 \item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and nutrients}
+
+\item{RESPONDENTID}{The unique participant ID for each participant}
 
 \item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
@@ -37,6 +40,8 @@ DASHI(
 
 \item{FATOIL_SERV}{The serving size of discretionary fats and oils, including added Plant oil + Animal fat, unit=servings/day = 1tbsp = 14 g}
 
+\item{ADDEDSUGAR_SERV}{The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal}
+
 \item{SODIUM_SERV}{The serving size of sodium, unit=mg/day}
 }
 \value{
@@ -46,5 +51,5 @@ The DASHI index/score
 Calculate the DASHI dietary index (serving size-based), Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-DASHI(SERV_DATA, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
+DASHI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
 }

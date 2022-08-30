@@ -23,5 +23,5 @@ Calculate the MED for the NHANES_FPED data (after 2005) within 1 step
 FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
 NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
 DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
-MED_NHANES_FPED (FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 }

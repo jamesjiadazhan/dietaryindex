@@ -6,6 +6,7 @@
 \usage{
 DASH(
   SERV_DATA,
+  RESPONDENTID,
   FRT_FRTJ_SERV,
   VEG_SERV,
   NUTSLEG_SERV,
@@ -18,6 +19,8 @@ DASH(
 }
 \arguments{
 \item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and nutrients}
+
+\item{RESPONDENTID}{The unique participant ID for each participant}
 
 \item{FRT_FRTJ_SERV}{The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice}
 
@@ -42,5 +45,5 @@ The DASH index/score
 Calculate the DASH dietary index, Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-DASH(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV, SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV)
+DASH(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV, SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV)
 }

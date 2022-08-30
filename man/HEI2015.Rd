@@ -6,6 +6,7 @@
 \usage{
 HEI2015(
   SERV_DATA,
+  RESPONDENTID,
   TOTALFRT_SERV,
   FRT_SERV,
   VEG_SERV,
@@ -23,6 +24,8 @@ HEI2015(
 }
 \arguments{
 \item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and nutrients}
+
+\item{RESPONDENTID}{The unique participant ID for each participant}
 
 \item{TOTALFRT_SERV}{The serving size of total fruits including fruit juice, unit= cup eq.}
 
@@ -57,5 +60,5 @@ The HEI2015 index/score
 Calculate the HEI2015 dietary index, Healthy eating index 2015, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-HEI2015(SERV_DATA, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,  SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,  SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
+HEI2015(SERV_DATA, RESPONDENTID, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,  SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,  SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
 }

@@ -6,6 +6,7 @@
 \usage{
 MED(
   SERV_DATA,
+  RESPONDENTID,
   FRT_FRTJ_SERV,
   VEG_SERV,
   WGRAIN_SERV,
@@ -19,6 +20,8 @@ MED(
 }
 \arguments{
 \item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and nutrients}
+
+\item{RESPONDENTID}{The unique participant ID for each participant}
 
 \item{FRT_FRTJ_SERV}{The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice}
 
@@ -45,5 +48,5 @@ The MED index/score
 Calculate the MED dietary index, Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-MED(SERV_DATA, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
+MED(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
 }
