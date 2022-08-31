@@ -13,7 +13,7 @@
 #' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
 #' @param TRANS_SERV The serving size of trans fat, unit=\% of energy
 #' @param SODIUM_SERV The serving size of sodium, unit=mg/day 
-#' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer, 5 oz wine, 1.5 oz spirits) 1 oz = 28.35 g
+#' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g
 #' @return The AHEI index/score, AHEI
 #' @examples
 #' AHEI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
