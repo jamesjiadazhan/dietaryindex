@@ -452,7 +452,7 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
 #' Calculate the HEI2015 dietary index, Healthy eating index 2015, using given the serving sizes of foods and nutrients consumed per 1 day
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param TOTALKCAL The total calorie from all foods and drinks
+#' @param TOTALKCAL The total calorie from all foods and drinks 
 #' @param TOTALFRT_SERV The serving size of total fruits including fruit juice, unit= cup eq.
 #' @param FRT_SERV The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.
 #' @param VEG_SERV The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
