@@ -28,6 +28,8 @@ HEI2015(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
+\item{TOTALKCAL}{The total calorie from all foods and drinks}
+
 \item{TOTALFRT_SERV}{The serving size of total fruits including fruit juice, unit= cup eq.}
 
 \item{FRT_SERV}{The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.}
