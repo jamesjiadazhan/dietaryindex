@@ -18,8 +18,9 @@ Currently, the **dietaryindex** package works for the following 4 dietary assess
 4. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NIH-AARP
 
 This package can also help you calculating these dietary pattern indexes from all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+- All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+- The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN.xlsx
 
-All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
 
 The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. Please install them ahead.
 
