@@ -8,12 +8,12 @@
 #' @param WGRAIN_SERV The serving size of whole grains, unit=grams/day
 #' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
 #' @param N3FAT_SERV The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)
-#' @param PUFA_SERV The serving size of PUFA, unit=\% of energy
+#' @param PUFA_SERV The serving size of PUFA, unit=\% of energy 
 #' @param SSB_FRTJ_SERV The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
 #' @param TRANS_SERV The serving size of trans fat, unit=\% of energy
-#' @param SODIUM_SERV The serving size of sodium, unit=mg/day
-#' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz. beer; 5 oz. wine; 1.5 oz. spirits) 1 oz = 28.35 g
+#' @param SODIUM_SERV The serving size of sodium, unit=mg/day 
+#' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g
 #' @return The AHEI index/score, AHEI
 #' @examples
 #' AHEI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
@@ -452,6 +452,7 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
 #' Calculate the HEI2015 dietary index, Healthy eating index 2015, using given the serving sizes of foods and nutrients consumed per 1 day
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
+#' @param TOTALKCAL The total calorie from all foods and drinks 
 #' @param TOTALFRT_SERV The serving size of total fruits including fruit juice, unit= cup eq.
 #' @param FRT_SERV The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.
 #' @param VEG_SERV The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
