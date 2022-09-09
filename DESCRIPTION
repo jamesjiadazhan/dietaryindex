@@ -11,9 +11,13 @@ Description: Currently, the package works for the following 4 dietary assessment
     4. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NIH-AARP
     This package can also help you calculating these dietary pattern indexes from all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
     All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+Depends: 
+    R (>= 2.10)
+Imports:
+    dplyr,
+    readr,
+    haven
 License: MIT License
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1
-Depends: 
-    R (>= 2.10)

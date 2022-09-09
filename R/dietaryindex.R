@@ -1,6 +1,9 @@
 #' AHEI Calculation
 #'
 #' Calculate the AHEI dietary index, Alternative Healthy Eating Index, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
@@ -67,7 +70,7 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
   
   ##AHEI calculation
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_WGRAIN_F = SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
@@ -104,7 +107,7 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
       AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
     ) %>%
-    select(RESPONDENTID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(RESPONDENTID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
   
 }
@@ -112,6 +115,9 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
 #' DASH Calculation
 #'
 #' Calculate the DASH dietary index, Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param FRT_FRTJ_SERV The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
@@ -156,7 +162,7 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
 
   ##DASH calculation
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
       DASH_VEG = quintile_healthy(VEG_SERV),
       DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
@@ -168,13 +174,16 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
         DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
     )%>%
-    select(RESPONDENTID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+    dplyr::select(RESPONDENTID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
            DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
 }
 
 #' DASHI Calculation
 #'
 #' Calculate the DASHI dietary index (serving size-based), Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
@@ -240,7 +249,7 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWF
 
   ##DASHI calculation
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       DASHI_VEG = DASHI_HEALTHY(VEG_SERV, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
       DASHI_FRT = DASHI_HEALTHY(FRT_SERV, DASHI_MIN_FRT_SERV, DASHI_MAX_FRT_SERV),
       DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
@@ -255,13 +264,16 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWF
       DASHI_ALL= DASHI_VEG + DASHI_FRT + DASHI_NUTSLEG + DASHI_LOWFATDAIRY +
         DASHI_WGRAIN + DASHI_ALLMEAT + DASHI_REDPROC_MEAT + DASHI_FATOIL + DASHI_ADDEDSUGAR + DASHI_SODIUM
     )%>%
-    select(RESPONDENTID, DASHI_ALL, DASHI_VEG, DASHI_FRT, DASHI_NUTSLEG, DASHI_LOWFATDAIRY, DASHI_WGRAIN,
+    dplyr::select(RESPONDENTID, DASHI_ALL, DASHI_VEG, DASHI_FRT, DASHI_NUTSLEG, DASHI_LOWFATDAIRY, DASHI_WGRAIN,
            DASHI_ALLMEAT, DASHI_REDPROC_MEAT, DASHI_FATOIL, DASHI_ADDEDSUGAR, DASHI_SODIUM)
 }
 
 #' MED Calculation
 #'
 #' Calculate the MED dietary index, Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param FRT_FRTJ_SERV The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
@@ -300,7 +312,7 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
   }
 
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       MED_FRT = median_healthy(FRT_FRTJ_SERV),
       MED_VEG = median_healthy(VEG_SERV),
       MED_WGRAIN = median_healthy(WGRAIN_SERV),
@@ -314,13 +326,16 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
     )%>%
-    select(RESPONDENTID, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
+    dplyr::select(RESPONDENTID, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
            MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
 }
 
 #' MEDI Calculation
 #'
 #' Calculate the MEDI dietary index (serving size-based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param FRT_FRTJ_SERV The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
@@ -343,7 +358,7 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
 MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, WGRAIN_SERV, FISH_SERV, DAIRY_SERV, REDPROC_MEAT_SERV,
                 NUTS_SERV, MONSATFAT_SERV, ALCOHOL_SERV){
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       MEDI_FRT = ifelse(FRT_FRTJ_SERV >=3, 1, 0),
       MEDI_VEG = ifelse(VEG_SERV >= 3, 1, 0),
       MEDI_LEGUMES = ifelse(LEGUMES_SERV*7 >= 1.5, 1, 0),
@@ -360,13 +375,16 @@ MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, 
       MEDI_NOETOH = MEDI_FRT+MEDI_VEG+MEDI_LEGUMES+MEDI_WGRAIN+MEDI_FISH+MEDI_DAIRY+MEDI_REDPROC_MEAT
       +MEDI_NUTS+MEDI_MONSATFAT
     )%>%
-    select(RESPONDENTID, MEDI_ALL, MEDI_NOETOH, MEDI_FRT, MEDI_VEG, MEDI_LEGUMES, MEDI_WGRAIN, MEDI_FISH,
+    dplyr::select(RESPONDENTID, MEDI_ALL, MEDI_NOETOH, MEDI_FRT, MEDI_VEG, MEDI_LEGUMES, MEDI_WGRAIN, MEDI_FISH,
            MEDI_DAIRY, MEDI_REDPROC_MEAT, MEDI_NUTS, MEDI_MONSATFAT, MEDI_ALCOHOL)
 }
 
 #' AHEIP Calculation
 #'
 #' Calculate the AHEIP dietary index (serving size-based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
@@ -430,7 +448,7 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
   }
 
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       AHEIP_VEG = AHEIP_HEALTHY(VEG_SERV, AHEIP_MIN_VEG_SERV, AHEIP_MAX_VEG_SERV),
       AHEIP_FRT = AHEIP_HEALTHY(FRT_SERV, AHEIP_MIN_FRT_SERV, AHEIP_MAX_FRT_SERV),
       AHEIP_WHITEREAD = AHEIP_HEALTHY(WHITERED_RT_SERV, AHEIP_MIN_WHITERED_SERV, AHEIP_MAX_WHITERED_SERV),
@@ -443,13 +461,16 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
       AHEIP_ALL = AHEIP_VEG + AHEIP_FRT + AHEIP_WHITEREAD + AHEIP_FIBER + AHEIP_TRANS +
         AHEIP_POLYSAT + AHEIP_CALCIUM + AHEIP_FOLATE + AHEIP_IRON
     )%>%
-    select(RESPONDENTID, AHEIP_ALL, AHEIP_VEG, AHEIP_FRT, AHEIP_WHITEREAD, AHEIP_FIBER, AHEIP_TRANS,
+    dplyr::select(RESPONDENTID, AHEIP_ALL, AHEIP_VEG, AHEIP_FRT, AHEIP_WHITEREAD, AHEIP_FIBER, AHEIP_TRANS,
            AHEIP_POLYSAT, AHEIP_CALCIUM, AHEIP_FOLATE, AHEIP_IRON)
 }
 
 #' HEI2015 Calculation
 #'
 #' Calculate the HEI2015 dietary index, Healthy eating index 2015, using given the serving sizes of foods and nutrients consumed per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param TOTALKCAL The total calorie from all foods and drinks 
@@ -534,7 +555,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
   }
 
   SERV_DATA=SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
       HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
       HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
@@ -574,7 +595,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
   }
   
   SERV_DATA %>%
-    select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+    dplyr::select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
            HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
            HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
            HEI2015_SATFAT)
@@ -583,6 +604,9 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
 #' AHEI_BLOCK Calculation
 #'
 #' Calculate the AHEI dietary index for the Block FFQ (2013) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw responses of the dietary assessment
 #' @return The AHEI and its component scores
 #' @examples
@@ -608,7 +632,7 @@ foodport = function(actual, reference=STD_FOOD_PORT_DF){
 AHEI_BLOCK = function(RAW_DATA){
   #Serving calculation for AHEI 2010
   SERV_DATA = RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
       F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
@@ -667,7 +691,7 @@ AHEI_BLOCK = function(RAW_DATA){
   
   ##AHEI calculation
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_WGRAIN_F = SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
@@ -704,7 +728,7 @@ AHEI_BLOCK = function(RAW_DATA){
       AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
     ) %>%
-    select(RESPONDENTID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(RESPONDENTID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
 }
 
@@ -712,6 +736,9 @@ AHEI_BLOCK = function(RAW_DATA){
 #' DASH_BLOCK Calculation
 #'
 #' Calculate the DASH dietary index for Block FFQ (2013) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The DASH and its component scores
 #' @examples
@@ -729,7 +756,7 @@ DASH_BLOCK = function(RAW_DATA){
   BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
   
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
       FRT_FRTJ_SERV = F_WHOLE + JUICE100,
@@ -781,7 +808,7 @@ DASH_BLOCK = function(RAW_DATA){
   
   ##DASH calculation
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
       DASH_VEG = quintile_healthy(VEG_SERV),
       DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
@@ -793,7 +820,7 @@ DASH_BLOCK = function(RAW_DATA){
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
         DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
     )%>%
-    select(RESPONDENTID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+    dplyr::select(RESPONDENTID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
            DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
   
 }
@@ -801,6 +828,9 @@ DASH_BLOCK = function(RAW_DATA){
 #' DASHI_BLOCK Calculation
 #'
 #' Calculate the DASHI dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The DASHI index/score and its components
 #' @examples
@@ -818,7 +848,7 @@ DASHI_BLOCK = function(RAW_DATA){
   BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
   
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
       VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
@@ -888,7 +918,7 @@ DASHI_BLOCK = function(RAW_DATA){
   
   ##DASHI calculation
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       DASHI_VEG = DASHI_HEALTHY(VEG_SERV, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
       DASHI_FRT = DASHI_HEALTHY(FRT_SERV, DASHI_MIN_FRT_SERV, DASHI_MAX_FRT_SERV),
       DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
@@ -903,7 +933,7 @@ DASHI_BLOCK = function(RAW_DATA){
       DASHI_ALL= DASHI_VEG + DASHI_FRT + DASHI_NUTSLEG + DASHI_LOWFATDAIRY +
         DASHI_WGRAIN + DASHI_ALLMEAT + DASHI_REDPROC_MEAT + DASHI_FATOIL + DASHI_ADDEDSUGAR + DASHI_SODIUM
     )%>%
-    select(RESPONDENTID, DASHI_ALL, DASHI_VEG, DASHI_FRT, DASHI_NUTSLEG, DASHI_LOWFATDAIRY, DASHI_WGRAIN,
+    dplyr::select(RESPONDENTID, DASHI_ALL, DASHI_VEG, DASHI_FRT, DASHI_NUTSLEG, DASHI_LOWFATDAIRY, DASHI_WGRAIN,
            DASHI_ALLMEAT, DASHI_REDPROC_MEAT, DASHI_FATOIL, DASHI_ADDEDSUGAR, DASHI_SODIUM)
   
 }
@@ -911,6 +941,9 @@ DASHI_BLOCK = function(RAW_DATA){
 #' MED_BLOCK Calculation
 #'
 #' Calculate the MED dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The MED index/score and its components
 #' @examples
@@ -921,7 +954,7 @@ MED_BLOCK = function(RAW_DATA){
   
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
       FRT_FRTJ_SERV = F_WHOLE + JUICE100,
@@ -952,7 +985,7 @@ MED_BLOCK = function(RAW_DATA){
   }
   
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       MED_FRT = median_healthy(FRT_FRTJ_SERV),
       MED_VEG = median_healthy(VEG_SERV),
       MED_WGRAIN = median_healthy(WGRAIN_SERV),
@@ -966,7 +999,7 @@ MED_BLOCK = function(RAW_DATA){
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
     )%>%
-    select(RESPONDENTID, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
+    dplyr::select(RESPONDENTID, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
            MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
   
 }
@@ -974,6 +1007,9 @@ MED_BLOCK = function(RAW_DATA){
 #' MEDI_BLOCK Calculation
 #'
 #' Calculate the MEDI dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The MEDI index/score and its components
 #' @examples
@@ -984,7 +1020,7 @@ MEDI_BLOCK = function(RAW_DATA){
   
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
       FRT_FRTJ_SERV = F_WHOLE + JUICE100,
@@ -1000,7 +1036,7 @@ MEDI_BLOCK = function(RAW_DATA){
     ) 
   
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       MEDI_FRT = ifelse(FRT_FRTJ_SERV >=3, 1, 0),
       MEDI_VEG = ifelse(VEG_SERV >= 3, 1, 0),
       MEDI_LEGUMES = ifelse(LEGUMES_SERV*7 >= 1.5, 1, 0),
@@ -1017,7 +1053,7 @@ MEDI_BLOCK = function(RAW_DATA){
       MEDI_NOETOH = MEDI_FRT+MEDI_VEG+MEDI_LEGUMES+MEDI_WGRAIN+MEDI_FISH+MEDI_DAIRY+MEDI_REDPROC_MEAT
       +MEDI_NUTS+MEDI_MONSATFAT
     )%>%
-    select(RESPONDENTID, MEDI_ALL, MEDI_NOETOH, MEDI_FRT, MEDI_VEG, MEDI_LEGUMES, MEDI_WGRAIN, MEDI_FISH,
+    dplyr::select(RESPONDENTID, MEDI_ALL, MEDI_NOETOH, MEDI_FRT, MEDI_VEG, MEDI_LEGUMES, MEDI_WGRAIN, MEDI_FISH,
            MEDI_DAIRY, MEDI_REDPROC_MEAT, MEDI_NUTS, MEDI_MONSATFAT, MEDI_ALCOHOL)
 }
 
@@ -1025,6 +1061,9 @@ MEDI_BLOCK = function(RAW_DATA){
 #' AHEIP_BLOCK Calculation
 #'
 #' Calculate the AHEIP dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The AHEIP index/score and its components
 #' @examples
@@ -1034,7 +1073,7 @@ MEDI_BLOCK = function(RAW_DATA){
 AHEIP_BLOCK = function(RAW_DATA){
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
       VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
@@ -1088,7 +1127,7 @@ AHEIP_BLOCK = function(RAW_DATA){
   }
   
   SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       AHEIP_VEG = AHEIP_HEALTHY(VEG_SERV, AHEIP_MIN_VEG_SERV, AHEIP_MAX_VEG_SERV),
       AHEIP_FRT = AHEIP_HEALTHY(FRT_SERV, AHEIP_MIN_FRT_SERV, AHEIP_MAX_FRT_SERV),
       AHEIP_WHITEREAD = AHEIP_HEALTHY(WHITERED_RT_SERV, AHEIP_MIN_WHITERED_SERV, AHEIP_MAX_WHITERED_SERV),
@@ -1101,7 +1140,7 @@ AHEIP_BLOCK = function(RAW_DATA){
       AHEIP_ALL = AHEIP_VEG + AHEIP_FRT + AHEIP_WHITEREAD + AHEIP_FIBER + AHEIP_TRANS +
         AHEIP_POLYSAT + AHEIP_CALCIUM + AHEIP_FOLATE + AHEIP_IRON
     )%>%
-    select(RESPONDENTID, AHEIP_ALL, AHEIP_VEG, AHEIP_FRT, AHEIP_WHITEREAD, AHEIP_FIBER, AHEIP_TRANS,
+    dplyr::select(RESPONDENTID, AHEIP_ALL, AHEIP_VEG, AHEIP_FRT, AHEIP_WHITEREAD, AHEIP_FIBER, AHEIP_TRANS,
            AHEIP_POLYSAT, AHEIP_CALCIUM, AHEIP_FOLATE, AHEIP_IRON)
   
 }
@@ -1110,6 +1149,9 @@ AHEIP_BLOCK = function(RAW_DATA){
 #' HEI2015_BLOCK Calculation
 #'
 #' Calculate the HEI2015 dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The HEI2015 index/score and its components
 #' @examples
@@ -1121,7 +1163,7 @@ HEI2015_BLOCK = function(RAW_DATA){
   
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       TOTALFRT_SERV = F_TOTAL/(DT_KCAL/1000),
       FRT_SERV = F_SOLID/(DT_KCAL/1000),
       VEG_SERV = (V_TOTAL+LEGUMES)/(DT_KCAL/1000),
@@ -1197,7 +1239,7 @@ HEI2015_BLOCK = function(RAW_DATA){
   }
   
   SERV_DATA=SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
       HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
       HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
@@ -1221,7 +1263,7 @@ HEI2015_BLOCK = function(RAW_DATA){
   
   
   SERV_DATA %>%
-    select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+    dplyr::select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
            HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
            HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
            HEI2015_SATFAT)
@@ -1231,6 +1273,9 @@ HEI2015_BLOCK = function(RAW_DATA){
 #' DII_BLOCK Calculation
 #'
 #' Calculate the DII dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The DII index/score and its components
 #' @examples
@@ -1241,7 +1286,7 @@ DII_BLOCK = function(RAW_DATA){
   
   #Serving size calculation for DII
   COHORT = RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       ALCOHOL = A_BEV,
       VITB12 = DT_VB12,
       VITB6 = DT_VITB6,
@@ -1276,12 +1321,12 @@ DII_BLOCK = function(RAW_DATA){
     ) 
   
   COHORT1 = COHORT %>%
-    select(RESPONDENTID, ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+    dplyr::select(RESPONDENTID, ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
            IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
            VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES)
   
   COHORT2 = COHORT %>%
-    select(RESPONDENTID, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+    dplyr::select(RESPONDENTID, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
            IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
            VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES)
   
@@ -1314,7 +1359,7 @@ DII_BLOCK = function(RAW_DATA){
   
   DII_ALL_df = COHORT1 %>%
     inner_join(DII_STD, by=c("Variable")) %>%
-    mutate(
+    dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
@@ -1323,7 +1368,7 @@ DII_BLOCK = function(RAW_DATA){
   
   DII_ALL_NOETOH_df = COHORT2 %>%
     inner_join(DII_STD, by=c("Variable")) %>%
-    mutate(
+    dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
@@ -1337,6 +1382,9 @@ DII_BLOCK = function(RAW_DATA){
 #' HEI2015_AARP Calculation
 #'
 #' Calculate the HEI2015 dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
 #' @return The HEI2015 index/score and its components
 #' @examples
@@ -1346,7 +1394,7 @@ DII_BLOCK = function(RAW_DATA){
 HEI2015_AARP = function(RAW_DATA){
   
   SERV_DATA=RAW_DATA %>%
-    mutate(
+    dplyr::mutate(
       mped_M_SOY=0,
       TOTALFRT_SERV = mped_f_total/(calories/1000),
       FRT_SERV = mped_f_nojuice/(calories/1000),
@@ -1424,7 +1472,7 @@ HEI2015_AARP = function(RAW_DATA){
   }
   
   SERV_DATA=SERV_DATA %>%
-    mutate(
+    dplyr::mutate(
       HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
       HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
       HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
@@ -1464,16 +1512,183 @@ HEI2015_AARP = function(RAW_DATA){
   }
   
   SERV_DATA %>%
-    select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+    dplyr::select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
            HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
            HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
            HEI2015_SATFAT)
   
 }
 
+#' HEI2015_NHANES_FPED
+#'
+#' Calculate the HEI2015 for the NHANES_FPED data (after 2005) within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
+#' @param FPED_PATH The file path for the FPED data. The file name should be like: fped_dr1tot_1112.sas7bdat
+#' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
+#' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
+#' @return The AHEI and its component scores
+#' @examples
+#' FPED_PATH = "/Users/james/Desktop/data/fped_dr1tot_1112.sas7bdat"
+#' NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
+#' DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
+#' HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+#' @export
+
+HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
+  FPED = read_sas(FPED_PATH)
+  NUTRIENT = read_xpt(NUTRIENT_PATH)
+  DEMO = read_xpt(DEMO_PATH)
+  
+  NUTRIENT = NUTRIENT %>%
+    filter(DR1DRSTZ == 1) %>%
+    dplyr::select(SEQN, WTDRD1, DR1TKCAL, DR1TSFAT, DR1TALCO, DR1TSODI, DR1DRSTZ, DR1TMFAT, DR1TPFAT) %>%
+    arrange(SEQN)
+  
+  
+  DEMO = DEMO %>%
+    filter(RIDAGEYR >= 2) %>%
+    dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    arrange(SEQN)
+  
+  FPED = FPED %>%
+    arrange(SEQN)
+  
+  COHORT = NUTRIENT %>%
+    inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
+    left_join(FPED, by = c("SEQN" = "SEQN"))
+  
+  COHORT = COHORT %>%
+    dplyr::mutate(
+      TOTALFRT_SERV = DR1T_F_TOTAL/(DR1TKCAL/1000),
+      FRT_SERV = (DR1T_F_CITMLB+DR1T_F_OTHER)/(DR1TKCAL/1000),
+      VEG_SERV = (DR1T_V_TOTAL+DR1T_V_LEGUMES)/(DR1TKCAL/1000),
+      GREENNBEAN_SERV = (DR1T_V_DRKGR+DR1T_V_LEGUMES)/(DR1TKCAL/1000),
+      TOTALPRO_SERV = (DR1T_PF_MPS_TOTAL+DR1T_PF_EGGS+DR1T_PF_NUTSDS+DR1T_PF_SOY+DR1T_PF_LEGUMES)/(DR1TKCAL/1000),
+      SEAPLANTPRO_SERV = (DR1T_PF_SEAFD_HI+DR1T_PF_SEAFD_LOW+DR1T_PF_NUTSDS+DR1T_PF_SOY+DR1T_PF_LEGUMES)/(DR1TKCAL/1000),
+      WHOLEGRAIN_SERV = DR1T_G_WHOLE/(DR1TKCAL/1000),
+      DAIRY_SERV = DR1T_D_TOTAL/(DR1TKCAL/1000),
+      FATTYACID_SERV = ifelse(DR1TSFAT == 0, 0, (DR1TMFAT+DR1TPFAT)/DR1TSFAT),
+      
+      REFINEDGRAIN_SERV = DR1T_G_REFINED/(DR1TKCAL/1000),
+      SODIUM_SERV = (DR1TSODI/1000)/(DR1TKCAL/1000),
+      ADDEDSUGAR_SERV = ((DR1T_ADD_SUGARS*4*4) / DR1TKCAL)*100,
+      SATFAT_SERV = ((DR1TSFAT*9)/DR1TKCAL)*100,
+      
+      TOTALKCAL = DR1TKCAL)
+  
+  
+  ##Create variables needed for HEI2015 calculation
+  HEI2015_MIN = 0
+  HEI2015_MAX1 = 5
+  HEI2015_MAX2 = 10
+  
+  HEI2015_MIN_TOTALFRT_SERV = 0
+  HEI2015_MAX_TOTALFRT_SERV = 0.8
+  HEI2015_MIN_FRT_SERV = 0
+  HEI2015_MAX_FRT_SERV = 0.4
+  HEI2015_MIN_VEG_SERV = 0
+  HEI2015_MAX_VEG_SERV = 1.1
+  HEI2015_MIN_GREENNBEAN_SERV = 0
+  HEI2015_MAX_GREENNBEAN_SERV = 0.2
+  HEI2015_MIN_TOTALPRO_SERV = 0
+  HEI2015_MAX_TOTALPRO_SERV = 2.5
+  HEI2015_MIN_SEAPLANTPRO_SERV = 0
+  HEI2015_MAX_SEAPLANTPRO_SERV = 0.8
+  HEI2015_MIN_WHOLEGRAIN_SERV = 0
+  HEI2015_MAX_WHOLEGRAIN_SERV = 1.5
+  HEI2015_MIN_DAIRY_SERV = 0
+  HEI2015_MAX_DAIRY_SERV = 1.3
+  HEI2015_MIN_FATTYACID_SERV = 1.2
+  HEI2015_MAX_FATTYACID_SERV = 2.5
+  
+  HEI2015_MIN_REFINEDGRAIN_SERV = 4.3
+  HEI2015_MAX_REFINEDGRAIN_SERV = 1.8
+  HEI2015_MIN_SODIUM_SERV = 2.0
+  HEI2015_MAX_SODIUM_SERV = 1.1
+  HEI2015_MIN_ADDEDSUGAR_SERV = 26
+  HEI2015_MAX_ADDEDSUGAR_SERV = 6.5
+  HEI2015_MIN_SATFAT_SERV = 16
+  HEI2015_MAX_SATFAT_SERV = 8
+  
+  HEI2015_HEALTHY1 = function(actual, min, max){
+    case_when(
+      actual >= max ~ HEI2015_MAX1,
+      actual <= min ~ HEI2015_MIN,
+      TRUE ~ HEI2015_MIN+(actual-min)*HEI2015_MAX1/(max-min)
+    )
+  }
+  
+  HEI2015_HEALTHY2 = function(actual, min, max){
+    case_when(
+      actual >= max ~ HEI2015_MAX2,
+      actual <= min ~ HEI2015_MIN,
+      TRUE ~ HEI2015_MIN+(actual-min)*HEI2015_MAX2/(max-min)
+    )
+  }
+  
+  HEI2015_UNHEALTHY = function(actual, min, max){
+    case_when(
+      actual >= min ~ HEI2015_MIN,
+      actual <= max ~ HEI2015_MAX2,
+      TRUE ~ HEI2015_MIN+(actual-min)*HEI2015_MAX2/(max-min)
+    )
+  }
+  
+  COHORT=COHORT %>%
+    dplyr::mutate(
+      HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
+      HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
+      HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
+      HEI2015_GREENNBEAN = HEI2015_HEALTHY1(GREENNBEAN_SERV, HEI2015_MIN_GREENNBEAN_SERV, HEI2015_MAX_GREENNBEAN_SERV),
+      HEI2015_TOTALPRO = HEI2015_HEALTHY1(TOTALPRO_SERV, HEI2015_MIN_TOTALPRO_SERV, HEI2015_MAX_TOTALPRO_SERV),
+      HEI2015_SEAPLANTPRO = HEI2015_HEALTHY1(SEAPLANTPRO_SERV, HEI2015_MIN_SEAPLANTPRO_SERV, HEI2015_MAX_SEAPLANTPRO_SERV),
+      HEI2015_WHOLEGRAIN = HEI2015_HEALTHY2(WHOLEGRAIN_SERV, HEI2015_MIN_WHOLEGRAIN_SERV, HEI2015_MAX_WHOLEGRAIN_SERV),
+      HEI2015_DAIRY = HEI2015_HEALTHY2(DAIRY_SERV, HEI2015_MIN_DAIRY_SERV, HEI2015_MAX_DAIRY_SERV),
+      HEI2015_FATTYACID = HEI2015_HEALTHY2(FATTYACID_SERV, HEI2015_MIN_FATTYACID_SERV, HEI2015_MAX_FATTYACID_SERV),
+      
+      HEI2015_REFINEDGRAIN = HEI2015_UNHEALTHY(REFINEDGRAIN_SERV, HEI2015_MIN_REFINEDGRAIN_SERV, HEI2015_MAX_REFINEDGRAIN_SERV),
+      HEI2015_SODIUM = HEI2015_UNHEALTHY(SODIUM_SERV, HEI2015_MIN_SODIUM_SERV, HEI2015_MAX_SODIUM_SERV),
+      HEI2015_ADDEDSUGAR = HEI2015_UNHEALTHY(ADDEDSUGAR_SERV, HEI2015_MIN_ADDEDSUGAR_SERV, HEI2015_MAX_ADDEDSUGAR_SERV),
+      HEI2015_SATFAT = HEI2015_UNHEALTHY(SATFAT_SERV, HEI2015_MIN_SATFAT_SERV, HEI2015_MAX_SATFAT_SERV),
+      
+      HEI2015_ALL= HEI2015_TOTALFRT + HEI2015_FRT + HEI2015_VEG + HEI2015_GREENNBEAN +
+        HEI2015_TOTALPRO + HEI2015_SEAPLANTPRO + HEI2015_WHOLEGRAIN + HEI2015_DAIRY +
+        HEI2015_FATTYACID + HEI2015_REFINEDGRAIN + HEI2015_SODIUM + HEI2015_ADDEDSUGAR +
+        HEI2015_SATFAT
+    ) 
+  
+  for(i in 1:length(COHORT$TOTALKCAL)){
+    if (COHORT$TOTALKCAL[i] == 0){
+      COHORT$HEI2015_TOTALFRT[i] = 0
+      COHORT$HEI2015_FRT[i] = 0
+      COHORT$HEI2015_VEG[i] = 0
+      COHORT$HEI2015_GREENNBEAN[i] = 0
+      COHORT$HEI2015_TOTALPRO[i] = 0
+      COHORT$HEI2015_SEAPLANTPRO[i] = 0
+      COHORT$HEI2015_WHOLEGRAIN[i] = 0
+      COHORT$HEI2015_DAIRY[i] = 0
+      COHORT$HEI2015_FATTYACID[i] = 0
+      COHORT$HEI2015_REFINEDGRAIN[i] = 0
+      COHORT$HEI2015_ADDEDSUGAR[i] = 0
+      COHORT$HEI2015_ALL[i] = 0
+    }
+  }
+  
+  COHORT %>%
+    dplyr::select(SEQN, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+           HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
+           HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
+           HEI2015_SATFAT)
+}
+
 #' AHEI_NHANES_FPED
 #'
 #' Calculate the AHEI for the NHANES_FPED data (after 2005) within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param FPED_PATH The file path for the FPED data. The file name should be like: fped_dr1tot_1112.sas7bdat
 #' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
@@ -1498,7 +1713,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   DEMO = DEMO %>%
     filter(RIDAGEYR >= 2) %>%
-    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
     arrange(SEQN)
   
   FPED = FPED %>%
@@ -1510,7 +1725,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   COHORT = COHORT %>%
     filter(DR1TKCAL > 0) %>%
-    mutate(
+    dplyr::mutate(
       VEG_SERV = DR1T_V_REDOR_TOTAL + 0.5*DR1T_V_DRKGR + DR1T_V_OTHER + DR1T_V_STARCHY_OTHER,
       FRT_SERV = DR1T_F_TOTAL - DR1T_F_JUICE,
       WGRAIN_SERV = DR1T_G_WHOLE/0.035274,
@@ -1569,7 +1784,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   ##AHEI calculation
   COHORT %>%
-    mutate(
+    dplyr::mutate(
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_WGRAIN = case_when(
@@ -1616,13 +1831,16 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
     ) %>%
-    select(SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL)
 }
 
 #' DASH_NHANES_FPED
 #'
 #' Calculate the DASH for the NHANES_FPED data (after 2005) within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param FPED_PATH The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat
 #' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
@@ -1652,7 +1870,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
   
   DEMO = DEMO %>%
     filter(RIDAGEYR >= 2) %>%
-    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
     arrange(SEQN)
   
   FPED = FPED %>%
@@ -1667,7 +1885,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
   #Match participant response food frequency to the standard food frequency response code
   COHORT = COHORT %>%
     filter(DR1TKCAL > 0) %>%
-    mutate(
+    dplyr::mutate(
       FRT_FRTJ_SERV = DR1T_F_TOTAL,
       VEG_SERV = DR1T_V_REDOR_TOTAL + 0.5*DR1T_V_DRKGR + DR1T_V_OTHER + DR1T_V_STARCHY_OTHER,
       NUTSLEG_SERV = (DR1T_V_LEGUMES*4) + DR1T_PF_NUTSDS + DR1T_PF_SOY,
@@ -1706,7 +1924,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
   
   ##DASH calculation
   COHORT %>%
-    mutate(
+    dplyr::mutate(
       DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
       DASH_VEG = quintile_healthy(VEG_SERV),
       DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
@@ -1718,13 +1936,16 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
         DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
     )%>%
-    select(SEQN, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+    dplyr::select(SEQN, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
            DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
 }
 
 #' MED_NHANES_FPED
 #'
 #' Calculate the MED for the NHANES_FPED data (after 2005) within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param FPED_PATH The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat
 #' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
@@ -1750,7 +1971,7 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   DEMO = DEMO %>%
     filter(RIDAGEYR >= 2) %>%
-    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
     arrange(SEQN)
   
   FPED = FPED %>%
@@ -1765,7 +1986,7 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   COHORT = COHORT %>%
     filter(DR1TKCAL > 0) %>%
-    mutate(
+    dplyr::mutate(
       FRT_FRTJ_SERV = DR1T_F_TOTAL,
       VEG_SERV = DR1T_V_REDOR_TOTAL + 0.5*DR1T_V_DRKGR + DR1T_V_OTHER + DR1T_V_STARCHY_OTHER,
       WGRAIN_SERV = DR1T_G_WHOLE,
@@ -1798,7 +2019,7 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   }
   
   COHORT %>%
-    mutate(
+    dplyr::mutate(
       MED_FRT = median_healthy(FRT_FRTJ_SERV),
       MED_VEG = median_healthy(VEG_SERV),
       MED_WGRAIN = median_healthy(WGRAIN_SERV),
@@ -1812,13 +2033,16 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
     )%>%
-    select(SEQN, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
+    dplyr::select(SEQN, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
            MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
 }
 
 #' DII_NHANES_FPED
 #'
 #' Calculate the DII for the NHANES_FPED data (after 2005) within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param FPED_PATH The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat
 #' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
@@ -1842,7 +2066,7 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   DEMO = DEMO %>%
     filter(RIDAGEYR >= 2) %>%
-    select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
+    dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
     arrange(SEQN)
   
   FPED = FPED %>%
@@ -1855,7 +2079,7 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   #Serving size calculation for DII
   COHORT = COHORT %>%
     filter(DR1TKCAL > 0) %>%
-    mutate(
+    dplyr::mutate(
       ALCOHOL = DR1TALCO,
       VITB12 = DR1TVB12,
       VITB6 = DR1TVB6,
@@ -1886,7 +2110,7 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       ZN = DR1TZINC) 
   
   COHORT = COHORT %>%
-    pivot_longer(-SEQN, names_to="Variable", values_to="Value")
+    tidyr::pivot_longer(-SEQN, names_to="Variable", values_to="Value")
 
   Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
                "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA", 
@@ -1911,7 +2135,7 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
   COHORT %>%
     inner_join(DII_STD, by=c("Variable")) %>%
-    mutate(
+    dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
@@ -1922,6 +2146,9 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 #' HEI2015_ASA24
 #'
 #' Calculate the HEI2015 for the ASA24 data within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The HEI2015 and its component scores
 #' @examples
@@ -1935,7 +2162,7 @@ HEI2015_ASA24 = function(DATA_PATH){
   COHORT = read_csv(DATA_PATH)
   
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       TOTALFRT_SERV = F_TOTAL/(KCAL/1000),
       FRT_SERV = (F_CITMLB+F_OTHER)/(KCAL/1000),
       VEG_SERV = (V_TOTAL+V_LEGUMES)/(KCAL/1000),
@@ -2013,7 +2240,7 @@ HEI2015_ASA24 = function(DATA_PATH){
   }
   
   COHORT=COHORT %>%
-    mutate(
+    dplyr::mutate(
       HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
       HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
       HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
@@ -2053,7 +2280,7 @@ HEI2015_ASA24 = function(DATA_PATH){
   }
   
   COHORT %>%
-    select(UserID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+    dplyr::select(UserName, TOTALKCAL, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
            HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
            HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
            HEI2015_SATFAT)
@@ -2063,6 +2290,9 @@ HEI2015_ASA24 = function(DATA_PATH){
 #' AHEI_F_ASA24
 #'
 #' Calculate the AHEI (female only) for the ASA24 data within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The AHEI and its component scores
 #' @examples
@@ -2076,7 +2306,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
   COHORT = read_csv(DATA_PATH)
   
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       VEG_SERV = V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER,
       FRT_SERV = F_CITMLB+F_OTHER,
       WGRAIN_F_SERV = G_WHOLE/0.035274,
@@ -2132,7 +2362,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
   SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
   
   COHORT=COHORT %>%
-    mutate(
+    dplyr::mutate(
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_WGRAIN_F = SCORE_HEALTHY(WGRAIN_F_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
@@ -2173,7 +2403,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
   print("Reminder: this AHEI index is for female only. Please stratify your data first and provide female only data.")
   
   COHORT %>%
-    select(UserID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(UserName, TOTALKCAL, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
   
 }
@@ -2181,6 +2411,9 @@ AHEI_F_ASA24 = function(DATA_PATH){
 #' AHEI_M_ASA24
 #'
 #' Calculate the AHEI (male only) for the ASA24 data within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The AHEI and its component scores
 #' @examples
@@ -2194,7 +2427,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
   COHORT = read_csv(DATA_PATH)
   
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       VEG_SERV = V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER,
       FRT_SERV = F_CITMLB+F_OTHER,
       WGRAIN_M_SERV = G_WHOLE/0.035274,
@@ -2251,7 +2484,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
   SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
   
   COHORT=COHORT %>%
-    mutate(
+    dplyr::mutate(
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_WGRAIN_M = SCORE_HEALTHY(WGRAIN_M_SERV, AHEI_MIN_WGRAIN_M_SERV, AHEI_MAX_WGRAIN_M_SERV, AHEI_MIN, AHEI_MAX),
@@ -2292,7 +2525,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
   
   
   COHORT %>%
-    select(UserID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_M, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(UserName, TOTALKCAL, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_M, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_M)
   
 }
@@ -2300,6 +2533,9 @@ AHEI_M_ASA24 = function(DATA_PATH){
 #' DASH_ASA24
 #'
 #' Calculate the DASH for the ASA24 data within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The DASH and its component scores
 #' @examples
@@ -2314,7 +2550,7 @@ DASH_ASA24 = function(DATA_PATH){
   
   #Match participant response food frequency to the standard food frequency response code
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       FRT_FRTJ_SERV = F_TOTAL,
       VEG_SERV = V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER,
       NUTSLEG_SERV = PF_NUTSDS+PF_SOY+PF_LEGUMES,
@@ -2350,7 +2586,7 @@ DASH_ASA24 = function(DATA_PATH){
   
   ##DASH calculation
   COHORT %>%
-    mutate(
+    dplyr::mutate(
       DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
       DASH_VEG = quintile_healthy(VEG_SERV),
       DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
@@ -2362,13 +2598,16 @@ DASH_ASA24 = function(DATA_PATH){
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
         DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
     )%>%
-    select(UserID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+    dplyr::select(UserName, TOTALKCAL, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
            DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
 }
 
 #' MED_ASA24
 #'
 #' Calculate the MED for the ASA24 data within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The MED and its component scores
 #' @examples
@@ -2382,7 +2621,7 @@ MED_ASA24 = function(DATA_PATH){
   
   #Match participant response food frequency to the standard food frequency response code
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       FRT_FRTJ_SERV = F_TOTAL,
       VEG_SERV = V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER,
       NUTSLEG_SERV = PF_NUTSDS+PF_SOY+PF_LEGUMES,
@@ -2397,7 +2636,7 @@ MED_ASA24 = function(DATA_PATH){
   #Match participant response food frequency to the standard food frequency response code
   
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       FRT_FRTJ_SERV = F_TOTAL,
       VEG_SERV = V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER,
       WGRAIN_SERV = G_WHOLE,
@@ -2430,7 +2669,7 @@ MED_ASA24 = function(DATA_PATH){
   }
   
   COHORT %>%
-    mutate(
+    dplyr::mutate(
       MED_FRT = median_healthy(FRT_FRTJ_SERV),
       MED_VEG = median_healthy(VEG_SERV),
       MED_WGRAIN = median_healthy(WGRAIN_SERV),
@@ -2444,13 +2683,16 @@ MED_ASA24 = function(DATA_PATH){
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
     )%>%
-    select(UserID, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
+    dplyr::select(UserName, TOTALKCAL, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
            MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
 }
 
 #' DII_ASA24
 #'
 #' Calculate the Dietary Inflammatory Index for the ASA24 data within 1 step  
+#' @import dplyr
+#' @import readr
+#' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The DII and its component scores
 #' @examples
@@ -2464,7 +2706,7 @@ DII_ASA24 = function(DATA_PATH){
   
   #Serving size calculation for DII
   COHORT = COHORT %>%
-    mutate(
+    dplyr::mutate(
       ALCOHOL = ALC,
       VITB12 = VB12,
       VITB6 = VB6,
@@ -2494,12 +2736,12 @@ DII_ASA24 = function(DATA_PATH){
       VITE = ATOC,
       ZN = ZINC
     ) %>%
-    select(UserID, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+    dplyr::select(UserName, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
            IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
            VITC, VITD, VITE, ZN)
   
   COHORT = COHORT %>%
-    pivot_longer(-UserID, names_to="Variable", values_to="Value")
+    tidyr::pivot_longer(-UserID, names_to="Variable", values_to="Value")
   
   Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
                "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA", 
@@ -2524,7 +2766,7 @@ DII_ASA24 = function(DATA_PATH){
   
   COHORT %>%
     inner_join(DII_STD, by=c("Variable")) %>%
-    mutate(
+    dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
