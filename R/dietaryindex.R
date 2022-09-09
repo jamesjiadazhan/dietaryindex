@@ -6,6 +6,7 @@
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
+#' @param GENDER The gender of the participant. 0 is female and 1 is male.
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
 #' @param FRT_SERV The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
 #' @param WGRAIN_SERV The serving size of whole grains, unit=grams/day
@@ -19,13 +20,12 @@
 #' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g
 #' @return The AHEI index/score, AHEI
 #' @examples
-#' AHEI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
-#' AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+#' AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
 #' @export
 
 
 #Score calculation for AHEI
-AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV,
+AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV,
                 SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV, SODIUM_SERV, ALCOHOL_SERV){
   ##Create variables and functions needed for AHEI calculation
   AHEI_MIN = 0
@@ -36,6 +36,8 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
   AHEI_MAX_FRT_SERV = 4
   AHEI_MIN_WGRAIN_F_SERV = 0
   AHEI_MAX_WGRAIN_F_SERV = 75
+  AHEI_MIN_WGRAIN_M_SERV = 0
+  AHEI_MAX_WGRAIN_M_SERV = 90
   AHEI_MIN_NUTSLEG_SERV = 0
   AHEI_MAX_NUTSLEG_SERV = 1
   AHEI_MIN_N3FAT_SERV = 0
@@ -71,9 +73,24 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
   ##AHEI calculation
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      GENDER = GENDER,
+      
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_WGRAIN_F = SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
+      
+      AHEI_WGRAIN = case_when(
+        #GENDER = 0 is female
+        GENDER == 0 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MAX,
+        GENDER == 0 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_F_SERV ~ AHEI_MIN,
+        GENDER == 0 & WGRAIN_SERV > AHEI_MIN_WGRAIN_F_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_F_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_F_SERV-AHEI_MIN_WGRAIN_F_SERV),
+        
+        GENDER == 1 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MAX,
+        GENDER == 1 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_M_SERV ~ AHEI_MIN,
+        GENDER == 1 & WGRAIN_SERV > AHEI_MIN_WGRAIN_M_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_M_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_M_SERV-AHEI_MIN_WGRAIN_M_SERV),
+      ),
+      
+      
       AHEI_NUTSLEG = SCORE_HEALTHY(NUTSLEG_SERV, AHEI_MIN_NUTSLEG_SERV, AHEI_MAX_NUTSLEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_N3FAT = SCORE_HEALTHY(N3FAT_SERV, AHEI_MIN_N3FAT_SERV, AHEI_MAX_N3FAT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_PUFA = SCORE_HEALTHY(PUFA_SERV, AHEI_MIN_PUFA_SERV, AHEI_MAX_PUFA_SERV, AHEI_MIN, AHEI_MAX),
@@ -94,21 +111,29 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
         SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
-      AHEI_ALCOHOL_F = case_when(
-        ALCOHOL_SERV >= 2.5 ~ 0,
-        ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
-        ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
-        ALCOHOL_SERV <= 0.125 ~ 2.5,
-        TRUE ~  0 + (ALCOHOL_SERV-0)*10/(0.5-0)
+      AHEI_ALCOHOL = case_when(
+        ##GENDER = 0 is female
+        GENDER == 0  & ALCOHOL_SERV >= 2.5 ~ 0,
+        GENDER == 0  & ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        GENDER == 0  & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
+        GENDER == 0  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
+        GENDER == 0  & ALCOHOL_SERV <= 0.125 ~ 2.5,
+        
+        #GENDER = 1 is male
+        GENDER == 1  & ALCOHOL_SERV >= 3.5 ~ 0,
+        GENDER == 1  & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        GENDER == 1  & ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
+        GENDER == 1  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
+        GENDER == 1  & ALCOHOL_SERV <= 0.125 ~ 2.5,
       ),
-      AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
-        AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL_F,
+      AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
+        AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL,
       
-      AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
+      AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
     ) %>%
-    dplyr::select(RESPONDENTID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
-           AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
+    dplyr::select(RESPONDENTID, GENDER, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                  AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL)
   
 }
 
@@ -130,7 +155,6 @@ AHEI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLE
 #' @param SSB_FRTJ_SERV The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The DASH index/score
 #' @examples
-#' DASH(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV, SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV)
 #' DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$SSB_FRTJ_SERV)
 #' @export
 
@@ -163,6 +187,8 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
   ##DASH calculation
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      
       DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
       DASH_VEG = quintile_healthy(VEG_SERV),
       DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
@@ -187,9 +213,9 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
-#' @param FRT_SERV The serving size of All whole fruits + 100\% juice,  unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
+#' @param FRT_FRTJ_SERV The serving size of All whole fruits + 100\% juice,  unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
 #' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
-#' @param LOWFATDAIRY_SERV The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
+#' @param LOWF_DAIRY_SERV The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
 #' @param WGRAIN_SERV The serving size of whole grains, unit=1oz
 #' @param ALLMEAT_SERV The serving size of all meat consumption, including meat, fish, and poultry, unit=servings/day = 1oz
 #' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
@@ -198,12 +224,11 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
 #' @param SODIUM_SERV The serving size of sodium, unit=mg/day
 #' @return The DASHI index/score
 #' @examples
-#' DASHI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
-#' DASHI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$LOWFATDAIRY_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$ALLMEAT_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$FATOIL_SERV, SERV_DATA$ADDEDSUGAR_SERV, SERV_DATA$SODIUM_SERV)
+#' DASHI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$ALLMEAT_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$FATOIL_SERV, SERV_DATA$ADDEDSUGAR_SERV, SERV_DATA$SODIUM_SERV)
 #' @export
 
 #Score calculation for DASHI
-DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV,
+DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_FRTJ_SERV, NUTSLEG_SERV, LOWF_DAIRY_SERV, WGRAIN_SERV,
                  ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV){
   ##Create variables and functions needed for DASHI calculation
   DASHI_MIN = 0
@@ -211,12 +236,12 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWF
 
   DASHI_MIN_VEG_SERV = 0
   DASHI_MAX_VEG_SERV = 4
-  DASHI_MIN_FRT_SERV = 0
-  DASHI_MAX_FRT_SERV = 4
+  DASHI_MIN_FRT_FRTJ_SERV = 0
+  DASHI_MAX_FRT_FRTJ_SERV = 4
   DASHI_MIN_NUTSLEG_SERV = 0
   DASHI_MAX_NUTSLEG_SERV = 4/7
-  DASHI_MIN_LOWFATDAIRY_SERV = 0
-  DASHI_MAX_LOWFATDAIRY_SERV = 2
+  DASHI_MIN_LOWF_DAIRY_SERV = 0
+  DASHI_MAX_LOWF_DAIRY_SERV = 2
   DASHI_MIN_WGRAIN_SERV = 0
   DASHI_MAX_WGRAIN_SERV = 3
 
@@ -250,10 +275,12 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWF
   ##DASHI calculation
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      
       DASHI_VEG = DASHI_HEALTHY(VEG_SERV, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
-      DASHI_FRT = DASHI_HEALTHY(FRT_SERV, DASHI_MIN_FRT_SERV, DASHI_MAX_FRT_SERV),
+      DASHI_FRT = DASHI_HEALTHY(FRT_FRTJ_SERV, DASHI_MIN_FRT_FRTJ_SERV, DASHI_MAX_FRT_FRTJ_SERV),
       DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
-      DASHI_LOWFATDAIRY = DASHI_HEALTHY(LOWFATDAIRY_SERV, DASHI_MIN_LOWFATDAIRY_SERV, DASHI_MAX_LOWFATDAIRY_SERV),
+      DASHI_LOWFATDAIRY = DASHI_HEALTHY(LOWF_DAIRY_SERV, DASHI_MIN_LOWF_DAIRY_SERV, DASHI_MAX_LOWF_DAIRY_SERV),
       DASHI_WGRAIN = DASHI_HEALTHY(WGRAIN_SERV, DASHI_MIN_WGRAIN_SERV, DASHI_MAX_WGRAIN_SERV),
 
       DASHI_ALLMEAT = DASHI_UNHEALTHY(ALLMEAT_SERV, DASHI_MIN_ALLMEAT_SERV, DASHI_MAX_ALLMEAT_SERV),
@@ -287,7 +314,6 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWF
 #' @param ALCOHOL_SERV The serving size of alcohol, unit=13g
 #' @return The MED index/score
 #' @examples
-#' MED(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
 #' MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LEGUMES_SERV, SERV_DATA$NUTS_SERV,FISH_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$MONSATFAT_SERV, SERV_DATA$ALCOHOL_SERV)
 #' @export
 
@@ -313,6 +339,8 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
 
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      
       MED_FRT = median_healthy(FRT_FRTJ_SERV),
       MED_VEG = median_healthy(VEG_SERV),
       MED_WGRAIN = median_healthy(WGRAIN_SERV),
@@ -350,7 +378,6 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
 #' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=13g
 #' @return The MEDI index/score
 #' @examples
-#' MED(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV)
 #' MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LEGUMES_SERV, SERV_DATA$NUTS_SERV,FISH_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$MONSATFAT_SERV, SERV_DATA$ALCOHOL_SERV)
 #' @export
 
@@ -359,6 +386,8 @@ MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, 
                 NUTS_SERV, MONSATFAT_SERV, ALCOHOL_SERV){
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      
       MEDI_FRT = ifelse(FRT_FRTJ_SERV >=3, 1, 0),
       MEDI_VEG = ifelse(VEG_SERV >= 3, 1, 0),
       MEDI_LEGUMES = ifelse(LEGUMES_SERV*7 >= 1.5, 1, 0),
@@ -398,7 +427,6 @@ MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, 
 #' @param IRON_SERV The serving size of iron, unit=mg/day
 #' @return The AHEIP index/score
 #' @examples
-#' AHEIP(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TRANS_SERV, POLYSAT_RT, CALCIUM_SERV, FOLATE_SERV, IRON_SERV)
 #' AHEIP(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WHITERED_RT_SERV, SERV_DATA$FIBER_SERV, SERV_DATA$TRANS_SERV, SERV_DATA$POLYSAT_RT, SERV_DATA$CALCIUM_SERV, SERV_DATA$FOLATE_SERV, SERV_DATA$IRON_SERV)
 #' @export
 
@@ -449,6 +477,8 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
 
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      
       AHEIP_VEG = AHEIP_HEALTHY(VEG_SERV, AHEIP_MIN_VEG_SERV, AHEIP_MAX_VEG_SERV),
       AHEIP_FRT = AHEIP_HEALTHY(FRT_SERV, AHEIP_MIN_FRT_SERV, AHEIP_MAX_FRT_SERV),
       AHEIP_WHITEREAD = AHEIP_HEALTHY(WHITERED_RT_SERV, AHEIP_MIN_WHITERED_SERV, AHEIP_MAX_WHITERED_SERV),
@@ -496,12 +526,12 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
 HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,
                    SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,
                    SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV){
-
+  
   ##Create variables needed for HEI2015 calculation
   HEI2015_MIN = 0
   HEI2015_MAX1 = 5
   HEI2015_MAX2 = 10
-
+  
   HEI2015_MIN_TOTALFRT_SERV = 0
   HEI2015_MAX_TOTALFRT_SERV = 0.8
   HEI2015_MIN_FRT_SERV = 0
@@ -520,7 +550,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
   HEI2015_MAX_DAIRY_SERV = 1.3
   HEI2015_MIN_FATTYACID_SERV = 1.2
   HEI2015_MAX_FATTYACID_SERV = 2.5
-
+  
   HEI2015_MIN_REFINEDGRAIN_SERV = 4.3
   HEI2015_MAX_REFINEDGRAIN_SERV = 1.8
   HEI2015_MIN_SODIUM_SERV = 2.0
@@ -529,7 +559,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
   HEI2015_MAX_ADDEDSUGAR_SERV = 6.5
   HEI2015_MIN_SATFAT_SERV = 16
   HEI2015_MAX_SATFAT_SERV = 8
-
+  
   HEI2015_HEALTHY1 = function(actual, min, max){
     case_when(
       actual >= max ~ HEI2015_MAX1,
@@ -537,7 +567,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
       TRUE ~ HEI2015_MIN+(actual-min)*HEI2015_MAX1/(max-min)
     )
   }
-
+  
   HEI2015_HEALTHY2 = function(actual, min, max){
     case_when(
       actual >= max ~ HEI2015_MAX2,
@@ -545,7 +575,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
       TRUE ~ HEI2015_MIN+(actual-min)*HEI2015_MAX2/(max-min)
     )
   }
-
+  
   HEI2015_UNHEALTHY = function(actual, min, max){
     case_when(
       actual >= min ~ HEI2015_MIN,
@@ -553,9 +583,12 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
       TRUE ~ HEI2015_MIN+(actual-min)*HEI2015_MAX2/(max-min)
     )
   }
-
+  
   SERV_DATA=SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      TOTALKCAL = TOTALKCAL,
+      
       HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
       HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
       HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
@@ -577,28 +610,28 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
         HEI2015_SATFAT
     ) 
   
-  for(i in 1:length(TOTALKCAL)){
-    if (TOTALKCAL[i] == 0){
-      HEI2015_TOTALFRT[i] = 0
-      HEI2015_FRT[i] = 0
-      HEI2015_VEG[i] = 0
-      HEI2015_GREENNBEAN[i] = 0
-      HEI2015_TOTALPRO[i] = 0
-      HEI2015_SEAPLANTPRO[i] = 0
-      HEI2015_WHOLEGRAIN[i] = 0
-      HEI2015_DAIRY[i] = 0
-      HEI2015_FATTYACID[i] = 0
-      HEI2015_REFINEDGRAIN[i] = 0
-      HEI2015_ADDEDSUGAR[i] = 0
-      HEI2015_ALL[i] = 0
+  for(i in 1:length(SERV_DATA$TOTALKCAL)){
+    if (SERV_DATA$TOTALKCAL[i] == 0){
+      SERV_DATA$HEI2015_TOTALFRT[i] = 0
+      SERV_DATA$HEI2015_FRT[i] = 0
+      SERV_DATA$HEI2015_VEG[i] = 0
+      SERV_DATA$HEI2015_GREENNBEAN[i] = 0
+      SERV_DATA$HEI2015_TOTALPRO[i] = 0
+      SERV_DATA$HEI2015_SEAPLANTPRO[i] = 0
+      SERV_DATA$HEI2015_WHOLEGRAIN[i] = 0
+      SERV_DATA$ HEI2015_DAIRY[i] = 0
+      SERV_DATA$HEI2015_FATTYACID[i] = 0
+      SERV_DATA$HEI2015_REFINEDGRAIN[i] = 0
+      SERV_DATA$HEI2015_ADDEDSUGAR[i] = 0
+      SERV_DATA$HEI2015_ALL[i] = 0
     }
   }
   
   SERV_DATA %>%
-    dplyr::select(RESPONDENTID, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
-           HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
-           HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
-           HEI2015_SATFAT)
+    dplyr::select(RESPONDENTID, TOTALKCAL, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+                  HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
+                  HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
+                  HEI2015_SATFAT)
 }
 
 #' AHEI_BLOCK Calculation
@@ -613,23 +646,30 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
 #' AHEI_BLOCK(RAW_DATA)
 #' @export
 
-STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
-STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
-STD_FOOD_PORT = c(1, 2, 3, 4)
-STD_PORT_SERV = c(0.25, 0.5, 1, 2)
-STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV, stringsAsFactors=FALSE)
-STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV, stringsAsFactors=FALSE)
-
-#Functions to match actual food frequency and portion to the standards
-foodfreq = function(actual, reference=STD_FOOD_FREQ_DF){
-  reference[match(actual, reference[,1]),2]
-}
-
-foodport = function(actual, reference=STD_FOOD_PORT_DF){
-  reference[match(actual, reference[,1]),2]
-}
-
 AHEI_BLOCK = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
+  STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+  STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+  STD_FOOD_PORT = c(1, 2, 3, 4)
+  STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+  STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV, stringsAsFactors=FALSE)
+  STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV, stringsAsFactors=FALSE)
+  
+  #Functions to match actual food frequency and portion to the standards
+  foodfreq = function(actual, reference=STD_FOOD_FREQ_DF){
+    reference[match(actual, reference[,1]),2]
+  }
+  
+  foodport = function(actual, reference=STD_FOOD_PORT_DF){
+    reference[match(actual, reference[,1]),2]
+  }
+  
   #Serving calculation for AHEI 2010
   SERV_DATA = RAW_DATA %>%
     dplyr::mutate(
@@ -657,6 +697,8 @@ AHEI_BLOCK = function(RAW_DATA){
   AHEI_MAX_FRT_SERV = 4
   AHEI_MIN_WGRAIN_F_SERV = 0
   AHEI_MAX_WGRAIN_F_SERV = 75
+  AHEI_MIN_WGRAIN_M_SERV = 0
+  AHEI_MAX_WGRAIN_M_SERV = 90
   AHEI_MIN_NUTSLEG_SERV = 0
   AHEI_MAX_NUTSLEG_SERV = 1
   AHEI_MIN_N3FAT_SERV = 0
@@ -689,12 +731,26 @@ AHEI_BLOCK = function(RAW_DATA){
   
   SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs=seq(0, 1, by=0.1))
   
-  ##AHEI calculation
   SERV_DATA %>%
     dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      GENDER = SEX,
+      
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_WGRAIN_F = SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
+      
+      AHEI_WGRAIN = case_when(
+        #GENDER = 2 is female
+        GENDER == 2 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MAX,
+        GENDER == 2 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_F_SERV ~ AHEI_MIN,
+        GENDER == 2 & WGRAIN_SERV > AHEI_MIN_WGRAIN_F_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_F_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_F_SERV-AHEI_MIN_WGRAIN_F_SERV),
+        
+        GENDER == 1 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MAX,
+        GENDER == 1 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_M_SERV ~ AHEI_MIN,
+        GENDER == 1 & WGRAIN_SERV > AHEI_MIN_WGRAIN_M_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_M_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_M_SERV-AHEI_MIN_WGRAIN_M_SERV),
+      ),
+      
+      
       AHEI_NUTSLEG = SCORE_HEALTHY(NUTSLEG_SERV, AHEI_MIN_NUTSLEG_SERV, AHEI_MAX_NUTSLEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_N3FAT = SCORE_HEALTHY(N3FAT_SERV, AHEI_MIN_N3FAT_SERV, AHEI_MAX_N3FAT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_PUFA = SCORE_HEALTHY(PUFA_SERV, AHEI_MIN_PUFA_SERV, AHEI_MAX_PUFA_SERV, AHEI_MIN, AHEI_MAX),
@@ -715,21 +771,29 @@ AHEI_BLOCK = function(RAW_DATA){
         SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
-      AHEI_ALCOHOL_F = case_when(
-        ALCOHOL_SERV >= 2.5 ~ 0,
-        ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
-        ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
-        ALCOHOL_SERV <= 0.125 ~ 2.5,
-        TRUE ~  0 + (ALCOHOL_SERV-0)*10/(0.5-0)
+      AHEI_ALCOHOL = case_when(
+        ##GENDER = 2 is female
+        GENDER == 2  & ALCOHOL_SERV >= 2.5 ~ 0,
+        GENDER == 2  & ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        GENDER == 2  & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
+        GENDER == 2  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
+        GENDER == 2  & ALCOHOL_SERV <= 0.125 ~ 2.5,
+        
+        #GENDER = 1 is male
+        GENDER == 1  & ALCOHOL_SERV >= 3.5 ~ 0,
+        GENDER == 1  & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        GENDER == 1  & ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
+        GENDER == 1  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
+        GENDER == 1  & ALCOHOL_SERV <= 0.125 ~ 2.5,
       ),
-      AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
-        AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL_F,
+      AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
+        AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL,
       
-      AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_F + AHEI_NUTSLEG + AHEI_N3FAT +
+      AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
     ) %>%
-    dplyr::select(RESPONDENTID, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
-           AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
+    dplyr::select(RESPONDENTID, GENDER, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                  AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL)
 }
 
 
@@ -746,6 +810,13 @@ AHEI_BLOCK = function(RAW_DATA){
 #' @export
 
 DASH_BLOCK = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   YOGURT_FOOD_PORT = c(2, 3)
   YOGURT_PORT_SERV = c(0.5, 1)
@@ -838,6 +909,13 @@ DASH_BLOCK = function(RAW_DATA){
 #' @export
 
 DASHI_BLOCK = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   YOGURT_FOOD_PORT = c(2, 3)
   YOGURT_PORT_SERV = c(0.5, 1)
@@ -952,6 +1030,12 @@ DASHI_BLOCK = function(RAW_DATA){
 
 MED_BLOCK = function(RAW_DATA){
   
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
     dplyr::mutate(
@@ -1018,6 +1102,12 @@ MED_BLOCK = function(RAW_DATA){
 
 MEDI_BLOCK = function(RAW_DATA){
   
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
     dplyr::mutate(
@@ -1071,6 +1161,13 @@ MEDI_BLOCK = function(RAW_DATA){
 #' @export
 
 AHEIP_BLOCK = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
     dplyr::mutate(
@@ -1160,6 +1257,12 @@ AHEIP_BLOCK = function(RAW_DATA){
 
 
 HEI2015_BLOCK = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
   
   #Match participant response food frequency to the standard food frequency response code
   SERV_DATA=RAW_DATA %>%
@@ -1284,6 +1387,12 @@ HEI2015_BLOCK = function(RAW_DATA){
 
 DII_BLOCK = function(RAW_DATA){
   
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
   #Serving size calculation for DII
   COHORT = RAW_DATA %>%
     dplyr::mutate(
@@ -1392,6 +1501,12 @@ DII_BLOCK = function(RAW_DATA){
 #' @export
 
 HEI2015_AARP = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
   
   SERV_DATA=RAW_DATA %>%
     dplyr::mutate(
@@ -1537,9 +1652,25 @@ HEI2015_AARP = function(RAW_DATA){
 #' @export
 
 HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
-  FPED = read_sas(FPED_PATH)
-  NUTRIENT = read_xpt(NUTRIENT_PATH)
-  DEMO = read_xpt(DEMO_PATH)
+  
+  if (is.character(FPED_PATH) == TRUE){
+    FPED = read_sas(FPED_PATH)
+  } else {
+    FPED = FPED_PATH
+  }
+  
+  if (is.character(NUTRIENT_PATH) == TRUE){
+    NUTRIENT = read_xpt(NUTRIENT_PATH)
+  } else {
+    NUTRIENT = NUTRIENT_PATH
+  }
+  
+  if (is.character(DEMO_PATH) == TRUE){
+    DEMO = read_xpt(DEMO_PATH)
+  } else {
+    DEMO = DEMO_PATH
+  }
+  
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
@@ -1702,9 +1833,23 @@ HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 
 AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
-  FPED = read_sas(FPED_PATH)
-  NUTRIENT = read_xpt(NUTRIENT_PATH)
-  DEMO = read_xpt(DEMO_PATH)
+  if (is.character(FPED_PATH) == TRUE){
+    FPED = read_sas(FPED_PATH)
+  } else {
+    FPED = FPED_PATH
+  }
+  
+  if (is.character(NUTRIENT_PATH) == TRUE){
+    NUTRIENT = read_xpt(NUTRIENT_PATH)
+  } else {
+    NUTRIENT = NUTRIENT_PATH
+  }
+  
+  if (is.character(DEMO_PATH) == TRUE){
+    DEMO = read_xpt(DEMO_PATH)
+  } else {
+    DEMO = DEMO_PATH
+  }
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
@@ -1857,16 +2002,33 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 
 DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
 
+  if (is.character(FPED_PATH) == TRUE){
+    FPED = read_sas(FPED_PATH)
+  } else {
+    FPED = FPED_PATH
+  }
   
-  FPED = read_sas(FPED_PATH)
-  NUTRIENT = read_xpt(NUTRIENT_PATH)
-  DEMO = read_xpt(DEMO_PATH)
-  DBQ = read_xpt(DBQ_PATH)
+  if (is.character(NUTRIENT_PATH) == TRUE){
+    NUTRIENT = read_xpt(NUTRIENT_PATH)
+  } else {
+    NUTRIENT = NUTRIENT_PATH
+  }
+  
+  if (is.character(DEMO_PATH) == TRUE){
+    DEMO = read_xpt(DEMO_PATH)
+  } else {
+    DEMO = DEMO_PATH
+  }
+  
+  if (is.character(DBQ_PATH) == TRUE){
+    DBQ = read_xpt(DBQ_PATH)
+  } else {
+    DBQ = DBQ_PATH
+  }
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
     arrange(SEQN)
-  
   
   DEMO = DEMO %>%
     filter(RIDAGEYR >= 2) %>%
@@ -1960,9 +2122,24 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
 MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 
   
-  FPED = read_sas(FPED_PATH)
-  NUTRIENT = read_xpt(NUTRIENT_PATH)
-  DEMO = read_xpt(DEMO_PATH)
+  if (is.character(FPED_PATH) == TRUE){
+    FPED = read_sas(FPED_PATH)
+  } else {
+    FPED = FPED_PATH
+  }
+  
+  if (is.character(NUTRIENT_PATH) == TRUE){
+    NUTRIENT = read_xpt(NUTRIENT_PATH)
+  } else {
+    NUTRIENT = NUTRIENT_PATH
+  }
+  
+  if (is.character(DEMO_PATH) == TRUE){
+    DEMO = read_xpt(DEMO_PATH)
+  } else {
+    DEMO = DEMO_PATH
+  }
+  
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
@@ -2056,9 +2233,23 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 
 DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
   
-  FPED = read_sas(FPED_PATH)
-  NUTRIENT = read_xpt(NUTRIENT_PATH)
-  DEMO = read_xpt(DEMO_PATH)
+  if (is.character(FPED_PATH) == TRUE){
+    FPED = read_sas(FPED_PATH)
+  } else {
+    FPED = FPED_PATH
+  }
+  
+  if (is.character(NUTRIENT_PATH) == TRUE){
+    NUTRIENT = read_xpt(NUTRIENT_PATH)
+  } else {
+    NUTRIENT = NUTRIENT_PATH
+  }
+  
+  if (is.character(DEMO_PATH) == TRUE){
+    DEMO = read_xpt(DEMO_PATH)
+  } else {
+    DEMO = DEMO_PATH
+  }
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
@@ -2159,7 +2350,11 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
 
 HEI2015_ASA24 = function(DATA_PATH){
   
-  COHORT = read_csv(DATA_PATH)
+  if (is.character(DATA_PATH) == TRUE){
+    COHORT = read_csv(DATA_PATH)
+  } else {
+    COHORT = DATA_PATH
+  }
   
   COHORT = COHORT %>%
     dplyr::mutate(
@@ -2303,7 +2498,11 @@ HEI2015_ASA24 = function(DATA_PATH){
 
 AHEI_F_ASA24 = function(DATA_PATH){
   
-  COHORT = read_csv(DATA_PATH)
+  if (is.character(DATA_PATH) == TRUE){
+    COHORT = read_csv(DATA_PATH)
+  } else {
+    COHORT = DATA_PATH
+  }
   
   COHORT = COHORT %>%
     dplyr::mutate(
@@ -2403,7 +2602,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
   print("Reminder: this AHEI index is for female only. Please stratify your data first and provide female only data.")
   
   COHORT %>%
-    dplyr::select(UserName, TOTALKCAL, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(UserName, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_F, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_F)
   
 }
@@ -2424,7 +2623,11 @@ AHEI_F_ASA24 = function(DATA_PATH){
 
 AHEI_M_ASA24 = function(DATA_PATH){
   
-  COHORT = read_csv(DATA_PATH)
+  if (is.character(DATA_PATH) == TRUE){
+    COHORT = read_csv(DATA_PATH)
+  } else {
+    COHORT = DATA_PATH
+  }
   
   COHORT = COHORT %>%
     dplyr::mutate(
@@ -2525,7 +2728,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
   
   
   COHORT %>%
-    dplyr::select(UserName, TOTALKCAL, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_M, AHEI_NUTSLEG, AHEI_N3FAT,
+    dplyr::select(UserName, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN_M, AHEI_NUTSLEG, AHEI_N3FAT,
            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL_M)
   
 }
@@ -2546,7 +2749,11 @@ AHEI_M_ASA24 = function(DATA_PATH){
 
 DASH_ASA24 = function(DATA_PATH){
   
-  COHORT = read_csv(DATA_PATH)
+  if (is.character(DATA_PATH) == TRUE){
+    COHORT = read_csv(DATA_PATH)
+  } else {
+    COHORT = DATA_PATH
+  }
   
   #Match participant response food frequency to the standard food frequency response code
   COHORT = COHORT %>%
@@ -2598,7 +2805,7 @@ DASH_ASA24 = function(DATA_PATH){
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
         DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
     )%>%
-    dplyr::select(UserName, TOTALKCAL, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+    dplyr::select(UserName, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
            DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
 }
 
@@ -2617,21 +2824,11 @@ DASH_ASA24 = function(DATA_PATH){
 
 MED_ASA24 = function(DATA_PATH){
   
-  COHORT = read_csv(DATA_PATH)
-  
-  #Match participant response food frequency to the standard food frequency response code
-  COHORT = COHORT %>%
-    dplyr::mutate(
-      FRT_FRTJ_SERV = F_TOTAL,
-      VEG_SERV = V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER,
-      NUTSLEG_SERV = PF_NUTSDS+PF_SOY+PF_LEGUMES,
-      WGRAIN_SERV = G_WHOLE,
-      LOWF_DAIRY_SERV = 0.1738*D_MILK + D_YOGURT + (2/40.2)*D_CHEESE,
-      SODIUM_SERV = SODI,
-      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + (PF_MEAT/4),
-      SSB_FRTJ_SERV = (ADD_SUGARS / 240)
-    ) 
-  
+  if (is.character(DATA_PATH) == TRUE){
+    COHORT = read_csv(DATA_PATH)
+  } else {
+    COHORT = DATA_PATH
+  }
   
   #Match participant response food frequency to the standard food frequency response code
   
@@ -2683,7 +2880,7 @@ MED_ASA24 = function(DATA_PATH){
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
     )%>%
-    dplyr::select(UserName, TOTALKCAL, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
+    dplyr::select(UserName, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
            MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
 }
 
@@ -2702,7 +2899,11 @@ MED_ASA24 = function(DATA_PATH){
 
 DII_ASA24 = function(DATA_PATH){
   
-  COHORT = read_csv(DATA_PATH)
+  if (is.character(DATA_PATH) == TRUE){
+    COHORT = read_csv(DATA_PATH)
+  } else {
+    COHORT = DATA_PATH
+  }
   
   #Serving size calculation for DII
   COHORT = COHORT %>%
