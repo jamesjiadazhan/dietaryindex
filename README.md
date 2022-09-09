@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.9.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data after 2005 (NHANES_FPED). Bugs fixed since version 0.8.0.
+Version 0.10.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data after 2005 (NHANES_FPED). Bugs fixed since version 0.9.0.
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -17,7 +17,7 @@ Currently, the **dietaryindex** package works for the following 4 dietary assess
 3. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
 4. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NIH-AARP
 
-This package can also help you calculating these dietary pattern indexes from all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+This package can also help you calculating these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
 - All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
 - The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN.xlsx
 
