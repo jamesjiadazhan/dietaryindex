@@ -118,13 +118,14 @@ The **dietaryindex** package currently contains the following key functions:
 
 ### Examples:
 ___
-#### Calculating AHEI for BLOCK
+#### Calculating HEI2015 for ASA24
 ```
-DATA_PATH <- "/Users/james/Desktop/data.csv"
-RAW_DATA <- read_csv(DATA_PATH)
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+HEI2015_ASA24(DATA_PATH)
 
-AHEI_BLOCK = AHEI_SERV(RAW_DATA)
-
+#Use the example data
+data("ASA24_exp")
+HEI2015_ASA24(ASA24_exp)
 ```
 
 #### Calculating HEI2015 for NHANES_FPED
@@ -135,13 +136,9 @@ DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 
-```
-
-#### Calculating HEI2015 for ASA24
-```
-DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
-
-HEI2015_ASA24(DATA_PATH)
+#Use the example data
+data("NHANES_20172018")
+HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
 ```
 
 #### Calculating AHEI for NHANES_FPED
@@ -151,6 +148,10 @@ NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
 DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 AHEI_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+AHEI_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
 ```
 
 #### Calculating DASH for NHANES_FPED
@@ -162,6 +163,10 @@ DBQ_PATH = "/Users/james/Desktop/data/DBQ_J.XPT"
 
 DASH_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
 
+#Use the example data
+data("NHANES_20172018")
+DASH_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO, NHANES_20172018$DBQ)
+
 ```
 
 #### Calculating MED for NHANES_FPED
@@ -171,6 +176,19 @@ NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
 DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+
+```
+
+#### Calculating AHEI for BLOCK
+```
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+RAW_DATA <- read_csv(DATA_PATH)
+
+AHEI_BLOCK = AHEI_SERV(RAW_DATA)
 ```
 
 #### Calculating HEI2015 for your own dietary assessment tool
@@ -179,6 +197,11 @@ DATA_PATH <- "/Users/james/Desktop/data.csv"
 SERV_DATA <- read_csv(DATA_PATH)
 
 AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+
+#Use the example data
+data("SERV_DATA_exp")
+HEI2015(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$TOTALFRT_SERV, SERV_DATA_exp$FRT_SERV, SERV_DATA_exp$VEG_SERV, SERV_DATA_exp$GREENNBEAN_SERV, SERV_DATA_exp$TOTALPRO_SERV,  SERV_DATA_exp$SEAPLANTPRO_SERV, SERV_DATA_exp$WHOLEGRAIN_SERV, SERV_DATA_exp$DAIRY_SERV, SERV_DATA_exp$FATTYACID_SERV, SERV_DATA_exp$REFINEDGRAIN_SERV,  SERV_DATA_exp$SODIUM_SERV, SERV_DATA_exp$ADDEDSUGAR_SERV, SERV_DATA_exp$SATFAT_SERV)
+
 ```
 
 #### Calculating AHEI for your own dietary assessment tool
@@ -186,25 +209,31 @@ AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$VEG_SERV,
 DATA_PATH <- "/Users/james/Desktop/data.csv"
 SERV_DATA <- read_csv(DATA_PATH)
 
-AHEI(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV,SODIUM_SERV, ALCOHOL_SERV)
+AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
 
-#The same result as the previous one
-AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+#Use the example data
+data("SERV_DATA_exp")
+AHEI(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$VEG_SERV, SERV_DATA_exp$FRT_SERV, SERV_DATA_exp$WGRAIN_SERV, SERV_DATA_exp$NUTSLEG_SERV, SERV_DATA_exp$N3FAT_SERV, SERV_DATA_exp$PUFA_SERV, SERV_DATA_exp$SSB_FRTJ_SERV, SERV_DATA_exp$REDPROC_MEAT_SERV, SERV_DATA_exp$TRANS_SERV, SERV_DATA_exp$SODIUM_SERV, SERV_DATA_exp$ALCOHOL_SERV)
+
 ```
 
-#### Calculating MED for your own dietary assessment tool
+#### Calculating DASH for your own dietary assessment tool
 ```
 DATA_PATH <- "/Users/james/Desktop/data.csv"
 SERV_DATA <- read_csv(DATA_PATH)
 
-DASH(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV, SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV)
 DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$SSB_FRTJ_SERV)
+
+#Use the example data
+data("SERV_DATA_exp")
+DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV, SERV_DATA_exp$VEG_SERV, SERV_DATA_exp$NUTSLEG_SERV, SERV_DATA_exp$WGRAIN_SERV, SERV_DATA_exp$LOWF_DAIRY_SERV, SERV_DATA_exp$SODIUM_SERV, SERV_DATA_exp$REDPROC_MEAT_SERV, SERV_DATA_exp$SSB_FRTJ_SERV)
+
 ```
 
 ### Related Work
 ___
 
-**dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, BLOCK, and AARP.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy) are difficult to assess, so the author(s) used his best judgment to estimate those components based on the other existing data, such as the Per capita consumption of low fat cottage cheese in the United States from 2000 to 2020 and the proportion of low-fat milk consumption in the NHANES data. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
+**dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, BLOCK, and AARP.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy) are difficult to assess, so the author(s) used his best judgment to estimate those components based on the other existing data, such as the Per capita consumption of low fat cottage cheese in the United States from 2000 to 2020 and the proportion of low-fat milk consumption in the NHANES data. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
 This package requires the **dplyr**, **readr**, and **haven** packages to be installed. Library statements of the dplyr, readr, and haven packages are included for your convenience. 
 
