@@ -2007,7 +2007,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
   } else {
     FPED = FPED_PATH
   }
-  
+
   if (is.character(NUTRIENT_PATH) == TRUE){
     NUTRIENT = read_xpt(NUTRIENT_PATH)
   } else {

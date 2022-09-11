@@ -2,15 +2,27 @@
 
 ### Overview
 ___
+
+Version 0.10.0: now support XPT and SAS file importing and calculating the HEI2015, AHEI, DASH, MED for the NHANES data after 2005 (NHANES_FPED). Bugs fixed since version 0.9.0.
+
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
 **dietaryindex** calculates dietary indexes by 2 steps:
 1. Calculate the serving size of each food and nutrient category
 2. Calculate the individual dietary index
 
-Currently, **dietaryindex** can calculate AHEI, HEI2015, AHEIP, DASH, DASHI, MED, MEDI for the BLOCK FFQ and HEI2015 for NIH-AARP and NHANES. However, if you manually calculate the serving sizes, by using the second step of the **dietaryindex**, it would work for all existing dietary assessment tools (e.g. FFQ, ASA24, food record) to calculate all dietary indexes. 
+Currently, the **dietaryindex** package works for the following 4 dietary assessment tools to calculate many dietary indexes within 1 steps:
+1. It can calculate HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, and DII for the Block FFQ. 
+2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
+3. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
+4. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NIH-AARP
 
-The **dietaryindex** package relies on the **dplyr** and **readr** packages. Please install them ahead.
+This package can also help you calculating these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+- All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+- The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN.xlsx
+
+
+The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. Please install them ahead.
 
 ### Installation
 ___
@@ -25,10 +37,11 @@ To install the development version hosted on this GitHub repository, use the **d
 devtools::install_github("jamesjiadazhan/dietaryindex")
 ```
 
-To install the **dplyr** and **readr** packages if you are new to R or don't have them, use the following:
+To install **dplyr**, **readr**, and **haven** packages if you are new to R or don't have them, use the following:
 ```
 install.packages("dplyr")
 install.packages("readr")
+install.packages("haven")
 ```
 
 ### Getting Started
@@ -37,9 +50,10 @@ ___
 library(dietaryindex)
 library(dplyr)
 library(readr)
+library(haven)
 ```
 
-The **dietaryindex** package currently contains 14 key functions:
+The **dietaryindex** package currently contains the following key functions:
 >`HEI2015()`, Healthy Eating Index 2015 (https://www.fns.usda.gov/how-hei-scored)
 
 >`AHEI()`, alternative healthy eating index (https://pubmed.ncbi.nlm.nih.gov/22513989/)
@@ -54,65 +68,183 @@ The **dietaryindex** package currently contains 14 key functions:
 
 >`MEDI()`, Mediterranean diet index, serving size-based (https://pubmed.ncbi.nlm.nih.gov/28160450/)
 
->`HEI2015_SERV()`, Calculate the serving sizes needed for calculating the HEI2015 dietary index per 1 day
 
->`AHEI_SERV()`, Calculate the serving sizes needed for calculating the AHEI dietary index per 1 day
 
->`AHEIP_SERV()` ,Calculate the serving sizes needed for calculating the AHEIP dietary index per 1 day
+>`HEI2015_BLOCK()`, Calculate the HEI2015 dietary index with 1 step for the Block FFQ per 1 day
 
->`DASH_SERV()`, Calculate the serving sizes needed for calculating the DASH dietary index per 1 day
+>`AHEI_BLOCK()`, Calculate the AHEI dietary index with 1 step for the Block FFQ per 1 day
 
->`DASHI_SERV()`, Calculate the serving sizes needed for calculating the DASHI dietary index per 1 day
+>`AHEIP_BLOCK()` ,Calculate the AHEIP dietary index with 1 step for the Block FFQ per 1 day
 
->`MED_SERV()`, Calculate the serving sizes needed for calculating the MED dietary index per 1 day
+>`DASH_BLOCK()`, Calculate the DASH dietary index with 1 step for the Block FFQ per 1 day
 
->`MEDI_SERV()`, Calculate the serving sizes needed for calculating the MEDI dietary index per 1 day
+>`DASHI_BLOCK()`, Calculate the DASHI dietary index with 1 step for the Block FFQ per 1 day
 
->`NHANES_FPED_PRE_HEI15()`, Prepare the NHANES_FPED data (after 2005) for calculating the serving sizes for HEI2015
+>`MED_BLOCK()`, Calculate the MED dietary index with 1 step for the Block FFQ per 1 day
+
+>`MEDI_BLOCK()`, Calculate the MEDI dietary index with 1 step for the Block FFQ per 1 day
+
+>`DII_BLOCK()`, Calculate the DII dietary index with 1 step for the Block FFQ per 1 day
+
+
+
+>`HEI2015_AARP()`, Calculate the HEI2015 dietary index for the NIH-AARP per 1 day
+
+
+
+>`HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
+
+>`AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
+
+>`DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
+
+>`MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
+
+>`DII_NHANES_FPED()`, Calculating the serving sizes for DII with 1 step using the NHANES_FPED data (after 2005)
+
+
+
+>`HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
+
+>`AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
+
+>`AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
+
+>`DASH_ASA24()`, Calculating the serving sizes for DASH with 1 step using the ASA24 data
+
+>`MED_ASA24()`, Calculating the serving sizes for MED with 1 step using the ASA24 data
+
+>`DII_ASA24()`, Calculating the serving sizes for DII with 1 step using the ASA24 data
 
 ### Examples:
 ___
+#### Calculating HEI2015 for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+HEI2015_ASA24(DATA_PATH)
+
+#Use the example data
+data("ASA24_exp")
+HEI2015_ASA24(ASA24_exp)
+```
+
+#### Calculating HEI2015 for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+```
+
+#### Calculating AHEI for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+AHEI_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+AHEI_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+```
+
+#### Calculating DASH for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
+DBQ_PATH = "/Users/james/Desktop/data/DBQ_J.XPT"
+
+DASH_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+DASH_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO, NHANES_20172018$DBQ)
+
+```
+
+#### Calculating MED for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+
+```
+
 #### Calculating AHEI for BLOCK
 ```
 DATA_PATH <- "/Users/james/Desktop/data.csv"
 RAW_DATA <- read_csv(DATA_PATH)
 
-AHEI_DATA = AHEI_SERV(RAW_DATA, TYPE="BLOCK")
-AHEI_DATA2 = AHEI(AHEI_DATA,   
-                  VEG_SERV,
-                  FRT_SERV,
-                  WGRAIN_SERV,
-                  NUTSLEG_SERV,
-                  N3FAT_SERV,
-                  PUFA_SERV,
-                  SSB_FRTJ_SERV,
-                  REDPROC_MEAT_SERV,
-                  TRANS_SERV,
-                  SODIUM_SERV,
-                  ALCOHOL_SERV)
-AHEI_DATA2
+AHEI_BLOCK = AHEI_SERV(RAW_DATA)
 ```
 
-#### Calculating HEI2015 for NHANES_FPED
+#### Calculating HEI2015 for your own dietary assessment tool
 ```
-FPED_PATH = "/Users/james/Desktop/FPED.csv"
-NUTRIENT_PATH = "/Users/james/Desktop/NUTRIENT.csv"
-DEMO_PATH = "/Users/james/Desktop/DEMO.csv"
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+SERV_DATA <- read_csv(DATA_PATH)
 
-PROCESS_DATA = NHANES_FPED_PRE_HEI15(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
-CLEAN_DATA = HEI2015_SERV(PROCESS_DATA, TYPE="NHANES_FPED") 
-HEI2015RESULT = HEI2015(CLEAN_DATA,   
-                        TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,
-                        SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV,
-                        REFINEDGRAIN_SERV, SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV)
+AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+
+#Use the example data
+data("SERV_DATA_exp")
+HEI2015(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$TOTALFRT_SERV, SERV_DATA_exp$FRT_SERV, SERV_DATA_exp$VEG_SERV, SERV_DATA_exp$GREENNBEAN_SERV, SERV_DATA_exp$TOTALPRO_SERV,  SERV_DATA_exp$SEAPLANTPRO_SERV, SERV_DATA_exp$WHOLEGRAIN_SERV, SERV_DATA_exp$DAIRY_SERV, SERV_DATA_exp$FATTYACID_SERV, SERV_DATA_exp$REFINEDGRAIN_SERV,  SERV_DATA_exp$SODIUM_SERV, SERV_DATA_exp$ADDEDSUGAR_SERV, SERV_DATA_exp$SATFAT_SERV)
+
+```
+
+#### Calculating AHEI for your own dietary assessment tool
+```
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+SERV_DATA <- read_csv(DATA_PATH)
+
+AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+
+#Use the example data
+data("SERV_DATA_exp")
+AHEI(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$VEG_SERV, SERV_DATA_exp$FRT_SERV, SERV_DATA_exp$WGRAIN_SERV, SERV_DATA_exp$NUTSLEG_SERV, SERV_DATA_exp$N3FAT_SERV, SERV_DATA_exp$PUFA_SERV, SERV_DATA_exp$SSB_FRTJ_SERV, SERV_DATA_exp$REDPROC_MEAT_SERV, SERV_DATA_exp$TRANS_SERV, SERV_DATA_exp$SODIUM_SERV, SERV_DATA_exp$ALCOHOL_SERV)
+
+```
+
+#### Calculating DASH for your own dietary assessment tool
+```
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+SERV_DATA <- read_csv(DATA_PATH)
+
+DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$SSB_FRTJ_SERV)
+
+#Use the example data
+data("SERV_DATA_exp")
+DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV, SERV_DATA_exp$VEG_SERV, SERV_DATA_exp$NUTSLEG_SERV, SERV_DATA_exp$WGRAIN_SERV, SERV_DATA_exp$LOWF_DAIRY_SERV, SERV_DATA_exp$SODIUM_SERV, SERV_DATA_exp$REDPROC_MEAT_SERV, SERV_DATA_exp$SSB_FRTJ_SERV)
+
 ```
 
 ### Related Work
 ___
 
-**dietaryindex** is mainly intended as a tool to help for calculating different dietary indexes with given food/nutrient serving sizes. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records. Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. 
+**dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, BLOCK, and AARP.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy) are difficult to assess, so the author(s) used his best judgment to estimate those components based on the other existing data, such as the Per capita consumption of low fat cottage cheese in the United States from 2000 to 2020 and the proportion of low-fat milk consumption in the NHANES data. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
-This package requires the **dplyr** and **readr** packages to be installed. Library statements of the dplyr and readr packages are included for your convenience. 
+This package requires the **dplyr**, **readr**, and **haven** packages to be installed. Library statements of the dplyr, readr, and haven packages are included for your convenience. 
+
+For NHANES data:
+FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a zip file, so please unzip this file first to retrieve the SAS file. 
+
+NUTRIENT file refers to the DR1TOT file in the Dietary Interview - Total Nutrient Intakes, First Day, Dietary Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). 
+
+DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
+
+DBQ file refers to the DBQ file in the Diet Behavior & Nutrition, Questionnaire Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Questionnaire&CycleBeginYear=2005)
 
 ### Contributing
 
