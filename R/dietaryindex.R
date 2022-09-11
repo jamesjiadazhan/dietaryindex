@@ -6,7 +6,11 @@
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
+<<<<<<< HEAD
 #' @param GENDER The gender of the participant. 2 is female and 1 is male.
+=======
+#' @param GENDER The gender of the participant. 0 is female and 1 is male.
+>>>>>>> jamesjiadazhan-patch6
 #' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
 #' @param FRT_SERV The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
 #' @param WGRAIN_SERV The serving size of whole grains, unit=grams/day
@@ -80,10 +84,17 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_WGRAIN = case_when(
+<<<<<<< HEAD
         #GENDER = 2 is female
         GENDER == 2 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MAX,
         GENDER == 2 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_F_SERV ~ AHEI_MIN,
         GENDER == 2 & WGRAIN_SERV > AHEI_MIN_WGRAIN_F_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_F_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_F_SERV-AHEI_MIN_WGRAIN_F_SERV),
+=======
+        #GENDER = 0 is female
+        GENDER == 0 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MAX,
+        GENDER == 0 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_F_SERV ~ AHEI_MIN,
+        GENDER == 0 & WGRAIN_SERV > AHEI_MIN_WGRAIN_F_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_F_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_F_SERV-AHEI_MIN_WGRAIN_F_SERV),
+>>>>>>> jamesjiadazhan-patch6
         
         GENDER == 1 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MAX,
         GENDER == 1 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_M_SERV ~ AHEI_MIN,
@@ -112,12 +123,21 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL = case_when(
+<<<<<<< HEAD
         ##GENDER = 2 is female
         GENDER == 2  & ALCOHOL_SERV >= 2.5 ~ 0,
         GENDER == 2  & ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
         GENDER == 2  & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
         GENDER == 2  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
         GENDER == 2  & ALCOHOL_SERV <= 0.125 ~ 2.5,
+=======
+        ##GENDER = 0 is female
+        GENDER == 0  & ALCOHOL_SERV >= 2.5 ~ 0,
+        GENDER == 0  & ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        GENDER == 0  & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
+        GENDER == 0  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
+        GENDER == 0  & ALCOHOL_SERV <= 0.125 ~ 2.5,
+>>>>>>> jamesjiadazhan-patch6
         
         #GENDER = 1 is male
         GENDER == 1  & ALCOHOL_SERV >= 3.5 ~ 0,
@@ -2007,6 +2027,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
   } else {
     FPED = FPED_PATH
   }
+<<<<<<< HEAD
   
   if (is.character(NUTRIENT_PATH) == TRUE){
     NUTRIENT = read_xpt(NUTRIENT_PATH)
@@ -2020,6 +2041,21 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
     DEMO = DEMO_PATH
   }
   
+=======
+  
+  if (is.character(NUTRIENT_PATH) == TRUE){
+    NUTRIENT = read_xpt(NUTRIENT_PATH)
+  } else {
+    NUTRIENT = NUTRIENT_PATH
+  }
+  
+  if (is.character(DEMO_PATH) == TRUE){
+    DEMO = read_xpt(DEMO_PATH)
+  } else {
+    DEMO = DEMO_PATH
+  }
+  
+>>>>>>> jamesjiadazhan-patch6
   if (is.character(DBQ_PATH) == TRUE){
     DBQ = read_xpt(DBQ_PATH)
   } else {
