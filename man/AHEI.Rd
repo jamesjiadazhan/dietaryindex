@@ -26,7 +26,7 @@ AHEI(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{GENDER}{The gender of the participant. 0 is female and 1 is male.}
+\item{GENDER}{The gender of the participant. 2 is female and 1 is male.}
 
 \item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
