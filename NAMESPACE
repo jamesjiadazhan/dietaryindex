@@ -4,7 +4,10 @@ export(AHEI)
 export(AHEIP)
 export(AHEIP_BLOCK)
 export(AHEI_BLOCK)
+<<<<<<< HEAD
 export(AHEI_DHQ3)
+=======
+>>>>>>> jamesjiadazhan-patch6
 export(AHEI_F_ASA24)
 export(AHEI_M_ASA24)
 export(AHEI_NHANES_FPED)
@@ -13,7 +16,10 @@ export(DASHI)
 export(DASHI_BLOCK)
 export(DASH_ASA24)
 export(DASH_BLOCK)
+<<<<<<< HEAD
 export(DASH_DHQ3)
+=======
+>>>>>>> jamesjiadazhan-patch6
 export(DASH_NHANES_FPED)
 export(DII_ASA24)
 export(DII_BLOCK)
@@ -22,14 +28,20 @@ export(HEI2015)
 export(HEI2015_AARP)
 export(HEI2015_ASA24)
 export(HEI2015_BLOCK)
+<<<<<<< HEAD
 export(HEI2015_DHQ3)
+=======
+>>>>>>> jamesjiadazhan-patch6
 export(HEI2015_NHANES_FPED)
 export(MED)
 export(MEDI)
 export(MEDI_BLOCK)
 export(MED_ASA24)
 export(MED_BLOCK)
+<<<<<<< HEAD
 export(MED_DHQ3)
+=======
+>>>>>>> jamesjiadazhan-patch6
 export(MED_NHANES_FPED)
 import(dplyr)
 import(haven)

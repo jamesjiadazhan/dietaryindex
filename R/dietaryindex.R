@@ -118,7 +118,7 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
         GENDER == 2  & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
         GENDER == 2  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
         GENDER == 2  & ALCOHOL_SERV <= 0.125 ~ 2.5,
-        
+
         #GENDER = 1 is male
         GENDER == 1  & ALCOHOL_SERV >= 3.5 ~ 0,
         GENDER == 1  & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
@@ -2007,7 +2007,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
   } else {
     FPED = FPED_PATH
   }
-  
+
   if (is.character(NUTRIENT_PATH) == TRUE){
     NUTRIENT = read_xpt(NUTRIENT_PATH)
   } else {
