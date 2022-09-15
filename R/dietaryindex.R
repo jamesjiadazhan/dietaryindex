@@ -71,7 +71,7 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
   SERV_DATA = SERV_DATA %>%
     mutate(SODIUM_SERV=SODIUM_SERV)
   
-  SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   ##AHEI calculation
   SERV_DATA %>%
@@ -104,15 +104,16 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
       
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL = case_when(
@@ -188,6 +189,8 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
     )
   }
 
+  print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
   ##DASH calculation
   SERV_DATA %>%
     dplyr::mutate(
@@ -341,6 +344,9 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
     )
   }
 
+  print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
+  
   SERV_DATA %>%
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
@@ -396,12 +402,12 @@ MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, 
       
       MEDI_FRT = case_when(FRT_FRTJ_SERV >=3 ~ 1, TRUE ~ 0),
       MEDI_VEG = case_when(VEG_SERV >= 3 ~ 1, TRUE ~ 0),
-      MEDI_LEGUMES = case_when(LEGUMES_SERV*7 >= 1.5 ~ 1, TRUE ~ 0),
+      MEDI_LEGUMES = case_when(LEGUMES_SERV >= 1.5 ~ 1, TRUE ~ 0),
       MEDI_WGRAIN = case_when(WGRAIN_SERV >= 3 ~ 1, TRUE ~ 0),
-      MEDI_FISH = case_when(FISH_SERV*7 >= 2 ~ 1, TRUE ~ 0),
+      MEDI_FISH = case_when(FISH_SERV >= 2 ~ 1, TRUE ~ 0),
       MEDI_DAIRY = case_when(DAIRY_SERV >= 2 ~ 1, TRUE ~ 0),
-      MEDI_REDPROC_MEAT = case_when(REDPROC_MEAT_SERV*7 < 4.5 ~ 1, TRUE ~ 0),
-      MEDI_NUTS = case_when(NUTS_SERV*7 >= 2 ~ 1, TRUE ~ 0),
+      MEDI_REDPROC_MEAT = case_when(REDPROC_MEAT_SERV < 4.5 ~ 1, TRUE ~ 0),
+      MEDI_NUTS = case_when(NUTS_SERV >= 2 ~ 1, TRUE ~ 0),
       MEDI_MONSATFAT = case_when(MONSATFAT_SERV >= 1.6 ~ 1, TRUE ~ 0),
       MEDI_ALCOHOL = case_when(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, TRUE ~ 0),
 
@@ -702,7 +708,7 @@ AHEI_BLOCK = function(RAW_DATA){
       N3FAT_SERV = (DT_FA205 + DT_FA226)*1000,
       PUFA_SERV = (((DT_TOTN6 + DT_TOTN3 - DT_FA205 - DT_FA226)*9)/ DT_KCAL)*100,
       SSB_FRTJ_SERV = (GROUP_SUGARYBEVG_TOTAL_GRAMS / 240) + F_JUICE,
-      REDPROC_MEAT_SERV = (M_FRANK /1.5) + (M_MEAT/4),
+      REDPROC_MEAT_SERV = (M_FRANK /1.5) + ((M_MEAT+M_ORGAN)/4),
       TRANS_SERV = ((DT_TRFAT * 9) / DT_KCAL)*100,
       ALCOHOL_SERV=A_BEV,
       SODIUM_SERV = DT_SODI
@@ -749,7 +755,7 @@ AHEI_BLOCK = function(RAW_DATA){
     )
   }
   
-  SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   SERV_DATA %>%
     dplyr::mutate(
@@ -780,15 +786,16 @@ AHEI_BLOCK = function(RAW_DATA){
       AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL = case_when(
@@ -896,6 +903,8 @@ DASH_BLOCK = function(RAW_DATA){
       actual < quintile[2] & actual >= quintile[1] ~ 5
     )
   }
+  
+  print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
   
   ##DASH calculation
   SERV_DATA %>%
@@ -1088,6 +1097,8 @@ MED_BLOCK = function(RAW_DATA){
     )
   }
   
+  print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
   SERV_DATA %>%
     dplyr::mutate(
       MED_FRT = median_healthy(FRT_FRTJ_SERV),
@@ -1195,7 +1206,7 @@ AHEIP_BLOCK = function(RAW_DATA){
       F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
       VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
       FRT_SERV = F_WHOLE,
-      WHITERED_RT_SERV = ((M_POULT+M_FISH_HI+M_FISH_LO)/4) /  ((M_FRANK /1.5) + (M_MEAT/4)),
+      WHITERED_RT_SERV = ((M_POULT+M_FISH_HI+M_FISH_LO)/4) /  ((M_FRANK /1.5) + ((M_MEAT+M_ORGAN)/4)),
       FIBER_SERV = DT_FIBE,
       TRANS_SERV = ((DT_TRFAT * 9) / DT_KCAL)*100,
       POLYSAT_RT = DT_PFAT / DT_SFAT,
@@ -1898,7 +1909,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       N3FAT_SERV = (DR1TP205 + DR1TP226)*1000,
       PUFA_SERV = (((DR1TPFAT - DR1TP205 - DR1TP226)*9)/ DR1TKCAL)*100,
       SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 240),
-      REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN+DR1T_PF_POULT)/4),
+      REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN)/4),
       TRANS_SERV = 0,
       ALCOHOL_SERV=DR1T_A_DRINKS,
       SODIUM_SERV = DR1TSODI
@@ -1945,7 +1956,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
     )
   }
   
-  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   ##AHEI calculation
   COHORT %>%
@@ -1965,15 +1976,16 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL = 
@@ -2104,6 +2116,9 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
     )
   }
   
+  print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
+  
   ##DASH calculation
   COHORT %>%
     dplyr::mutate(
@@ -2214,6 +2229,9 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       actual >= median_score ~ 0
     )
   }
+  
+  print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
   
   COHORT %>%
     dplyr::mutate(
@@ -2535,7 +2553,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
       PUFA_SERV = ((PFAT-P205-P226)*9/KCAL)*100,
       N3FAT_SERV = (P205+P226)*1000,
       SSB_FRTJ_SERV = (ADD_SUGARS*4 / 240),
-      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + (PF_MEAT/4),
+      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       TRANS_SERV = 0,
       SODIUM_SERV = SODI,
       ALCOHOL_SERV = A_DRINKS
@@ -2580,7 +2598,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
     )
   }
   
-  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   COHORT=COHORT %>%
     dplyr::mutate(
@@ -2596,15 +2614,16 @@ AHEI_F_ASA24 = function(DATA_PATH){
       AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL_F = case_when(
@@ -2661,7 +2680,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
       PUFA_SERV = ((PFAT-P205-P226)*9/KCAL)*100,
       
       SSB_FRTJ_SERV = (ADD_SUGARS*4 / 240),
-      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + (PF_MEAT/4),
+      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       TRANS_SERV = 0,
       SODIUM_SERV = SODI,
       ALCOHOL_SERV = A_DRINKS
@@ -2706,7 +2725,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
     )
   }
   
-  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   COHORT=COHORT %>%
     dplyr::mutate(
@@ -2722,15 +2741,16 @@ AHEI_M_ASA24 = function(DATA_PATH){
       AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL_M = case_when(
@@ -2813,6 +2833,8 @@ DASH_ASA24 = function(DATA_PATH){
     )
   }
   
+  print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
   ##DASH calculation
   COHORT %>%
     dplyr::mutate(
@@ -2867,7 +2889,9 @@ MED_ASA24 = function(DATA_PATH){
         SFAT == 0 ~ 0, 
         TRUE ~ MFAT/SFAT
       ),
-      ALCOHOL_SERV = A_DRINKS
+      ALCOHOL_SERV = case_when(
+        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        TRUE ~ 0),
     ) 
   
   ##Create variables and functions needed for MED
@@ -2886,6 +2910,8 @@ MED_ASA24 = function(DATA_PATH){
       actual >= median_score ~ 0
     )
   }
+  
+  print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
   
   COHORT %>%
     dplyr::mutate(
@@ -3174,7 +3200,7 @@ AHEI_DHQ3 = function(DATA_PATH){
       N3FAT_SERV = (`PFA 20:5 (Eicosapentaenoic) (g)`+`PFA 22:6 (Docosahexaenoic) (g)`)*1000,
       PUFA_SERV = (((`Total polyunsaturated fatty acids (g)`-`PFA 20:5 (Eicosapentaenoic) (g)`-`PFA 22:6 (Docosahexaenoic) (g)`)*9)/`Energy (kcal)`)*100,
       SSB_FRTJ_SERV = (`*Added sugars (g)` / 240),
-      REDPROC_MEAT_SERV = (`Cured meat protein foods (oz)`/1.5) + (`Meat from beef, pork, veal, lamb, and game protein foods (oz)`/4),
+      REDPROC_MEAT_SERV = (`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4),
       TRANS_SERV = ((`*Total trans fatty acitds (g)`*9)/`Energy (kcal)`)*100,
       SODIUM_SERV = `Sodium (mg)`,
       ALCOHOL_SERV = `Alcohol (drink(s))`
@@ -3222,7 +3248,7 @@ AHEI_DHQ3 = function(DATA_PATH){
     )
   }
   
-  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=0.1))
+  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   COHORT %>%
     dplyr::mutate(
@@ -3254,15 +3280,16 @@ AHEI_DHQ3 = function(DATA_PATH){
       AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 0,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 10/9,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 20/9,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 30/9,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 40/9,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 50/9,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 60/9,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 70/9,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 80/9,
+        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
         SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL = case_when(
@@ -3437,6 +3464,9 @@ DASH_DHQ3 = function(DATA_PATH){
       actual < quintile[2] & actual >= quintile[1] ~ 5
     )
   }
+  
+  print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
   
   ##DASH calculation
   COHORT %>%
