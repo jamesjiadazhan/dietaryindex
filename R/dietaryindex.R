@@ -71,7 +71,7 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
   SERV_DATA = SERV_DATA %>%
     mutate(SODIUM_SERV=SODIUM_SERV)
   
-  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
+  SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   ##AHEI calculation
   SERV_DATA %>%
@@ -755,7 +755,7 @@ AHEI_BLOCK = function(RAW_DATA){
     )
   }
   
-  SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
+  SODIUM_DECILE = quantile(RAW_DATA$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   SERV_DATA %>%
     dplyr::mutate(
