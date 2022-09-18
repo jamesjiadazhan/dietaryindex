@@ -279,6 +279,23 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_FRTJ_SERV, NUTSLEG_SERV,
     )
   }
 
+  
+  SCORE_HEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score){
+    case_when(
+      actual_serv >= max_serv ~ max_score,
+      actual_serv <= min_serv ~ min_score,
+      TRUE ~ min_score+(actual_serv-min_serv)*max_score/(max_serv-min_serv)
+    )
+  }
+  
+  
+  SCORE_UNHEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score){
+    case_when(
+      actual_serv >= min_serv ~ min_score ,
+      actual_serv <= max_serv ~ max_score,
+      TRUE ~ min_score+(actual_serv-min_serv)*max_score/(max_serv-min_serv)
+    )
+  }
   ##DASHI calculation
   SERV_DATA %>%
     dplyr::mutate(
@@ -658,6 +675,359 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
                   HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
                   HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
                   HEI2015_SATFAT)
+}
+
+#' DII
+#'
+#' Calculate the DII dietary index, Dietary Inflammation Index, using given the serving sizes of foods and nutrients consumed per 1 day. Not all parameters are needed. You can give as many parameters as you have, and the results will only include scores for the parameters you included.
+#' @import dplyr
+#' @import readr
+#' @import haven
+#' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
+#' @param RESPONDENTID The unique participant ID for each participant
+#' @param ALCOHOL Unit=g
+#' @param VITB12 Unit=μg
+#' @param VITB6 Unit=mg
+#' @param BETACAROTENE Unit=μg
+#' @param CAFFEINE Unit=g
+#' @param CARBOHYDRATE Unit=g
+#' @param CHOLESTEROL Unit=mg
+#' @param ENERGY Unit=kcal
+#' @param EUGENOL Unit=mg
+#' @param FAT Unit=g
+#' @param FIBER Unit=g
+#' @param FOLICACID Unit=μg
+#' @param GARLIC Unit=g
+#' @param GINGER Unit=g
+#' @param IRON Unit=mg
+#' @param MAGNESIUM Unit=mg
+#' @param MUFA Unit=g
+#' @param NIACIN Unit=mg
+#' @param N3FATTYACID Unit=g
+#' @param N6FATTYACID Unit=g
+#' @param ONION Unit=g
+#' @param PROTEIN Unit=g
+#' @param PUFA Unit=g
+#' @param RIBOFLAVIN Unit=mg
+#' @param SAFFRON Unit=g
+#' @param SATFAT Unit=g
+#' @param SELENIUM Unit=μg
+#' @param THIAMIN Unit=mg
+#' @param TRANSFAT Unit=g
+#' @param TURMERIC Unit=mg
+#' @param VITA Unit=RE
+#' @param VITC Unit=mg
+#' @param VITD Unit=μg
+#' @param VITE Unit=mg
+#' @param ZINC Unit=mg
+#' @param TEA Unit=g
+#' @param FLAVAN3OL Unit=mg
+#' @param FLAVONES Unit=mg
+#' @param FLAVONOLS Unit=mg
+#' @param FLAVONONES Unit=mg
+#' @param ANTHOCYANIDINS Unit=mg
+#' @param ISOFLAVONES Unit=mg
+#' @param PEPPER Unit=g
+#' @param THYME Unit=mg
+#' @param ROSEMARY Unit=mg
+#' @return The DII index/score
+#' @examples
+#' DII(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$ALCOHOL, SERV_DATA$VITB12, SERV_DATA$VITB6, SERV_DATA$BETACAROTENE, SERV_DATA$CAFFEINE, SERV_DATA$CARBOHYDRATE, SERV_DATA$CHOLESTEROL, SERV_DATA$ENERGY, SERV_DATA$EUGENOL, SERV_DATA$FAT, SERV_DATA$FIBER, SERV_DATA$FOLICACID, SERV_DATA$GARLIC, SERV_DATA$GINGER, SERV_DATA$IRON, SERV_DATA$MAGNESIUM, SERV_DATA$MUFA, SERV_DATA$NIACIN, SERV_DATA$N3FATTYACID, SERV_DATA$N6FATTYACID, SERV_DATA$ONION, SERV_DATA$PROTEIN, SERV_DATA$PUFA, SERV_DATA$RIBOFLAVIN, SERV_DATA$SAFFRON, SERV_DATA$SATFAT, SERV_DATA$SELENIUM, SERV_DATA$THIAMIN, SERV_DATA$TRANSFAT, SERV_DATA$TURMERIC, SERV_DATA$VITA, SERV_DATA$VITC, SERV_DATA$VITD, SERV_DATA$VITE, SERV_DATA$ZINC, SERV_DATA$TEA, SERV_DATA$FLAVAN3OL, SERV_DATA$FLAVONES, SERV_DATA$FLAVONOLS, SERV_DATA$FLAVONONES, SERV_DATA$ANTHOCYANIDINS, SERV_DATA$ISOFLAVONES, SERV_DATA$PEPPER, SERV_DATA$THYME, SERV_DATA$ROSEMARY)
+#' @export
+
+#Score calculation for DII
+
+DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, BCAROTENE=NULL, CAFFEINE=NULL, CARB=NULL, CHOLES=NULL, KCAL=NULL, EUGENOL=NULL,
+               TOTALFAT=NULL, FIBER=NULL, FOLICACID=NULL, GARLIC=NULL, GINGER=NULL,IRON=NULL, MG=NULL, MUFA=NULL, NIACIN=NULL, N3FAT=NULL, N6FAT=NULL,ONION=NULL, PROTEIN=NULL, PUFA=NULL, 
+               RIBOFLAVIN=NULL,SAFFRON=NULL, SATFAT=NULL, SE=NULL, THIAMIN=NULL, TRANSFAT=NULL,TURMERIC=NULL, VITA=NULL, VITC=NULL, VITD=NULL, VITE=NULL, ZN=NULL, TEA=NULL,
+               FLA3OL=NULL,FLAVONES=NULL,FLAVONOLS=NULL,FLAVONONES=NULL,ANTHOC=NULL,ISOFLAVONES=NULL,PEPPER=NULL,THYME=NULL,ROSEMARY=NULL){
+  
+  SERV_DATA = SERV_DATA %>%
+    mutate(
+      RESPONDENTID = RESPONDENTID, 
+      ALCOHOL = ALCOHOL, 
+      VITB12 = VITB12, 
+      VITB6 = VITB6, 
+      BCAROTENE = BCAROTENE, 
+      CAFFEINE = CAFFEINE, 
+      CARB = CARB, 
+      CHOLES = CHOLES, 
+      KCAL = KCAL, 
+      EUGENOL = EUGENOL,
+      TOTALFAT = TOTALFAT, 
+      FIBER = FIBER, 
+      FOLICACID = FOLICACID,
+      GARLIC = GARLIC, 
+      GINGER = GINGER,
+      IRON = IRON, 
+      MG = MG, 
+      MUFA = MUFA, 
+      NIACIN = NIACIN, 
+      N3FAT = N3FAT, 
+      N6FAT = N6FAT,
+      ONION = ONION,
+      PROTEIN = PROTEIN, 
+      PUFA = PUFA, 
+      RIBOFLAVIN = RIBOFLAVIN,
+      SAFFRON = SAFFRON, 
+      SATFAT = SATFAT, 
+      SE = SE, 
+      THIAMIN = THIAMIN,
+      TRANSFAT = TRANSFAT,
+      TURMERIC = TURMERIC, 
+      VITA = VITA,
+      VITC = VITC, 
+      VITD = VITD, 
+      VITE = VITE, 
+      ZN = ZN, 
+      TEA = TEA,
+      FLA3OL = FLA3OL,
+      FLAVONES = FLAVONES,
+      FLAVONOLS = FLAVONOLS,
+      FLAVONONES = FLAVONONES,
+      ANTHOC = ANTHOC,
+      ISOFLAVONES = ISOFLAVONES,
+      PEPPER = PEPPER,
+      THYME = THYME,
+      ROSEMARY = ROSEMARY)
+  
+  COHORT = SERV_DATA %>%
+    dplyr::select(RESPONDENTID, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, EUGENOL,
+                  TOTALFAT, FIBER, FOLICACID, GARLIC, GINGER,IRON, MG, MUFA, NIACIN, N3FAT, N6FAT,ONION, PROTEIN, PUFA,
+                  RIBOFLAVIN,SAFFRON, SATFAT, SE, THIAMIN, TRANSFAT,TURMERIC, VITA, VITC, VITD, VITE, ZN, TEA,
+                  FLA3OL,FLAVONES,FLAVONOLS,FLAVONONES,ANTHOC,ISOFLAVONES,PEPPER,THYME,ROSEMARY)%>%
+    tidyr::pivot_longer(-RESPONDENTID, names_to="Variable", values_to="Value")
+  
+  Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
+               "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA",
+               "RIBOFLAVIN","SAFFRON", "SATFAT", "SE", "THIAMIN","TRANSFAT","TURMERIC", "VITA","VITC", "VITD", "VITE", "ZN", "TEA",
+               "FLA3OL","FLAVONES","FLAVONOLS","FLAVONONES","ANTHOC","ISOFLAVONES","PEPPER","THYME","ROSEMARY")
+  
+  Overall_inflammatory_score = c(-0.278, 0.106, -0.365, -0.584, -0.11, 0.097, 0.11, 0.18, -0.14, 0.298, -0.663, -0.19, -0.412, -0.453, 0.032, -0.484, -0.009,
+                                 -0.246, -0.436, -0.159, -0.301, 0.021, -0.337, -0.068, -0.14, 0.373, -0.191, -0.098,0.229,-0.785, -0.401, -0.424, -0.446, -0.419, -0.313,
+                                 -0.536,-0.415,-0.616,-0.467,-0.25,-0.131,-0.593,-0.131,-0.102,-0.013)
+  
+  Global_mean = c(13.98,5.15,1.47,3718,8.05,272.2,279.4,2056,0.01,71.4,18.8,273,4.35,59,13.35,310.1,27,25.9,1.06,10.8,35.9,
+                  79.4,13.88,1.7,0.37,28.6,67,1.7,3.15,533.6,983.9,118.2,6.26,8.73,9.84,
+                  1.69,95.8,1.55,17.7,11.7,18.05,1.2,10,0.33,1)
+  
+  SD = c(3.72,2.7,0.74,1720,6.67,40,51.2,338,0.08,19.4,4.9,70.7,2.9,63.2,3.71,139.4,6.1,11.77,1.06,7.5,18.4,13.9,3.76,0.79,1.78,
+         8,25.1,0.66,3.75,754.3,518.6,43.46,2.21,1.49,2.19,
+         1.53,85.9,0.07,6.79,3.82,21.14,0.2,7.07,0.99,15)
+  
+  DII_STD = data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
+  
+  #Score calculation for DII
+  
+  COHORT = COHORT %>%
+    inner_join(DII_STD, by=c("Variable")) %>%
+    dplyr::mutate(
+      Z_SCORE = (Value - Global_mean)/SD,
+      PERCENTILE = pnorm(Z_SCORE)*2 - 1,
+      IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
+    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
+    group_by(RESPONDENTID) %>%
+    summarize(
+      ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
+      VITB12 = sum(VITB12, na.rm = TRUE),
+      VITB6 = sum(VITB6, na.rm = TRUE),
+      BCAROTENE = sum(BCAROTENE, na.rm = TRUE),
+      CAFFEINE = sum(CAFFEINE, na.rm = TRUE),
+      CARB = sum(CARB, na.rm = TRUE),
+      CHOLES = sum(CHOLES, na.rm = TRUE),
+      KCAL= sum(KCAL, na.rm = TRUE),
+      EUGENOL= sum(EUGENOL, na.rm = TRUE),
+      TOTALFAT= sum(TOTALFAT, na.rm = TRUE),
+      FIBER  = sum(FIBER, na.rm = TRUE),
+      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
+      GARLIC  = sum(GARLIC, na.rm = TRUE),
+      GINGER  = sum(GINGER, na.rm = TRUE),
+      IRON  = sum(IRON, na.rm = TRUE),
+      MG  = sum(MG, na.rm = TRUE),
+      MUFA  = sum(MUFA, na.rm = TRUE),
+      NIACIN  = sum(NIACIN, na.rm = TRUE),
+      N3FAT  = sum(N3FAT, na.rm = TRUE),
+      N6FAT  = sum(N6FAT, na.rm = TRUE),
+      ONION  = sum(ONION, na.rm = TRUE),
+      PROTEIN  = sum(PROTEIN, na.rm = TRUE),
+      PUFA  = sum(PUFA, na.rm = TRUE),
+      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE),
+      SAFFRON  = sum(SAFFRON, na.rm = TRUE),
+      SATFAT  = sum(SATFAT, na.rm = TRUE),
+      SE  = sum(SE, na.rm = TRUE),
+      THIAMIN  = sum(THIAMIN, na.rm = TRUE),
+      TRANSFAT  = sum(TRANSFAT, na.rm = TRUE),
+      TURMERIC  = sum(TURMERIC, na.rm = TRUE),
+      VITA  = sum(VITA, na.rm = TRUE),
+      VITC  = sum(VITC, na.rm = TRUE),
+      VITD  = sum(VITD, na.rm = TRUE),
+      VITE = sum(VITE, na.rm = TRUE),
+      ZN = sum(ZN, na.rm = TRUE),
+      TEA = sum(TEA, na.rm = TRUE),
+      FLA3OL = sum(FLA3OL, na.rm = TRUE),
+      FLAVONES = sum(FLAVONES, na.rm = TRUE),
+      FLAVONOLS = sum(FLAVONOLS, na.rm = TRUE),
+      FLAVONONES = sum(FLAVONONES, na.rm = TRUE),
+      ANTHOC = sum(ANTHOC, na.rm = TRUE),
+      ISOFLAVONES = sum(ISOFLAVONES, na.rm = TRUE),
+      PEPPER = sum(PEPPER, na.rm = TRUE),
+      THYME = sum(THYME, na.rm = TRUE),
+      ROSEMARY = sum(ROSEMARY, na.rm = TRUE),
+    )
+  
+  for(i in 1:length(COHORT$RESPONDENTID)){
+    if (is.null(SERV_DATA$ALCOHOL) == TRUE){
+      COHORT$ALCOHOL[i] = 0
+    }
+    else if (is.null(SERV_DATA$VITB12) == TRUE){
+      COHORT$VITB12[i] = 0
+    }
+    else if (is.null(SERV_DATA$VITB6) == TRUE){
+      COHORT$VITB6[i] = 0
+    }
+    else if (is.null(SERV_DATA$BCAROTENE) == TRUE){
+      COHORT$BCAROTENE[i] = 0
+    }
+    else if (is.null(SERV_DATA$CAFFEINE) == TRUE){
+      COHORT$CAFFEINE[i] = 0
+    }
+    else if (is.null(SERV_DATA$CARB) == TRUE){
+      COHORT$CARB[i] = 0
+    }
+    else if (is.null(SERV_DATA$CHOLES) == TRUE){
+      COHORT$CHOLES[i] = 0
+    }
+    else if (is.null(SERV_DATA$KCAL) == TRUE){
+      COHORT$KCAL[i] = 0
+    }
+    else if (is.null(SERV_DATA$EUGENOL) == TRUE){
+      COHORT$EUGENOL[i] = 0
+    }
+    else if (is.null(SERV_DATA$TOTALFAT) == TRUE){
+      COHORT$TOTALFAT[i] = 0
+    }
+    else if (is.null(SERV_DATA$FIBER) == TRUE){
+      COHORT$FIBER[i] = 0
+    }
+    else if (is.null(SERV_DATA$FOLICACID) == TRUE){
+      COHORT$FOLICACID[i] = 0
+    }
+    else if (is.null(SERV_DATA$GARLIC) == TRUE){
+      COHORT$GARLIC[i] = 0
+    }
+    else if (is.null(SERV_DATA$GINGER) == TRUE){
+      COHORT$GINGER[i] = 0
+    }
+    else if (is.null(SERV_DATA$IRON) == TRUE){
+      COHORT$IRON[i] = 0
+    }
+    else if (is.null(SERV_DATA$MG) == TRUE){
+      COHORT$MG[i] = 0
+    }
+    else if (is.null(SERV_DATA$MUFA) == TRUE){
+      COHORT$MUFA[i] = 0
+    }
+    else if (is.null(SERV_DATA$NIACIN) == TRUE){
+      COHORT$NIACIN[i] = 0
+    }
+    else if (is.null(SERV_DATA$N3FAT) == TRUE){
+      COHORT$N3FAT[i] = 0
+    }
+    else if (is.null(SERV_DATA$N6FAT) == TRUE){
+      COHORT$N6FAT[i] = 0
+    }
+    else if (is.null(SERV_DATA$ONION) == TRUE){
+      COHORT$ONION[i] = 0
+    }
+    else if (is.null(SERV_DATA$PROTEIN) == TRUE){
+      COHORT$PROTEIN[i] = 0
+    }
+    else if (is.null(SERV_DATA$PUFA) == TRUE){
+      COHORT$PUFA[i] = 0
+    }
+    else if (is.null(SERV_DATA$RIBOFLAVIN) == TRUE){
+      COHORT$RIBOFLAVIN[i] = 0
+    }
+    else if (is.null(SERV_DATA$SAFFRON) == TRUE){
+      COHORT$SAFFRON[i] = 0
+    }
+    else if (is.null(SERV_DATA$SATFAT) == TRUE){
+      COHORT$SATFAT[i] = 0
+    }
+    else if (is.null(SERV_DATA$SE) == TRUE){
+      COHORT$SE[i] = 0
+    }
+    else if (is.null(SERV_DATA$THIAMIN) == TRUE){
+      COHORT$THIAMIN[i] = 0
+    }
+    else if (is.null(SERV_DATA$TRANSFAT) == TRUE){
+      COHORT$TRANSFAT[i] = 0
+    }
+    else if (is.null(SERV_DATA$TURMERIC) == TRUE){
+      COHORT$TURMERIC[i] = 0
+    }
+    else if (is.null(SERV_DATA$VITA) == TRUE){
+      COHORT$VITA[i] = 0
+    }
+    else if (is.null(SERV_DATA$VITC) == TRUE){
+      COHORT$VITC[i] = 0
+    }
+    else if (is.null(SERV_DATA$VITD) == TRUE){
+      COHORT$VITD[i] = 0
+    }
+    else if (is.null(SERV_DATA$VITE) == TRUE){
+      COHORT$VITE[i] = 0
+    }
+    else if (is.null(SERV_DATA$ZN) == TRUE){
+      COHORT$ZN[i] = 0
+    }
+    else if (is.null(SERV_DATA$TEA) == TRUE){
+      COHORT$TEA[i] = 0
+    }
+    else if (is.null(SERV_DATA$FLA3OL) == TRUE){
+      COHORT$FLA3OL[i] = 0
+    }
+    else if (is.null(SERV_DATA$FLAVONES) == TRUE){
+      COHORT$FLAVONES[i] = 0
+    }
+    else if (is.null(SERV_DATA$FLAVONOLS) == TRUE){
+      COHORT$FLAVONOLS[i] = 0
+    }
+    else if (is.null(SERV_DATA$FLAVONONES) == TRUE){
+      COHORT$FLAVONONES[i] = 0
+    }
+    else if (is.null(SERV_DATA$ANTHOC) == TRUE){
+      COHORT$ANTHOC[i] = 0
+    }
+    else if (is.null(SERV_DATA$ISOFLAVONES) == TRUE){
+      COHORT$ISOFLAVONES[i] = 0
+    }
+    else if (is.null(SERV_DATA$PEPPER) == TRUE){
+      COHORT$PEPPER[i] = 0
+    }
+    else if (is.null(SERV_DATA$THYME) == TRUE){
+      COHORT$THYME[i] = 0
+    }
+    else if (is.null(SERV_DATA$ROSEMARY) == TRUE){
+      COHORT$ROSEMARY[i] = 0
+    }
+  }
+  
+  
+  COHORT %>%
+    dplyr::mutate(
+      DII_ALL = ALCOHOL + VITB12 + VITB6 + BCAROTENE + CAFFEINE + CARB + CHOLES + KCAL + EUGENOL +
+        TOTALFAT + FIBER + FOLICACID + GARLIC + GINGER + IRON + MG + MUFA + NIACIN + N3FAT + N6FAT +ONION + PROTEIN + PUFA +
+        RIBOFLAVIN +SAFFRON + SATFAT + SE + THIAMIN +TRANSFAT +TURMERIC + VITA +VITC + VITD + VITE + ZN + TEA +
+        FLA3OL +FLAVONES +FLAVONOLS +FLAVONONES +ANTHOC +ISOFLAVONES +PEPPER +THYME +ROSEMARY,
+      
+      DII_NOETOH = VITB12 + VITB6 + BCAROTENE + CAFFEINE + CARB + CHOLES + KCAL + EUGENOL +
+        TOTALFAT + FIBER + FOLICACID + GARLIC + GINGER + IRON + MG + MUFA + NIACIN + N3FAT + N6FAT +ONION + PROTEIN + PUFA +
+        RIBOFLAVIN +SAFFRON + SATFAT + SE + THIAMIN +TRANSFAT +TURMERIC + VITA +VITC + VITD + VITE + ZN + TEA +
+        FLA3OL +FLAVONES +FLAVONOLS +FLAVONONES +ANTHOC +ISOFLAVONES +PEPPER +THYME +ROSEMARY,
+    ) %>%
+    dplyr::select(RESPONDENTID, DII_ALL, DII_NOETOH, everything())
+  
 }
 
 #' AHEI_BLOCK Calculation
@@ -1462,19 +1832,12 @@ DII_BLOCK = function(RAW_DATA){
   
   COHORT1 = COHORT %>%
     dplyr::select(RESPONDENTID, ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
-           IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
-           VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES)
-  
-  COHORT2 = COHORT %>%
-    dplyr::select(RESPONDENTID, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
-           IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
-           VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES)
+                  IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
+                  VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES)
   
   COHORT1 = COHORT1 %>%
     tidyr::pivot_longer(-RESPONDENTID, names_to="Variable", values_to="Value")
   
-  COHORT2 = COHORT2 %>%
-    tidyr::pivot_longer(-RESPONDENTID, names_to="Variable", values_to="Value")
   
   Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
                "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA", 
@@ -1503,19 +1866,49 @@ DII_BLOCK = function(RAW_DATA){
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
+    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
     group_by(RESPONDENTID) %>%
-    summarize(DII_ALL = sum(IND_DII_SCORE))
-  
-  DII_ALL_NOETOH_df = COHORT2 %>%
-    inner_join(DII_STD, by=c("Variable")) %>%
-    dplyr::mutate(
-      Z_SCORE = (Value - Global_mean)/SD,
-      PERCENTILE = pnorm(Z_SCORE)*2 - 1,
-      IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
-    group_by(RESPONDENTID) %>%
-    summarize(DII_ALL_NOETOH = sum(IND_DII_SCORE))
-  
-  inner_join(DII_ALL_df, DII_ALL_NOETOH_df, by="RESPONDENTID")
+    summarize(
+      DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+                    IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
+                    VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES, na.rm = TRUE),
+      
+      DII_NOETOH =  sum(VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+                        IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
+                        VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES, na.rm = TRUE),
+      
+      ALCOHOL = sum(ALCOHOL, na.rm = TRUE), 
+      VITB12 = sum(VITB12, na.rm = TRUE), 
+      VITB6 = sum(VITB6, na.rm = TRUE), 
+      BCAROTENE = sum(BCAROTENE, na.rm = TRUE), 
+      CAFFEINE = sum(CAFFEINE, na.rm = TRUE), 
+      CARB = sum(CARB, na.rm = TRUE), 
+      CHOLES = sum(CHOLES, na.rm = TRUE), 
+      KCAL= sum(KCAL, na.rm = TRUE), 
+      TOTALFAT= sum(TOTALFAT, na.rm = TRUE), 
+      FIBER  = sum(FIBER, na.rm = TRUE), 
+      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
+      IRON  = sum(IRON, na.rm = TRUE), 
+      MG  = sum(MG, na.rm = TRUE), 
+      MUFA  = sum(MUFA, na.rm = TRUE), 
+      NIACIN  = sum(NIACIN, na.rm = TRUE), 
+      N3FAT  = sum(N3FAT, na.rm = TRUE), 
+      N6FAT  = sum(N6FAT, na.rm = TRUE), 
+      PROTEIN  = sum(PROTEIN, na.rm = TRUE), 
+      PUFA  = sum(PUFA, na.rm = TRUE), 
+      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE), 
+      SATFAT  = sum(SATFAT, na.rm = TRUE), 
+      SE  = sum(SE, na.rm = TRUE), 
+      THIAMIN  = sum(THIAMIN, na.rm = TRUE), 
+      TRANSFAT = sum(TRANSFAT, na.rm = TRUE),
+      VITA  = sum(VITA, na.rm = TRUE),
+      VITC  = sum(VITC), na.rm = TRUE, 
+      VITD  = sum(VITD, na.rm = TRUE), 
+      VITE = sum(VITE, na.rm = TRUE), 
+      ZN = sum(ZN, na.rm = TRUE),
+      TEA = sum(TEA, na.rm = TRUE),
+      ISOFLAVONES = sum(ISOFLAVONES, na.rm = TRUE)
+    )
   
 }
 
@@ -1908,7 +2301,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       NUTSLEG_SERV = (DR1T_V_LEGUMES*4) + DR1T_PF_NUTSDS + DR1T_PF_SOY,
       N3FAT_SERV = (DR1TP205 + DR1TP226)*1000,
       PUFA_SERV = (((DR1TPFAT - DR1TP205 - DR1TP226)*9)/ DR1TKCAL)*100,
-      SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 240),
+      SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 26),
       REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN)/4),
       TRANS_SERV = 0,
       ALCOHOL_SERV=DR1T_A_DRINKS,
@@ -2090,7 +2483,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
       ),
       SODIUM_SERV = DR1TSODI,
       REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN+DR1T_PF_POULT)/4),
-      SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 240)
+      SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 26)
     ) 
   
   ##Create variables and functions needed for DASH calculation
@@ -2336,7 +2729,10 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       VITC = DR1TVC,
       VITD = tryCatch(DR1TVD*0.025, error = function(e) return(NULL)),
       VITE = DR1TATOC,
-      ZN = DR1TZINC) 
+      ZN = DR1TZINC) %>%
+    dplyr::select(SEQN, ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+                  IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,
+                  VITA,VITC,VITD,VITE,ZN)
   
   COHORT = COHORT %>%
     tidyr::pivot_longer(-SEQN, names_to="Variable", values_to="Value")
@@ -2368,8 +2764,46 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
-    group_by(SEQN)%>%
-    summarize(DII_ALL = sum(IND_DII_SCORE))
+    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
+    group_by(SEQN) %>%
+    summarize(
+      DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+                    IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,
+                    VITA,VITC,VITD,VITE,ZN, na.rm = TRUE),
+      
+      DII_NOETOH =  sum(VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+                        IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,
+                        VITA,VITC,VITD,VITE,ZN, na.rm = TRUE),
+      
+      ALCOHOL = sum(ALCOHOL, na.rm = TRUE), 
+      VITB12 = sum(VITB12, na.rm = TRUE), 
+      VITB6 = sum(VITB6, na.rm = TRUE), 
+      BCAROTENE = sum(BCAROTENE, na.rm = TRUE), 
+      CAFFEINE = sum(CAFFEINE, na.rm = TRUE), 
+      CARB = sum(CARB, na.rm = TRUE), 
+      CHOLES = sum(CHOLES, na.rm = TRUE), 
+      KCAL= sum(KCAL, na.rm = TRUE), 
+      TOTALFAT= sum(TOTALFAT, na.rm = TRUE), 
+      FIBER  = sum(FIBER, na.rm = TRUE), 
+      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
+      IRON  = sum(IRON, na.rm = TRUE), 
+      MG  = sum(MG, na.rm = TRUE), 
+      MUFA  = sum(MUFA, na.rm = TRUE), 
+      NIACIN  = sum(NIACIN, na.rm = TRUE), 
+      N3FAT  = sum(N3FAT, na.rm = TRUE), 
+      N6FAT  = sum(N6FAT, na.rm = TRUE), 
+      PROTEIN  = sum(PROTEIN, na.rm = TRUE), 
+      PUFA  = sum(PUFA, na.rm = TRUE), 
+      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE), 
+      SATFAT  = sum(SATFAT, na.rm = TRUE), 
+      SE  = sum(SE, na.rm = TRUE), 
+      THIAMIN  = sum(THIAMIN, na.rm = TRUE), 
+      VITA  = sum(VITA, na.rm = TRUE),
+      VITC  = sum(VITC), na.rm = TRUE, 
+      VITD  = sum(VITD, na.rm = TRUE), 
+      VITE = sum(VITE, na.rm = TRUE), 
+      ZN = sum(ZN, na.rm = TRUE)
+    )
 }
 
 #' HEI2015_ASA24
@@ -2552,7 +2986,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
       NUTSLEG_SERV = PF_NUTSDS+PF_SOY+PF_LEGUMES,
       PUFA_SERV = ((PFAT-P205-P226)*9/KCAL)*100,
       N3FAT_SERV = (P205+P226)*1000,
-      SSB_FRTJ_SERV = (ADD_SUGARS*4 / 240),
+      SSB_FRTJ_SERV = (ADD_SUGARS*4 / 26),
       REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       TRANS_SERV = 0,
       SODIUM_SERV = SODI,
@@ -2679,7 +3113,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
       N3FAT_SERV = (P205 + P226)*1000,
       PUFA_SERV = ((PFAT-P205-P226)*9/KCAL)*100,
       
-      SSB_FRTJ_SERV = (ADD_SUGARS*4 / 240),
+      SSB_FRTJ_SERV = (ADD_SUGARS*4 / 26),
       REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       TRANS_SERV = 0,
       SODIUM_SERV = SODI,
@@ -2806,8 +3240,8 @@ DASH_ASA24 = function(DATA_PATH){
       WGRAIN_SERV = G_WHOLE,
       LOWF_DAIRY_SERV = 0.1738*D_MILK + D_YOGURT + (2/40.2)*D_CHEESE,
       SODIUM_SERV = SODI,
-      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + (PF_MEAT/4),
-      SSB_FRTJ_SERV = (ADD_SUGARS / 240)
+      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
+      SSB_FRTJ_SERV = (ADD_SUGARS*4 / 26)
     ) 
   
   ##Create variables and functions needed for DASH calculation
@@ -2884,13 +3318,13 @@ MED_ASA24 = function(DATA_PATH){
       LEGUMES_SERV = PF_SOY+PF_LEGUMES,
       NUTS_SERV = PF_NUTSDS,
       FISH_SERV = PF_SEAFD_HI+PF_SEAFD_LOW,
-      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + (PF_MEAT/4),
+      REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       MONSATFAT_SERV = case_when(
         SFAT == 0 ~ 0, 
         TRUE ~ MFAT/SFAT
       ),
       ALCOHOL_SERV = case_when(
-        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        ALC  <=25 & ALC >= 10 ~ 1, 
         TRUE ~ 0),
     ) 
   
@@ -2986,8 +3420,8 @@ DII_ASA24 = function(DATA_PATH){
       ZN = ZINC
     ) %>%
     dplyr::select(UserName, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-           IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
-           VITC, VITD, VITE, ZN)
+                  IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
+                  VITC, VITD, VITE, ZN)
   
   COHORT = COHORT %>%
     tidyr::pivot_longer(-UserName, names_to="Variable", values_to="Value")
@@ -3019,8 +3453,46 @@ DII_ASA24 = function(DATA_PATH){
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
+    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
     group_by(UserName) %>%
-    summarize(DII_ALL = sum(IND_DII_SCORE))
+    summarize(
+      DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+                    IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
+                    VITC, VITD, VITE, ZN, na.rm = TRUE),
+      
+      DII_NOETOH =  sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+                        IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
+                        VITC, VITD, VITE, ZN, na.rm = TRUE),
+      
+      ALCOHOL = sum(ALCOHOL, na.rm = TRUE), 
+      VITB12 = sum(VITB12, na.rm = TRUE), 
+      VITB6 = sum(VITB6, na.rm = TRUE), 
+      BCAROTENE = sum(BCAROTENE, na.rm = TRUE), 
+      CAFFEINE = sum(CAFFEINE, na.rm = TRUE), 
+      CARB = sum(CARB, na.rm = TRUE), 
+      CHOLES = sum(CHOLES, na.rm = TRUE), 
+      KCAL= sum(KCAL, na.rm = TRUE), 
+      TOTALFAT= sum(TOTALFAT, na.rm = TRUE), 
+      FIBER  = sum(FIBER, na.rm = TRUE), 
+      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
+      IRON  = sum(IRON, na.rm = TRUE), 
+      MG  = sum(MG, na.rm = TRUE), 
+      MUFA  = sum(MUFA, na.rm = TRUE), 
+      NIACIN  = sum(NIACIN, na.rm = TRUE), 
+      N3FAT  = sum(N3FAT, na.rm = TRUE), 
+      N6FAT  = sum(N6FAT, na.rm = TRUE), 
+      PROTEIN  = sum(PROTEIN, na.rm = TRUE), 
+      PUFA  = sum(PUFA, na.rm = TRUE), 
+      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE), 
+      SATFAT  = sum(SATFAT, na.rm = TRUE), 
+      SE  = sum(SE, na.rm = TRUE), 
+      THIAMIN  = sum(THIAMIN, na.rm = TRUE), 
+      VITA  = sum(VITA, na.rm = TRUE),
+      VITC  = sum(VITC), na.rm = TRUE, 
+      VITD  = sum(VITD, na.rm = TRUE), 
+      VITE = sum(VITE, na.rm = TRUE), 
+      ZN = sum(ZN, na.rm = TRUE)
+    )
   
 }
 
@@ -3190,20 +3662,28 @@ AHEI_DHQ3 = function(DATA_PATH){
     COHORT = DATA_PATH
   }
   
-  
   COHORT = COHORT %>%
     dplyr::mutate(
-      VEG_SERV = `Total red/orange vegetable (cups)` + `Dark-green vegetable (cups)`*0.5 + `Other starchy vegetable (cups)` + `Other vegetable (cups)`,
-      FRT_SERV = `Total fruit (cups)`-`Juice fruit (cups)`,
-      WGRAIN_SERV = `Whole grain (oz)`/0.035274,
-      NUTSLEG_SERV = `Nuts, seeds, soy, and legumes (oz)`,
-      N3FAT_SERV = (`PFA 20:5 (Eicosapentaenoic) (g)`+`PFA 22:6 (Docosahexaenoic) (g)`)*1000,
-      PUFA_SERV = (((`Total polyunsaturated fatty acids (g)`-`PFA 20:5 (Eicosapentaenoic) (g)`-`PFA 22:6 (Docosahexaenoic) (g)`)*9)/`Energy (kcal)`)*100,
-      SSB_FRTJ_SERV = (`*Added sugars (g)` / 240),
-      REDPROC_MEAT_SERV = (`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4),
-      TRANS_SERV = ((`*Total trans fatty acitds (g)`*9)/`Energy (kcal)`)*100,
-      SODIUM_SERV = `Sodium (mg)`,
-      ALCOHOL_SERV = `Alcohol (drink(s))`
+      ADDED_SUGAR_SSB_SERV = case_when(
+        `Food ID` == 1081.1 | `Food ID` == 1123.1 | `Food ID` == 1123.2  | `Food ID` == 1130.2  | `Food ID` == 1130.5  | `Food ID` == 1140.1  | `Food ID` == 1140.2  | `Food ID` == 1144.1  | `Food ID` == 1150.1  | `Food ID` == 1152.1 ~ `*Added sugars (g)`,
+        TRUE ~ 0
+      )
+    ) %>%
+    dplyr::group_by(`Respondent ID`) %>%
+    dplyr::summarize(
+      `Sex (1=male; 2=female)` = min(`Sex (1=male; 2=female)`),
+      KCAL = sum(`Energy (kcal)`),
+      VEG_SERV = sum(`Total red/orange vegetable (cups)` + `Dark-green vegetable (cups)`*0.5 + `Other starchy vegetable (cups)` + `Other vegetable (cups)`),
+      FRT_SERV = sum(`Total fruit (cups)`-`Juice fruit (cups)`),
+      WGRAIN_SERV = sum(`Whole grain (oz)`/0.035274),
+      NUTSLEG_SERV = sum(`Nuts, seeds, soy, and legumes (oz)`),
+      N3FAT_SERV = sum((`PFA 20:5 (Eicosapentaenoic) (g)`+`PFA 22:6 (Docosahexaenoic) (g)`)*1000),
+      PUFA_SERV = (sum((`Total polyunsaturated fatty acids (g)`-`PFA 20:5 (Eicosapentaenoic) (g)`-`PFA 22:6 (Docosahexaenoic) (g)`)*9)/KCAL)*100,
+      SSB_FRTJ_SERV = sum(ADDED_SUGAR_SSB_SERV/ 26),
+      REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
+      TRANS_SERV = (sum(`*Total trans fatty acitds (g)`*9)/KCAL)*100,
+      SODIUM_SERV = sum(`Sodium (mg)`),
+      ALCOHOL_SERV = sum(`Alcohol (drink(s))`)
     )
   
   
@@ -3249,6 +3729,7 @@ AHEI_DHQ3 = function(DATA_PATH){
   }
   
   SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs=seq(0, 1, by=1/11))
+  
   
   COHORT %>%
     dplyr::mutate(
@@ -3351,7 +3832,7 @@ MED_DHQ3 = function(DATA_PATH){
       LEGUMES_SERV = `Soy products protein foods (oz)`+`Legumes protein foods (oz)`,
       NUTS_SERV = `Nuts and seeds protein foods (oz)`,
       FISH_SERV = `Seafood (oz)`,
-      REDPROC_MEAT_SERV = (`Cured meat protein foods (oz)`/1.5) + (`Meat from beef, pork, veal, lamb, and game protein foods (oz)`/4),
+      REDPROC_MEAT_SERV = (`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4),
       MONSATFAT_SERV = case_when(
         `Total saturated fatty acids (g)` == 0 ~ 0, 
         TRUE ~ `Total monounsaturated fatty acids (g)`/`Total saturated fatty acids (g)`
@@ -3427,6 +3908,10 @@ DASH_DHQ3 = function(DATA_PATH){
         `Food ID` == 50.2 | `Food ID` == 64.2 | `Food ID` == 75.2 | `Food ID` == 80.1 ~ `Total dairy (cups)`,
         TRUE ~ 0
       ),
+      ADDED_SUGAR_SSB_SERV = case_when(
+        `Food ID` == 1081.1 | `Food ID` == 1123.1 | `Food ID` == 1123.2  | `Food ID` == 1130.2  | `Food ID` == 1130.5  | `Food ID` == 1140.1  | `Food ID` == 1140.2  | `Food ID` == 1144.1  | `Food ID` == 1150.1  | `Food ID` == 1152.1 ~ `*Added sugars (g)`,
+        TRUE ~ 0
+      )
     ) %>%
     dplyr::group_by(`Respondent ID`) %>%
     dplyr::summarize(
@@ -3436,8 +3921,8 @@ DASH_DHQ3 = function(DATA_PATH){
       WGRAIN_SERV = sum(`Whole grain (oz)`),
       LOWF_DAIRY_SERV = sum(LOWF_MILK_SERV+LOWF_CHEESECREAM_SERV+`Yogurt (cups)`),
       SODIUM_SERV = sum(`Sodium (mg)`),
-      REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + (`Meat from beef, pork, veal, lamb, and game protein foods (oz)`/4)),
-      SSB_FRTJ_SERV = sum((`*Added sugars (g)` / 240))
+      REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
+      SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV / 26))
     )
   
   
