@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.10.0: now support DHQ3 for AHEI, MED, HEI2015 and DASH. DII is avaiable as a generic function. DII with and without alcohol overall and components score are available.
+Version 0.11.0: now support DHQ3 for AHEI, MED, HEI2015 and DASH. DII is avaiable as a generic function. DII with and without alcohol overall and components score are available.
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
