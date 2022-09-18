@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.10.0: now support DHQ3 for AHEI, MED, HEI2015 and DASH. Bugs fixed since version 0.9.0.
+Version 0.10.0: now support DHQ3 for AHEI, MED, HEI2015 and DASH. DII is avaiable as a generic function. DII with and without alcohol overall and components score are available.
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -18,7 +18,7 @@ Currently, the **dietaryindex** package works for the following 5 dietary assess
 4. It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
 5. It can calculate HEI2015 for the NIH-AARP
 
-This package can also help you calculating these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+This package can also help you calculating these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
 - All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
 - The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN.xlsx
 
@@ -149,6 +149,16 @@ data("DHQ3_exp")
 HEI2015_DHQ3(DHQ3_exp)
 ```
 
+#### Calculating AHEI for DHQ3
+```
+DATA_PATH = "/Users/james/Desktop/data/detail.csv"
+AHEI_DHQ3(DATA_PATH)
+
+#Use the example data
+data("DHQ3_exp_detailed")
+AHEI_DHQ3(DHQ3_exp_detailed)
+```
+
 #### Calculating DASH for DHQ3
 ```
 DATA_PATH = "/Users/james/Desktop/data/detail.csv"
@@ -274,6 +284,19 @@ MED(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV_MED, SERV
 
 ```
 
+#### Calculating DII for your own dietary assessment tool
+```
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+SERV_DATA <- read_csv(DATA_PATH)
+
+DII(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$ALCOHOL, SERV_DATA$VITB12, SERV_DATA$VITB6, SERV_DATA$BETACAROTENE, SERV_DATA$CAFFEINE, SERV_DATA$CARBOHYDRATE, SERV_DATA$CHOLESTEROL, SERV_DATA$ENERGY, SERV_DATA$EUGENOL, SERV_DATA$FAT, SERV_DATA$FIBER, SERV_DATA$FOLICACID, SERV_DATA$GARLIC, SERV_DATA$GINGER, SERV_DATA$IRON, SERV_DATA$MAGNESIUM, SERV_DATA$MUFA, SERV_DATA$NIACIN, SERV_DATA$N3FATTYACID, SERV_DATA$N6FATTYACID, SERV_DATA$ONION, SERV_DATA$PROTEIN, SERV_DATA$PUFA, SERV_DATA$RIBOFLAVIN, SERV_DATA$SAFFRON, SERV_DATA$SATFAT, SERV_DATA$SELENIUM, SERV_DATA$THIAMIN, SERV_DATA$TRANSFAT, SERV_DATA$TURMERIC, SERV_DATA$VITA, SERV_DATA$VITC, SERV_DATA$VITD, SERV_DATA$VITE, SERV_DATA$ZINC, SERV_DATA$TEA, SERV_DATA$FLAVAN3OL, SERV_DATA$FLAVONES, SERV_DATA$FLAVONOLS, SERV_DATA$FLAVONONES, SERV_DATA$ANTHOCYANIDINS, SERV_DATA$ISOFLAVONES, SERV_DATA$PEPPER, SERV_DATA$THYME, SERV_DATA$ROSEMARY)
+
+#Use the example data
+data("DHQ3_exp")
+DII(DHQ3_exp, DHQ3_exp$`Respondent ID`, DHQ3_exp$`Alcohol (g)`, DHQ3_exp$`Vitamin B12 (mcg)`, DHQ3_exp$`Vitamin B6 (mg)`)
+
+```
+
 #### Add dietary index output to your own data
 ```
 #Store the output of HEI2015 in "HEI2015_output"
@@ -283,6 +306,8 @@ HEI2015_output = HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL,
 #Here, the participant ID is "RESPONDENTID", but the actual name depends on your data and it should be the column name of SERV_DATA$RESPONDENTID in the HEI2015 function
 merge(yourdata, HEI2015_output, by="RESPONDENTID")
 ```
+
+
 
 ### Related Work
 ___
