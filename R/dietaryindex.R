@@ -825,9 +825,9 @@ DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, B
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
-    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    group_by(RESPONDENTID) %>%
-    summarize(
+    tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
+    dplyr:group_by(RESPONDENTID) %>%
+    dplyr:summarize(
       ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
       VITB12 = sum(VITB12, na.rm = TRUE),
       VITB6 = sum(VITB6, na.rm = TRUE),
@@ -1231,20 +1231,19 @@ DASH_BLOCK = function(RAW_DATA){
       VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
       NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
       WGRAIN_SERV = G_WHL,
-      LOWF_MILK_SERV = ifelse(MILKTYPE==4,
-                              foodfreq(MILKFREQ) * MILKQUAN, 
-                              0),
+      LOWF_MILK_SERV = case_when(
+        MILKTYPE==4 ~ foodfreq(MILKFREQ) * MILKQUAN, 
+        TRUE ~ 0),
       YOGURT_SERV = (foodfreq(YOGURTONLYFREQ) * 
                        foodport(YOGURTONLYQUAN, ref=YOGURT_PORT_DF)) +
         (foodfreq(BUTTERMILKFREQ) * 
            foodport(BUTTERMILKQUAN, ref=BUTTERMILK_PORT_DF)),
-      LOWF_ICECREAMFROYO_SERV = ifelse(ICECREAMFROYOTYPE == 2, 
-                                       foodfreq(ICECREAMFROYOFREQ) * 
-                                         foodport(ICECREAMFROYOQUAN)*2,
-                                       0),
-      LOWF_CHEESE_SERV = ifelse(CHEESETYPE == 1, 
-                                foodfreq(CHEESEFREQ) * CHEESEQUAN, 
-                                0),
+      LOWF_ICECREAMFROYO_SERV = case_when(
+        ICECREAMFROYOTYPE == 2 ~ foodfreq(ICECREAMFROYOFREQ) * foodport(ICECREAMFROYOQUAN)*2,
+        TRUE ~ 0),
+      LOWF_CHEESE_SERV = case_when(
+        CHEESETYPE == 1 ~foodfreq(CHEESEFREQ) * CHEESEQUAN, 
+        TRUE ~ 0),
       LOWF_DAIRY_SERV = LOWF_MILK_SERV+YOGURT_SERV+LOWF_ICECREAMFROYO_SERV+LOWF_CHEESE_SERV,
       SODIUM_SERV = DT_SODI,
       REDPROC_MEAT_SERV = (M_FRANK /1.5) + (M_MEAT/4),
@@ -1331,17 +1330,17 @@ DASHI_BLOCK = function(RAW_DATA){
       VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
       FRT_SERV = F_WHOLE + JUICE100,
       NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
-      LOWF_MILK_SERV = ifelse(MILKTYPE==2 | MILKTYPE==3 | MILKTYPE==4,
-                              foodfreq(MILKFREQ) * MILKQUAN, 
-                              0),
+      LOWF_MILK_SERV = case_when(
+        MILKTYPE==2 | MILKTYPE==3 | MILKTYPE==4 ~ foodfreq(MILKFREQ) * MILKQUAN, 
+        TRUE ~ 0),
       YOGURT_SERV = (foodfreq(YOGURTONLYFREQ) * foodport(YOGURTONLYQUAN, ref=YOGURT_PORT_DF)) +
         (foodfreq(BUTTERMILKFREQ) * foodport(BUTTERMILKQUAN, ref=BUTTERMILK_PORT_DF)),
-      LOWF_ICECREAMFROYO_SERV = ifelse(ICECREAMFROYOTYPE == 2, 
-                                       foodfreq(ICECREAMFROYOFREQ) * foodport(ICECREAMFROYOQUAN)*2,
-                                       0),
-      LOWF_CHEESE_SERV = ifelse(CHEESETYPE == 1, 
-                                foodfreq(CHEESEFREQ) * CHEESEQUAN, 
-                                0),
+      LOWF_ICECREAMFROYO_SERV = case_when(
+        ICECREAMFROYOTYPE == 2 ~ foodfreq(ICECREAMFROYOFREQ) * foodport(ICECREAMFROYOQUAN)*2,
+        TRUE ~0),
+      LOWF_CHEESE_SERV = case_when(
+        CHEESETYPE == 1 ~ foodfreq(CHEESEFREQ) * CHEESEQUAN, 
+        TRUE ~ 0),
       LOWFATDAIRY_SERV = LOWF_MILK_SERV+YOGURT_SERV+LOWF_ICECREAMFROYO_SERV+LOWF_CHEESE_SERV,
       WGRAIN_SERV = G_WHL,
       ALLMEAT_SERV = M_MPF,
@@ -1448,7 +1447,7 @@ MED_BLOCK = function(RAW_DATA){
       FISH_SERV = (M_FISH_HI+M_FISH_LO)/4,
       REDPROC_MEAT_SERV = (M_FRANK/1.5) + (M_MEAT/4),
       MONSATFAT_SERV = DT_MFAT/DT_SFAT,
-      ALCOHOL_SERV=A_BEV
+      ALCOHOL_SERV=DT_ALCO
     ) 
   
   median_healthy = function(actual){
@@ -1479,7 +1478,9 @@ MED_BLOCK = function(RAW_DATA){
       MED_FISH = median_healthy(FISH_SERV),
       MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV),
       MED_MONSATFAT = median_healthy(MONSATFAT_SERV),
-      MED_ALCOHOL = ifelse(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10, 1, 0),
+      MED_ALCOHOL = case_when(
+        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        TRUE ~ 0),
       
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
@@ -1523,21 +1524,21 @@ MEDI_BLOCK = function(RAW_DATA){
       REDPROC_MEAT_SERV = (M_FRANK/1.5) + (M_MEAT/4),
       NUTS_SERV = M_NUTSD,
       MONSATFAT_SERV = DT_MFAT/DT_SFAT,
-      ALCOHOL_SERV=A_BEV
+      ALCOHOL_SERV=DT_ALCO
     ) 
   
   SERV_DATA %>%
     dplyr::mutate(
-      MEDI_FRT = ifelse(FRT_FRTJ_SERV >=3, 1, 0),
-      MEDI_VEG = ifelse(VEG_SERV >= 3, 1, 0),
-      MEDI_LEGUMES = ifelse(LEGUMES_SERV*7 >= 1.5, 1, 0),
-      MEDI_WGRAIN = ifelse(WGRAIN_SERV >= 3, 1, 0),
-      MEDI_FISH = ifelse(FISH_SERV*7 >= 2, 1, 0),
-      MEDI_DAIRY = ifelse(DAIRY_SERV >= 2, 1, 0),
-      MEDI_REDPROC_MEAT = ifelse(REDPROC_MEAT_SERV*7 < 4.5, 1, 0),
-      MEDI_NUTS = ifelse(NUTS_SERV*7 >= 2, 1, 0),
-      MEDI_MONSATFAT = ifelse(MONSATFAT_SERV >= 1.6, 1, 0),
-      MEDI_ALCOHOL = ifelse(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10, 1, 0),
+      MEDI_FRT = case_when(FRT_FRTJ_SERV >=3 ~ 1, TRUE ~ 0),
+      MEDI_VEG = case_when(VEG_SERV >= 3 ~ 1, TRUE ~ 0),
+      MEDI_LEGUMES = case_when(LEGUMES_SERV >= 1.5 ~ 1, TRUE ~ 0),
+      MEDI_WGRAIN = case_when(WGRAIN_SERV >= 3 ~ 1, TRUE ~ 0),
+      MEDI_FISH = case_when(FISH_SERV >= 2 ~ 1, TRUE ~ 0),
+      MEDI_DAIRY = case_when(DAIRY_SERV >= 2 ~ 1, TRUE ~ 0),
+      MEDI_REDPROC_MEAT = case_when(REDPROC_MEAT_SERV < 4.5 ~ 1, TRUE ~ 0),
+      MEDI_NUTS = case_when(NUTS_SERV >= 2 ~ 1, TRUE ~ 0),
+      MEDI_MONSATFAT = case_when(MONSATFAT_SERV >= 1.6 ~ 1, TRUE ~ 0),
+      MEDI_ALCOHOL = case_when(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, TRUE ~ 0),
       
       MEDI_ALL = MEDI_FRT+MEDI_VEG+MEDI_LEGUMES+MEDI_WGRAIN+MEDI_FISH+MEDI_DAIRY+MEDI_REDPROC_MEAT+
         MEDI_NUTS+MEDI_MONSATFAT+MEDI_ALCOHOL,
@@ -1676,7 +1677,10 @@ HEI2015_BLOCK = function(RAW_DATA){
       SEAPLANTPRO_SERV = (M_FISH_HI+M_FISH_LO+M_SOY+M_NUTSD+(LEGUMES*4))/(DT_KCAL/1000),
       WHOLEGRAIN_SERV = G_WHL/(DT_KCAL/1000),
       DAIRY_SERV = D_TOTAL/(DT_KCAL/1000),
-      FATTYACID_SERV = ifelse(DT_SFAT == 0, 0, (DT_MFAT + DT_PFAT)/DT_SFAT),
+      FATTYACID_SERV = case_when(
+        DT_SFAT == 0 ~ 0, 
+        TRUE ~ (DT_MFAT + DT_PFAT)/DT_SFAT
+        ),
       
       REFINEDGRAIN_SERV = G_NWHL/(DT_KCAL/1000),
       SODIUM_SERV = (DT_SODI/1000)/(DT_KCAL/1000),
@@ -1797,7 +1801,7 @@ DII_BLOCK = function(RAW_DATA){
   #Serving size calculation for DII
   COHORT = RAW_DATA %>%
     dplyr::mutate(
-      ALCOHOL = A_BEV,
+      ALCOHOL = DT_ALCO,
       VITB12 = DT_VB12,
       VITB6 = DT_VITB6,
       BCAROTENE = DT_BCARO,
@@ -1866,9 +1870,9 @@ DII_BLOCK = function(RAW_DATA){
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
-    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    group_by(RESPONDENTID) %>%
-    summarize(
+    tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
+    dplyr::group_by(RESPONDENTID) %>%
+    dplyr::summarize(
       DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
                     IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,TRANSFAT,
                     VITA,VITC,VITD,VITE,ZN,TEA,ISOFLAVONES, na.rm = TRUE),
@@ -1943,7 +1947,10 @@ HEI2015_AARP = function(RAW_DATA){
       SEAPLANTPRO_SERV = (mped_M_FISH_HI+mped_M_FISH_LO+mped_M_SOY+(mped_legumes*4))/(calories/1000),
       WHOLEGRAIN_SERV = mped_g_whl/(calories/1000),
       DAIRY_SERV = mped_d_total/(calories/1000),
-      FATTYACID_SERV = ifelse(fatsaturated == 0, 0, (fatmono+fatpoly)/fatsaturated),
+      FATTYACID_SERV = case_when(
+        fatsaturated == 0 ~ 0, 
+        TRUE ~ (fatmono+fatpoly)/fatsaturated
+        ),
       
       REFINEDGRAIN_SERV = mped_G_NWHL/(calories/1000),
       SODIUM_SERV = (SODIUM/1000)/(calories/1000),
@@ -2124,7 +2131,10 @@ HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       SEAPLANTPRO_SERV = (DR1T_PF_SEAFD_HI+DR1T_PF_SEAFD_LOW+DR1T_PF_NUTSDS+DR1T_PF_SOY+DR1T_PF_LEGUMES)/(DR1TKCAL/1000),
       WHOLEGRAIN_SERV = DR1T_G_WHOLE/(DR1TKCAL/1000),
       DAIRY_SERV = DR1T_D_TOTAL/(DR1TKCAL/1000),
-      FATTYACID_SERV = ifelse(DR1TSFAT == 0, 0, (DR1TMFAT+DR1TPFAT)/DR1TSFAT),
+      FATTYACID_SERV = case_when(
+        DR1TSFAT == 0 ~ 0, 
+        TRUE ~ (DR1TMFAT+DR1TPFAT)/DR1TSFAT
+        ),
       
       REFINEDGRAIN_SERV = DR1T_G_REFINED/(DR1TKCAL/1000),
       SODIUM_SERV = (DR1TSODI/1000)/(DR1TKCAL/1000),
@@ -2603,7 +2613,7 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
         DR1TSFAT == 0 ~ 0, 
         TRUE ~ DR1TMFAT/DR1TSFAT
       ),
-      ALCOHOL_SERV = DR1T_A_DRINKS
+      ALCOHOL_SERV = DR1TALCO
     ) 
   
   ##Create variables and functions needed for MED
@@ -2636,7 +2646,9 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       MED_FISH = median_healthy(FISH_SERV),
       MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV),
       MED_MONSATFAT = median_healthy(MONSATFAT_SERV),
-      MED_ALCOHOL = ifelse(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10, 1, 0),
+      MED_ALCOHOL = case_when(
+        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        TRUE ~ 0),
       
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
@@ -2764,9 +2776,9 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
-    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    group_by(SEQN) %>%
-    summarize(
+    tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
+    dplyr::group_by(SEQN) %>%
+    dplyr::summarize(
       DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
                     IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,
                     VITA,VITC,VITD,VITE,ZN, na.rm = TRUE),
@@ -3323,9 +3335,7 @@ MED_ASA24 = function(DATA_PATH){
         SFAT == 0 ~ 0, 
         TRUE ~ MFAT/SFAT
       ),
-      ALCOHOL_SERV = case_when(
-        ALC  <=25 & ALC >= 10 ~ 1, 
-        TRUE ~ 0),
+      ALCOHOL_SERV = ALC,
     ) 
   
   ##Create variables and functions needed for MED
@@ -3357,7 +3367,9 @@ MED_ASA24 = function(DATA_PATH){
       MED_FISH = median_healthy(FISH_SERV),
       MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV),
       MED_MONSATFAT = median_healthy(MONSATFAT_SERV),
-      MED_ALCOHOL = ifelse(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10, 1, 0),
+      MED_ALCOHOL = case_when(
+        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        TRUE ~ 0),
       
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
@@ -3453,9 +3465,9 @@ DII_ASA24 = function(DATA_PATH){
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
-    pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    group_by(UserName) %>%
-    summarize(
+    tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
+    tidyr::group_by(UserName) %>% 
+    dplyr::summarize(
       DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
                     VITC, VITD, VITE, ZN, na.rm = TRUE),
@@ -3837,7 +3849,7 @@ MED_DHQ3 = function(DATA_PATH){
         `Total saturated fatty acids (g)` == 0 ~ 0, 
         TRUE ~ `Total monounsaturated fatty acids (g)`/`Total saturated fatty acids (g)`
       ),
-      ALCOHOL_SERV = `Alcohol (drink(s))`
+      ALCOHOL_SERV = `Alcohol (g)`
     ) 
   
   ##Create variables and functions needed for MED
@@ -3867,7 +3879,9 @@ MED_DHQ3 = function(DATA_PATH){
       MED_FISH = median_healthy(FISH_SERV),
       MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV),
       MED_MONSATFAT = median_healthy(MONSATFAT_SERV),
-      MED_ALCOHOL = ifelse(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10, 1, 0),
+      MED_ALCOHOL = case_when(
+        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        TRUE ~ 0),
       
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
       MED_NOETOH = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT
