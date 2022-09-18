@@ -3647,10 +3647,10 @@ HEI2015_DHQ3 = function(DATA_PATH){
 #' @import dplyr
 #' @import readr
 #' @import haven
-#' @param DATA_PATH The file path for the data. The data is Total Daily Results file, ending with results.csv
+#' @param DATA_PATH The file path for the data. The data is Detailed analysis file, ending with detail.csv
 #' @return The AHEI and its component scores
 #' @examples
-#' DATA_PATH = "/Users/james/Desktop/data/results.csv"
+#' DATA_PATH = "/Users/james/Desktop/data/detail.csv"
 #' AHEI_DHQ3(DATA_PATH)
 #' @export
 
