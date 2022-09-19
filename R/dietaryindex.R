@@ -3466,7 +3466,7 @@ DII_ASA24 = function(DATA_PATH){
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    tidyr::group_by(UserName) %>% 
+    dplyr::group_by(UserName) %>% 
     dplyr::summarize(
       DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
