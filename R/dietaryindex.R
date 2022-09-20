@@ -685,6 +685,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
+#' @param REPEATNUM The number of repeated record with each participant, 1st collection=1, 2nd collection =2, etc. If no repeat, just give 1 in all data if fill REPEATNUM=NULL
 #' @param ALCOHOL Unit=g
 #' @param VITB12 Unit=μg
 #' @param VITB6 Unit=mg
@@ -737,7 +738,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
 
 #Score calculation for DII
 
-DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, BCAROTENE=NULL, CAFFEINE=NULL, CARB=NULL, CHOLES=NULL, KCAL=NULL, EUGENOL=NULL,
+DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=NULL, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, BCAROTENE=NULL, CAFFEINE=NULL, CARB=NULL, CHOLES=NULL, KCAL=NULL, EUGENOL=NULL,
                TOTALFAT=NULL, FIBER=NULL, FOLICACID=NULL, GARLIC=NULL, GINGER=NULL,IRON=NULL, MG=NULL, MUFA=NULL, NIACIN=NULL, N3FAT=NULL, N6FAT=NULL,ONION=NULL, PROTEIN=NULL, PUFA=NULL, 
                RIBOFLAVIN=NULL,SAFFRON=NULL, SATFAT=NULL, SE=NULL, THIAMIN=NULL, TRANSFAT=NULL,TURMERIC=NULL, VITA=NULL, VITC=NULL, VITD=NULL, VITE=NULL, ZN=NULL, TEA=NULL,
                FLA3OL=NULL,FLAVONES=NULL,FLAVONOLS=NULL,FLAVONONES=NULL,ANTHOC=NULL,ISOFLAVONES=NULL,PEPPER=NULL,THYME=NULL,ROSEMARY=NULL){
@@ -792,11 +793,11 @@ DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, B
       ROSEMARY = ROSEMARY)
   
   COHORT = SERV_DATA %>%
-    dplyr::select(RESPONDENTID, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, EUGENOL,
+    dplyr::select(RESPONDENTID, REPEATNUM, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, EUGENOL,
                   TOTALFAT, FIBER, FOLICACID, GARLIC, GINGER,IRON, MG, MUFA, NIACIN, N3FAT, N6FAT,ONION, PROTEIN, PUFA,
                   RIBOFLAVIN,SAFFRON, SATFAT, SE, THIAMIN, TRANSFAT,TURMERIC, VITA, VITC, VITD, VITE, ZN, TEA,
                   FLA3OL,FLAVONES,FLAVONOLS,FLAVONONES,ANTHOC,ISOFLAVONES,PEPPER,THYME,ROSEMARY)%>%
-    tidyr::pivot_longer(-RESPONDENTID, names_to="Variable", values_to="Value")
+    tidyr::pivot_longer(-c(RESPONDENTID, REPEATNUM), names_to="Variable", values_to="Value")
   
   Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
                "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA",
@@ -826,7 +827,7 @@ DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, B
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    dplyr:group_by(RESPONDENTID) %>%
+    dplyr:group_by(RESPONDENTID, REPEATNUM) %>%
     dplyr:summarize(
       ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE),
       VITB12 = base::sum(VITB12, na.rm = TRUE),
@@ -3400,7 +3401,7 @@ DII_ASA24 = function(DATA_PATH){
   }
   
   #Serving size calculation for DII
-  COHORT = COHORT %>%
+  COHORT1 = COHORT %>%
     dplyr::mutate(
       ALCOHOL = ALC,
       VITB12 = VB12,
@@ -3431,12 +3432,12 @@ DII_ASA24 = function(DATA_PATH){
       VITE = ATOC,
       ZN = ZINC
     ) %>%
-    dplyr::select(UserName, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+    dplyr::select(UserName, RecallNo, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                   IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
                   VITC, VITD, VITE, ZN)
   
-  COHORT = COHORT %>%
-    tidyr::pivot_longer(-UserName, names_to="Variable", values_to="Value")
+  COHORT2 = COHORT1 %>%
+    tidyr::pivot_longer(-c(UserName, RecallNo), names_to="Variable", values_to="Value")
   
   Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
                "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA", 
@@ -3459,22 +3460,22 @@ DII_ASA24 = function(DATA_PATH){
   
   #Score calculation for DII  
   
-  COHORT %>%
+  COHORT2 %>%
     dplyr::inner_join(DII_STD, by=c("Variable")) %>%
     dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    dplyr::group_by(UserName) %>% 
+    dplyr::group_by(UserName, RecallNo) %>% 
     dplyr::summarize(
       DII_ALL = base::sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                    IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
-                    VITC, VITD, VITE, ZN, na.rm = TRUE),
+                          IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
+                          VITC, VITD, VITE, ZN, na.rm = TRUE),
       
       DII_NOETOH =  base::sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                        IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
-                        VITC, VITD, VITE, ZN, na.rm = TRUE),
+                              IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
+                              VITC, VITD, VITE, ZN, na.rm = TRUE),
       
       ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE), 
       VITB12 = base::sum(VITB12, na.rm = TRUE), 
