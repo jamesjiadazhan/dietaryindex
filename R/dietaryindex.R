@@ -219,24 +219,24 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
-#' @param FRT_FRTJ_SERV The serving size of All whole fruits + 100\% juice,  unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
-#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
-#' @param LOWF_DAIRY_SERV The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
-#' @param WGRAIN_SERV The serving size of whole grains, unit=1oz
-#' @param ALLMEAT_SERV The serving size of all meat consumption, including meat, fish, and poultry, unit=servings/day = 1oz
-#' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
-#' @param FATOIL_SERV The serving size of discretionary fats and oils, including added Plant oil + Animal fat, unit=servings/day = 1tbsp = 14 g
-#' @param ADDEDSUGAR_SERV The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal
-#' @param SODIUM_SERV The serving size of sodium, unit=mg/day
+#' @param VEG_SERV_DASHI The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
+#' @param FRT_FRTJ_SERV_DASHI The serving size of All whole fruits + 100\% juice,  unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
+#' @param NUTSLEG_SERV_DASHI The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
+#' @param LOWF_DAIRY_SERV_DASHI The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
+#' @param WGRAIN_SERV_DASHI The serving size of whole grains, unit=1oz
+#' @param ALLMEAT_SERV_DASHI The serving size of all meat consumption, including meat, fish, and poultry, unit=servings/day = 1oz
+#' @param REDPROC_MEAT_SERV_DASHI The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
+#' @param FATOIL_SERV_DASHI The serving size of discretionary fats and oils, including added Plant oil + Animal fat, unit=servings/day = 1tbsp = 14 g
+#' @param ADDEDSUGAR_SERV_DASHI The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal
+#' @param SODIUM_SERV_DASHI The serving size of sodium, unit=mg/day
 #' @return The DASHI index/score
 #' @examples
-#' DASHI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$ALLMEAT_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$FATOIL_SERV, SERV_DATA$ADDEDSUGAR_SERV, SERV_DATA$SODIUM_SERV)
+#' DASHI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV_DASHI, SERV_DATA$FRT_FRTJ_SERV_DASHI, SERV_DATA$NUTSLEG_SERV_DASHI, SERV_DATA$LOWF_DAIRY_SERV_DASHI, SERV_DATA$WGRAIN_SERV_DASHI, SERV_DATA$ALLMEAT_SERV_DASHI, SERV_DATA$REDPROC_MEAT_SERV_DASHI, SERV_DATA$FATOIL_SERV_DASHI, SERV_DATA$ADDEDSUGAR_SERV_DASHI, SERV_DATA$SODIUM_SERV_DASHI)
 #' @export
 
 #Score calculation for DASHI
-DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_FRTJ_SERV, NUTSLEG_SERV, LOWF_DAIRY_SERV, WGRAIN_SERV,
-                 ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV){
+DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV_DASHI, FRT_FRTJ_SERV_DASHI, NUTSLEG_SERV_DASHI, LOWF_DAIRY_SERV_DASHI, WGRAIN_SERV_DASHI,
+                 ALLMEAT_SERV_DASHI, REDPROC_MEAT_SERV_DASHI, FATOIL_SERV_DASHI, ADDEDSUGAR_SERV_DASHI, SODIUM_SERV_DASHI){
   ##Create variables and functions needed for DASHI calculation
   DASHI_MIN = 0
   DASHI_MAX = 5
@@ -301,17 +301,17 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_FRTJ_SERV, NUTSLEG_SERV,
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
       
-      DASHI_VEG = DASHI_HEALTHY(VEG_SERV, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
-      DASHI_FRT = DASHI_HEALTHY(FRT_FRTJ_SERV, DASHI_MIN_FRT_FRTJ_SERV, DASHI_MAX_FRT_FRTJ_SERV),
-      DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
-      DASHI_LOWFATDAIRY = DASHI_HEALTHY(LOWF_DAIRY_SERV, DASHI_MIN_LOWF_DAIRY_SERV, DASHI_MAX_LOWF_DAIRY_SERV),
-      DASHI_WGRAIN = DASHI_HEALTHY(WGRAIN_SERV, DASHI_MIN_WGRAIN_SERV, DASHI_MAX_WGRAIN_SERV),
+      DASHI_VEG = DASHI_HEALTHY(VEG_SERV_DASHI, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
+      DASHI_FRT = DASHI_HEALTHY(FRT_FRTJ_SERV_DASHI, DASHI_MIN_FRT_FRTJ_SERV, DASHI_MAX_FRT_FRTJ_SERV),
+      DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV_DASHI, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
+      DASHI_LOWFATDAIRY = DASHI_HEALTHY(LOWF_DAIRY_SERV_DASHI, DASHI_MIN_LOWF_DAIRY_SERV, DASHI_MAX_LOWF_DAIRY_SERV),
+      DASHI_WGRAIN = DASHI_HEALTHY(WGRAIN_SERV_DASHI, DASHI_MIN_WGRAIN_SERV, DASHI_MAX_WGRAIN_SERV),
 
-      DASHI_ALLMEAT = DASHI_UNHEALTHY(ALLMEAT_SERV, DASHI_MIN_ALLMEAT_SERV, DASHI_MAX_ALLMEAT_SERV),
-      DASHI_REDPROC_MEAT = DASHI_UNHEALTHY(REDPROC_MEAT_SERV, DASHI_MIN_REDPROC_MEAT_SERV, DASHI_MAX_REDPROC_MEAT_SERV),
-      DASHI_FATOIL = DASHI_UNHEALTHY(FATOIL_SERV, DASHI_MIN_FATOIL_SERV, DASHI_MAX_FATOIL_SERV),
-      DASHI_ADDEDSUGAR = DASHI_UNHEALTHY(ADDEDSUGAR_SERV, DASHI_MIN_ADDEDSUGAR_SERV, DASHI_MAX_ADDEDSUGAR_SERV),
-      DASHI_SODIUM = DASHI_UNHEALTHY(SODIUM_SERV, DASHI_MIN_SODIUM_SERV, DASHI_MAX_SODIUM_SERV),
+      DASHI_ALLMEAT = DASHI_UNHEALTHY(ALLMEAT_SERV_DASHI, DASHI_MIN_ALLMEAT_SERV, DASHI_MAX_ALLMEAT_SERV),
+      DASHI_REDPROC_MEAT = DASHI_UNHEALTHY(REDPROC_MEAT_SERV_DASHI, DASHI_MIN_REDPROC_MEAT_SERV, DASHI_MAX_REDPROC_MEAT_SERV),
+      DASHI_FATOIL = DASHI_UNHEALTHY(FATOIL_SERV_DASHI, DASHI_MIN_FATOIL_SERV, DASHI_MAX_FATOIL_SERV),
+      DASHI_ADDEDSUGAR = DASHI_UNHEALTHY(ADDEDSUGAR_SERV_DASHI, DASHI_MIN_ADDEDSUGAR_SERV, DASHI_MAX_ADDEDSUGAR_SERV),
+      DASHI_SODIUM = DASHI_UNHEALTHY(SODIUM_SERV_DASHI, DASHI_MIN_SODIUM_SERV, DASHI_MAX_SODIUM_SERV),
       DASHI_ALL= DASHI_VEG + DASHI_FRT + DASHI_NUTSLEG + DASHI_LOWFATDAIRY +
         DASHI_WGRAIN + DASHI_ALLMEAT + DASHI_REDPROC_MEAT + DASHI_FATOIL + DASHI_ADDEDSUGAR + DASHI_SODIUM
     )%>%
