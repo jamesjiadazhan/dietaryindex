@@ -815,12 +815,12 @@ DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, B
          8,25.1,0.66,3.75,754.3,518.6,43.46,2.21,1.49,2.19,
          1.53,85.9,0.07,6.79,3.82,21.14,0.2,7.07,0.99,15)
   
-  DII_STD = data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
+  DII_STD = base::data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
   
   #Score calculation for DII
   
   COHORT = COHORT %>%
-    inner_join(DII_STD, by=c("Variable")) %>%
+    dplyr::inner_join(DII_STD, by=c("Variable")) %>%
     dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
@@ -828,51 +828,51 @@ DII = function(SERV_DATA, RESPONDENTID, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, B
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
     dplyr:group_by(RESPONDENTID) %>%
     dplyr:summarize(
-      ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
-      VITB12 = sum(VITB12, na.rm = TRUE),
-      VITB6 = sum(VITB6, na.rm = TRUE),
-      BCAROTENE = sum(BCAROTENE, na.rm = TRUE),
-      CAFFEINE = sum(CAFFEINE, na.rm = TRUE),
-      CARB = sum(CARB, na.rm = TRUE),
-      CHOLES = sum(CHOLES, na.rm = TRUE),
-      KCAL= sum(KCAL, na.rm = TRUE),
-      EUGENOL= sum(EUGENOL, na.rm = TRUE),
-      TOTALFAT= sum(TOTALFAT, na.rm = TRUE),
-      FIBER  = sum(FIBER, na.rm = TRUE),
-      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
-      GARLIC  = sum(GARLIC, na.rm = TRUE),
-      GINGER  = sum(GINGER, na.rm = TRUE),
-      IRON  = sum(IRON, na.rm = TRUE),
-      MG  = sum(MG, na.rm = TRUE),
-      MUFA  = sum(MUFA, na.rm = TRUE),
-      NIACIN  = sum(NIACIN, na.rm = TRUE),
-      N3FAT  = sum(N3FAT, na.rm = TRUE),
-      N6FAT  = sum(N6FAT, na.rm = TRUE),
-      ONION  = sum(ONION, na.rm = TRUE),
-      PROTEIN  = sum(PROTEIN, na.rm = TRUE),
-      PUFA  = sum(PUFA, na.rm = TRUE),
-      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE),
-      SAFFRON  = sum(SAFFRON, na.rm = TRUE),
-      SATFAT  = sum(SATFAT, na.rm = TRUE),
-      SE  = sum(SE, na.rm = TRUE),
-      THIAMIN  = sum(THIAMIN, na.rm = TRUE),
-      TRANSFAT  = sum(TRANSFAT, na.rm = TRUE),
-      TURMERIC  = sum(TURMERIC, na.rm = TRUE),
-      VITA  = sum(VITA, na.rm = TRUE),
-      VITC  = sum(VITC, na.rm = TRUE),
-      VITD  = sum(VITD, na.rm = TRUE),
-      VITE = sum(VITE, na.rm = TRUE),
-      ZN = sum(ZN, na.rm = TRUE),
-      TEA = sum(TEA, na.rm = TRUE),
-      FLA3OL = sum(FLA3OL, na.rm = TRUE),
-      FLAVONES = sum(FLAVONES, na.rm = TRUE),
-      FLAVONOLS = sum(FLAVONOLS, na.rm = TRUE),
-      FLAVONONES = sum(FLAVONONES, na.rm = TRUE),
-      ANTHOC = sum(ANTHOC, na.rm = TRUE),
-      ISOFLAVONES = sum(ISOFLAVONES, na.rm = TRUE),
-      PEPPER = sum(PEPPER, na.rm = TRUE),
-      THYME = sum(THYME, na.rm = TRUE),
-      ROSEMARY = sum(ROSEMARY, na.rm = TRUE),
+      ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE),
+      VITB12 = base::sum(VITB12, na.rm = TRUE),
+      VITB6 = base::sum(VITB6, na.rm = TRUE),
+      BCAROTENE = base::sum(BCAROTENE, na.rm = TRUE),
+      CAFFEINE = base::sum(CAFFEINE, na.rm = TRUE),
+      CARB = base::sum(CARB, na.rm = TRUE),
+      CHOLES = base::sum(CHOLES, na.rm = TRUE),
+      KCAL= base::sum(KCAL, na.rm = TRUE),
+      EUGENOL= base::sum(EUGENOL, na.rm = TRUE),
+      TOTALFAT= base::sum(TOTALFAT, na.rm = TRUE),
+      FIBER  = base::sum(FIBER, na.rm = TRUE),
+      FOLICACID  = base::sum(FOLICACID, na.rm = TRUE),
+      GARLIC  = base::sum(GARLIC, na.rm = TRUE),
+      GINGER  = base::sum(GINGER, na.rm = TRUE),
+      IRON  = base::sum(IRON, na.rm = TRUE),
+      MG  = base::sum(MG, na.rm = TRUE),
+      MUFA  = base::sum(MUFA, na.rm = TRUE),
+      NIACIN  = base::sum(NIACIN, na.rm = TRUE),
+      N3FAT  = base::sum(N3FAT, na.rm = TRUE),
+      N6FAT  = base::sum(N6FAT, na.rm = TRUE),
+      ONION  = base::sum(ONION, na.rm = TRUE),
+      PROTEIN  = base::sum(PROTEIN, na.rm = TRUE),
+      PUFA  = base::sum(PUFA, na.rm = TRUE),
+      RIBOFLAVIN  = base::sum(RIBOFLAVIN, na.rm = TRUE),
+      SAFFRON  = base::sum(SAFFRON, na.rm = TRUE),
+      SATFAT  = base::sum(SATFAT, na.rm = TRUE),
+      SE  = base::sum(SE, na.rm = TRUE),
+      THIAMIN  = base::sum(THIAMIN, na.rm = TRUE),
+      TRANSFAT  = base::sum(TRANSFAT, na.rm = TRUE),
+      TURMERIC  = base::sum(TURMERIC, na.rm = TRUE),
+      VITA  = base::sum(VITA, na.rm = TRUE),
+      VITC  = base::sum(VITC, na.rm = TRUE),
+      VITD  = base::sum(VITD, na.rm = TRUE),
+      VITE = base::sum(VITE, na.rm = TRUE),
+      ZN = base::sum(ZN, na.rm = TRUE),
+      TEA = base::sum(TEA, na.rm = TRUE),
+      FLA3OL = base::sum(FLA3OL, na.rm = TRUE),
+      FLAVONES = base::sum(FLAVONES, na.rm = TRUE),
+      FLAVONOLS = base::sum(FLAVONOLS, na.rm = TRUE),
+      FLAVONONES = base::sum(FLAVONONES, na.rm = TRUE),
+      ANTHOC = base::sum(ANTHOC, na.rm = TRUE),
+      ISOFLAVONES = base::sum(ISOFLAVONES, na.rm = TRUE),
+      PEPPER = base::sum(PEPPER, na.rm = TRUE),
+      THYME = base::sum(THYME, na.rm = TRUE),
+      ROSEMARY = base::sum(ROSEMARY, na.rm = TRUE),
     )
   
   for(i in 1:length(COHORT$RESPONDENTID)){
@@ -2766,12 +2766,12 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
          8,25.1,0.66,3.75,754.3,518.6,43.46,2.21,1.49,2.19,
          1.53,85.9,0.07,6.79,3.82,21.14,0.2,7.07,0.99,15)
   
-  DII_STD = data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
+  DII_STD = base::data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
   
   #Score calculation for DII  
   
   COHORT %>%
-    inner_join(DII_STD, by=c("Variable")) %>%
+    dplyr::inner_join(DII_STD, by=c("Variable")) %>%
     dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
@@ -2779,42 +2779,42 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
     dplyr::group_by(SEQN) %>%
     dplyr::summarize(
-      DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+      DII_ALL = base::sum(ALCOHOL, VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
                     IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,
                     VITA,VITC,VITD,VITE,ZN, na.rm = TRUE),
       
-      DII_NOETOH =  sum(VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
+      DII_NOETOH =  base::sum(VITB12, VITB6, BCAROTENE,CAFFEINE,CARB,CHOLES,KCAL,TOTALFAT,FIBER,FOLICACID,
                         IRON,MG,MUFA,NIACIN,N3FAT,N6FAT,PROTEIN,PUFA,RIBOFLAVIN,SATFAT,SE,THIAMIN,
                         VITA,VITC,VITD,VITE,ZN, na.rm = TRUE),
       
-      ALCOHOL = sum(ALCOHOL, na.rm = TRUE), 
-      VITB12 = sum(VITB12, na.rm = TRUE), 
-      VITB6 = sum(VITB6, na.rm = TRUE), 
-      BCAROTENE = sum(BCAROTENE, na.rm = TRUE), 
-      CAFFEINE = sum(CAFFEINE, na.rm = TRUE), 
-      CARB = sum(CARB, na.rm = TRUE), 
-      CHOLES = sum(CHOLES, na.rm = TRUE), 
-      KCAL= sum(KCAL, na.rm = TRUE), 
-      TOTALFAT= sum(TOTALFAT, na.rm = TRUE), 
-      FIBER  = sum(FIBER, na.rm = TRUE), 
-      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
-      IRON  = sum(IRON, na.rm = TRUE), 
-      MG  = sum(MG, na.rm = TRUE), 
-      MUFA  = sum(MUFA, na.rm = TRUE), 
-      NIACIN  = sum(NIACIN, na.rm = TRUE), 
-      N3FAT  = sum(N3FAT, na.rm = TRUE), 
-      N6FAT  = sum(N6FAT, na.rm = TRUE), 
-      PROTEIN  = sum(PROTEIN, na.rm = TRUE), 
-      PUFA  = sum(PUFA, na.rm = TRUE), 
-      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE), 
-      SATFAT  = sum(SATFAT, na.rm = TRUE), 
-      SE  = sum(SE, na.rm = TRUE), 
-      THIAMIN  = sum(THIAMIN, na.rm = TRUE), 
-      VITA  = sum(VITA, na.rm = TRUE),
-      VITC  = sum(VITC), na.rm = TRUE, 
-      VITD  = sum(VITD, na.rm = TRUE), 
-      VITE = sum(VITE, na.rm = TRUE), 
-      ZN = sum(ZN, na.rm = TRUE)
+      ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE), 
+      VITB12 = base::sum(VITB12, na.rm = TRUE), 
+      VITB6 = base::sum(VITB6, na.rm = TRUE), 
+      BCAROTENE = base::sum(BCAROTENE, na.rm = TRUE), 
+      CAFFEINE = base::sum(CAFFEINE, na.rm = TRUE), 
+      CARB = base::sum(CARB, na.rm = TRUE), 
+      CHOLES = base::sum(CHOLES, na.rm = TRUE), 
+      KCAL= base::sum(KCAL, na.rm = TRUE), 
+      TOTALFAT= base::sum(TOTALFAT, na.rm = TRUE), 
+      FIBER  = base::sum(FIBER, na.rm = TRUE), 
+      FOLICACID  = base::sum(FOLICACID, na.rm = TRUE),
+      IRON  = base::sum(IRON, na.rm = TRUE), 
+      MG  = base::sum(MG, na.rm = TRUE), 
+      MUFA  = base::sum(MUFA, na.rm = TRUE), 
+      NIACIN  = base::sum(NIACIN, na.rm = TRUE), 
+      N3FAT  = base::sum(N3FAT, na.rm = TRUE), 
+      N6FAT  = base::sum(N6FAT, na.rm = TRUE), 
+      PROTEIN  = base::sum(PROTEIN, na.rm = TRUE), 
+      PUFA  = base::sum(PUFA, na.rm = TRUE), 
+      RIBOFLAVIN  = base::sum(RIBOFLAVIN, na.rm = TRUE), 
+      SATFAT  = base::sum(SATFAT, na.rm = TRUE), 
+      SE  = base::sum(SE, na.rm = TRUE), 
+      THIAMIN  = base::sum(THIAMIN, na.rm = TRUE), 
+      VITA  = base::sum(VITA, na.rm = TRUE),
+      VITC  = base::sum(VITC), na.rm = TRUE, 
+      VITD  = base::sum(VITD, na.rm = TRUE), 
+      VITE = base::sum(VITE, na.rm = TRUE), 
+      ZN = base::sum(ZN, na.rm = TRUE)
     )
 }
 
@@ -3455,12 +3455,12 @@ DII_ASA24 = function(DATA_PATH){
          8,25.1,0.66,3.75,754.3,518.6,43.46,2.21,1.49,2.19,
          1.53,85.9,0.07,6.79,3.82,21.14,0.2,7.07,0.99,15)
   
-  DII_STD = data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
+  DII_STD = base::data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
   
   #Score calculation for DII  
   
   COHORT %>%
-    inner_join(DII_STD, by=c("Variable")) %>%
+    dplyr::inner_join(DII_STD, by=c("Variable")) %>%
     dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
@@ -3468,42 +3468,42 @@ DII_ASA24 = function(DATA_PATH){
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
     dplyr::group_by(UserName) %>% 
     dplyr::summarize(
-      DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+      DII_ALL = base::sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
                     VITC, VITD, VITE, ZN, na.rm = TRUE),
       
-      DII_NOETOH =  sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+      DII_NOETOH =  base::sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                         IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN, VITA,
                         VITC, VITD, VITE, ZN, na.rm = TRUE),
       
-      ALCOHOL = sum(ALCOHOL, na.rm = TRUE), 
-      VITB12 = sum(VITB12, na.rm = TRUE), 
-      VITB6 = sum(VITB6, na.rm = TRUE), 
-      BCAROTENE = sum(BCAROTENE, na.rm = TRUE), 
-      CAFFEINE = sum(CAFFEINE, na.rm = TRUE), 
-      CARB = sum(CARB, na.rm = TRUE), 
-      CHOLES = sum(CHOLES, na.rm = TRUE), 
-      KCAL= sum(KCAL, na.rm = TRUE), 
-      TOTALFAT= sum(TOTALFAT, na.rm = TRUE), 
-      FIBER  = sum(FIBER, na.rm = TRUE), 
-      FOLICACID  = sum(FOLICACID, na.rm = TRUE),
-      IRON  = sum(IRON, na.rm = TRUE), 
-      MG  = sum(MG, na.rm = TRUE), 
-      MUFA  = sum(MUFA, na.rm = TRUE), 
-      NIACIN  = sum(NIACIN, na.rm = TRUE), 
-      N3FAT  = sum(N3FAT, na.rm = TRUE), 
-      N6FAT  = sum(N6FAT, na.rm = TRUE), 
-      PROTEIN  = sum(PROTEIN, na.rm = TRUE), 
-      PUFA  = sum(PUFA, na.rm = TRUE), 
-      RIBOFLAVIN  = sum(RIBOFLAVIN, na.rm = TRUE), 
-      SATFAT  = sum(SATFAT, na.rm = TRUE), 
-      SE  = sum(SE, na.rm = TRUE), 
-      THIAMIN  = sum(THIAMIN, na.rm = TRUE), 
-      VITA  = sum(VITA, na.rm = TRUE),
-      VITC  = sum(VITC), na.rm = TRUE, 
-      VITD  = sum(VITD, na.rm = TRUE), 
-      VITE = sum(VITE, na.rm = TRUE), 
-      ZN = sum(ZN, na.rm = TRUE)
+      ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE), 
+      VITB12 = base::sum(VITB12, na.rm = TRUE), 
+      VITB6 = base::sum(VITB6, na.rm = TRUE), 
+      BCAROTENE = base::sum(BCAROTENE, na.rm = TRUE), 
+      CAFFEINE = base::sum(CAFFEINE, na.rm = TRUE), 
+      CARB = base::sum(CARB, na.rm = TRUE), 
+      CHOLES = base::sum(CHOLES, na.rm = TRUE), 
+      KCAL= base::sum(KCAL, na.rm = TRUE), 
+      TOTALFAT= base::sum(TOTALFAT, na.rm = TRUE), 
+      FIBER  = base::sum(FIBER, na.rm = TRUE), 
+      FOLICACID  = base::sum(FOLICACID, na.rm = TRUE),
+      IRON  = base::sum(IRON, na.rm = TRUE), 
+      MG  = base::sum(MG, na.rm = TRUE), 
+      MUFA  = base::sum(MUFA, na.rm = TRUE), 
+      NIACIN  = base::sum(NIACIN, na.rm = TRUE), 
+      N3FAT  = base::sum(N3FAT, na.rm = TRUE), 
+      N6FAT  = base::sum(N6FAT, na.rm = TRUE), 
+      PROTEIN  = base::sum(PROTEIN, na.rm = TRUE), 
+      PUFA  = base::sum(PUFA, na.rm = TRUE), 
+      RIBOFLAVIN  = base::sum(RIBOFLAVIN, na.rm = TRUE), 
+      SATFAT  = base::sum(SATFAT, na.rm = TRUE), 
+      SE  = base::sum(SE, na.rm = TRUE), 
+      THIAMIN  = base::sum(THIAMIN, na.rm = TRUE), 
+      VITA  = base::sum(VITA, na.rm = TRUE),
+      VITC  = base::sum(VITC), na.rm = TRUE, 
+      VITD  = base::sum(VITD, na.rm = TRUE), 
+      VITE = base::sum(VITE, na.rm = TRUE), 
+      ZN = base::sum(ZN, na.rm = TRUE)
     )
   
 }
