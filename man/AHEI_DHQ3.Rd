@@ -7,7 +7,7 @@
 AHEI_DHQ3(DATA_PATH)
 }
 \arguments{
-\item{DATA_PATH}{The file path for the data. The data is Total Daily Results file, ending with results.csv}
+\item{DATA_PATH}{The file path for the data. The data is Detailed analysis file, ending with detail.csv}
 }
 \value{
 The AHEI and its component scores
@@ -16,6 +16,6 @@ The AHEI and its component scores
 Calculate the AHEI for the DHQ3 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/results.csv"
+DATA_PATH = "/Users/james/Desktop/data/detail.csv"
 AHEI_DHQ3(DATA_PATH)
 }

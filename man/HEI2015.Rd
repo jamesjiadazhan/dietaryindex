@@ -7,20 +7,20 @@
 HEI2015(
   SERV_DATA,
   RESPONDENTID,
-  TOTALKCAL,
-  TOTALFRT_SERV,
-  FRT_SERV,
-  VEG_SERV,
-  GREENNBEAN_SERV,
-  TOTALPRO_SERV,
-  SEAPLANTPRO_SERV,
-  WHOLEGRAIN_SERV,
-  DAIRY_SERV,
-  FATTYACID_SERV,
-  REFINEDGRAIN_SERV,
-  SODIUM_SERV,
-  ADDEDSUGAR_SERV,
-  SATFAT_SERV
+  TOTALKCAL_HEI2015,
+  TOTALFRT_SERV_HEI2015,
+  FRT_SERV_HEI2015,
+  VEG_SERV_HEI2015,
+  GREENNBEAN_SERV_HEI2015,
+  TOTALPRO_SERV_HEI2015,
+  SEAPLANTPRO_SERV_HEI2015,
+  WHOLEGRAIN_SERV_HEI2015,
+  DAIRY_SERV_HEI2015,
+  FATTYACID_SERV_HEI2015,
+  REFINEDGRAIN_SERV_HEI2015,
+  SODIUM_SERV_HEI2015,
+  ADDEDSUGAR_SERV_HEI2015,
+  SATFAT_SERV_HEI2015
 )
 }
 \arguments{
@@ -28,33 +28,33 @@ HEI2015(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{TOTALKCAL}{The total calorie from all foods and drinks}
+\item{TOTALKCAL_HEI2015}{The total calorie from all foods and drinks}
 
-\item{TOTALFRT_SERV}{The serving size of total fruits including fruit juice, unit= cup eq.}
+\item{TOTALFRT_SERV_HEI2015}{The serving size of total fruits including fruit juice, unit= cup eq.}
 
-\item{FRT_SERV}{The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.}
+\item{FRT_SERV_HEI2015}{The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.}
 
-\item{VEG_SERV}{The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
+\item{VEG_SERV_HEI2015}{The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
 
-\item{GREENNBEAN_SERV}{The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
+\item{GREENNBEAN_SERV_HEI2015}{The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.}
 
-\item{TOTALPRO_SERV}{The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz}
+\item{TOTALPRO_SERV_HEI2015}{The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz}
 
-\item{SEAPLANTPRO_SERV}{The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz}
+\item{SEAPLANTPRO_SERV_HEI2015}{The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz}
 
-\item{WHOLEGRAIN_SERV}{The serving size of whole grains, unit=oz. eq.}
+\item{WHOLEGRAIN_SERV_HEI2015}{The serving size of whole grains, unit=oz. eq.}
 
-\item{DAIRY_SERV}{The serving size of all dairy, unit=cup eq.}
+\item{DAIRY_SERV_HEI2015}{The serving size of all dairy, unit=cup eq.}
 
-\item{FATTYACID_SERV}{The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g}
+\item{FATTYACID_SERV_HEI2015}{The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g}
 
-\item{REFINEDGRAIN_SERV}{The serving size of refined grains, unit=oz. eq.}
+\item{REFINEDGRAIN_SERV_HEI2015}{The serving size of refined grains, unit=oz. eq.}
 
-\item{SODIUM_SERV}{The serving size of sodium, unit=g}
+\item{SODIUM_SERV_HEI2015}{The serving size of sodium, unit=g}
 
-\item{ADDEDSUGAR_SERV}{The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal}
+\item{ADDEDSUGAR_SERV_HEI2015}{The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal}
 
-\item{SATFAT_SERV}{The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal}
+\item{SATFAT_SERV_HEI2015}{The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal}
 }
 \value{
 The HEI2015 index/score
@@ -63,5 +63,5 @@ The HEI2015 index/score
 Calculate the HEI2015 dietary index, Healthy eating index 2015, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$TOTALFRT_SERV, SERV_DATA$FRT_SERV, SERV_DATA$VEG_SERV, SERV_DATA$GREENNBEAN_SERV, SERV_DATA$TOTALPRO_SERV,  SERV_DATA$SEAPLANTPRO_SERV, SERV_DATA$WHOLEGRAIN_SERV, SERV_DATA$DAIRY_SERV, SERV_DATA$FATTYACID_SERV, SERV_DATA$REFINEDGRAIN_SERV,  SERV_DATA$SODIUM_SERV, SERV_DATA$ADDEDSUGAR_SERV, SERV_DATA$SATFAT_SERV)
+HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL_HEI2015, SERV_DATA$TOTALFRT_SERV_HEI2015, SERV_DATA$FRT_SERV_HEI2015, SERV_DATA$VEG_SERV_HEI2015, SERV_DATA$GREENNBEAN_SERV_HEI2015, SERV_DATA$TOTALPRO_SERV_HEI2015,  SERV_DATA$SEAPLANTPRO_SERV_HEI2015, SERV_DATA$WHOLEGRAIN_SERV_HEI2015, SERV_DATA$DAIRY_SERV_HEI2015, SERV_DATA$FATTYACID_SERV_HEI2015, SERV_DATA$REFINEDGRAIN_SERV_HEI2015,  SERV_DATA$SODIUM_SERV_HEI2015, SERV_DATA$ADDEDSUGAR_SERV_HEI2015, SERV_DATA$SATFAT_SERV_HEI2015)
 }

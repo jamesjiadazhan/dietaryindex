@@ -7,14 +7,14 @@
 DASH(
   SERV_DATA,
   RESPONDENTID,
-  FRT_FRTJ_SERV,
-  VEG_SERV,
-  NUTSLEG_SERV,
-  WGRAIN_SERV,
-  LOWF_DAIRY_SERV,
-  SODIUM_SERV,
-  REDPROC_MEAT_SERV,
-  SSB_FRTJ_SERV
+  FRT_FRTJ_SERV_DASH,
+  VEG_SERV_DASH,
+  NUTSLEG_SERV_DASH,
+  WGRAIN_SERV_DASH,
+  LOWF_DAIRY_SERV_DASH,
+  SODIUM_SERV_DASH,
+  REDPROC_MEAT_SERV_DASH,
+  SSB_FRTJ_SERV_DASH
 )
 }
 \arguments{
@@ -22,21 +22,21 @@ DASH(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{FRT_FRTJ_SERV}{The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice}
+\item{FRT_FRTJ_SERV_DASH}{The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice}
 
-\item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
+\item{VEG_SERV_DASH}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
-\item{NUTSLEG_SERV}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
+\item{NUTSLEG_SERV_DASH}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
 
-\item{WGRAIN_SERV}{The serving size of whole grains, unit=1oz}
+\item{WGRAIN_SERV_DASH}{The serving size of whole grains, unit=1oz}
 
-\item{LOWF_DAIRY_SERV}{The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese}
+\item{LOWF_DAIRY_SERV_DASH}{The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese}
 
-\item{SODIUM_SERV}{The serving size of sodium, unit=mg/day}
+\item{SODIUM_SERV_DASH}{The serving size of sodium, unit=mg/day}
 
-\item{REDPROC_MEAT_SERV}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
+\item{REDPROC_MEAT_SERV_DASH}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{SSB_FRTJ_SERV}{The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)}
+\item{SSB_FRTJ_SERV_DASH}{The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)}
 }
 \value{
 The DASH index/score
@@ -45,5 +45,5 @@ The DASH index/score
 Calculate the DASH dietary index, Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$SSB_FRTJ_SERV)
+DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV_DASH, SERV_DATA$VEG_SERV_DASH, SERV_DATA$NUTSLEG_SERV_DASH, SERV_DATA$WGRAIN_SERV_DASH, SERV_DATA$LOWF_DAIRY_SERV_DASH, SERV_DATA$SODIUM_SERV_DASH, SERV_DATA$REDPROC_MEAT_SERV_DASH, SERV_DATA$SSB_FRTJ_SERV_DASH)
 }

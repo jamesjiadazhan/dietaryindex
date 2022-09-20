@@ -7,16 +7,16 @@
 MEDI(
   SERV_DATA,
   RESPONDENTID,
-  FRT_FRTJ_SERV,
-  VEG_SERV,
-  LEGUMES_SERV,
-  WGRAIN_SERV,
-  FISH_SERV,
-  DAIRY_SERV,
-  REDPROC_MEAT_SERV,
-  NUTS_SERV,
-  MONSATFAT_SERV,
-  ALCOHOL_SERV
+  FRT_FRTJ_SERV_MEDI,
+  VEG_SERV_MEDI,
+  LEGUMES_SERV_MEDI,
+  WGRAIN_SERV_MEDI,
+  FISH_SERV_MEDI,
+  DAIRY_SERV_MEDI,
+  REDPROC_MEAT_SERV_MEDI,
+  NUTS_SERV_MEDI,
+  MONSATFAT_SERV_MEDI,
+  ALCOHOL_SERV_MEDI
 )
 }
 \arguments{
@@ -24,25 +24,25 @@ MEDI(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{FRT_FRTJ_SERV}{The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice}
+\item{FRT_FRTJ_SERV_MEDI}{The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice}
 
-\item{VEG_SERV}{The serving size of All raw and cooked vegetables, unit=0.5 c of vege; 1 cup of green leafy}
+\item{VEG_SERV_MEDI}{The serving size of All raw and cooked vegetables, unit=0.5 c of vege; 1 cup of green leafy}
 
-\item{LEGUMES_SERV}{The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
+\item{LEGUMES_SERV_MEDI}{The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
 
-\item{WGRAIN_SERV}{The serving size of whole grains, including Whole wheat bread and flour, whole wheat pasta, brown rice, rusks,  whole grain breakfast cereals, couscous, semolina, unit=1 oz}
+\item{WGRAIN_SERV_MEDI}{The serving size of whole grains, including Whole wheat bread and flour, whole wheat pasta, brown rice, rusks,  whole grain breakfast cereals, couscous, semolina, unit=1 oz}
 
-\item{FISH_SERV}{The serving size of all fish, including Fresh-water and sea-water fish; preserved fish such as salted fish, canned fish; shellfish (squid, prawns, mollusks), unit=serving (4 oz)}
+\item{FISH_SERV_MEDI}{The serving size of all fish, including Fresh-water and sea-water fish; preserved fish such as salted fish, canned fish; shellfish (squid, prawns, mollusks), unit=serving (4 oz)}
 
-\item{DAIRY_SERV}{The serving size of all dairy, including Milk, yogurt, cheese, custard, milk puddings, other milk products, unit=1 serving = 1 cup milk, 1 cup yogurt, 1 ½ ounces hard cheese (cheddar, mozzarella, Swiss, Parmesan), 1/3 cup shredded cheese, 2 ounces processed cheese (American), ½ cup ricotta cheese, 2 cups cottage cheese, 1 cup pudding made with milk, 1 cup frozen yogurt, 1 ½ cups ice cream}
+\item{DAIRY_SERV_MEDI}{The serving size of all dairy, including Milk, yogurt, cheese, custard, milk puddings, other milk products, unit=1 serving = 1 cup milk, 1 cup yogurt, 1 ½ ounces hard cheese (cheddar, mozzarella, Swiss, Parmesan), 1/3 cup shredded cheese, 2 ounces processed cheese (American), ½ cup ricotta cheese, 2 cups cottage cheese, 1 cup pudding made with milk, 1 cup frozen yogurt, 1 ½ cups ice cream}
 
-\item{REDPROC_MEAT_SERV}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)}
+\item{REDPROC_MEAT_SERV_MEDI}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)}
 
-\item{NUTS_SERV}{The serving size of nuts, including Peanuts, almonds, sunflower seeds, cashews, walnuts, unit=1oz}
+\item{NUTS_SERV_MEDI}{The serving size of nuts, including Peanuts, almonds, sunflower seeds, cashews, walnuts, unit=1oz}
 
-\item{MONSATFAT_SERV}{The serving size of the ratio of monounsaturated fat to saturated fat, unit=ratio}
+\item{MONSATFAT_SERV_MEDI}{The serving size of the ratio of monounsaturated fat to saturated fat, unit=ratio}
 
-\item{ALCOHOL_SERV}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=13g}
+\item{ALCOHOL_SERV_MEDI}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=13g}
 }
 \value{
 The MEDI index/score
@@ -51,5 +51,5 @@ The MEDI index/score
 Calculate the MEDI dietary index (serving size-based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LEGUMES_SERV, SERV_DATA$NUTS_SERV,FISH_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$MONSATFAT_SERV, SERV_DATA$ALCOHOL_SERV)
+MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV_MEDI, SERV_DATA$VEG_SERV_MEDI, SERV_DATA$WGRAIN_SERV_MEDI, SERV_DATA$LEGUMES_SERV_MEDI, SERV_DATA$NUTS_SERV_MEDI,FISH_SERV_MEDI, SERV_DATA$REDPROC_MEAT_SERV_MEDI, SERV_DATA$MONSATFAT_SERV_MEDI, SERV_DATA$ALCOHOL_SERV_MEDI)
 }
