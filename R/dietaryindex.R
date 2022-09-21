@@ -7,26 +7,27 @@
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param GENDER The gender of the participant. 2 is female and 1 is male.
-#' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
-#' @param FRT_SERV The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
-#' @param WGRAIN_SERV The serving size of whole grains, unit=grams/day
-#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
-#' @param N3FAT_SERV The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)
-#' @param PUFA_SERV The serving size of PUFA, unit=\% of energy 
-#' @param SSB_FRTJ_SERV The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
-#' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
-#' @param TRANS_SERV The serving size of trans fat, unit=\% of energy
-#' @param SODIUM_SERV The serving size of sodium, unit=mg/day 
-#' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g
+#' @param TOTALKCAL_AHEI The total kcal, for adjusting sodium intake
+#' @param VEG_SERV_AHEI The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
+#' @param FRT_SERV_AHEI The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
+#' @param WGRAIN_SERV_AHEI The serving size of whole grains, unit=grams/day
+#' @param NUTSLEG_SERV_AHEI The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
+#' @param N3FAT_SERV_AHEI The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)
+#' @param PUFA_SERV_AHEI The serving size of PUFA, unit=\% of energy 
+#' @param SSB_FRTJ_SERV_AHEI The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
+#' @param REDPROC_MEAT_SERV_AHEI The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
+#' @param TRANS_SERV_AHEI The serving size of trans fat, unit=\% of energy
+#' @param SODIUM_SERV_AHEI The serving size of sodium, unit=mg/day 
+#' @param ALCOHOL_SERV_AHEI The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g
 #' @return The AHEI index/score, AHEI
 #' @examples
-#' AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+#' AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALKCAL_AHEI, SERV_DATA$VEG_SERV_AHEI, SERV_DATA$FRT_SERV_AHEI, SERV_DATA$WGRAIN_SERV_AHEI, SERV_DATA$NUTSLEG_SERV_AHEI, SERV_DATA$N3FAT_SERV_AHEI, SERV_DATA$PUFA_SERV_AHEI, SERV_DATA$SSB_FRTJ_SERV_AHEI, SERV_DATA$REDPROC_MEAT_SERV_AHEI, SERV_DATA$TRANS_SERV_AHEI,SODIUM_SERV_AHEI, SERV_DATA$ALCOHOL_SERV_AHEI)
 #' @export
 
 
 #Score calculation for AHEI
-AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV,
-                SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV, SODIUM_SERV, ALCOHOL_SERV){
+AHEI = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_AHEI, VEG_SERV_AHEI, FRT_SERV_AHEI, WGRAIN_SERV_AHEI, NUTSLEG_SERV_AHEI, N3FAT_SERV_AHEI, PUFA_SERV_AHEI,
+                SSB_FRTJ_SERV_AHEI, REDPROC_MEAT_SERV_AHEI, TRANS_SERV_AHEI, SODIUM_SERV_AHEI, ALCOHOL_SERV_AHEI){
   ##Create variables and functions needed for AHEI calculation
   AHEI_MIN = 0
   AHEI_MAX = 10
@@ -69,9 +70,9 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
   }
   
   SERV_DATA = SERV_DATA %>%
-    mutate(SODIUM_SERV=SODIUM_SERV)
+    mutate(SODIUM_SERV_AHEI=SODIUM_SERV_AHEI/(TOTALKCAL_AHEI/1000))
   
-  SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs=seq(0, 1, by=1/11))
+  SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV_AHEI, probs=seq(0, 1, by=1/11))
   
   ##AHEI calculation
   SERV_DATA %>%
@@ -79,57 +80,57 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
       RESPONDENTID = RESPONDENTID,
       GENDER = GENDER,
       
-      AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_VEG = SCORE_HEALTHY(VEG_SERV_AHEI, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_FRT = SCORE_HEALTHY(FRT_SERV_AHEI, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       
       AHEI_WGRAIN = case_when(
         #GENDER = 2 is female
-        GENDER == 2 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MAX,
-        GENDER == 2 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_F_SERV ~ AHEI_MIN,
-        GENDER == 2 & WGRAIN_SERV > AHEI_MIN_WGRAIN_F_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_F_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_F_SERV-AHEI_MIN_WGRAIN_F_SERV),
+        GENDER == 2 & WGRAIN_SERV_AHEI >= AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MAX,
+        GENDER == 2 & WGRAIN_SERV_AHEI <= AHEI_MIN_WGRAIN_F_SERV ~ AHEI_MIN,
+        GENDER == 2 & WGRAIN_SERV_AHEI > AHEI_MIN_WGRAIN_F_SERV & WGRAIN_SERV_AHEI < AHEI_MAX_WGRAIN_F_SERV ~ AHEI_MIN+(WGRAIN_SERV_AHEI-AHEI_MIN_WGRAIN_F_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_F_SERV-AHEI_MIN_WGRAIN_F_SERV),
         
-        GENDER == 1 & WGRAIN_SERV >= AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MAX,
-        GENDER == 1 & WGRAIN_SERV <= AHEI_MIN_WGRAIN_M_SERV ~ AHEI_MIN,
-        GENDER == 1 & WGRAIN_SERV > AHEI_MIN_WGRAIN_M_SERV & WGRAIN_SERV < AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MIN+(WGRAIN_SERV-AHEI_MIN_WGRAIN_M_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_M_SERV-AHEI_MIN_WGRAIN_M_SERV),
+        GENDER == 1 & WGRAIN_SERV_AHEI >= AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MAX,
+        GENDER == 1 & WGRAIN_SERV_AHEI <= AHEI_MIN_WGRAIN_M_SERV ~ AHEI_MIN,
+        GENDER == 1 & WGRAIN_SERV_AHEI > AHEI_MIN_WGRAIN_M_SERV & WGRAIN_SERV_AHEI < AHEI_MAX_WGRAIN_M_SERV ~ AHEI_MIN+(WGRAIN_SERV_AHEI-AHEI_MIN_WGRAIN_M_SERV)*AHEI_MAX/(AHEI_MAX_WGRAIN_M_SERV-AHEI_MIN_WGRAIN_M_SERV),
       ),
       
       
-      AHEI_NUTSLEG = SCORE_HEALTHY(NUTSLEG_SERV, AHEI_MIN_NUTSLEG_SERV, AHEI_MAX_NUTSLEG_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_N3FAT = SCORE_HEALTHY(N3FAT_SERV, AHEI_MIN_N3FAT_SERV, AHEI_MAX_N3FAT_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_PUFA = SCORE_HEALTHY(PUFA_SERV, AHEI_MIN_PUFA_SERV, AHEI_MAX_PUFA_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_NUTSLEG = SCORE_HEALTHY(NUTSLEG_SERV_AHEI, AHEI_MIN_NUTSLEG_SERV, AHEI_MAX_NUTSLEG_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_N3FAT = SCORE_HEALTHY(N3FAT_SERV_AHEI, AHEI_MIN_N3FAT_SERV, AHEI_MAX_N3FAT_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_PUFA = SCORE_HEALTHY(PUFA_SERV_AHEI, AHEI_MIN_PUFA_SERV, AHEI_MAX_PUFA_SERV, AHEI_MIN, AHEI_MAX),
       
-      AHEI_SSB_FRTJ = SCORE_UNHEALTHY(SSB_FRTJ_SERV, AHEI_MIN_SSB_FRTJ_SERV, AHEI_MAX_SSB_FRTJ_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_REDPROC_MEAT = SCORE_UNHEALTHY(REDPROC_MEAT_SERV, AHEI_MIN_REDPROC_MEAT_SERV, AHEI_MAX_REDPROC_MEAT_SERV, AHEI_MIN, AHEI_MAX),
-      AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_SSB_FRTJ = SCORE_UNHEALTHY(SSB_FRTJ_SERV_AHEI, AHEI_MIN_SSB_FRTJ_SERV, AHEI_MAX_SSB_FRTJ_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_REDPROC_MEAT = SCORE_UNHEALTHY(REDPROC_MEAT_SERV_AHEI, AHEI_MIN_REDPROC_MEAT_SERV, AHEI_MAX_REDPROC_MEAT_SERV, AHEI_MIN, AHEI_MAX),
+      AHEI_TRANS = SCORE_UNHEALTHY(TRANS_SERV_AHEI, AHEI_MIN_TRANS_SERV, AHEI_MAX_TRANS_SERV, AHEI_MIN, AHEI_MAX),
       
       
       AHEI_SODIUM = case_when(
-        SODIUM_SERV <= SODIUM_DECILE[12] & SODIUM_SERV >= SODIUM_DECILE[11] ~ 0,
-        SODIUM_SERV <= SODIUM_DECILE[11] & SODIUM_SERV >= SODIUM_DECILE[10] ~ 1,
-        SODIUM_SERV < SODIUM_DECILE[10] & SODIUM_SERV >= SODIUM_DECILE[9] ~ 2,
-        SODIUM_SERV < SODIUM_DECILE[9] & SODIUM_SERV >= SODIUM_DECILE[8] ~ 3,
-        SODIUM_SERV < SODIUM_DECILE[8] & SODIUM_SERV >= SODIUM_DECILE[7] ~ 4,
-        SODIUM_SERV < SODIUM_DECILE[7] & SODIUM_SERV >= SODIUM_DECILE[6] ~ 5,
-        SODIUM_SERV < SODIUM_DECILE[6] & SODIUM_SERV >= SODIUM_DECILE[5] ~ 6,
-        SODIUM_SERV < SODIUM_DECILE[5] & SODIUM_SERV >= SODIUM_DECILE[4] ~ 7,
-        SODIUM_SERV < SODIUM_DECILE[4] & SODIUM_SERV >= SODIUM_DECILE[3] ~ 8,
-        SODIUM_SERV < SODIUM_DECILE[3] & SODIUM_SERV >= SODIUM_DECILE[2] ~ 9,
-        SODIUM_SERV < SODIUM_DECILE[2] & SODIUM_SERV >= SODIUM_DECILE[1] ~ 10
+        SODIUM_SERV_AHEI <= SODIUM_DECILE[12] & SODIUM_SERV_AHEI >= SODIUM_DECILE[11] ~ 0,
+        SODIUM_SERV_AHEI <= SODIUM_DECILE[11] & SODIUM_SERV_AHEI >= SODIUM_DECILE[10] ~ 1,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[10] & SODIUM_SERV_AHEI >= SODIUM_DECILE[9] ~ 2,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[9] & SODIUM_SERV_AHEI >= SODIUM_DECILE[8] ~ 3,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[8] & SODIUM_SERV_AHEI >= SODIUM_DECILE[7] ~ 4,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[7] & SODIUM_SERV_AHEI >= SODIUM_DECILE[6] ~ 5,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[6] & SODIUM_SERV_AHEI >= SODIUM_DECILE[5] ~ 6,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[5] & SODIUM_SERV_AHEI >= SODIUM_DECILE[4] ~ 7,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[4] & SODIUM_SERV_AHEI >= SODIUM_DECILE[3] ~ 8,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[3] & SODIUM_SERV_AHEI >= SODIUM_DECILE[2] ~ 9,
+        SODIUM_SERV_AHEI < SODIUM_DECILE[2] & SODIUM_SERV_AHEI >= SODIUM_DECILE[1] ~ 10
       ),
       AHEI_ALCOHOL = case_when(
         ##GENDER = 2 is female
-        GENDER == 2  & ALCOHOL_SERV >= 2.5 ~ 0,
-        GENDER == 2  & ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
-        GENDER == 2  & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
-        GENDER == 2  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
-        GENDER == 2  & ALCOHOL_SERV <= 0.125 ~ 2.5,
+        GENDER == 2  & ALCOHOL_SERV_AHEI >= 2.5 ~ 0,
+        GENDER == 2  & ALCOHOL_SERV_AHEI < 2.5 & ALCOHOL_SERV_AHEI > 1.5 ~ 0 + (ALCOHOL_SERV_AHEI-2.5)*10/(1.5-2.5),
+        GENDER == 2  & ALCOHOL_SERV_AHEI <= 1.5 & ALCOHOL_SERV_AHEI >= 0.5 ~ 10,
+        GENDER == 2  & ALCOHOL_SERV_AHEI < 0.5 & ALCOHOL_SERV_AHEI > 0.125 ~ 0 + (ALCOHOL_SERV_AHEI-0)*10/(0.5-0),
+        GENDER == 2  & ALCOHOL_SERV_AHEI <= 0.125 ~ 2.5,
 
         #GENDER = 1 is male
-        GENDER == 1  & ALCOHOL_SERV >= 3.5 ~ 0,
-        GENDER == 1  & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
-        GENDER == 1  & ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
-        GENDER == 1  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
-        GENDER == 1  & ALCOHOL_SERV <= 0.125 ~ 2.5,
+        GENDER == 1  & ALCOHOL_SERV_AHEI >= 3.5 ~ 0,
+        GENDER == 1  & ALCOHOL_SERV_AHEI < 3.5 & ALCOHOL_SERV_AHEI > 2 ~ 0 + (ALCOHOL_SERV_AHEI-2.5)*10/(1.5-2.5),
+        GENDER == 1  & ALCOHOL_SERV_AHEI <= 2 & ALCOHOL_SERV_AHEI >= 0.5 ~ 10,
+        GENDER == 1  & ALCOHOL_SERV_AHEI < 0.5 & ALCOHOL_SERV_AHEI > 0.125 ~ 0 + (ALCOHOL_SERV_AHEI-0)*10/(0.5-0),
+        GENDER == 1  & ALCOHOL_SERV_AHEI <= 0.125 ~ 2.5,
       ),
       AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL,
@@ -150,23 +151,23 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV, FRT_SERV, WGRAIN_SERV
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param FRT_FRTJ_SERV The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
-#' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
-#' @param NUTSLEG_SERV The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
-#' @param WGRAIN_SERV The serving size of whole grains, unit=1oz
-#' @param LOWF_DAIRY_SERV The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
-#' @param SODIUM_SERV The serving size of sodium, unit=mg/day
-#' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
-#' @param SSB_FRTJ_SERV The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
+#' @param FRT_FRTJ_SERV_DASH The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
+#' @param VEG_SERV_DASH The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
+#' @param NUTSLEG_SERV_DASH The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
+#' @param WGRAIN_SERV_DASH The serving size of whole grains, unit=1oz
+#' @param LOWF_DAIRY_SERV_DASH The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
+#' @param SODIUM_SERV_DASH The serving size of sodium, unit=mg/day
+#' @param REDPROC_MEAT_SERV_DASH The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
+#' @param SSB_FRTJ_SERV_DASH The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The DASH index/score
 #' @examples
-#' DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$SSB_FRTJ_SERV)
+#' DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV_DASH, SERV_DATA$VEG_SERV_DASH, SERV_DATA$NUTSLEG_SERV_DASH, SERV_DATA$WGRAIN_SERV_DASH, SERV_DATA$LOWF_DAIRY_SERV_DASH, SERV_DATA$SODIUM_SERV_DASH, SERV_DATA$REDPROC_MEAT_SERV_DASH, SERV_DATA$SSB_FRTJ_SERV_DASH)
 #' @export
 
 #Score calculation for DASH
-DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, WGRAIN_SERV, LOWF_DAIRY_SERV,
-                SODIUM_SERV, REDPROC_MEAT_SERV, SSB_FRTJ_SERV){
-  ##Create variables and functions needed for AHEI calculation
+DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_DASH, VEG_SERV_DASH, NUTSLEG_SERV_DASH, WGRAIN_SERV_DASH, LOWF_DAIRY_SERV_DASH,
+                SODIUM_SERV_DASH, REDPROC_MEAT_SERV_DASH, SSB_FRTJ_SERV_DASH){
+  ##Create variables and functions needed for DASH calculation
   quintile_healthy = function(actual){
     quintile = quantile(actual, probs=seq(0, 1, by=0.2))
     case_when(
@@ -196,14 +197,14 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, NUTSLEG_SERV, 
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
       
-      DASH_FRT = quintile_healthy(FRT_FRTJ_SERV),
-      DASH_VEG = quintile_healthy(VEG_SERV),
-      DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV),
-      DASH_WGRAIN = quintile_healthy(WGRAIN_SERV),
-      DASH_LOWF_DAIRY = quintile_healthy(LOWF_DAIRY_SERV),
-      DASH_SODIUM = quintile_unhealthy(SODIUM_SERV),
-      DASH_REDPROC_MEAT = quintile_unhealthy(REDPROC_MEAT_SERV),
-      DASH_SSB_FRTJ = quintile_unhealthy(SSB_FRTJ_SERV),
+      DASH_FRT = quintile_healthy(FRT_FRTJ_SERV_DASH),
+      DASH_VEG = quintile_healthy(VEG_SERV_DASH),
+      DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV_DASH),
+      DASH_WGRAIN = quintile_healthy(WGRAIN_SERV_DASH),
+      DASH_LOWF_DAIRY = quintile_healthy(LOWF_DAIRY_SERV_DASH),
+      DASH_SODIUM = quintile_unhealthy(SODIUM_SERV_DASH),
+      DASH_REDPROC_MEAT = quintile_unhealthy(REDPROC_MEAT_SERV_DASH),
+      DASH_SSB_FRTJ = quintile_unhealthy(SSB_FRTJ_SERV_DASH),
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
         DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
     )%>%
@@ -327,23 +328,23 @@ DASHI = function(SERV_DATA, RESPONDENTID, VEG_SERV_DASHI, FRT_FRTJ_SERV_DASHI, N
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param FRT_FRTJ_SERV The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
-#' @param VEG_SERV The serving size of All vegetables except potatoes and legumes, unit=0.5 c of vege; 1 cup of green leafy
-#' @param WGRAIN_SERV The serving size of whole grains, including Whole-grain ready-to-eat cereals, cooked cereals, crackers, dark breads, brown rice, other grains, wheat germ, bran, popcorn, unit=1oz
-#' @param LEGUMES_SERV The serving size of legumes, including Tofu, string beans, peas, beans, unit=*oz, 1 cup legume = 4 oz
-#' @param NUTS_SERV The serving size of nuts, including Nuts, peanut butter, unit=1oz
-#' @param FISH_SERV The serving size of all fish, including Fish and shrimp, breaded fish, unit=4oz
-#' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)
-#' @param MONSATFAT_SERV The serving size of the ratio of monounsaturated fat to saturated fat, unit=ratio
-#' @param ALCOHOL_SERV The serving size of alcohol, unit=13g
+#' @param FRT_FRTJ_SERV_MED The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
+#' @param VEG_SERV_MED The serving size of All vegetables except potatoes and legumes, unit=0.5 c of vege; 1 cup of green leafy
+#' @param WGRAIN_SERV_MED The serving size of whole grains, including Whole-grain ready-to-eat cereals, cooked cereals, crackers, dark breads, brown rice, other grains, wheat germ, bran, popcorn, unit=1oz
+#' @param LEGUMES_SERV_MED The serving size of legumes, including Tofu, string beans, peas, beans, unit=*oz, 1 cup legume = 4 oz
+#' @param NUTS_SERV_MED The serving size of nuts, including Nuts, peanut butter, unit=1oz
+#' @param FISH_SERV_MED The serving size of all fish, including Fish and shrimp, breaded fish, unit=4oz
+#' @param REDPROC_MEAT_SERV_MED The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)
+#' @param MONSATFAT_SERV_MED The serving size of the ratio of monounsaturated fat to saturated fat, unit=ratio
+#' @param ALCOHOL_SERV_MED The serving size of alcohol, unit=13g
 #' @return The MED index/score
 #' @examples
-#' MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LEGUMES_SERV, SERV_DATA$NUTS_SERV,FISH_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$MONSATFAT_SERV, SERV_DATA$ALCOHOL_SERV)
+#' MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV_MED, SERV_DATA$VEG_SERV_MED, SERV_DATA$WGRAIN_SERV_MED, SERV_DATA$LEGUMES_SERV_MED, SERV_DATA$NUTS_SERV_MED,FISH_SERV_MED, SERV_DATA$REDPROC_MEAT_SERV_MED, SERV_DATA$MONSATFAT_SERV_MED, SERV_DATA$ALCOHOL_SERV_MED)
 #' @export
 
 #Score calculation for MED
-MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LEGUMES_SERV, NUTS_SERV,
-               FISH_SERV, REDPROC_MEAT_SERV, MONSATFAT_SERV, ALCOHOL_SERV){
+MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_MED, VEG_SERV_MED, WGRAIN_SERV_MED, LEGUMES_SERV_MED, NUTS_SERV_MED,
+               FISH_SERV_MED, REDPROC_MEAT_SERV_MED, MONSATFAT_SERV_MED, ALCOHOL_SERV_MED){
   ##Create variables and functions needed for MED
   median_healthy = function(actual){
     median_score = median(actual)
@@ -368,16 +369,16 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
       
-      MED_FRT = median_healthy(FRT_FRTJ_SERV),
-      MED_VEG = median_healthy(VEG_SERV),
-      MED_WGRAIN = median_healthy(WGRAIN_SERV),
-      MED_LEGUMES = median_healthy(LEGUMES_SERV),
-      MED_NUTS = median_healthy(NUTS_SERV),
-      MED_FISH = median_healthy(FISH_SERV),
-      MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV),
-      MED_MONSATFAT = median_healthy(MONSATFAT_SERV),
+      MED_FRT = median_healthy(FRT_FRTJ_SERV_MED),
+      MED_VEG = median_healthy(VEG_SERV_MED),
+      MED_WGRAIN = median_healthy(WGRAIN_SERV_MED),
+      MED_LEGUMES = median_healthy(LEGUMES_SERV_MED),
+      MED_NUTS = median_healthy(NUTS_SERV_MED),
+      MED_FISH = median_healthy(FISH_SERV_MED),
+      MED_REDPROC_MEAT = median_unhealthy(REDPROC_MEAT_SERV_MED),
+      MED_MONSATFAT = median_healthy(MONSATFAT_SERV_MED),
       MED_ALCOHOL = case_when(
-        ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, 
+        ALCOHOL_SERV_MED <=25 & ALCOHOL_SERV_MED >= 10 ~ 1, 
         TRUE ~ 0),
 
       MED_ALL = MED_FRT+MED_VEG+MED_WGRAIN+MED_LEGUMES+MED_NUTS+MED_FISH+MED_REDPROC_MEAT+MED_MONSATFAT+MED_ALCOHOL,
@@ -395,38 +396,38 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, WGRAIN_SERV, LE
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param FRT_FRTJ_SERV The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
-#' @param VEG_SERV The serving size of All raw and cooked vegetables, unit=0.5 c of vege; 1 cup of green leafy
-#' @param LEGUMES_SERV The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
-#' @param WGRAIN_SERV The serving size of whole grains, including Whole wheat bread and flour, whole wheat pasta, brown rice, rusks,  whole grain breakfast cereals, couscous, semolina, unit=1 oz
-#' @param FISH_SERV The serving size of all fish, including Fresh-water and sea-water fish; preserved fish such as salted fish, canned fish; shellfish (squid, prawns, mollusks), unit=serving (4 oz)
-#' @param DAIRY_SERV The serving size of all dairy, including Milk, yogurt, cheese, custard, milk puddings, other milk products, unit=1 serving = 1 cup milk, 1 cup yogurt, 1 ½ ounces hard cheese (cheddar, mozzarella, Swiss, Parmesan), 1/3 cup shredded cheese, 2 ounces processed cheese (American), ½ cup ricotta cheese, 2 cups cottage cheese, 1 cup pudding made with milk, 1 cup frozen yogurt, 1 ½ cups ice cream
-#' @param REDPROC_MEAT_SERV The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)
-#' @param NUTS_SERV The serving size of nuts, including Peanuts, almonds, sunflower seeds, cashews, walnuts, unit=1oz
-#' @param MONSATFAT_SERV The serving size of the ratio of monounsaturated fat to saturated fat, unit=ratio
-#' @param ALCOHOL_SERV The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=13g
+#' @param FRT_FRTJ_SERV_MEDI The serving size of All fruits and 100\% fruit juices, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
+#' @param VEG_SERV_MEDI The serving size of All raw and cooked vegetables, unit=0.5 c of vege; 1 cup of green leafy
+#' @param LEGUMES_SERV_MEDI The serving size of legumes, including Dried beans, lentils, peas, soups (split pea), tofu, soymilk, unit=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
+#' @param WGRAIN_SERV_MEDI The serving size of whole grains, including Whole wheat bread and flour, whole wheat pasta, brown rice, rusks,  whole grain breakfast cereals, couscous, semolina, unit=1 oz
+#' @param FISH_SERV_MEDI The serving size of all fish, including Fresh-water and sea-water fish; preserved fish such as salted fish, canned fish; shellfish (squid, prawns, mollusks), unit=serving (4 oz)
+#' @param DAIRY_SERV_MEDI The serving size of all dairy, including Milk, yogurt, cheese, custard, milk puddings, other milk products, unit=1 serving = 1 cup milk, 1 cup yogurt, 1 ½ ounces hard cheese (cheddar, mozzarella, Swiss, Parmesan), 1/3 cup shredded cheese, 2 ounces processed cheese (American), ½ cup ricotta cheese, 2 cups cottage cheese, 1 cup pudding made with milk, 1 cup frozen yogurt, 1 ½ cups ice cream
+#' @param REDPROC_MEAT_SERV_MEDI The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=serving (4 oz. unprocessed meat; 1.5 oz. processed meat)
+#' @param NUTS_SERV_MEDI The serving size of nuts, including Peanuts, almonds, sunflower seeds, cashews, walnuts, unit=1oz
+#' @param MONSATFAT_SERV_MEDI The serving size of the ratio of monounsaturated fat to saturated fat, unit=ratio
+#' @param ALCOHOL_SERV_MEDI The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=13g
 #' @return The MEDI index/score
 #' @examples
-#' MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LEGUMES_SERV, SERV_DATA$NUTS_SERV,FISH_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$MONSATFAT_SERV, SERV_DATA$ALCOHOL_SERV)
+#' MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV_MEDI, SERV_DATA$VEG_SERV_MEDI, SERV_DATA$WGRAIN_SERV_MEDI, SERV_DATA$LEGUMES_SERV_MEDI, SERV_DATA$NUTS_SERV_MEDI,FISH_SERV_MEDI, SERV_DATA$REDPROC_MEAT_SERV_MEDI, SERV_DATA$MONSATFAT_SERV_MEDI, SERV_DATA$ALCOHOL_SERV_MEDI)
 #' @export
 
 #Score calculation for MEDI
-MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, WGRAIN_SERV, FISH_SERV, DAIRY_SERV, REDPROC_MEAT_SERV,
-                NUTS_SERV, MONSATFAT_SERV, ALCOHOL_SERV){
+MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_MEDI, VEG_SERV_MEDI, LEGUMES_SERV_MEDI, WGRAIN_SERV_MEDI, FISH_SERV_MEDI, DAIRY_SERV_MEDI, REDPROC_MEAT_SERV_MEDI,
+                NUTS_SERV_MEDI, MONSATFAT_SERV_MEDI, ALCOHOL_SERV_MEDI){
   SERV_DATA %>%
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
       
-      MEDI_FRT = case_when(FRT_FRTJ_SERV >=3 ~ 1, TRUE ~ 0),
-      MEDI_VEG = case_when(VEG_SERV >= 3 ~ 1, TRUE ~ 0),
-      MEDI_LEGUMES = case_when(LEGUMES_SERV >= 1.5 ~ 1, TRUE ~ 0),
-      MEDI_WGRAIN = case_when(WGRAIN_SERV >= 3 ~ 1, TRUE ~ 0),
-      MEDI_FISH = case_when(FISH_SERV >= 2 ~ 1, TRUE ~ 0),
-      MEDI_DAIRY = case_when(DAIRY_SERV >= 2 ~ 1, TRUE ~ 0),
-      MEDI_REDPROC_MEAT = case_when(REDPROC_MEAT_SERV < 4.5 ~ 1, TRUE ~ 0),
-      MEDI_NUTS = case_when(NUTS_SERV >= 2 ~ 1, TRUE ~ 0),
-      MEDI_MONSATFAT = case_when(MONSATFAT_SERV >= 1.6 ~ 1, TRUE ~ 0),
-      MEDI_ALCOHOL = case_when(ALCOHOL_SERV <=25 & ALCOHOL_SERV >= 10 ~ 1, TRUE ~ 0),
+      MEDI_FRT = case_when(FRT_FRTJ_SERV_MEDI >=3 ~ 1, TRUE ~ 0),
+      MEDI_VEG = case_when(VEG_SERV_MEDI >= 3 ~ 1, TRUE ~ 0),
+      MEDI_LEGUMES = case_when(LEGUMES_SERV_MEDI >= 1.5 ~ 1, TRUE ~ 0),
+      MEDI_WGRAIN = case_when(WGRAIN_SERV_MEDI >= 3 ~ 1, TRUE ~ 0),
+      MEDI_FISH = case_when(FISH_SERV_MEDI >= 2 ~ 1, TRUE ~ 0),
+      MEDI_DAIRY = case_when(DAIRY_SERV_MEDI >= 2 ~ 1, TRUE ~ 0),
+      MEDI_REDPROC_MEAT = case_when(REDPROC_MEAT_SERV_MEDI < 4.5 ~ 1, TRUE ~ 0),
+      MEDI_NUTS = case_when(NUTS_SERV_MEDI >= 2 ~ 1, TRUE ~ 0),
+      MEDI_MONSATFAT = case_when(MONSATFAT_SERV_MEDI >= 1.6 ~ 1, TRUE ~ 0),
+      MEDI_ALCOHOL = case_when(ALCOHOL_SERV_MEDI <=25 & ALCOHOL_SERV_MEDI >= 10 ~ 1, TRUE ~ 0),
 
       MEDI_ALL = MEDI_FRT+MEDI_VEG+MEDI_LEGUMES+MEDI_WGRAIN+MEDI_FISH+MEDI_DAIRY+MEDI_REDPROC_MEAT+
         MEDI_NUTS+MEDI_MONSATFAT+MEDI_ALCOHOL,
@@ -445,24 +446,24 @@ MEDI = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV, VEG_SERV, LEGUMES_SERV, 
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param VEG_SERV The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
-#' @param FRT_SERV The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
-#' @param WHITERED_RT_SERV The serving size of the ratio of white and red meats, White meat = poultry + all fish, red meat = pork + beef + lamb + all organ meats + processed meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
-#' @param FIBER_SERV The serving size of fibers, unit=grams/day
-#' @param TRANS_SERV The serving size of trans fat, unit='\% of energy'
-#' @param POLYSAT_RT The serving size of polyunsaturated/saturated fats, unit=ratio
-#' @param CALCIUM_SERV The serving size of calcium, unit=mg/day
-#' @param FOLATE_SERV The serving size of folate, unit=mcg/day
-#' @param IRON_SERV The serving size of iron, unit=mg/day
+#' @param VEG_SERV_AHEIP The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
+#' @param FRT_SERV_AHEIP The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)
+#' @param WHITERED_RT_SERV_AHEIP The serving size of the ratio of white and red meats, White meat = poultry + all fish, red meat = pork + beef + lamb + all organ meats + processed meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
+#' @param FIBER_SERV_AHEIP The serving size of fibers, unit=grams/day
+#' @param TRANS_SERV_AHEIP The serving size of trans fat, unit='\% of energy'
+#' @param POLYSAT_RT_SERV_AHEIP The serving size of polyunsaturated/saturated fats, unit=ratio
+#' @param CALCIUM_SERV_AHEIP The serving size of calcium, unit=mg/day
+#' @param FOLATE_SERV_AHEIP The serving size of folate, unit=mcg/day
+#' @param IRON_SERV_AHEIP The serving size of iron, unit=mg/day
 #' @return The AHEIP index/score
 #' @examples
-#' AHEIP(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WHITERED_RT_SERV, SERV_DATA$FIBER_SERV, SERV_DATA$TRANS_SERV, SERV_DATA$POLYSAT_RT, SERV_DATA$CALCIUM_SERV, SERV_DATA$FOLATE_SERV, SERV_DATA$IRON_SERV)
+#' AHEIP(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV_AHEIP, SERV_DATA$FRT_SERV_AHEIP, SERV_DATA$WHITERED_RT_SERV_AHEIP, SERV_DATA$FIBER_SERV_AHEIP, SERV_DATA$TRANS_SERV_AHEIP, SERV_DATA$POLYSAT_RT_SERV_AHEIP, SERV_DATA$CALCIUM_SERV_AHEIP, SERV_DATA$FOLATE_SERV_AHEIP, SERV_DATA$IRON_SERV_AHEIP)
 #' @export
 
 
 #Score calculation for AHEIP
-AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, FIBER_SERV, TRANS_SERV, POLYSAT_RT,
-                 CALCIUM_SERV, FOLATE_SERV, IRON_SERV) {
+AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV_AHEIP, FRT_SERV_AHEIP, WHITERED_RT_SERV_AHEIP, FIBER_SERV_AHEIP, TRANS_SERV_AHEIP, POLYSAT_RT_SERV_AHEIP,
+                 CALCIUM_SERV_AHEIP, FOLATE_SERV_AHEIP, IRON_SERV_AHEIP) {
 
   ##Create variables and functions needed for AHEIP calculation
   AHEIP_MIN = 0
@@ -508,15 +509,15 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
       
-      AHEIP_VEG = AHEIP_HEALTHY(VEG_SERV, AHEIP_MIN_VEG_SERV, AHEIP_MAX_VEG_SERV),
-      AHEIP_FRT = AHEIP_HEALTHY(FRT_SERV, AHEIP_MIN_FRT_SERV, AHEIP_MAX_FRT_SERV),
-      AHEIP_WHITEREAD = AHEIP_HEALTHY(WHITERED_RT_SERV, AHEIP_MIN_WHITERED_SERV, AHEIP_MAX_WHITERED_SERV),
-      AHEIP_FIBER = AHEIP_HEALTHY(FIBER_SERV, AHEIP_MIN_FIBER_SERV, AHEIP_MAX_FIBER_SERV),
-      AHEIP_TRANS = AHEIP_UNHEALTHY(TRANS_SERV, AHEIP_MIN_TRANS_SERV, AHEIP_MAX_TRANS_SERV),
-      AHEIP_POLYSAT = AHEIP_HEALTHY(POLYSAT_RT, AHEIP_MIN_POLYSAT_SERV, AHEIP_MAX_POLYSAT_SERV),
-      AHEIP_CALCIUM = AHEIP_HEALTHY(CALCIUM_SERV, AHEIP_MIN_CALCIUM_SERV, AHEIP_MAX_CALCIUM_SERV),
-      AHEIP_FOLATE= AHEIP_HEALTHY(FOLATE_SERV, AHEIP_MIN_FOLATE_SERV, AHEIP_MAX_FOLATE_SERV),
-      AHEIP_IRON = AHEIP_HEALTHY(IRON_SERV, AHEIP_MIN_IRON_SERV, AHEIP_MAX_IRON_SERV),
+      AHEIP_VEG = AHEIP_HEALTHY(VEG_SERV_AHEIP, AHEIP_MIN_VEG_SERV, AHEIP_MAX_VEG_SERV),
+      AHEIP_FRT = AHEIP_HEALTHY(FRT_SERV_AHEIP, AHEIP_MIN_FRT_SERV, AHEIP_MAX_FRT_SERV),
+      AHEIP_WHITEREAD = AHEIP_HEALTHY(WHITERED_RT_SERV_AHEIP, AHEIP_MIN_WHITERED_SERV, AHEIP_MAX_WHITERED_SERV),
+      AHEIP_FIBER = AHEIP_HEALTHY(FIBER_SERV_AHEIP, AHEIP_MIN_FIBER_SERV, AHEIP_MAX_FIBER_SERV),
+      AHEIP_TRANS = AHEIP_UNHEALTHY(TRANS_SERV_AHEIP, AHEIP_MIN_TRANS_SERV, AHEIP_MAX_TRANS_SERV),
+      AHEIP_POLYSAT = AHEIP_HEALTHY(POLYSAT_RT_SERV_AHEIP, AHEIP_MIN_POLYSAT_SERV, AHEIP_MAX_POLYSAT_SERV),
+      AHEIP_CALCIUM = AHEIP_HEALTHY(CALCIUM_SERV_AHEIP, AHEIP_MIN_CALCIUM_SERV, AHEIP_MAX_CALCIUM_SERV),
+      AHEIP_FOLATE= AHEIP_HEALTHY(FOLATE_SERV_AHEIP, AHEIP_MIN_FOLATE_SERV, AHEIP_MAX_FOLATE_SERV),
+      AHEIP_IRON = AHEIP_HEALTHY(IRON_SERV_AHEIP, AHEIP_MIN_IRON_SERV, AHEIP_MAX_IRON_SERV),
       AHEIP_ALL = AHEIP_VEG + AHEIP_FRT + AHEIP_WHITEREAD + AHEIP_FIBER + AHEIP_TRANS +
         AHEIP_POLYSAT + AHEIP_CALCIUM + AHEIP_FOLATE + AHEIP_IRON
     )%>%
@@ -532,29 +533,29 @@ AHEIP = function(SERV_DATA, RESPONDENTID, VEG_SERV, FRT_SERV, WHITERED_RT_SERV, 
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param TOTALKCAL The total calorie from all foods and drinks 
-#' @param TOTALFRT_SERV The serving size of total fruits including fruit juice, unit= cup eq.
-#' @param FRT_SERV The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.
-#' @param VEG_SERV The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
-#' @param GREENNBEAN_SERV The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
-#' @param TOTALPRO_SERV The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz
-#' @param SEAPLANTPRO_SERV The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz
-#' @param WHOLEGRAIN_SERV The serving size of whole grains, unit=oz. eq.
-#' @param DAIRY_SERV The serving size of all dairy, unit=cup eq.
-#' @param FATTYACID_SERV The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g
-#' @param REFINEDGRAIN_SERV The serving size of refined grains, unit=oz. eq.
-#' @param SODIUM_SERV The serving size of sodium, unit=g
-#' @param ADDEDSUGAR_SERV The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal
-#' @param SATFAT_SERV The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal
+#' @param TOTALKCAL_HEI2015 The total calorie from all foods and drinks 
+#' @param TOTALFRT_SERV_HEI2015 The serving size of total fruits including fruit juice, unit= cup eq.
+#' @param FRT_SERV_HEI2015 The serving size of Citrus, Melons, Berries + Other Intact Fruits, unit= cup eq.
+#' @param VEG_SERV_HEI2015 The serving size of vegetables Total Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
+#' @param GREENNBEAN_SERV_HEI2015 The serving size of Dark Green Vegetables + Legumes (Beans and Peas) in cup equivalents, unit= cup eq.
+#' @param TOTALPRO_SERV_HEI2015 The serving size of Total Meat, Poultry, and Seafood (including organ meats and cured meats) + Eggs + Nuts and Seeds + Soy + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz
+#' @param SEAPLANTPRO_SERV_HEI2015 The serving size of Seafood (high in n-3) + Seafood (low in n-3) + Soy + Nuts and Seeds + Legumes (Beans and Peas) in oz equivalents, unit=oz. eq., 1 cup legume = 4 oz
+#' @param WHOLEGRAIN_SERV_HEI2015 The serving size of whole grains, unit=oz. eq.
+#' @param DAIRY_SERV_HEI2015 The serving size of all dairy, unit=cup eq.
+#' @param FATTYACID_SERV_HEI2015 The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g
+#' @param REFINEDGRAIN_SERV_HEI2015 The serving size of refined grains, unit=oz. eq.
+#' @param SODIUM_SERV_HEI2015 The serving size of sodium, unit=g
+#' @param ADDEDSUGAR_SERV_HEI2015 The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal
+#' @param SATFAT_SERV_HEI2015 The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal
 #' @return The HEI2015 index/score
 #' @examples
-#' HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$TOTALFRT_SERV, SERV_DATA$FRT_SERV, SERV_DATA$VEG_SERV, SERV_DATA$GREENNBEAN_SERV, SERV_DATA$TOTALPRO_SERV,  SERV_DATA$SEAPLANTPRO_SERV, SERV_DATA$WHOLEGRAIN_SERV, SERV_DATA$DAIRY_SERV, SERV_DATA$FATTYACID_SERV, SERV_DATA$REFINEDGRAIN_SERV,  SERV_DATA$SODIUM_SERV, SERV_DATA$ADDEDSUGAR_SERV, SERV_DATA$SATFAT_SERV)
+#' HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL_HEI2015, SERV_DATA$TOTALFRT_SERV_HEI2015, SERV_DATA$FRT_SERV_HEI2015, SERV_DATA$VEG_SERV_HEI2015, SERV_DATA$GREENNBEAN_SERV_HEI2015, SERV_DATA$TOTALPRO_SERV_HEI2015,  SERV_DATA$SEAPLANTPRO_SERV_HEI2015, SERV_DATA$WHOLEGRAIN_SERV_HEI2015, SERV_DATA$DAIRY_SERV_HEI2015, SERV_DATA$FATTYACID_SERV_HEI2015, SERV_DATA$REFINEDGRAIN_SERV_HEI2015,  SERV_DATA$SODIUM_SERV_HEI2015, SERV_DATA$ADDEDSUGAR_SERV_HEI2015, SERV_DATA$SATFAT_SERV_HEI2015)
 #' @export
 
 #Score calculation for HEI2015
-HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, VEG_SERV, GREENNBEAN_SERV, TOTALPRO_SERV,
-                   SEAPLANTPRO_SERV, WHOLEGRAIN_SERV, DAIRY_SERV, FATTYACID_SERV, REFINEDGRAIN_SERV,
-                   SODIUM_SERV, ADDEDSUGAR_SERV, SATFAT_SERV){
+HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL_HEI2015, TOTALFRT_SERV_HEI2015, FRT_SERV_HEI2015, VEG_SERV_HEI2015, GREENNBEAN_SERV_HEI2015, TOTALPRO_SERV_HEI2015,
+                   SEAPLANTPRO_SERV_HEI2015, WHOLEGRAIN_SERV_HEI2015, DAIRY_SERV_HEI2015, FATTYACID_SERV_HEI2015, REFINEDGRAIN_SERV_HEI2015,
+                   SODIUM_SERV_HEI2015, ADDEDSUGAR_SERV_HEI2015, SATFAT_SERV_HEI2015){
   
   ##Create variables needed for HEI2015 calculation
   HEI2015_MIN = 0
@@ -616,36 +617,36 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
   SERV_DATA=SERV_DATA %>%
     dplyr::mutate(
       RESPONDENTID = RESPONDENTID,
-      TOTALKCAL = TOTALKCAL,
-      TOTALFRT_SERV = TOTALFRT_SERV/(TOTALKCAL/1000),
-      FRT_SERV = (FRT_SERV)/(TOTALKCAL/1000),
-      VEG_SERV = (VEG_SERV)/(TOTALKCAL/1000),
-      GREENNBEAN_SERV = (GREENNBEAN_SERV)/(TOTALKCAL/1000),
-      TOTALPRO_SERV = (TOTALPRO_SERV)/(TOTALKCAL/1000),
-      SEAPLANTPRO_SERV = (SEAPLANTPRO_SERV)/(TOTALKCAL/1000),
-      WHOLEGRAIN_SERV = WHOLEGRAIN_SERV/(TOTALKCAL/1000),
-      DAIRY_SERV = DAIRY_SERV/(TOTALKCAL/1000),
-      FATTYACID_SERV = FATTYACID_SERV,
+      TOTALKCAL_HEI2015 = TOTALKCAL_HEI2015,
+      TOTALFRT_SERV_HEI2015 = TOTALFRT_SERV_HEI2015/(TOTALKCAL_HEI2015/1000),
+      FRT_SERV_HEI2015 = (FRT_SERV_HEI2015)/(TOTALKCAL_HEI2015/1000),
+      VEG_SERV_HEI2015 = (VEG_SERV_HEI2015)/(TOTALKCAL_HEI2015/1000),
+      GREENNBEAN_SERV_HEI2015 = (GREENNBEAN_SERV_HEI2015)/(TOTALKCAL_HEI2015/1000),
+      TOTALPRO_SERV_HEI2015 = (TOTALPRO_SERV_HEI2015)/(TOTALKCAL_HEI2015/1000),
+      SEAPLANTPRO_SERV_HEI2015 = (SEAPLANTPRO_SERV_HEI2015)/(TOTALKCAL_HEI2015/1000),
+      WHOLEGRAIN_SERV_HEI2015 = WHOLEGRAIN_SERV_HEI2015/(TOTALKCAL_HEI2015/1000),
+      DAIRY_SERV_HEI2015 = DAIRY_SERV_HEI2015/(TOTALKCAL_HEI2015/1000),
+      FATTYACID_SERV_HEI2015 = FATTYACID_SERV_HEI2015,
       
-      REFINEDGRAIN_SERV = REFINEDGRAIN_SERV/(TOTALKCAL/1000),
-      SODIUM_SERV = (SODIUM_SERV/1000)/(TOTALKCAL/1000),
-      ADDEDSUGAR_SERV = ((ADDEDSUGAR_SERV*4*4) / TOTALKCAL)*100,
-      SATFAT_SERV = ((SATFAT_SERV*9)/TOTALKCAL)*100,
+      REFINEDGRAIN_SERV_HEI2015 = REFINEDGRAIN_SERV_HEI2015/(TOTALKCAL_HEI2015/1000),
+      SODIUM_SERV_HEI2015 = (SODIUM_SERV_HEI2015/1000)/(TOTALKCAL_HEI2015/1000),
+      ADDEDSUGAR_SERV_HEI2015 = ((ADDEDSUGAR_SERV_HEI2015*4*4) / TOTALKCAL_HEI2015)*100,
+      SATFAT_SERV_HEI2015 = ((SATFAT_SERV_HEI2015*9)/TOTALKCAL_HEI2015)*100,
       
-      HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
-      HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
-      HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
-      HEI2015_GREENNBEAN = HEI2015_HEALTHY1(GREENNBEAN_SERV, HEI2015_MIN_GREENNBEAN_SERV, HEI2015_MAX_GREENNBEAN_SERV),
-      HEI2015_TOTALPRO = HEI2015_HEALTHY1(TOTALPRO_SERV, HEI2015_MIN_TOTALPRO_SERV, HEI2015_MAX_TOTALPRO_SERV),
-      HEI2015_SEAPLANTPRO = HEI2015_HEALTHY1(SEAPLANTPRO_SERV, HEI2015_MIN_SEAPLANTPRO_SERV, HEI2015_MAX_SEAPLANTPRO_SERV),
-      HEI2015_WHOLEGRAIN = HEI2015_HEALTHY2(WHOLEGRAIN_SERV, HEI2015_MIN_WHOLEGRAIN_SERV, HEI2015_MAX_WHOLEGRAIN_SERV),
-      HEI2015_DAIRY = HEI2015_HEALTHY2(DAIRY_SERV, HEI2015_MIN_DAIRY_SERV, HEI2015_MAX_DAIRY_SERV),
-      HEI2015_FATTYACID = HEI2015_HEALTHY2(FATTYACID_SERV, HEI2015_MIN_FATTYACID_SERV, HEI2015_MAX_FATTYACID_SERV),
+      HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV_HEI2015, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
+      HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV_HEI2015, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
+      HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV_HEI2015, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
+      HEI2015_GREENNBEAN = HEI2015_HEALTHY1(GREENNBEAN_SERV_HEI2015, HEI2015_MIN_GREENNBEAN_SERV, HEI2015_MAX_GREENNBEAN_SERV),
+      HEI2015_TOTALPRO = HEI2015_HEALTHY1(TOTALPRO_SERV_HEI2015, HEI2015_MIN_TOTALPRO_SERV, HEI2015_MAX_TOTALPRO_SERV),
+      HEI2015_SEAPLANTPRO = HEI2015_HEALTHY1(SEAPLANTPRO_SERV_HEI2015, HEI2015_MIN_SEAPLANTPRO_SERV, HEI2015_MAX_SEAPLANTPRO_SERV),
+      HEI2015_WHOLEGRAIN = HEI2015_HEALTHY2(WHOLEGRAIN_SERV_HEI2015, HEI2015_MIN_WHOLEGRAIN_SERV, HEI2015_MAX_WHOLEGRAIN_SERV),
+      HEI2015_DAIRY = HEI2015_HEALTHY2(DAIRY_SERV_HEI2015, HEI2015_MIN_DAIRY_SERV, HEI2015_MAX_DAIRY_SERV),
+      HEI2015_FATTYACID = HEI2015_HEALTHY2(FATTYACID_SERV_HEI2015, HEI2015_MIN_FATTYACID_SERV, HEI2015_MAX_FATTYACID_SERV),
       
-      HEI2015_REFINEDGRAIN = HEI2015_UNHEALTHY(REFINEDGRAIN_SERV, HEI2015_MIN_REFINEDGRAIN_SERV, HEI2015_MAX_REFINEDGRAIN_SERV),
-      HEI2015_SODIUM = HEI2015_UNHEALTHY(SODIUM_SERV, HEI2015_MIN_SODIUM_SERV, HEI2015_MAX_SODIUM_SERV),
-      HEI2015_ADDEDSUGAR = HEI2015_UNHEALTHY(ADDEDSUGAR_SERV, HEI2015_MIN_ADDEDSUGAR_SERV, HEI2015_MAX_ADDEDSUGAR_SERV),
-      HEI2015_SATFAT = HEI2015_UNHEALTHY(SATFAT_SERV, HEI2015_MIN_SATFAT_SERV, HEI2015_MAX_SATFAT_SERV),
+      HEI2015_REFINEDGRAIN = HEI2015_UNHEALTHY(REFINEDGRAIN_SERV_HEI2015, HEI2015_MIN_REFINEDGRAIN_SERV, HEI2015_MAX_REFINEDGRAIN_SERV),
+      HEI2015_SODIUM = HEI2015_UNHEALTHY(SODIUM_SERV_HEI2015, HEI2015_MIN_SODIUM_SERV, HEI2015_MAX_SODIUM_SERV),
+      HEI2015_ADDEDSUGAR = HEI2015_UNHEALTHY(ADDEDSUGAR_SERV_HEI2015, HEI2015_MIN_ADDEDSUGAR_SERV, HEI2015_MAX_ADDEDSUGAR_SERV),
+      HEI2015_SATFAT = HEI2015_UNHEALTHY(SATFAT_SERV_HEI2015, HEI2015_MIN_SATFAT_SERV, HEI2015_MAX_SATFAT_SERV),
       
       HEI2015_ALL= HEI2015_TOTALFRT + HEI2015_FRT + HEI2015_VEG + HEI2015_GREENNBEAN +
         HEI2015_TOTALPRO + HEI2015_SEAPLANTPRO + HEI2015_WHOLEGRAIN + HEI2015_DAIRY +
@@ -653,8 +654,8 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
         HEI2015_SATFAT
     ) 
   
-  for(i in 1:length(SERV_DATA$TOTALKCAL)){
-    if (SERV_DATA$TOTALKCAL[i] == 0){
+  for(i in 1:length(SERV_DATA$TOTALKCAL_HEI2015)){
+    if (SERV_DATA$TOTALKCAL_HEI2015[i] == 0){
       SERV_DATA$HEI2015_TOTALFRT[i] = 0
       SERV_DATA$HEI2015_FRT[i] = 0
       SERV_DATA$HEI2015_VEG[i] = 0
@@ -671,7 +672,7 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
   }
   
   SERV_DATA %>%
-    dplyr::select(RESPONDENTID, TOTALKCAL, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
+    dplyr::select(RESPONDENTID, TOTALKCAL_HEI2015, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
                   HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
                   HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
                   HEI2015_SATFAT)
@@ -685,124 +686,128 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL, TOTALFRT_SERV, FRT_SERV, 
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param REPEATNUM The number of repeated record with each participant, 1st collection=1, 2nd collection =2, etc. If no repeat, just give 1 in all data if fill REPEATNUM=NULL
-#' @param ALCOHOL Unit=g
-#' @param VITB12 Unit=μg
-#' @param VITB6 Unit=mg
-#' @param BETACAROTENE Unit=μg
-#' @param CAFFEINE Unit=g
-#' @param CARBOHYDRATE Unit=g
-#' @param CHOLESTEROL Unit=mg
-#' @param ENERGY Unit=kcal
-#' @param EUGENOL Unit=mg
-#' @param FAT Unit=g
-#' @param FIBER Unit=g
-#' @param FOLICACID Unit=μg
-#' @param GARLIC Unit=g
-#' @param GINGER Unit=g
-#' @param IRON Unit=mg
-#' @param MAGNESIUM Unit=mg
-#' @param MUFA Unit=g
-#' @param NIACIN Unit=mg
-#' @param N3FATTYACID Unit=g
-#' @param N6FATTYACID Unit=g
-#' @param ONION Unit=g
-#' @param PROTEIN Unit=g
-#' @param PUFA Unit=g
-#' @param RIBOFLAVIN Unit=mg
-#' @param SAFFRON Unit=g
-#' @param SATFAT Unit=g
-#' @param SELENIUM Unit=μg
-#' @param THIAMIN Unit=mg
-#' @param TRANSFAT Unit=g
-#' @param TURMERIC Unit=mg
-#' @param VITA Unit=RE
-#' @param VITC Unit=mg
-#' @param VITD Unit=μg
-#' @param VITE Unit=mg
-#' @param ZINC Unit=mg
-#' @param TEA Unit=g
-#' @param FLAVAN3OL Unit=mg
-#' @param FLAVONES Unit=mg
-#' @param FLAVONOLS Unit=mg
-#' @param FLAVONONES Unit=mg
-#' @param ANTHOCYANIDINS Unit=mg
-#' @param ISOFLAVONES Unit=mg
-#' @param PEPPER Unit=g
-#' @param THYME Unit=mg
-#' @param ROSEMARY Unit=mg
+#' @param REPEATNUM The number of repeated record with each participant, 1st collection=1, 2nd collection =2, etc. If no repeat number is given, the default is 1
+#' @param ALCOHOL_DII Unit=g
+#' @param VITB12_DII Unit=μg
+#' @param VITB6_DII Unit=mg
+#' @param BCAROTENE_DII Unit=μg
+#' @param CAFFEINE_DII Unit=g
+#' @param CARB_DII Unit=g
+#' @param CHOLES_DII Unit=mg
+#' @param KCAL_DII Unit=KCAL_DII
+#' @param EUGENOL_DII Unit=mg
+#' @param TOTALFAT_DII Unit=g
+#' @param FIBER_DII Unit=g
+#' @param FOLICACID_DII Unit=μg
+#' @param GARLIC_DII Unit=g
+#' @param GINGER_DII Unit=g
+#' @param IRON_DII Unit=mg
+#' @param MG_DII Unit=mg
+#' @param MUFA_DII Unit=g
+#' @param NIACIN_DII Unit=mg
+#' @param N3FAT_DII Unit=g
+#' @param N6FAT_DII Unit=g
+#' @param ONION_DII Unit=g
+#' @param PROTEIN_DII Unit=g
+#' @param PUFA_DII Unit=g
+#' @param RIBOFLAVIN_DII Unit=mg
+#' @param SAFFRON_DII Unit=g
+#' @param SATFAT_DII Unit=g
+#' @param SE_DII Unit=μg
+#' @param THIAMIN_DII Unit=mg
+#' @param TRANSFAT_DII Unit=g
+#' @param TURMERIC_DII Unit=mg
+#' @param VITA_DII Unit=RE
+#' @param VITC_DII Unit=mg
+#' @param VITD_DII Unit=μg
+#' @param VITE_DII Unit=mg
+#' @param ZN_DII Unit=mg
+#' @param TEA_DII Unit=g
+#' @param FLA3OL_DII Unit=mg
+#' @param FLAVONES_DII Unit=mg
+#' @param FLAVONOLS_DII Unit=mg
+#' @param FLAVONONES_DII Unit=mg
+#' @param ANTHOC_DII Unit=mg
+#' @param ISOFLAVONES_DII Unit=mg
+#' @param PEPPER_DII Unit=g
+#' @param THYME_DII Unit=mg
+#' @param ROSEMARY_DII Unit=mg
 #' @return The DII index/score
 #' @examples
-#' DII(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$ALCOHOL, SERV_DATA$VITB12, SERV_DATA$VITB6, SERV_DATA$BETACAROTENE, SERV_DATA$CAFFEINE, SERV_DATA$CARBOHYDRATE, SERV_DATA$CHOLESTEROL, SERV_DATA$ENERGY, SERV_DATA$EUGENOL, SERV_DATA$FAT, SERV_DATA$FIBER, SERV_DATA$FOLICACID, SERV_DATA$GARLIC, SERV_DATA$GINGER, SERV_DATA$IRON, SERV_DATA$MAGNESIUM, SERV_DATA$MUFA, SERV_DATA$NIACIN, SERV_DATA$N3FATTYACID, SERV_DATA$N6FATTYACID, SERV_DATA$ONION, SERV_DATA$PROTEIN, SERV_DATA$PUFA, SERV_DATA$RIBOFLAVIN, SERV_DATA$SAFFRON, SERV_DATA$SATFAT, SERV_DATA$SELENIUM, SERV_DATA$THIAMIN, SERV_DATA$TRANSFAT, SERV_DATA$TURMERIC, SERV_DATA$VITA, SERV_DATA$VITC, SERV_DATA$VITD, SERV_DATA$VITE, SERV_DATA$ZINC, SERV_DATA$TEA, SERV_DATA$FLAVAN3OL, SERV_DATA$FLAVONES, SERV_DATA$FLAVONOLS, SERV_DATA$FLAVONONES, SERV_DATA$ANTHOCYANIDINS, SERV_DATA$ISOFLAVONES, SERV_DATA$PEPPER, SERV_DATA$THYME, SERV_DATA$ROSEMARY)
+#' DII(SERV_DATA, SERV_DATA$RESPONDENTID, REPEATNUM=1, SERV_DATA$ALCOHOL_DII, SERV_DATA$VITB12_DII, SERV_DATA$VITB6_DII, SERV_DATA$BCAROTENE_DII, SERV_DATA$CAFFEINE_DII, SERV_DATA$CARB_DII, SERV_DATA$CHOLES_DII, SERV_DATA$KCAL_DII, SERV_DATA$EUGENOL_DII, SERV_DATA$TOTALFAT_DII, SERV_DATA$FIBER_DII, SERV_DATA$FOLICACID_DII, SERV_DATA$GARLIC_DII, SERV_DATA$GINGER_DII, SERV_DATA$IRON_DII, SERV_DATA$MG_DII, SERV_DATA$MUFA_DII, SERV_DATA$NIACIN_DII, SERV_DATA$N3FAT_DII, SERV_DATA$N6FAT_DII, SERV_DATA$ONION_DII, SERV_DATA$PROTEIN_DII, SERV_DATA$PUFA_DII, SERV_DATA$RIBOFLAVIN_DII, SERV_DATA$SAFFRON_DII, SERV_DATA$SATFAT_DII, SERV_DATA$SE_DII, SERV_DATA$THIAMIN_DII, SERV_DATA$TRANSFAT_DII, SERV_DATA$TURMERIC_DII, SERV_DATA$VITA_DII, SERV_DATA$VITC_DII, SERV_DATA$VITD_DII, SERV_DATA$VITE_DII, SERV_DATA$ZN_DII, SERV_DATA$TEA_DII, SERV_DATA$FLA3OL_DII, SERV_DATA$FLAVONES_DII, SERV_DATA$FLAVONOLS_DII, SERV_DATA$FLAVONONES_DII, SERV_DATA$ANTHOC_DII, SERV_DATA$ISOFLAVONES_DII, SERV_DATA$PEPPER_DII, SERV_DATA$THYME_DII, SERV_DATA$ROSEMARY_DII)
 #' @export
 
 #Score calculation for DII
 
-DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=NULL, ALCOHOL=NULL, VITB12=NULL, VITB6=NULL, BCAROTENE=NULL, CAFFEINE=NULL, CARB=NULL, CHOLES=NULL, KCAL=NULL, EUGENOL=NULL,
-               TOTALFAT=NULL, FIBER=NULL, FOLICACID=NULL, GARLIC=NULL, GINGER=NULL,IRON=NULL, MG=NULL, MUFA=NULL, NIACIN=NULL, N3FAT=NULL, N6FAT=NULL,ONION=NULL, PROTEIN=NULL, PUFA=NULL, 
-               RIBOFLAVIN=NULL,SAFFRON=NULL, SATFAT=NULL, SE=NULL, THIAMIN=NULL, TRANSFAT=NULL,TURMERIC=NULL, VITA=NULL, VITC=NULL, VITD=NULL, VITE=NULL, ZN=NULL, TEA=NULL,
-               FLA3OL=NULL,FLAVONES=NULL,FLAVONOLS=NULL,FLAVONONES=NULL,ANTHOC=NULL,ISOFLAVONES=NULL,PEPPER=NULL,THYME=NULL,ROSEMARY=NULL){
+DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=1, ALCOHOL_DII=NULL, VITB12_DII=NULL, VITB6_DII=NULL, BCAROTENE_DII=NULL, 
+               CAFFEINE_DII=NULL, CARB_DII=NULL, CHOLES_DII=NULL, KCAL_DII=NULL, EUGENOL_DII=NULL,
+               TOTALFAT_DII=NULL, FIBER_DII=NULL, FOLICACID_DII=NULL, GARLIC_DII=NULL, GINGER_DII=NULL,IRON_DII=NULL, MG_DII=NULL, MUFA_DII=NULL, NIACIN_DII=NULL, 
+               N3FAT_DII=NULL, N6FAT_DII=NULL,ONION_DII=NULL, PROTEIN_DII=NULL, PUFA_DII=NULL, 
+               RIBOFLAVIN_DII=NULL,SAFFRON_DII=NULL, SATFAT_DII=NULL, SE_DII=NULL, THIAMIN_DII=NULL, TRANSFAT_DII=NULL,TURMERIC_DII=NULL, VITA_DII=NULL, VITC_DII=NULL, 
+               VITD_DII=NULL, VITE_DII=NULL, ZN_DII=NULL, TEA=NULL,
+               FLA3OL_DII=NULL,FLAVONES_DII=NULL,FLAVONOLS_DII=NULL,FLAVONONES_DII=NULL,ANTHOC_DII=NULL,ISOFLAVONES_DII=NULL,PEPPER_DII=NULL,THYME_DII=NULL,ROSEMARY_DII=NULL){
   
   SERV_DATA = SERV_DATA %>%
     mutate(
       RESPONDENTID = RESPONDENTID, 
-      ALCOHOL = ALCOHOL, 
-      VITB12 = VITB12, 
-      VITB6 = VITB6, 
-      BCAROTENE = BCAROTENE, 
-      CAFFEINE = CAFFEINE, 
-      CARB = CARB, 
-      CHOLES = CHOLES, 
-      KCAL = KCAL, 
-      EUGENOL = EUGENOL,
-      TOTALFAT = TOTALFAT, 
-      FIBER = FIBER, 
-      FOLICACID = FOLICACID,
-      GARLIC = GARLIC, 
-      GINGER = GINGER,
-      IRON = IRON, 
-      MG = MG, 
-      MUFA = MUFA, 
-      NIACIN = NIACIN, 
-      N3FAT = N3FAT, 
-      N6FAT = N6FAT,
-      ONION = ONION,
-      PROTEIN = PROTEIN, 
-      PUFA = PUFA, 
-      RIBOFLAVIN = RIBOFLAVIN,
-      SAFFRON = SAFFRON, 
-      SATFAT = SATFAT, 
-      SE = SE, 
-      THIAMIN = THIAMIN,
-      TRANSFAT = TRANSFAT,
-      TURMERIC = TURMERIC, 
-      VITA = VITA,
-      VITC = VITC, 
-      VITD = VITD, 
-      VITE = VITE, 
-      ZN = ZN, 
+      REPEATNUM = REPEATNUM,
+      ALCOHOL_DII = ALCOHOL_DII, 
+      VITB12_DII = VITB12_DII, 
+      VITB6_DII = VITB6_DII, 
+      BCAROTENE_DII = BCAROTENE_DII, 
+      CAFFEINE_DII = CAFFEINE_DII, 
+      CARB_DII = CARB_DII, 
+      CHOLES_DII = CHOLES_DII, 
+      KCAL_DII = KCAL_DII, 
+      EUGENOL_DII = EUGENOL_DII,
+      TOTALFAT_DII = TOTALFAT_DII, 
+      FIBER_DII = FIBER_DII, 
+      FOLICACID_DII = FOLICACID_DII,
+      GARLIC_DII = GARLIC_DII, 
+      GINGER_DII = GINGER_DII,
+      IRON_DII = IRON_DII, 
+      MG_DII = MG_DII, 
+      MUFA_DII = MUFA_DII, 
+      NIACIN_DII = NIACIN_DII, 
+      N3FAT_DII = N3FAT_DII, 
+      N6FAT_DII = N6FAT_DII,
+      ONION_DII = ONION_DII,
+      PROTEIN_DII = PROTEIN_DII, 
+      PUFA_DII = PUFA_DII, 
+      RIBOFLAVIN_DII = RIBOFLAVIN_DII,
+      SAFFRON_DII = SAFFRON_DII, 
+      SATFAT_DII = SATFAT_DII, 
+      SE_DII = SE_DII, 
+      THIAMIN_DII = THIAMIN_DII,
+      TRANSFAT_DII = TRANSFAT_DII,
+      TURMERIC_DII = TURMERIC_DII, 
+      VITA_DII = VITA_DII,
+      VITC_DII = VITC_DII, 
+      VITD_DII = VITD_DII, 
+      VITE_DII = VITE_DII, 
+      ZN_DII = ZN_DII, 
       TEA = TEA,
-      FLA3OL = FLA3OL,
-      FLAVONES = FLAVONES,
-      FLAVONOLS = FLAVONOLS,
-      FLAVONONES = FLAVONONES,
-      ANTHOC = ANTHOC,
-      ISOFLAVONES = ISOFLAVONES,
-      PEPPER = PEPPER,
-      THYME = THYME,
-      ROSEMARY = ROSEMARY)
+      FLA3OL_DII = FLA3OL_DII,
+      FLAVONES_DII = FLAVONES_DII,
+      FLAVONOLS_DII = FLAVONOLS_DII,
+      FLAVONONES_DII = FLAVONONES_DII,
+      ANTHOC_DII = ANTHOC_DII,
+      ISOFLAVONES_DII = ISOFLAVONES_DII,
+      PEPPER_DII = PEPPER_DII,
+      THYME_DII = THYME_DII,
+      ROSEMARY_DII = ROSEMARY_DII)
   
   COHORT = SERV_DATA %>%
-    dplyr::select(RESPONDENTID, REPEATNUM, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, EUGENOL,
-                  TOTALFAT, FIBER, FOLICACID, GARLIC, GINGER,IRON, MG, MUFA, NIACIN, N3FAT, N6FAT,ONION, PROTEIN, PUFA,
-                  RIBOFLAVIN,SAFFRON, SATFAT, SE, THIAMIN, TRANSFAT,TURMERIC, VITA, VITC, VITD, VITE, ZN, TEA,
-                  FLA3OL,FLAVONES,FLAVONOLS,FLAVONONES,ANTHOC,ISOFLAVONES,PEPPER,THYME,ROSEMARY)%>%
+    dplyr::select(RESPONDENTID, REPEATNUM, ALCOHOL_DII, VITB12_DII, VITB6_DII, BCAROTENE_DII, CAFFEINE_DII, CARB_DII, CHOLES_DII, KCAL_DII, EUGENOL_DII,
+                  TOTALFAT_DII, FIBER_DII, FOLICACID_DII, GARLIC_DII, GINGER_DII,IRON_DII, MG_DII, MUFA_DII, NIACIN_DII, N3FAT_DII, N6FAT_DII,ONION_DII, PROTEIN_DII, PUFA_DII,
+                  RIBOFLAVIN_DII,SAFFRON_DII, SATFAT_DII, SE_DII, THIAMIN_DII, TRANSFAT_DII,TURMERIC_DII, VITA_DII, VITC_DII, VITD_DII, VITE_DII, ZN_DII, TEA,
+                  FLA3OL_DII,FLAVONES_DII,FLAVONOLS_DII,FLAVONONES_DII,ANTHOC_DII,ISOFLAVONES_DII,PEPPER_DII,THYME_DII,ROSEMARY_DII)%>%
     tidyr::pivot_longer(-c(RESPONDENTID, REPEATNUM), names_to="Variable", values_to="Value")
   
-  Variable = c("ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
-               "TOTALFAT", "FIBER", "FOLICACID","GARLIC", "GINGER","IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT","ONION", "PROTEIN", "PUFA",
-               "RIBOFLAVIN","SAFFRON", "SATFAT", "SE", "THIAMIN","TRANSFAT","TURMERIC", "VITA","VITC", "VITD", "VITE", "ZN", "TEA",
-               "FLA3OL","FLAVONES","FLAVONOLS","FLAVONONES","ANTHOC","ISOFLAVONES","PEPPER","THYME","ROSEMARY")
+  Variable = c("ALCOHOL_DII", "VITB12_DII", "VITB6_DII", "BCAROTENE_DII", "CAFFEINE_DII", "CARB_DII", "CHOLES_DII", "KCAL_DII", "EUGENOL_DII",
+               "TOTALFAT_DII", "FIBER_DII", "FOLICACID_DII","GARLIC_DII", "GINGER_DII","IRON_DII", "MG_DII", "MUFA_DII", "NIACIN_DII", "N3FAT_DII", "N6FAT_DII","ONION_DII", "PROTEIN_DII", "PUFA_DII",
+               "RIBOFLAVIN_DII","SAFFRON_DII", "SATFAT_DII", "SE_DII", "THIAMIN_DII","TRANSFAT_DII","TURMERIC_DII", "VITA_DII","VITC_DII", "VITD_DII", "VITE_DII", "ZN_DII", "TEA",
+               "FLA3OL_DII","FLAVONES_DII","FLAVONOLS_DII","FLAVONONES_DII","ANTHOC_DII","ISOFLAVONES_DII","PEPPER_DII","THYME_DII","ROSEMARY_DII")
   
   Overall_inflammatory_score = c(-0.278, 0.106, -0.365, -0.584, -0.11, 0.097, 0.11, 0.18, -0.14, 0.298, -0.663, -0.19, -0.412, -0.453, 0.032, -0.484, -0.009,
                                  -0.246, -0.436, -0.159, -0.301, 0.021, -0.337, -0.068, -0.14, 0.373, -0.191, -0.098,0.229,-0.785, -0.401, -0.424, -0.446, -0.419, -0.313,
@@ -827,205 +832,205 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=NULL, ALCOHOL=NULL, VITB12=NUL
       PERCENTILE = pnorm(Z_SCORE)*2 - 1,
       IND_DII_SCORE = PERCENTILE*Overall_inflammatory_score) %>%
     tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
-    dplyr:group_by(RESPONDENTID, REPEATNUM) %>%
-    dplyr:summarize(
-      ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE),
-      VITB12 = base::sum(VITB12, na.rm = TRUE),
-      VITB6 = base::sum(VITB6, na.rm = TRUE),
-      BCAROTENE = base::sum(BCAROTENE, na.rm = TRUE),
-      CAFFEINE = base::sum(CAFFEINE, na.rm = TRUE),
-      CARB = base::sum(CARB, na.rm = TRUE),
-      CHOLES = base::sum(CHOLES, na.rm = TRUE),
-      KCAL= base::sum(KCAL, na.rm = TRUE),
-      EUGENOL= base::sum(EUGENOL, na.rm = TRUE),
-      TOTALFAT= base::sum(TOTALFAT, na.rm = TRUE),
-      FIBER  = base::sum(FIBER, na.rm = TRUE),
-      FOLICACID  = base::sum(FOLICACID, na.rm = TRUE),
-      GARLIC  = base::sum(GARLIC, na.rm = TRUE),
-      GINGER  = base::sum(GINGER, na.rm = TRUE),
-      IRON  = base::sum(IRON, na.rm = TRUE),
-      MG  = base::sum(MG, na.rm = TRUE),
-      MUFA  = base::sum(MUFA, na.rm = TRUE),
-      NIACIN  = base::sum(NIACIN, na.rm = TRUE),
-      N3FAT  = base::sum(N3FAT, na.rm = TRUE),
-      N6FAT  = base::sum(N6FAT, na.rm = TRUE),
-      ONION  = base::sum(ONION, na.rm = TRUE),
-      PROTEIN  = base::sum(PROTEIN, na.rm = TRUE),
-      PUFA  = base::sum(PUFA, na.rm = TRUE),
-      RIBOFLAVIN  = base::sum(RIBOFLAVIN, na.rm = TRUE),
-      SAFFRON  = base::sum(SAFFRON, na.rm = TRUE),
-      SATFAT  = base::sum(SATFAT, na.rm = TRUE),
-      SE  = base::sum(SE, na.rm = TRUE),
-      THIAMIN  = base::sum(THIAMIN, na.rm = TRUE),
-      TRANSFAT  = base::sum(TRANSFAT, na.rm = TRUE),
-      TURMERIC  = base::sum(TURMERIC, na.rm = TRUE),
-      VITA  = base::sum(VITA, na.rm = TRUE),
-      VITC  = base::sum(VITC, na.rm = TRUE),
-      VITD  = base::sum(VITD, na.rm = TRUE),
-      VITE = base::sum(VITE, na.rm = TRUE),
-      ZN = base::sum(ZN, na.rm = TRUE),
+    dplyr::group_by(RESPONDENTID, REPEATNUM) %>%
+    dplyr::summarize(
+      ALCOHOL_DII = base::sum(ALCOHOL_DII, na.rm = TRUE),
+      VITB12_DII = base::sum(VITB12_DII, na.rm = TRUE),
+      VITB6_DII = base::sum(VITB6_DII, na.rm = TRUE),
+      BCAROTENE_DII = base::sum(BCAROTENE_DII, na.rm = TRUE),
+      CAFFEINE_DII = base::sum(CAFFEINE_DII, na.rm = TRUE),
+      CARB_DII = base::sum(CARB_DII, na.rm = TRUE),
+      CHOLES_DII = base::sum(CHOLES_DII, na.rm = TRUE),
+      KCAL_DII= base::sum(KCAL_DII, na.rm = TRUE),
+      EUGENOL_DII= base::sum(EUGENOL_DII, na.rm = TRUE),
+      TOTALFAT_DII= base::sum(TOTALFAT_DII, na.rm = TRUE),
+      FIBER_DII  = base::sum(FIBER_DII, na.rm = TRUE),
+      FOLICACID_DII  = base::sum(FOLICACID_DII, na.rm = TRUE),
+      GARLIC_DII  = base::sum(GARLIC_DII, na.rm = TRUE),
+      GINGER_DII  = base::sum(GINGER_DII, na.rm = TRUE),
+      IRON_DII  = base::sum(IRON_DII, na.rm = TRUE),
+      MG_DII  = base::sum(MG_DII, na.rm = TRUE),
+      MUFA_DII  = base::sum(MUFA_DII, na.rm = TRUE),
+      NIACIN_DII  = base::sum(NIACIN_DII, na.rm = TRUE),
+      N3FAT_DII  = base::sum(N3FAT_DII, na.rm = TRUE),
+      N6FAT_DII  = base::sum(N6FAT_DII, na.rm = TRUE),
+      ONION_DII  = base::sum(ONION_DII, na.rm = TRUE),
+      PROTEIN_DII  = base::sum(PROTEIN_DII, na.rm = TRUE),
+      PUFA_DII  = base::sum(PUFA_DII, na.rm = TRUE),
+      RIBOFLAVIN_DII  = base::sum(RIBOFLAVIN_DII, na.rm = TRUE),
+      SAFFRON_DII  = base::sum(SAFFRON_DII, na.rm = TRUE),
+      SATFAT_DII  = base::sum(SATFAT_DII, na.rm = TRUE),
+      SE_DII  = base::sum(SE_DII, na.rm = TRUE),
+      THIAMIN_DII  = base::sum(THIAMIN_DII, na.rm = TRUE),
+      TRANSFAT_DII  = base::sum(TRANSFAT_DII, na.rm = TRUE),
+      TURMERIC_DII  = base::sum(TURMERIC_DII, na.rm = TRUE),
+      VITA_DII  = base::sum(VITA_DII, na.rm = TRUE),
+      VITC_DII  = base::sum(VITC_DII, na.rm = TRUE),
+      VITD_DII  = base::sum(VITD_DII, na.rm = TRUE),
+      VITE_DII = base::sum(VITE_DII, na.rm = TRUE),
+      ZN_DII = base::sum(ZN_DII, na.rm = TRUE),
       TEA = base::sum(TEA, na.rm = TRUE),
-      FLA3OL = base::sum(FLA3OL, na.rm = TRUE),
-      FLAVONES = base::sum(FLAVONES, na.rm = TRUE),
-      FLAVONOLS = base::sum(FLAVONOLS, na.rm = TRUE),
-      FLAVONONES = base::sum(FLAVONONES, na.rm = TRUE),
-      ANTHOC = base::sum(ANTHOC, na.rm = TRUE),
-      ISOFLAVONES = base::sum(ISOFLAVONES, na.rm = TRUE),
-      PEPPER = base::sum(PEPPER, na.rm = TRUE),
-      THYME = base::sum(THYME, na.rm = TRUE),
-      ROSEMARY = base::sum(ROSEMARY, na.rm = TRUE),
+      FLA3OL_DII = base::sum(FLA3OL_DII, na.rm = TRUE),
+      FLAVONES_DII = base::sum(FLAVONES_DII, na.rm = TRUE),
+      FLAVONOLS_DII = base::sum(FLAVONOLS_DII, na.rm = TRUE),
+      FLAVONONES_DII = base::sum(FLAVONONES_DII, na.rm = TRUE),
+      ANTHOC_DII = base::sum(ANTHOC_DII, na.rm = TRUE),
+      ISOFLAVONES_DII = base::sum(ISOFLAVONES_DII, na.rm = TRUE),
+      PEPPER_DII = base::sum(PEPPER_DII, na.rm = TRUE),
+      THYME_DII = base::sum(THYME_DII, na.rm = TRUE),
+      ROSEMARY_DII = base::sum(ROSEMARY_DII, na.rm = TRUE),
     )
   
   for(i in 1:length(COHORT$RESPONDENTID)){
-    if (is.null(SERV_DATA$ALCOHOL) == TRUE){
-      COHORT$ALCOHOL[i] = 0
+    if (is.null(SERV_DATA$ALCOHOL_DII) == TRUE){
+      COHORT$ALCOHOL_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$VITB12) == TRUE){
-      COHORT$VITB12[i] = 0
+    else if (is.null(SERV_DATA$VITB12_DII) == TRUE){
+      COHORT$VITB12_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$VITB6) == TRUE){
-      COHORT$VITB6[i] = 0
+    else if (is.null(SERV_DATA$VITB6_DII) == TRUE){
+      COHORT$VITB6_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$BCAROTENE) == TRUE){
-      COHORT$BCAROTENE[i] = 0
+    else if (is.null(SERV_DATA$BCAROTENE_DII) == TRUE){
+      COHORT$BCAROTENE_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$CAFFEINE) == TRUE){
-      COHORT$CAFFEINE[i] = 0
+    else if (is.null(SERV_DATA$CAFFEINE_DII) == TRUE){
+      COHORT$CAFFEINE_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$CARB) == TRUE){
-      COHORT$CARB[i] = 0
+    else if (is.null(SERV_DATA$CARB_DII) == TRUE){
+      COHORT$CARB_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$CHOLES) == TRUE){
-      COHORT$CHOLES[i] = 0
+    else if (is.null(SERV_DATA$CHOLES_DII) == TRUE){
+      COHORT$CHOLES_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$KCAL) == TRUE){
-      COHORT$KCAL[i] = 0
+    else if (is.null(SERV_DATA$KCAL_DII) == TRUE){
+      COHORT$KCAL_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$EUGENOL) == TRUE){
-      COHORT$EUGENOL[i] = 0
+    else if (is.null(SERV_DATA$EUGENOL_DII) == TRUE){
+      COHORT$EUGENOL_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$TOTALFAT) == TRUE){
-      COHORT$TOTALFAT[i] = 0
+    else if (is.null(SERV_DATA$TOTALFAT_DII) == TRUE){
+      COHORT$TOTALFAT_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$FIBER) == TRUE){
-      COHORT$FIBER[i] = 0
+    else if (is.null(SERV_DATA$FIBER_DII) == TRUE){
+      COHORT$FIBER_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$FOLICACID) == TRUE){
-      COHORT$FOLICACID[i] = 0
+    else if (is.null(SERV_DATA$FOLICACID_DII) == TRUE){
+      COHORT$FOLICACID_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$GARLIC) == TRUE){
-      COHORT$GARLIC[i] = 0
+    else if (is.null(SERV_DATA$GARLIC_DII) == TRUE){
+      COHORT$GARLIC_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$GINGER) == TRUE){
-      COHORT$GINGER[i] = 0
+    else if (is.null(SERV_DATA$GINGER_DII) == TRUE){
+      COHORT$GINGER_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$IRON) == TRUE){
-      COHORT$IRON[i] = 0
+    else if (is.null(SERV_DATA$IRON_DII) == TRUE){
+      COHORT$IRON_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$MG) == TRUE){
-      COHORT$MG[i] = 0
+    else if (is.null(SERV_DATA$MG_DII) == TRUE){
+      COHORT$MG_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$MUFA) == TRUE){
-      COHORT$MUFA[i] = 0
+    else if (is.null(SERV_DATA$MUFA_DII) == TRUE){
+      COHORT$MUFA_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$NIACIN) == TRUE){
-      COHORT$NIACIN[i] = 0
+    else if (is.null(SERV_DATA$NIACIN_DII) == TRUE){
+      COHORT$NIACIN_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$N3FAT) == TRUE){
-      COHORT$N3FAT[i] = 0
+    else if (is.null(SERV_DATA$N3FAT_DII) == TRUE){
+      COHORT$N3FAT_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$N6FAT) == TRUE){
-      COHORT$N6FAT[i] = 0
+    else if (is.null(SERV_DATA$N6FAT_DII) == TRUE){
+      COHORT$N6FAT_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$ONION) == TRUE){
-      COHORT$ONION[i] = 0
+    else if (is.null(SERV_DATA$ONION_DII) == TRUE){
+      COHORT$ONION_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$PROTEIN) == TRUE){
-      COHORT$PROTEIN[i] = 0
+    else if (is.null(SERV_DATA$PROTEIN_DII) == TRUE){
+      COHORT$PROTEIN_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$PUFA) == TRUE){
-      COHORT$PUFA[i] = 0
+    else if (is.null(SERV_DATA$PUFA_DII) == TRUE){
+      COHORT$PUFA_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$RIBOFLAVIN) == TRUE){
-      COHORT$RIBOFLAVIN[i] = 0
+    else if (is.null(SERV_DATA$RIBOFLAVIN_DII) == TRUE){
+      COHORT$RIBOFLAVIN_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$SAFFRON) == TRUE){
-      COHORT$SAFFRON[i] = 0
+    else if (is.null(SERV_DATA$SAFFRON_DII) == TRUE){
+      COHORT$SAFFRON_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$SATFAT) == TRUE){
-      COHORT$SATFAT[i] = 0
+    else if (is.null(SERV_DATA$SATFAT_DII) == TRUE){
+      COHORT$SATFAT_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$SE) == TRUE){
-      COHORT$SE[i] = 0
+    else if (is.null(SERV_DATA$SE_DII) == TRUE){
+      COHORT$SE_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$THIAMIN) == TRUE){
-      COHORT$THIAMIN[i] = 0
+    else if (is.null(SERV_DATA$THIAMIN_DII) == TRUE){
+      COHORT$THIAMIN_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$TRANSFAT) == TRUE){
-      COHORT$TRANSFAT[i] = 0
+    else if (is.null(SERV_DATA$TRANSFAT_DII) == TRUE){
+      COHORT$TRANSFAT_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$TURMERIC) == TRUE){
-      COHORT$TURMERIC[i] = 0
+    else if (is.null(SERV_DATA$TURMERIC_DII) == TRUE){
+      COHORT$TURMERIC_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$VITA) == TRUE){
-      COHORT$VITA[i] = 0
+    else if (is.null(SERV_DATA$VITA_DII) == TRUE){
+      COHORT$VITA_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$VITC) == TRUE){
-      COHORT$VITC[i] = 0
+    else if (is.null(SERV_DATA$VITC_DII) == TRUE){
+      COHORT$VITC_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$VITD) == TRUE){
-      COHORT$VITD[i] = 0
+    else if (is.null(SERV_DATA$VITD_DII) == TRUE){
+      COHORT$VITD_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$VITE) == TRUE){
-      COHORT$VITE[i] = 0
+    else if (is.null(SERV_DATA$VITE_DII) == TRUE){
+      COHORT$VITE_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$ZN) == TRUE){
-      COHORT$ZN[i] = 0
+    else if (is.null(SERV_DATA$ZN_DII) == TRUE){
+      COHORT$ZN_DII[i] = 0
     }
     else if (is.null(SERV_DATA$TEA) == TRUE){
       COHORT$TEA[i] = 0
     }
-    else if (is.null(SERV_DATA$FLA3OL) == TRUE){
-      COHORT$FLA3OL[i] = 0
+    else if (is.null(SERV_DATA$FLA3OL_DII) == TRUE){
+      COHORT$FLA3OL_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$FLAVONES) == TRUE){
-      COHORT$FLAVONES[i] = 0
+    else if (is.null(SERV_DATA$FLAVONES_DII) == TRUE){
+      COHORT$FLAVONES_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$FLAVONOLS) == TRUE){
-      COHORT$FLAVONOLS[i] = 0
+    else if (is.null(SERV_DATA$FLAVONOLS_DII) == TRUE){
+      COHORT$FLAVONOLS_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$FLAVONONES) == TRUE){
-      COHORT$FLAVONONES[i] = 0
+    else if (is.null(SERV_DATA$FLAVONONES_DII) == TRUE){
+      COHORT$FLAVONONES_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$ANTHOC) == TRUE){
-      COHORT$ANTHOC[i] = 0
+    else if (is.null(SERV_DATA$ANTHOC_DII) == TRUE){
+      COHORT$ANTHOC_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$ISOFLAVONES) == TRUE){
-      COHORT$ISOFLAVONES[i] = 0
+    else if (is.null(SERV_DATA$ISOFLAVONES_DII) == TRUE){
+      COHORT$ISOFLAVONES_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$PEPPER) == TRUE){
-      COHORT$PEPPER[i] = 0
+    else if (is.null(SERV_DATA$PEPPER_DII) == TRUE){
+      COHORT$PEPPER_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$THYME) == TRUE){
-      COHORT$THYME[i] = 0
+    else if (is.null(SERV_DATA$THYME_DII) == TRUE){
+      COHORT$THYME_DII[i] = 0
     }
-    else if (is.null(SERV_DATA$ROSEMARY) == TRUE){
-      COHORT$ROSEMARY[i] = 0
+    else if (is.null(SERV_DATA$ROSEMARY_DII) == TRUE){
+      COHORT$ROSEMARY_DII[i] = 0
     }
   }
   
   
   COHORT %>%
     dplyr::mutate(
-      DII_ALL = ALCOHOL + VITB12 + VITB6 + BCAROTENE + CAFFEINE + CARB + CHOLES + KCAL + EUGENOL +
-        TOTALFAT + FIBER + FOLICACID + GARLIC + GINGER + IRON + MG + MUFA + NIACIN + N3FAT + N6FAT +ONION + PROTEIN + PUFA +
-        RIBOFLAVIN +SAFFRON + SATFAT + SE + THIAMIN +TRANSFAT +TURMERIC + VITA +VITC + VITD + VITE + ZN + TEA +
-        FLA3OL +FLAVONES +FLAVONOLS +FLAVONONES +ANTHOC +ISOFLAVONES +PEPPER +THYME +ROSEMARY,
+      DII_ALL = ALCOHOL_DII + VITB12_DII + VITB6_DII + BCAROTENE_DII + CAFFEINE_DII + CARB_DII + CHOLES_DII + KCAL_DII + EUGENOL_DII +
+        TOTALFAT_DII + FIBER_DII + FOLICACID_DII + GARLIC_DII + GINGER_DII + IRON_DII + MG_DII + MUFA_DII + NIACIN_DII + N3FAT_DII + N6FAT_DII +ONION_DII + PROTEIN_DII + PUFA_DII +
+        RIBOFLAVIN_DII +SAFFRON_DII + SATFAT_DII + SE_DII + THIAMIN_DII +TRANSFAT_DII +TURMERIC_DII + VITA_DII +VITC_DII + VITD_DII + VITE_DII + ZN_DII + TEA +
+        FLA3OL_DII +FLAVONES_DII +FLAVONOLS_DII +FLAVONONES_DII +ANTHOC_DII +ISOFLAVONES_DII +PEPPER_DII +THYME_DII +ROSEMARY_DII,
       
-      DII_NOETOH = VITB12 + VITB6 + BCAROTENE + CAFFEINE + CARB + CHOLES + KCAL + EUGENOL +
-        TOTALFAT + FIBER + FOLICACID + GARLIC + GINGER + IRON + MG + MUFA + NIACIN + N3FAT + N6FAT +ONION + PROTEIN + PUFA +
-        RIBOFLAVIN +SAFFRON + SATFAT + SE + THIAMIN +TRANSFAT +TURMERIC + VITA +VITC + VITD + VITE + ZN + TEA +
-        FLA3OL +FLAVONES +FLAVONOLS +FLAVONONES +ANTHOC +ISOFLAVONES +PEPPER +THYME +ROSEMARY,
+      DII_NOETOH = VITB12_DII + VITB6_DII + BCAROTENE_DII + CAFFEINE_DII + CARB_DII + CHOLES_DII + KCAL_DII + EUGENOL_DII +
+        TOTALFAT_DII + FIBER_DII + FOLICACID_DII + GARLIC_DII + GINGER_DII + IRON_DII + MG_DII + MUFA_DII + NIACIN_DII + N3FAT_DII + N6FAT_DII +ONION_DII + PROTEIN_DII + PUFA_DII +
+        RIBOFLAVIN_DII +SAFFRON_DII + SATFAT_DII + SE_DII + THIAMIN_DII +TRANSFAT_DII +TURMERIC_DII + VITA_DII +VITC_DII + VITD_DII + VITE_DII + ZN_DII + TEA +
+        FLA3OL_DII +FLAVONES_DII +FLAVONOLS_DII +FLAVONONES_DII +ANTHOC_DII +ISOFLAVONES_DII +PEPPER_DII +THYME_DII +ROSEMARY_DII,
     ) %>%
     dplyr::select(RESPONDENTID, DII_ALL, DII_NOETOH, everything())
   
@@ -1038,7 +1043,7 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=NULL, ALCOHOL=NULL, VITB12=NUL
 #' @import readr
 #' @import haven
 #' @param RAW_DATA The raw data file that includes results and raw responses of the dietary assessment
-#' @return The AHEI and its component scores
+#' @return The AHEI and its component scores. Sodium is energy adjusted: sodium_serv/(total kcal / 1000)
 #' @examples
 #' AHEI_BLOCK(RAW_DATA)
 #' @export
@@ -1082,7 +1087,7 @@ AHEI_BLOCK = function(RAW_DATA){
       REDPROC_MEAT_SERV = (M_FRANK /1.5) + ((M_MEAT+M_ORGAN)/4),
       TRANS_SERV = ((DT_TRFAT * 9) / DT_KCAL)*100,
       ALCOHOL_SERV=A_BEV,
-      SODIUM_SERV = DT_SODI
+      SODIUM_SERV = DT_SODI/(DT_KCAL/1000)
     ) 
   
   ##Create variables and functions needed for AHEI calculation
@@ -2316,7 +2321,7 @@ AHEI_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN)/4),
       TRANS_SERV = 0,
       ALCOHOL_SERV=DR1T_A_DRINKS,
-      SODIUM_SERV = DR1TSODI
+      SODIUM_SERV = DR1TSODI/(DR1TKCAL/1000)
     )
   
   
@@ -2492,7 +2497,7 @@ DASH_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH){
         DBQ223C==12 | DBQ223D==13 ~ DR1T_D_MILK + DR1T_D_YOGURT + (2/40.2)*DR1T_D_CHEESE,
         TRUE ~ DR1T_D_YOGURT + (2/40.2)*DR1T_D_CHEESE
       ),
-      SODIUM_SERV = DR1TSODI,
+      SODIUM_SERV = DR1TSODI/(DR1TKCAL/1000),
       REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT /1.5) + ((DR1T_PF_MEAT+DR1T_PF_ORGAN+DR1T_PF_POULT)/4),
       SSB_FRTJ_SERV = ((DR1T_ADD_SUGARS*4) / 26)
     ) 
@@ -2812,7 +2817,7 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
       SE  = base::sum(SE, na.rm = TRUE), 
       THIAMIN  = base::sum(THIAMIN, na.rm = TRUE), 
       VITA  = base::sum(VITA, na.rm = TRUE),
-      VITC  = base::sum(VITC), na.rm = TRUE, 
+      VITC  = base::sum(VITC, na.rm = TRUE), 
       VITD  = base::sum(VITD, na.rm = TRUE), 
       VITE = base::sum(VITE, na.rm = TRUE), 
       ZN = base::sum(ZN, na.rm = TRUE)
@@ -3002,7 +3007,7 @@ AHEI_F_ASA24 = function(DATA_PATH){
       SSB_FRTJ_SERV = (ADD_SUGARS*4 / 26),
       REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       TRANS_SERV = 0,
-      SODIUM_SERV = SODI,
+      SODIUM_SERV = SODI/(KCAL/1000),
       ALCOHOL_SERV = A_DRINKS
     )
   
@@ -3129,7 +3134,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
       SSB_FRTJ_SERV = (ADD_SUGARS*4 / 26),
       REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       TRANS_SERV = 0,
-      SODIUM_SERV = SODI,
+      SODIUM_SERV = SODI/(KCAL/1000),
       ALCOHOL_SERV = A_DRINKS
     )
   
@@ -3252,7 +3257,7 @@ DASH_ASA24 = function(DATA_PATH){
       NUTSLEG_SERV = PF_NUTSDS+PF_SOY+PF_LEGUMES,
       WGRAIN_SERV = G_WHOLE,
       LOWF_DAIRY_SERV = 0.1738*D_MILK + D_YOGURT + (2/40.2)*D_CHEESE,
-      SODIUM_SERV = SODI,
+      SODIUM_SERV = SODI/(KCAL/1000),
       REDPROC_MEAT_SERV = (PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4),
       SSB_FRTJ_SERV = (ADD_SUGARS*4 / 26)
     ) 
@@ -3501,7 +3506,7 @@ DII_ASA24 = function(DATA_PATH){
       SE  = base::sum(SE, na.rm = TRUE), 
       THIAMIN  = base::sum(THIAMIN, na.rm = TRUE), 
       VITA  = base::sum(VITA, na.rm = TRUE),
-      VITC  = base::sum(VITC), na.rm = TRUE, 
+      VITC  = base::sum(VITC, na.rm = TRUE), 
       VITD  = base::sum(VITD, na.rm = TRUE), 
       VITE = base::sum(VITE, na.rm = TRUE), 
       ZN = base::sum(ZN, na.rm = TRUE)
@@ -3695,7 +3700,7 @@ AHEI_DHQ3 = function(DATA_PATH){
       SSB_FRTJ_SERV = sum(ADDED_SUGAR_SSB_SERV/ 26),
       REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
       TRANS_SERV = (sum(`*Total trans fatty acitds (g)`*9)/KCAL)*100,
-      SODIUM_SERV = sum(`Sodium (mg)`),
+      SODIUM_SERV = sum(`Sodium (mg)`/(KCAL/1000)),
       ALCOHOL_SERV = sum(`Alcohol (drink(s))`)
     )
   
@@ -3930,12 +3935,13 @@ DASH_DHQ3 = function(DATA_PATH){
     ) %>%
     dplyr::group_by(`Respondent ID`) %>%
     dplyr::summarize(
+      KCAL = sum(`Energy (kcal)`),
       FRT_FRTJ_SERV = sum(`Total fruit (cups)`),
       VEG_SERV = sum(`Total red/orange vegetable (cups)` + `Dark-green vegetable (cups)`*0.5 + `Other starchy vegetable (cups)` + `Other vegetable (cups)`),
       NUTSLEG_SERV = sum(`Nuts, seeds, soy, and legumes (oz)`),
       WGRAIN_SERV = sum(`Whole grain (oz)`),
       LOWF_DAIRY_SERV = sum(LOWF_MILK_SERV+LOWF_CHEESECREAM_SERV+`Yogurt (cups)`),
-      SODIUM_SERV = sum(`Sodium (mg)`),
+      SODIUM_SERV = sum(`Sodium (mg)`/(KCAL/1000)),
       REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
       SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV / 26))
     )

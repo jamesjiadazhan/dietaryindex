@@ -10,7 +10,7 @@ AHEI_BLOCK(RAW_DATA)
 \item{RAW_DATA}{The raw data file that includes results and raw responses of the dietary assessment}
 }
 \value{
-The AHEI and its component scores
+The AHEI and its component scores. Sodium is energy adjusted: sodium_serv/(total kcal / 1000)
 }
 \description{
 Calculate the AHEI dietary index for the Block FFQ (2013) per 1 day

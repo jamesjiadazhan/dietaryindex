@@ -7,15 +7,15 @@
 AHEIP(
   SERV_DATA,
   RESPONDENTID,
-  VEG_SERV,
-  FRT_SERV,
-  WHITERED_RT_SERV,
-  FIBER_SERV,
-  TRANS_SERV,
-  POLYSAT_RT,
-  CALCIUM_SERV,
-  FOLATE_SERV,
-  IRON_SERV
+  VEG_SERV_AHEIP,
+  FRT_SERV_AHEIP,
+  WHITERED_RT_SERV_AHEIP,
+  FIBER_SERV_AHEIP,
+  TRANS_SERV_AHEIP,
+  POLYSAT_RT_SERV_AHEIP,
+  CALCIUM_SERV_AHEIP,
+  FOLATE_SERV_AHEIP,
+  IRON_SERV_AHEIP
 )
 }
 \arguments{
@@ -23,23 +23,23 @@ AHEIP(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
+\item{VEG_SERV_AHEIP}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
-\item{FRT_SERV}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)}
+\item{FRT_SERV_AHEIP}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)}
 
-\item{WHITERED_RT_SERV}{The serving size of the ratio of white and red meats, White meat = poultry + all fish, red meat = pork + beef + lamb + all organ meats + processed meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
+\item{WHITERED_RT_SERV_AHEIP}{The serving size of the ratio of white and red meats, White meat = poultry + all fish, red meat = pork + beef + lamb + all organ meats + processed meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{FIBER_SERV}{The serving size of fibers, unit=grams/day}
+\item{FIBER_SERV_AHEIP}{The serving size of fibers, unit=grams/day}
 
-\item{TRANS_SERV}{The serving size of trans fat, unit='\% of energy'}
+\item{TRANS_SERV_AHEIP}{The serving size of trans fat, unit='\% of energy'}
 
-\item{POLYSAT_RT}{The serving size of polyunsaturated/saturated fats, unit=ratio}
+\item{POLYSAT_RT_SERV_AHEIP}{The serving size of polyunsaturated/saturated fats, unit=ratio}
 
-\item{CALCIUM_SERV}{The serving size of calcium, unit=mg/day}
+\item{CALCIUM_SERV_AHEIP}{The serving size of calcium, unit=mg/day}
 
-\item{FOLATE_SERV}{The serving size of folate, unit=mcg/day}
+\item{FOLATE_SERV_AHEIP}{The serving size of folate, unit=mcg/day}
 
-\item{IRON_SERV}{The serving size of iron, unit=mg/day}
+\item{IRON_SERV_AHEIP}{The serving size of iron, unit=mg/day}
 }
 \value{
 The AHEIP index/score
@@ -48,5 +48,5 @@ The AHEIP index/score
 Calculate the AHEIP dietary index (serving size-based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-AHEIP(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WHITERED_RT_SERV, SERV_DATA$FIBER_SERV, SERV_DATA$TRANS_SERV, SERV_DATA$POLYSAT_RT, SERV_DATA$CALCIUM_SERV, SERV_DATA$FOLATE_SERV, SERV_DATA$IRON_SERV)
+AHEIP(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV_AHEIP, SERV_DATA$FRT_SERV_AHEIP, SERV_DATA$WHITERED_RT_SERV_AHEIP, SERV_DATA$FIBER_SERV_AHEIP, SERV_DATA$TRANS_SERV_AHEIP, SERV_DATA$POLYSAT_RT_SERV_AHEIP, SERV_DATA$CALCIUM_SERV_AHEIP, SERV_DATA$FOLATE_SERV_AHEIP, SERV_DATA$IRON_SERV_AHEIP)
 }

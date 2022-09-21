@@ -8,17 +8,18 @@ AHEI(
   SERV_DATA,
   RESPONDENTID,
   GENDER,
-  VEG_SERV,
-  FRT_SERV,
-  WGRAIN_SERV,
-  NUTSLEG_SERV,
-  N3FAT_SERV,
-  PUFA_SERV,
-  SSB_FRTJ_SERV,
-  REDPROC_MEAT_SERV,
-  TRANS_SERV,
-  SODIUM_SERV,
-  ALCOHOL_SERV
+  TOTALKCAL_AHEI,
+  VEG_SERV_AHEI,
+  FRT_SERV_AHEI,
+  WGRAIN_SERV_AHEI,
+  NUTSLEG_SERV_AHEI,
+  N3FAT_SERV_AHEI,
+  PUFA_SERV_AHEI,
+  SSB_FRTJ_SERV_AHEI,
+  REDPROC_MEAT_SERV_AHEI,
+  TRANS_SERV_AHEI,
+  SODIUM_SERV_AHEI,
+  ALCOHOL_SERV_AHEI
 )
 }
 \arguments{
@@ -28,27 +29,29 @@ AHEI(
 
 \item{GENDER}{The gender of the participant. 2 is female and 1 is male.}
 
-\item{VEG_SERV}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
+\item{TOTALKCAL_AHEI}{The total kcal, for adjusting sodium intake}
 
-\item{FRT_SERV}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)}
+\item{VEG_SERV_AHEI}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
-\item{WGRAIN_SERV}{The serving size of whole grains, unit=grams/day}
+\item{FRT_SERV_AHEI}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g)}
 
-\item{NUTSLEG_SERV}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
+\item{WGRAIN_SERV_AHEI}{The serving size of whole grains, unit=grams/day}
 
-\item{N3FAT_SERV}{The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)}
+\item{NUTSLEG_SERV_AHEI}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts and legume or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz}
 
-\item{PUFA_SERV}{The serving size of PUFA, unit=\% of energy}
+\item{N3FAT_SERV_AHEI}{The serving size of omega 3 fatty acid, unit=mg/day ( oz. = 28.35 g)}
 
-\item{SSB_FRTJ_SERV}{The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)}
+\item{PUFA_SERV_AHEI}{The serving size of PUFA, unit=\% of energy}
 
-\item{REDPROC_MEAT_SERV}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
+\item{SSB_FRTJ_SERV_AHEI}{The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)}
 
-\item{TRANS_SERV}{The serving size of trans fat, unit=\% of energy}
+\item{REDPROC_MEAT_SERV_AHEI}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{SODIUM_SERV}{The serving size of sodium, unit=mg/day}
+\item{TRANS_SERV_AHEI}{The serving size of trans fat, unit=\% of energy}
 
-\item{ALCOHOL_SERV}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g}
+\item{SODIUM_SERV_AHEI}{The serving size of sodium, unit=mg/day}
+
+\item{ALCOHOL_SERV_AHEI}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g}
 }
 \value{
 The AHEI index/score, AHEI
@@ -57,5 +60,5 @@ The AHEI index/score, AHEI
 Calculate the AHEI dietary index, Alternative Healthy Eating Index, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV,SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALKCAL_AHEI, SERV_DATA$VEG_SERV_AHEI, SERV_DATA$FRT_SERV_AHEI, SERV_DATA$WGRAIN_SERV_AHEI, SERV_DATA$NUTSLEG_SERV_AHEI, SERV_DATA$N3FAT_SERV_AHEI, SERV_DATA$PUFA_SERV_AHEI, SERV_DATA$SSB_FRTJ_SERV_AHEI, SERV_DATA$REDPROC_MEAT_SERV_AHEI, SERV_DATA$TRANS_SERV_AHEI,SODIUM_SERV_AHEI, SERV_DATA$ALCOHOL_SERV_AHEI)
 }
