@@ -14,7 +14,7 @@ HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 \item{DEMO_PATH}{The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT}
 }
 \value{
-The AHEI and its component scores
+The AHEI and its component scores and serving sizes
 }
 \description{
 Calculate the HEI2015 for the NHANES_FPED data (after 2005) within 1 step
