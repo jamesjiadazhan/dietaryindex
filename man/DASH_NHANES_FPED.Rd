@@ -4,27 +4,21 @@
 \alias{DASH_NHANES_FPED}
 \title{DASH_NHANES_FPED}
 \usage{
-DASH_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
+DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 }
 \arguments{
-\item{FPED_PATH}{The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat}
+\item{FPED_IND_PATH}{The file path for the FPED IND data. The file name should be like: fped_dr1iff.sas7bdat}
 
-\item{NUTRIENT_PATH}{The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT}
-
-\item{DEMO_PATH}{The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT}
-
-\item{DBQ_PATH}{The file path for the Diet Behavior & Nutrition data. The file name should be like: DBQ_J.XPT}
+\item{NUTRIENT_IND_PATH}{The file path for the NUTRIENT IND data. The file name should be like: DR1IFF_J}
 }
 \value{
-The DASH and its component scores
+The DASH and its component scores and serving sizes
 }
 \description{
 Calculate the DASH for the NHANES_FPED data (after 2005) within 1 step
 }
 \examples{
-FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
-NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
-DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
-DBQ_PATH = "/Users/james/Desktop/data/DBQ_J.XPT"
-DASH_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
+DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 }
