@@ -3,7 +3,7 @@
 ### Overview
 ___
 
-Version 0.11.0: now support DHQ3 for AHEI, MED, HEI2015 and DASH. DII is avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
+Version 0.12.0: now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -22,6 +22,9 @@ This package can also help you calculating these dietary pattern indexes (HEI201
 - All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
 - The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN.xlsx
 
+The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
+
+The outputs of the specific functions (e.g. DASH_ASA24) include dietary indexes, their component scores, and their food/drink serving sizes.
 
 The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. Please install them ahead.
 
@@ -68,6 +71,8 @@ The **dietaryindex** package currently contains the following key functions:
 >`MED()`, Mediterranean diet (https://pubmed.ncbi.nlm.nih.gov/33574608/)
 
 >`MEDI()`, Mediterranean diet index, serving size-based (https://pubmed.ncbi.nlm.nih.gov/28160450/)
+
+>`DII()`, Dietary Inflammation Index (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3925198/)
 
 
 
@@ -139,6 +144,17 @@ data("ASA24_exp")
 HEI2015_ASA24(ASA24_exp)
 ```
 
+#### Calculating DASH for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/items.csv"
+DASH_ASA24(DATA_PATH)
+
+#Use the example data
+data("ASA24_exp_detailed")
+DASH_ASA24(ASA24_exp_detailed)
+```
+
+
 #### Calculating HEI2015 for DHQ3
 ```
 DATA_PATH = "/Users/james/Desktop/data/results.csv"
@@ -184,29 +200,26 @@ HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172
 
 #### Calculating AHEI for NHANES_FPED
 ```
-FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
-NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
-DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
-AHEI_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+AHEI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
 #Use the example data
 data("NHANES_20172018")
-AHEI_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
 ```
 
 #### Calculating DASH for NHANES_FPED
 ```
-FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
-NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
-DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
-DBQ_PATH = "/Users/james/Desktop/data/DBQ_J.XPT"
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
-DASH_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH, DBQ_PATH)
+DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
 #Use the example data
 data("NHANES_20172018")
-DASH_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO, NHANES_20172018$DBQ)
+DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
 
 ```
 
