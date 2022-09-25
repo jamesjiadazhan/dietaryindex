@@ -7,7 +7,7 @@
 AHEI_M_ASA24(DATA_PATH)
 }
 \arguments{
-\item{DATA_PATH}{The file path for the data. The file name should be like: Totals.csv.}
+\item{DATA_PATH}{The file path for the data. The file name should be like: Items.csv}
 }
 \value{
 The AHEI and its component scores
@@ -16,6 +16,6 @@ The AHEI and its component scores
 Calculate the AHEI (male only) for the ASA24 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+DATA_PATH = "/Users/james/Desktop/data/Items.csv"
 AHEI_M_ASA24(DATA_PATH)
 }
