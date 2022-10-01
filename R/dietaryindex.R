@@ -1051,6 +1051,15 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=1, ALCOHOL_DII=NULL, VITB12_DI
 #' AHEI_BLOCK(RAW_DATA)
 #' @export
 
+#Functions to match actual food frequency and portion to the standards
+foodfreq = function(actual, reference=STD_FOOD_FREQ_DF){
+  reference[match(actual, reference[,1]),2]
+}
+
+foodport = function(actual, reference=STD_FOOD_PORT_DF){
+  reference[match(actual, reference[,1]),2]
+}
+
 AHEI_BLOCK = function(RAW_DATA){
   
   if (is.character(RAW_DATA) == TRUE){
@@ -1134,7 +1143,7 @@ AHEI_BLOCK = function(RAW_DATA){
     )
   }
   
-  SODIUM_DECILE = quantile(RAW_DATA$SODIUM_SERV, probs=seq(0, 1, by=1/11))
+  SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs=seq(0, 1, by=1/11))
   
   SERV_DATA %>%
     dplyr::mutate(
