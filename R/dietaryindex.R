@@ -1903,6 +1903,15 @@ DII_BLOCK = function(RAW_DATA){
     RAW_DATA = RAW_DATA
   }
   
+  #Functions to match actual food frequency and portion to the standards
+  foodfreq = function(actual, reference=STD_FOOD_FREQ_DF){
+    reference[match(actual, reference[,1]),2]
+  }
+  
+  foodport = function(actual, reference=STD_FOOD_PORT_DF){
+    reference[match(actual, reference[,1]),2]
+  }
+  
   #Serving size calculation for DII
   COHORT = RAW_DATA %>%
     dplyr::mutate(
