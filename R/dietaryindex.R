@@ -1985,7 +1985,7 @@ DII_BLOCK = function(RAW_DATA){
   
   #Score calculation for DII  
   
-  DII_ALL_df = COHORT1 %>%
+   COHORT1 %>%
     inner_join(DII_STD, by=c("Variable")) %>%
     dplyr::mutate(
       Z_SCORE = (Value - Global_mean)/SD,
