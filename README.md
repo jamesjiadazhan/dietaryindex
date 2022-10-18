@@ -1,7 +1,9 @@
 ## dietaryindex
-
+___
 ### Overview
 ___
+
+The goal of **dietaryindex** is to easily calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), Mediterranean Diet Index (MED), Dietary Inflammation Index (DII), and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
 
 Version 0.12.0: now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
 
