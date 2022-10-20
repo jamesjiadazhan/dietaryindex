@@ -5,7 +5,7 @@ ___
 
 The goal of **dietaryindex** is to easily calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), Mediterranean Diet Index (MED), Dietary Inflammation Index (DII), and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
 
-Version 0.12.0: now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
+Version 0.12.0: Internal warnings for ASA24, DHQ3, and NHANES were added to remind the appropriateness of data usage. Now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
 
 The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
 
@@ -145,6 +145,26 @@ HEI2015_ASA24(DATA_PATH)
 data("ASA24_exp")
 HEI2015_ASA24(ASA24_exp)
 ```
+#### Calculating MED for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+MED_ASA24(DATA_PATH)
+
+#Use the example data
+data("ASA24_exp")
+MED_ASA24(ASA24_exp)
+```
+
+#### Calculating DII for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+DII_ASA24(DATA_PATH)
+
+#Use the example data
+data("ASA24_exp")
+DII_ASA24(ASA24_exp)
+```
+
 
 #### Calculating DASH for ASA24
 ```
@@ -156,6 +176,16 @@ data("ASA24_exp_detailed")
 DASH_ASA24(ASA24_exp_detailed)
 ```
 
+#### Calculating AHEI for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/items.csv"
+AHEI_ASA24(DATA_PATH)
+
+#Use the example data
+data("ASA24_exp_detailed")
+AHEI_ASA24(ASA24_exp_detailed)
+```
+
 
 #### Calculating HEI2015 for DHQ3
 ```
@@ -165,6 +195,16 @@ HEI2015_DHQ3(DATA_PATH)
 #Use the example data
 data("DHQ3_exp")
 HEI2015_DHQ3(DHQ3_exp)
+```
+
+#### Calculating MED for DHQ3
+```
+DATA_PATH = "/Users/james/Desktop/data/results.csv"
+MED_DHQ3(DATA_PATH)
+
+#Use the example data
+data("DHQ3_exp")
+MED_DHQ3(DHQ3_exp)
 ```
 
 #### Calculating AHEI for DHQ3
@@ -200,6 +240,34 @@ data("NHANES_20172018")
 HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
 ```
 
+#### Calculating MED for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+
+```
+
+#### Calculating DII for NHANES_FPED
+```
+FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+
+DII_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+DII_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+
+```
+
 #### Calculating AHEI for NHANES_FPED
 ```
 FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
@@ -225,19 +293,6 @@ DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
 
 ```
 
-#### Calculating MED for NHANES_FPED
-```
-FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
-NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
-DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
-
-MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
-
-#Use the example data
-data("NHANES_20172018")
-MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
-
-```
 
 #### Calculating AHEI for BLOCK
 ```
@@ -342,4 +397,4 @@ DBQ file refers to the DBQ file in the Diet Behavior & Nutrition, Questionnaire 
 
 ### Contributing
 
-**dietaryindex** is licensed under the [MIT License]. Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, James Jiada Zhan, via his email: jzha832@emory.edu.
+**dietaryindex** is licensed under the [MIT License]. Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, James Jiada Zhan, via his email: jzha832@emory.edu. Becky Hodge provided significant contributions to validate this package. Thanks a lot for her help. 
