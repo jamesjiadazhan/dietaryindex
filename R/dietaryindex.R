@@ -2225,6 +2225,9 @@ HEI2015_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
     DEMO = DEMO_PATH
   }
   
+  if ("DR1ILINE" %in% colnames(FPED) | "DR1ILINE" %in% colnames(NUTRIENT)){
+    stop("Please use the population-level data. The file name should be like: Totals.csv")
+  }
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
@@ -2403,6 +2406,13 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH, NUTRIENT_IND_PATH){
     NUTRIENT_IND = NUTRIENT_IND_PATH
   }
   
+  if (!("DR1ILINE" %in% colnames(FPED_IND)) | !("DR1ILINE" %in% colnames(NUTRIENT_IND)) ){
+    stop("Please use individual-level data for this function. Individual-level nutrient data should be like DR1IFF_J.XPT. Individual-level FPED data should be like fped_dr1iff_1718.sas7bdat")
+  }
+  
+  # if (is.null(NUTRIENT_IND_PATH$DR1ILINE) | is.null(FPED_IND_PATH$DR1ILINE)) {
+  #   stop("Please use individual-level data for this function. Individual-level nutrient data should be like DR1IFF_J.XPT. Individual-level FPED data should be like fped_dr1iff_1718.sas7bdat")
+  # }
   
   NUTRIENT_IND = NUTRIENT_IND %>%
     filter(DR1DRSTZ == 1) %>%
@@ -2422,13 +2432,6 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH, NUTRIENT_IND_PATH){
           95323000)
   SSB = c(COFFEE_TEA, DRINK)
   
-  if (is.null(COHORT$DR1IFDCD.x) == TRUE){
-    print("Please use the individual-level NUTRIENT data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: DR1IFF_J.XPT")
-  }
-  
-  if (is.null(COHORT$DR1I_V_REDOR_TOTAL) == TRUE){
-    print("Please use the individual-level FPED data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: fped_dr1iff.sas7bdat")
-  }
   
   COHORT = COHORT %>%
     dplyr::mutate(
@@ -2583,6 +2586,10 @@ DASH_NHANES_FPED = function(FPED_IND_PATH, NUTRIENT_IND_PATH){
     NUTRIENT_IND = NUTRIENT_IND_PATH
   }
   
+  if (!("DR1ILINE" %in% colnames(FPED_IND)) | !("DR1ILINE" %in% colnames(NUTRIENT_IND)) ){
+    stop("Please use individual-level data for this function. Individual-level nutrient data should be like DR1IFF_J.XPT. Individual-level FPED data should be like fped_dr1iff_1718.sas7bdat")
+  }
+  
   NUTRIENT_IND = NUTRIENT_IND %>%
     filter(DR1DRSTZ == 1) %>%
     arrange(SEQN)
@@ -2604,13 +2611,6 @@ DASH_NHANES_FPED = function(FPED_IND_PATH, NUTRIENT_IND_PATH){
           95323000)
   SSB = c(COFFEE_TEA, DRINK)
   
-  if (is.null(COHORT$DR1IFDCD.x) == TRUE){
-    print("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: DR1IFF_J.XPT")
-  }
-  
-  if (is.null(COHORT$DR1I_V_REDOR_TOTAL) == TRUE){
-    print("Please use the individual-level FPED data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: fped_dr1iff.sas7bdat")
-  }
   
   COHORT = COHORT %>%
     dplyr::mutate(
@@ -2727,6 +2727,9 @@ MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
     DEMO = DEMO_PATH
   }
   
+  if ("DR1ILINE" %in% colnames(FPED) | "DR1ILINE" %in% colnames(NUTRIENT)){
+    stop("Please use the population-level data. The file name should be like: Totals.csv")
+  }
   
   NUTRIENT = NUTRIENT %>%
     filter(DR1DRSTZ == 1) %>%
@@ -2843,6 +2846,10 @@ DII_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){
     DEMO = read_xpt(DEMO_PATH)
   } else {
     DEMO = DEMO_PATH
+  }
+  
+  if ("DR1ILINE" %in% colnames(FPED) | "DR1ILINE" %in% colnames(NUTRIENT)){
+    stop("Please use the population-level data. The file name should be like: Totals.csv")
   }
   
   NUTRIENT = NUTRIENT %>%
@@ -2989,6 +2996,10 @@ HEI2015_ASA24 = function(DATA_PATH){
     COHORT = read_csv(DATA_PATH)
   } else {
     COHORT = DATA_PATH
+  }
+  
+  if ("FoodCode" %in% colnames(COHORT)){
+    stop("Please use the population-level data. The file name should be like: Totals.csv")
   }
   
   COHORT = COHORT %>%
@@ -3152,8 +3163,8 @@ AHEI_F_ASA24 = function(DATA_PATH){
           95323000)
   SSB = c(COFFEE_TEA, DRINK)
   
-  if (is.null(COHORT$FoodCode) == TRUE){
-    print("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: Items.csv")
+  if (!("FoodCode" %in% colnames(COHORT))){
+    stop("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: Items.csv")
   }
   
   COHORT = COHORT %>%
@@ -3300,8 +3311,8 @@ AHEI_M_ASA24 = function(DATA_PATH){
           95323000)
   SSB = c(COFFEE_TEA, DRINK)
   
-  if (is.null(COHORT$FoodCode) == TRUE){
-    print("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: Items.csv")
+  if (!("FoodCode" %in% colnames(COHORT))){
+    stop("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: Items.csv")
   }
   
   COHORT = COHORT %>%
@@ -3450,8 +3461,8 @@ DASH_ASA24 = function(DATA_PATH){
   DRINK=c(11511100,11511200,11511300,11511400,11511550,11511600,11511610,11511700,11512010,11512020,11512030,11512100,11512110,11512120,11553130,11560000,64134030,67260000,75200700,91301130,92101920,92101921,92101923,92101925,92101926,92101928,92101930,92101931,92101933,92101935,92101936,92101938,92102000,92102010,92102020,92102030,92102040,92102050,92102060,92102070,92102080,92102090,92102100,92102110,92307500,92307510,92307520,92400000,92400100,92410310,92410315,92410320,92410340,92410350,92410360,92410370,92410390,92410400,92410410,92410420,92410510,92410520,92410550,92410560,92410610,92410620,92410710,92410720,92410810,92410820,92411510,92411520,92411610,92411620,92432000,92433000,92510610,92510650,92510955,92510960,92511015,92513000,92513010,92530410,92530510,92530610,92530950,92531030,92541010,92542000,92550030,92550035,92550040,92550110,92550200,92550370,92550400,92550405,92550610,92550620,92552000,92552010,92552020,92552030,92582100,92582110,92900100,92900110,92900200,92900300,93301216,95101000,95101010,95102000,95103000,95103010,95104000,95105000,95106000,95106010,95110000,95110010,95110020,95120000,95120010,95120020,95120050,95310200,95310400,95310500,95310550,95310555,95310560,95310600,95310700,95310750,95310800,95311000,95312400,95312410,95312500,95312550,95312555,95312560,95312600,95312700,95312800,95312900,95312905,95313200,95320200,95320500,95321000,95322200,95322500,95323000)
   SSB = c(COFFEE_TEA, DRINK)
   
-  if (is.null(COHORT$FoodCode) == TRUE){
-    print("Please use the individual-level data since this function needs to calculate sugar sweetened beverage and low fat dairy using data from individual food items. The file name should be like: Items.csv")
+  if (!("FoodCode" %in% colnames(COHORT))){
+    stop("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: Items.csv")
   }
   
   #Match participant response food frequency to the standard food frequency response code
@@ -3551,6 +3562,10 @@ MED_ASA24 = function(DATA_PATH){
     COHORT = DATA_PATH
   }
   
+  if ("FoodCode" %in% colnames(COHORT)){
+    stop("Please use the population-level data. The file name should be like: Totals.csv")
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   
   COHORT = COHORT %>%
@@ -3631,6 +3646,10 @@ DII_ASA24 = function(DATA_PATH){
     COHORT = read_csv(DATA_PATH)
   } else {
     COHORT = DATA_PATH
+  }
+  
+  if ("FoodCode" %in% colnames(COHORT)){
+    stop("Please use the population-level data. The file name should be like: Totals.csv")
   }
   
   #Serving size calculation for DII
@@ -3762,6 +3781,11 @@ HEI2015_DHQ3 = function(DATA_PATH){
   } else {
     COHORT = DATA_PATH
   }
+  
+  if ("Food ID" %in% colnames(COHORT) ){
+    stop("Please use population-level data for this function. Population-level data should be like results.csv")
+  }
+  
   
   COHORT = COHORT %>%
     dplyr::mutate(
@@ -3908,6 +3932,10 @@ AHEI_DHQ3 = function(DATA_PATH){
     COHORT = read_csv(DATA_PATH)
   } else {
     COHORT = DATA_PATH
+  }
+  
+  if (!("Food ID" %in% colnames(COHORT)) ){
+    stop("Please use individual-level data for this function. Individual-level data should be like detail.csv")
   }
   
   COFFEE_TEA = c(16.1, 17.1, 64.1, 64.2, 1081.1, 1123.1, 1123.2, 1130.2, 1130.5)  
@@ -4074,6 +4102,10 @@ MED_DHQ3 = function(DATA_PATH){
     COHORT = DATA_PATH
   }
   
+  if ("Food ID" %in% colnames(COHORT) ){
+    stop("Please use population-level data for this function. Population-level data should be like results.csv")
+  }
+  
   #Match participant response food frequency to the standard food frequency response code
   
   COHORT = COHORT %>%
@@ -4154,6 +4186,10 @@ DASH_DHQ3 = function(DATA_PATH){
     COHORT = read_csv(DATA_PATH)
   } else {
     COHORT = DATA_PATH
+  }
+  
+  if (!("Food ID" %in% colnames(COHORT)) ){
+    stop("Please use individual-level data for this function. Individual-level data should be like detail.csv")
   }
   
   LOWF_MILK = c(5.3, 5.4, 6.3, 6.4, 10.3, 10.4)
