@@ -125,7 +125,7 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_AHEI, VEG_SERV_AHEI, 
         GENDER == 2  & ALCOHOL_SERV_AHEI < 0.5 & ALCOHOL_SERV_AHEI > 0.125 ~ 0 + (ALCOHOL_SERV_AHEI-0)*10/(0.5-0),
         GENDER == 2  & ALCOHOL_SERV_AHEI <= 0.125 ~ 2.5,
 
-        #GENDER = 1 is male
+        ##GENDER = 1 is male
         GENDER == 1  & ALCOHOL_SERV_AHEI >= 3.5 ~ 0,
         GENDER == 1  & ALCOHOL_SERV_AHEI < 3.5 & ALCOHOL_SERV_AHEI > 2 ~ 0 + (ALCOHOL_SERV_AHEI-2.5)*10/(1.5-2.5),
         GENDER == 1  & ALCOHOL_SERV_AHEI <= 2 & ALCOHOL_SERV_AHEI >= 0.5 ~ 10,
@@ -1037,6 +1037,222 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=1, ALCOHOL_DII=NULL, VITB12_DI
     ) %>%
     dplyr::select(RESPONDENTID, DII_ALL, DII_NOETOH, everything())
   
+}
+
+#' ACS2020_V1 
+#'
+#' Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf. 
+#' @import dplyr
+#' @import readr
+#' @import haven
+#' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
+#' @param RESPONDENTID The unique participant ID for each participant
+#' @param GENDER The gender for each participant, 1=male, and 2=female
+#' @param VEG_SERV_ACS2020 The serving size of All vegetable except potatoes and starchy vegetable, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
+#' @param VEG_ITEMS_SERV_ACS2020 The total number of unique vegetables (e.g., vegetable line items) reported by the participant. For example, a report of 3 servings of lettuce, 1 serving of kale, and 0.5 servings of broccoli would count as 3 vegetable line items.
+#' @param FRT_SERV_ACS2020 The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup other fruits=236.59 g; 1 med fruit; 0.5 medium avocado)
+#' @param FRT_ITEMS_SERV_ACS2020 The number of unique fruits (e.g., fruit line items) asked about on that survey/app (measuring the variety of fruits). For example, 3 serving of apple, 3 servings of banana, and 3 servings of blueberry are just 3 total number line items
+#' @param WGRAIN_SERV_ACS2020 The serving size of whole grains, unit=grams/day
+#' @param SSB_FRTJ_SERV_ACS2020 The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
+#' @param REDPROC_MEAT_SERV_ACS2020 The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
+#' @param HPFRG_RATIO_SERV_ACS2020 The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 % calories from HPF and ref grains)
+#' @return The ACS2020_V1 index/score and its component scores 
+#' @examples
+#' ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
+#' @export
+
+
+#Score calculation for ACS2020_V1
+ACS2020_V1 = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV_ACS2020, VEG_ITEMS_SERV_ACS2020, FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, WGRAIN_SERV_ACS2020,
+                      SSB_FRTJ_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_RATIO_SERV_ACS2020){
+  
+  ##Create variables and functions needed for ACS2020_V1 calculation
+  quintile_healthy1 = function(actual){
+    quintile= quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 0.75,
+      actual < quintile[4] & actual >= quintile[3] ~ 0.5,
+      actual < quintile[3] & actual >= quintile[2] ~ 0.25,
+      actual < quintile[2] & actual >= quintile[1] ~ 0
+    )
+  }
+  
+  quintile_healthy4 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 3,
+      actual < quintile[4] & actual >= quintile[3] ~ 2,
+      actual < quintile[3] & actual >= quintile[2] ~ 1,
+      actual < quintile[2] & actual >= quintile[1] ~ 0
+    )
+  }
+  
+  quintile_unhealthy2 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 0,
+      actual < quintile[4] & actual >= quintile[3] ~ 0.5,
+      actual < quintile[3] & actual >= quintile[2] ~ 1,
+      actual < quintile[2] & actual >= quintile[1] ~ 1.5
+    )
+  }
+  
+  quintile_unhealthy4 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 0,
+      actual < quintile[4] & actual >= quintile[3] ~ 1,
+      actual < quintile[3] & actual >= quintile[2] ~ 2,
+      actual < quintile[2] & actual >= quintile[1] ~ 3
+    )
+  }
+  
+  print("Reminder: this ACS2020_V1 index uses quintiles to rank participants' food/drink serving sizes and then calculate the component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
+  ##ACS2020 calculation
+  SERV_DATA %>%
+    dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      GENDER = GENDER,
+      VEG_SERV_ACS2020=VEG_SERV_ACS2020,
+      VEG_ITEMS_SERV_ACS2020=VEG_ITEMS_SERV_ACS2020,
+      FRT_SERV_ACS2020=FRT_SERV_ACS2020,
+      FRT_ITEMS_SERV_ACS2020=FRT_ITEMS_SERV_ACS2020,
+      WGRAIN_SERV_ACS2020=WGRAIN_SERV_ACS2020,
+      SSB_FRTJ_SERV_ACS2020=SSB_FRTJ_SERV_ACS2020,
+      REDPROC_MEAT_SERV_ACS2020=REDPROC_MEAT_SERV_ACS2020,
+      HPFRG_RATIO_SERV_ACS2020=HPFRG_RATIO_SERV_ACS2020) %>%
+    group_by(GENDER) %>%
+    dplyr::mutate(
+      ACS2020_VEG = quintile_healthy1(VEG_SERV_ACS2020),
+      ACS2020_VEG_ITEMS = quintile_healthy1(VEG_ITEMS_SERV_ACS2020),
+      ACS2020_FRT = quintile_healthy1(FRT_SERV_ACS2020),
+      ACS2020_FRT_ITEMS = quintile_healthy1(FRT_ITEMS_SERV_ACS2020),
+      ACS2020_WGRAIN = quintile_healthy4(WGRAIN_SERV_ACS2020),
+      ACS2020_SSB_FRTJ = case_when(
+        SSB_FRTJ_SERV_ACS2020 >= 1 ~ 0 ,
+        SSB_FRTJ_SERV_ACS2020 < 1 & SSB_FRTJ_SERV_ACS2020 >= 3/7 ~ 0.5,
+        SSB_FRTJ_SERV_ACS2020 < 3/7 ~ 1,
+        SSB_FRTJ_SERV_ACS2020 <= 0 ~ 1.5,
+      ),
+      ACS2020_REDPROC_MEAT = quintile_unhealthy4(REDPROC_MEAT_SERV_ACS2020),
+      ACS2020_HPFRG_RATIO = quintile_unhealthy2(HPFRG_RATIO_SERV_ACS2020),
+      
+      ACS2020_V1_ALL = ACS2020_VEG+ACS2020_VEG_ITEMS+ACS2020_FRT+ACS2020_FRT_ITEMS+ACS2020_WGRAIN+
+        ACS2020_SSB_FRTJ+ACS2020_REDPROC_MEAT+ACS2020_HPFRG_RATIO
+    )%>%
+    dplyr::select(RESPONDENTID, GENDER, ACS2020_V1_ALL, ACS2020_VEG, ACS2020_VEG_ITEMS, ACS2020_FRT, ACS2020_FRT_ITEMS, ACS2020_WGRAIN,
+                  ACS2020_SSB_FRTJ, ACS2020_REDPROC_MEAT, ACS2020_HPFRG_RATIO)
+}
+
+
+#' ACS2020_V2
+#'
+#' Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the individual component scores. This alternate calculation method is intended for studies that do not have the percent daily calories from highly processed foods and refined grains; this version uses the daily servings per 1000 calories to calculate that component score instead. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf.
+#' @import dplyr
+#' @import readr
+#' @import haven
+#' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
+#' @param RESPONDENTID The unique participant ID for each participant
+#' @param GENDER The gender for each participant, 1=male, and 2=female
+#' @param TOTALKCAL_ACS2020 The total kcal
+#' @param VEG_SERV_ACS2020 The serving size of All vegetable except potatoes and starchy vegetable, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
+#' @param VEG_ITEMS_SERV_ACS2020 The total number of unique vegetables (e.g., vegetable line items) reported by the participant. For example, a report of 3 servings of lettuce, 1 serving of kale, and 0.5 servings of broccoli would count as 3 vegetable line items.
+#' @param FRT_SERV_ACS2020 The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit; 0.5 medium avocado)
+#' @param FRT_ITEMS_SERV_ACS2020 The number of unique fruits (e.g., fruit line items) asked about on that survey/app (measuring the variety of fruits). For example, 3 serving of apple, 3 servings of banana, and 3 servings of blueberry are just 3 total number line items
+#' @param WGRAIN_SERV_ACS2020 The serving size of whole grains, unit=grams/day
+#' @param SSB_FRTJ_SERV_ACS2020 The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
+#' @param REDPROC_MEAT_SERV_ACS2020 The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
+#' @param HPFRG_SERV_ACS2020 The daily servings of highly processed foods and refined grains per 1000 kcal(e.g. 35 % calories from HPF and ref grains)
+#' @return The ACS2020_V2 index/score and its component scores 
+#' @examples
+#' ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALKCAL_ACS2020, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_SERV_ACS2020)
+#' @export
+
+
+#Score calculation for ACS2020_V2
+ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SERV_ACS2020, VEG_ITEMS_SERV_ACS2020, 
+                      FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, WGRAIN_SERV_ACS2020,
+                      SSB_FRTJ_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_SERV_ACS2020){
+  
+  ##Create variables and functions needed for ACS2020_V2 calculation
+  quintile_healthy1 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 0.75,
+      actual < quintile[4] & actual >= quintile[3] ~ 0.5,
+      actual < quintile[3] & actual >= quintile[2] ~ 0.25,
+      actual < quintile[2] & actual >= quintile[1] ~ 0
+    )
+  }
+  
+  quintile_healthy4 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 3,
+      actual < quintile[4] & actual >= quintile[3] ~ 2,
+      actual < quintile[3] & actual >= quintile[2] ~ 1,
+      actual < quintile[2] & actual >= quintile[1] ~ 0
+    )
+  }
+  
+  quintile_unhealthy2 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 0,
+      actual < quintile[4] & actual >= quintile[3] ~ 0.5,
+      actual < quintile[3] & actual >= quintile[2] ~ 1,
+      actual < quintile[2] & actual >= quintile[1] ~ 1.5
+    )
+  }
+  
+  quintile_unhealthy4 = function(actual){
+    quintile = quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
+    case_when(
+      actual < quintile[5] & actual >= quintile[4] ~ 0,
+      actual < quintile[4] & actual >= quintile[3] ~ 1,
+      actual < quintile[3] & actual >= quintile[2] ~ 2,
+      actual < quintile[2] & actual >= quintile[1] ~ 3
+    )
+  }
+  
+  print("Reminder: this ACS2020_V2 index uses quintiles to rank participants' food/drink serving sizes and then calculate the component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+  
+  ##ACS2020 calculation
+  SERV_DATA %>%
+    dplyr::mutate(
+      RESPONDENTID = RESPONDENTID,
+      GENDER = GENDER,
+      TOTALKCAL_ACS2020 = TOTALKCAL_ACS2020,
+      VEG_SERV_ACS2020=VEG_SERV_ACS2020,
+      VEG_ITEMS_SERV_ACS2020=VEG_ITEMS_SERV_ACS2020,
+      FRT_SERV_ACS2020=FRT_SERV_ACS2020,
+      FRT_ITEMS_SERV_ACS2020=FRT_ITEMS_SERV_ACS2020,
+      WGRAIN_SERV_ACS2020=WGRAIN_SERV_ACS2020,
+      SSB_FRTJ_SERV_ACS2020=SSB_FRTJ_SERV_ACS2020,
+      REDPROC_MEAT_SERV_ACS2020=REDPROC_MEAT_SERV_ACS2020,
+      HPFRG_SERV_ACS2020=HPFRG_SERV_ACS2020) %>%
+    group_by(GENDER) %>%
+    dplyr::mutate(
+      ACS2020_VEG = quintile_healthy1(VEG_SERV_ACS2020),
+      ACS2020_VEG_ITEMS = quintile_healthy1(VEG_ITEMS_SERV_ACS2020),
+      ACS2020_FRT = quintile_healthy1(FRT_SERV_ACS2020),
+      ACS2020_FRT_ITEMS = quintile_healthy1(FRT_ITEMS_SERV_ACS2020),
+      ACS2020_WGRAIN = quintile_healthy4(WGRAIN_SERV_ACS2020),
+      ACS2020_SSB_FRTJ = case_when(
+        SSB_FRTJ_SERV_ACS2020 >= 1 ~ 0 ,
+        SSB_FRTJ_SERV_ACS2020 < 1 & SSB_FRTJ_SERV_ACS2020 >= 3/7 ~ 0.5,
+        SSB_FRTJ_SERV_ACS2020 < 3/7 ~ 1,
+        SSB_FRTJ_SERV_ACS2020 <= 0 ~ 1.5,
+      ),
+      ACS2020_REDPROC_MEAT = quintile_unhealthy4(REDPROC_MEAT_SERV_ACS2020),
+      ACS2020_HPFRG = quintile_unhealthy2(HPFRG_SERV_ACS2020/(TOTALKCAL_ACS2020/1000)),
+      
+      ACS2020_V2_ALL = ACS2020_VEG+ACS2020_VEG_ITEMS+ACS2020_FRT+ACS2020_FRT_ITEMS+ACS2020_WGRAIN+
+        ACS2020_SSB_FRTJ+ACS2020_REDPROC_MEAT+ACS2020_HPFRG
+    )%>%
+    dplyr::select(RESPONDENTID, GENDER, ACS2020_V2_ALL, TOTALKCAL_ACS2020, ACS2020_VEG, ACS2020_VEG_ITEMS, ACS2020_FRT, ACS2020_FRT_ITEMS, ACS2020_WGRAIN,
+                  ACS2020_SSB_FRTJ, ACS2020_REDPROC_MEAT, ACS2020_HPFRG)
 }
 
 #' AHEI_BLOCK Calculation
@@ -2505,8 +2721,9 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH, NUTRIENT_IND_PATH){
       AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_FRT = SCORE_HEALTHY(FRT_SERV, AHEI_MIN_FRT_SERV, AHEI_MAX_FRT_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_WGRAIN = case_when(
-        RIAGENDR == 1 ~ SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
-        RIAGENDR == 2 ~ SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_M_SERV, AHEI_MAX_WGRAIN_M_SERV, AHEI_MIN, AHEI_MAX)
+        # 2 is female and 1 is male
+        RIAGENDR == 2 ~ SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_F_SERV, AHEI_MAX_WGRAIN_F_SERV, AHEI_MIN, AHEI_MAX),
+        RIAGENDR == 1 ~ SCORE_HEALTHY(WGRAIN_SERV, AHEI_MIN_WGRAIN_M_SERV, AHEI_MAX_WGRAIN_M_SERV, AHEI_MIN, AHEI_MAX)
       ),
       AHEI_NUTSLEG = SCORE_HEALTHY(NUTSLEG_SERV, AHEI_MIN_NUTSLEG_SERV, AHEI_MAX_NUTSLEG_SERV, AHEI_MIN, AHEI_MAX),
       AHEI_N3FAT = SCORE_HEALTHY(N3FAT_SERV, AHEI_MIN_N3FAT_SERV, AHEI_MAX_N3FAT_SERV, AHEI_MIN, AHEI_MAX),
