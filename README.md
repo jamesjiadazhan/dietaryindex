@@ -5,11 +5,9 @@ ___
 
 The goal of **dietaryindex** is to easily calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), Mediterranean Diet Index (MED), Dietary Inflammation Index (DII), and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
 
-Version 0.12.0: Internal warnings for ASA24, DHQ3, and NHANES were added to remind the appropriateness of data usage. Now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
+Version 0.13.0: American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. Internal warnings for ASA24, DHQ3, and NHANES were added to remind the appropriateness of data usage. Now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed.
 
-The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. 
-
-**dietaryindex** calculates dietary indexes by 2 steps:
+The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. It calculates dietary indexes by 2 steps:
 1. Calculate the serving size of each food and nutrient category
 2. Calculate the individual dietary index
 
@@ -20,9 +18,9 @@ Currently, the **dietaryindex** package works for the following 5 dietary assess
 4. It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
 5. It can calculate HEI2015 for the NIH-AARP
 
-This package can also help you calculating these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+**dietaryindex** can also calculate these dietary pattern indexes (ACS2020_V1, ACS2020_V2, HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII) using **ALL** other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
 - All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
-- The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN.xlsx
+- The excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN_BH_FINAL.xlsx
 
 The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
 
@@ -60,6 +58,9 @@ library(haven)
 ```
 
 The **dietaryindex** package currently contains the following key functions:
+
+>`ACS2020_V1()`, `ACS2020_V2()`, American Cancer Society 2020 diet score (https://pubmed.ncbi.nlm.nih.gov/35679041/)
+
 >`HEI2015()`, Healthy Eating Index 2015 (https://www.fns.usda.gov/how-hei-scored)
 
 >`AHEI()`, alternative healthy eating index (https://pubmed.ncbi.nlm.nih.gov/22513989/)
@@ -302,6 +303,17 @@ RAW_DATA <- read_csv(DATA_PATH)
 AHEI_BLOCK = AHEI_SERV(RAW_DATA)
 ```
 
+#### Calculating ACS2020_V1 or ACS2020_V2 for your own dietary assessment tool
+```
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+SERV_DATA <- read_csv(DATA_PATH)
+
+ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
+
+ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL_ACS2020, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_SERV_ACS2020)
+```
+
+
 #### Calculating HEI2015 for your own dietary assessment tool
 ```
 DATA_PATH <- "/Users/james/Desktop/data.csv"
@@ -397,4 +409,4 @@ DBQ file refers to the DBQ file in the Diet Behavior & Nutrition, Questionnaire 
 
 ### Contributing
 
-**dietaryindex** is licensed under the [MIT License]. Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, James Jiada Zhan, via his email: jzha832@emory.edu. Becky Hodge provided significant contributions to validate this package. Thanks a lot for her help. 
+**dietaryindex** is licensed under the [MIT License]. Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, **James Jiada Zhan**, via his email: jzha832@emory.edu. **Becky Hodge** provided significant contributions to validate this package. Thanks a lot for her help. 
