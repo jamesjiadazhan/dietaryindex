@@ -43,7 +43,7 @@ DII(
   VITD_DII = NULL,
   VITE_DII = NULL,
   ZN_DII = NULL,
-  TEA = NULL,
+  TEA_DII = NULL,
   FLA3OL_DII = NULL,
   FLAVONES_DII = NULL,
   FLAVONOLS_DII = NULL,
@@ -132,6 +132,8 @@ DII(
 
 \item{ZN_DII}{Unit=mg}
 
+\item{TEA_DII}{Unit=g}
+
 \item{FLA3OL_DII}{Unit=mg}
 
 \item{FLAVONES_DII}{Unit=mg}
@@ -149,8 +151,6 @@ DII(
 \item{THYME_DII}{Unit=mg}
 
 \item{ROSEMARY_DII}{Unit=mg}
-
-\item{TEA_DII}{Unit=g}
 }
 \value{
 The DII index/score
