@@ -29,7 +29,7 @@ ACS2020_V1(
 
 \item{VEG_ITEMS_SERV_ACS2020}{The total number of unique vegetables (e.g., vegetable line items) reported by the participant. For example, a report of 3 servings of lettuce, 1 serving of kale, and 0.5 servings of broccoli would count as 3 vegetable line items.}
 
-\item{FRT_SERV_ACS2020}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit; 0.5 medium avocado)}
+\item{FRT_SERV_ACS2020}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup other fruits=236.59 g; 1 med fruit; 0.5 medium avocado)}
 
 \item{FRT_ITEMS_SERV_ACS2020}{The number of unique fruits (e.g., fruit line items) asked about on that survey/app (measuring the variety of fruits). For example, 3 serving of apple, 3 servings of banana, and 3 servings of blueberry are just 3 total number line items}
 
@@ -39,7 +39,7 @@ ACS2020_V1(
 
 \item{REDPROC_MEAT_SERV_ACS2020}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{HPFRG_RATIO_SERV_ACS2020}{The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 % calories from HPF and ref grains)}
+\item{HPFRG_RATIO_SERV_ACS2020}{The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 \% calories from HPF and ref grains)}
 }
 \value{
 The ACS2020_V1 index/score and its component scores
