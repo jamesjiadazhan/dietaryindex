@@ -1063,9 +1063,9 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=1, ALCOHOL_DII=NULL, VITB12_DI
 
 
 #Score calculation for ACS2020_V1
-ACS2020_V1 = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV_ACS2020, VEG_ITEMS_SERV_ACS2020, FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, WGRAIN_SERV_ACS2020,
-                      SSB_FRTJ_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_RATIO_SERV_ACS2020){
-  
+ACS2020_V1 = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV_ACS2020, VEG_ITEMS_SERV_ACS2020, FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, 
+                      WGRAIN_SERV_ACS2020, SSB_FRTJ_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_RATIO_SERV_ACS2020){
+
   ##Create variables and functions needed for ACS2020_V1 calculation
   quintile_healthy1 = function(actual){
     quintile= quantile(actual, probs=seq(0, 1, by=0.25), na.rm=TRUE)
@@ -1145,10 +1145,9 @@ ACS2020_V1 = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV_ACS2020, VEG_ITE
                   ACS2020_SSB_FRTJ, ACS2020_REDPROC_MEAT, ACS2020_HPFRG_RATIO)
 }
 
-
 #' ACS2020_V2
 #'
-#' Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the individual component scores. This alternate calculation method is intended for studies that do not have the percent daily calories from highly processed foods and refined grains; this version uses the daily servings per 1000 calories to calculate that component score instead. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf.
+#' Calculate the American Cancer Society 2020 dietary index version 2 (using servings/d per 1000 kcal), using given the serving sizes of foods and nutrients consumed per 1 day. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf 
 #' @import dplyr
 #' @import readr
 #' @import haven
