@@ -42,13 +42,13 @@ ACS2020_V2(
 
 \item{REDPROC_MEAT_SERV_ACS2020}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{HPFRG_SERV_ACS2020}{The daily servings of highly processed foods and refined grains per 1000 kcal(e.g. 35 % calories from HPF and ref grains)}
-
+\item{HPFRG_SERV_ACS2020}{The daily servings of highly processed foods and refined grains per 1000 kcal(e.g. 35 \% calories from HPF and ref grains)}
+}
 \value{
 The ACS2020_V2 index/score and its component scores
 }
 \description{
-Calculate the American Cancer Society 2020 dietary index version 2 (using servings/d per 1000 kcal), using given the serving sizes of foods and nutrients consumed per 1 day. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf
+Calculate the American Cancer Society 2020 dietary index version 2 (using servings/d per 1000 kcal), using given the serving sizes of foods and nutrients consumed per 1 day.
 }
 \examples{
 ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALKCAL_ACS2020, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_SERV_ACS2020)
