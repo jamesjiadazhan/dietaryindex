@@ -7,6 +7,7 @@
 ACS2020_V1(
   SERV_DATA,
   RESPONDENTID,
+  GENDER,
   VEG_SERV_ACS2020,
   VEG_ITEMS_SERV_ACS2020,
   FRT_SERV_ACS2020,
@@ -22,13 +23,15 @@ ACS2020_V1(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{VEG_SERV_ACS2020}{The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
+\item{GENDER}{The gender for each participant, 1=male, and 2=female}
 
-\item{VEG_ITEMS_SERV_ACS2020}{The total number of unique vegetables (e.g., vegetable line items)  asked about on the survey/app (measuring the variety of vegetables). For example, 3 serving of lettuce, 3 servings of kale, and 3 servings of spinach are just 3 total number line items}
+\item{VEG_SERV_ACS2020}{The serving size of All vegetable except potatoes and starchy vegetable, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)}
 
-\item{FRT_SERV_ACS2020}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit; 0.5 medium avocado)}
+\item{VEG_ITEMS_SERV_ACS2020}{The total number of unique vegetables (e.g., vegetable line items) reported by the participant. For example, a report of 3 servings of lettuce, 1 serving of kale, and 0.5 servings of broccoli would count as 3 vegetable line items.}
 
-\item{FRT_ITEMS_SERV_ACS2020}{The total number of unique fruits (e.g., fruit line items) asked about on that survey/app (measuring the variety of fruits). For example, 3 serving of apple, 3 servings of banana, and 3 servings of blueberry are just 3 total number line items}
+\item{FRT_SERV_ACS2020}{The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup other fruits=236.59 g; 1 med fruit; 0.5 medium avocado)}
+
+\item{FRT_ITEMS_SERV_ACS2020}{The number of unique fruits (e.g., fruit line items) asked about on that survey/app (measuring the variety of fruits). For example, 3 serving of apple, 3 servings of banana, and 3 servings of blueberry are just 3 total number line items}
 
 \item{WGRAIN_SERV_ACS2020}{The serving size of whole grains, unit=grams/day}
 
@@ -36,14 +39,14 @@ ACS2020_V1(
 
 \item{REDPROC_MEAT_SERV_ACS2020}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{HPFRG_RATIO_SERV_ACS2020}{The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g., % calories from HPF and ref grains)}
+\item{HPFRG_RATIO_SERV_ACS2020}{The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 % calories from HPF and ref grains)}
 }
 \value{
 The ACS2020_V1 index/score and its component scores
 }
 \description{
-Calculate the American Cancer Society 2020 dietary index version 1 (using individual calorie per FFQ line item), using given the serving sizes of foods and nutrients consumed per 1 day. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf
+Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf.
 }
 \examples{
-ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
+ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
 }
