@@ -39,7 +39,8 @@ ACS2020_V1(
 
 \item{REDPROC_MEAT_SERV_ACS2020}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
-\item{HPFRG_RATIO_SERV_ACS2020}{The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 \% calories from HPF and ref grains)}
+\item{HPFRG_RATIO_SERV_ACS2020}{The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 % calories from HPF and ref grains)}
+
 }
 \value{
 The ACS2020_V1 index/score and its component scores
