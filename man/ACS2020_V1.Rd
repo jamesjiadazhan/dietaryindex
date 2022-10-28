@@ -45,7 +45,7 @@ ACS2020_V1(
 The ACS2020_V1 index/score and its component scores
 }
 \description{
-Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf.
+Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score.
 }
 \examples{
 ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)

@@ -1041,7 +1041,7 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=1, ALCOHOL_DII=NULL, VITB12_DI
 
 #' ACS2020_V1 
 #'
-#' Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf. 
+#' Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score.  
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -1147,7 +1147,7 @@ ACS2020_V1 = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV_ACS2020, VEG_ITE
 
 #' ACS2020_V2
 #'
-#' Calculate the American Cancer Society 2020 dietary index version 2 (using servings/d per 1000 kcal), using given the serving sizes of foods and nutrients consumed per 1 day. To help identify what are highly processed foods, here are some references: https://academic.oup.com/ajcn/article/101/6/1251/4626878, https://pubmed.ncbi.nlm.nih.gov/30744710/, http://archive.wphna.org/wp-content/uploads/2016/01/WN-2016-7-1-3-28-38-Monteiro-Cannon-Levy-et-al-NOVA.pdf 
+#' Calculate the American Cancer Society 2020 dietary index version 2 (using servings/d per 1000 kcal), using given the serving sizes of foods and nutrients consumed per 1 day. 
 #' @import dplyr
 #' @import readr
 #' @import haven
