@@ -1055,7 +1055,7 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM=1, ALCOHOL_DII=NULL, VITB12_DI
 #' @param WGRAIN_SERV_ACS2020 The serving size of whole grains, unit=grams/day
 #' @param SSB_FRTJ_SERV_ACS2020 The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @param REDPROC_MEAT_SERV_ACS2020 The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
-#' @param HPFRG_RATIO_SERV_ACS2020 The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 % calories from HPF and ref grains)
+#' @param HPFRG_RATIO_SERV_ACS2020 The ratio of calories from highly processed foods and refined grains to the total daily calories (e.g. 35 \% calories from HPF and ref grains)
 #' @return The ACS2020_V1 index/score and its component scores 
 #' @examples
 #' ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
@@ -1162,7 +1162,7 @@ ACS2020_V1 = function(SERV_DATA, RESPONDENTID, GENDER, VEG_SERV_ACS2020, VEG_ITE
 #' @param WGRAIN_SERV_ACS2020 The serving size of whole grains, unit=grams/day
 #' @param SSB_FRTJ_SERV_ACS2020 The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @param REDPROC_MEAT_SERV_ACS2020 The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
-#' @param HPFRG_SERV_ACS2020 The daily servings of highly processed foods and refined grains per 1000 kcal(e.g. 35 % calories from HPF and ref grains)
+#' @param HPFRG_SERV_ACS2020 The daily servings of highly processed foods and refined grains per 1000 kcal(e.g. 35 \% calories from HPF and ref grains)
 #' @return The ACS2020_V2 index/score and its component scores 
 #' @examples
 #' ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALKCAL_ACS2020, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_SERV_ACS2020)
