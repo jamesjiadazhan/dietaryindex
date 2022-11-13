@@ -1,0 +1,138 @@
+#' DASHI_BLOCK Calculation
+#'
+#' Calculate the DASHI dietary index (serving size based) per 1 day
+#' @import dplyr
+#' @import readr
+#' @import haven
+#' @param RAW_DATA The raw data file that includes results and raw data of the dietary assessment
+#' @return The DASHI index/score and its components
+#' @examples
+#' DASHI_BLOCK(RAW_DATA)
+#' @export
+
+DASHI_BLOCK = function(RAW_DATA){
+  
+  if (is.character(RAW_DATA) == TRUE){
+    RAW_DATA = read_csv(RAW_DATA)
+  } else {
+    RAW_DATA = RAW_DATA
+  }
+  
+  STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+  STD_FREQ_SERV = c(0, 1/90, 1/30, 2.5/30, 1/7, 2/7, 3.5/7, 5.5/7, 1)
+  STD_FOOD_PORT = c(1, 2, 3, 4)
+  STD_PORT_SERV = c(0.25, 0.5, 1, 2)
+  STD_FOOD_FREQ_DF = data.frame(STD_FOOD_FREQ, STD_FREQ_SERV, stringsAsFactors=FALSE)
+  STD_FOOD_PORT_DF= data.frame(STD_FOOD_PORT, STD_PORT_SERV, stringsAsFactors=FALSE)
+  
+  #Functions to match actual food frequency and portion to the standards
+  foodfreq = function(actual, reference=STD_FOOD_FREQ_DF){
+    reference[match(actual, reference[,1]),2]
+  }
+  
+  foodport = function(actual, reference=STD_FOOD_PORT_DF){
+    reference[match(actual, reference[,1]),2]
+  }
+  
+  #Match participant response food frequency to the standard food frequency response code
+  YOGURT_FOOD_PORT = c(2, 3)
+  YOGURT_PORT_SERV = c(0.5, 1)
+  YOGURT_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+  
+  BUTTERMILK_FOOD_PORT = c(1, 2, 3, 4)
+  BUTTERMILK_PORT_SERV = c(0.25, 0.5, 1, 2)
+  BUTTERMILK_PORT_DF = data.frame(STD_FOOD_PORT, STD_PORT_SERV)
+  
+  SERV_DATA=RAW_DATA %>%
+    dplyr::mutate(
+      F_BERRIES = foodfreq(STRAWBERRIESFREQ)*foodport(STRAWBERRIESQUAN),
+      F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES*2,
+      VEG_SERV = V_DPYEL + 0.5*V_DRKGR + V_OTHER + V_STARCY + V_TOMATO,
+      FRT_SERV = F_WHOLE + JUICE100,
+      NUTSLEG_SERV = (LEGUMES*4) + M_NUTSD + M_SOY,
+      LOWF_MILK_SERV = case_when(
+        MILKTYPE==2 | MILKTYPE==3 | MILKTYPE==4 ~ foodfreq(MILKFREQ) * MILKQUAN, 
+        TRUE ~ 0),
+      YOGURT_SERV = (foodfreq(YOGURTONLYFREQ) * foodport(YOGURTONLYQUAN, ref=YOGURT_PORT_DF)) +
+        (foodfreq(BUTTERMILKFREQ) * foodport(BUTTERMILKQUAN, ref=BUTTERMILK_PORT_DF)),
+      LOWF_ICECREAMFROYO_SERV = case_when(
+        ICECREAMFROYOTYPE == 2 ~ foodfreq(ICECREAMFROYOFREQ) * foodport(ICECREAMFROYOQUAN)*2,
+        TRUE ~0),
+      LOWF_CHEESE_SERV = case_when(
+        CHEESETYPE == 1 ~ foodfreq(CHEESEFREQ) * CHEESEQUAN, 
+        TRUE ~ 0),
+      LOWFATDAIRY_SERV = LOWF_MILK_SERV+YOGURT_SERV+LOWF_ICECREAMFROYO_SERV+LOWF_CHEESE_SERV,
+      WGRAIN_SERV = G_WHL,
+      ALLMEAT_SERV = M_MPF,
+      REDPROC_MEAT_SERV = (M_FRANK /1.5) + ((M_MEAT+M_ORGAN)/4),
+      FATOIL_SERV = (DFAT_OIL+DFAT_SOL)/14,
+      ADDEDSUGAR_SERV = ((ADD_SUG*4*4) / DT_KCAL)*100,
+      SODIUM_SERV = DT_SODI/(DT_KCAL/1000)
+    ) 
+  
+  ##Create variables and functions needed for DASHI calculation
+  DASHI_MIN = 0
+  DASHI_MAX = 5
+  
+  DASHI_MIN_VEG_SERV = 0
+  DASHI_MAX_VEG_SERV = 4
+  DASHI_MIN_FRT_SERV = 0
+  DASHI_MAX_FRT_SERV = 4
+  DASHI_MIN_NUTSLEG_SERV = 0
+  DASHI_MAX_NUTSLEG_SERV = 4/7
+  DASHI_MIN_LOWFATDAIRY_SERV = 0
+  DASHI_MAX_LOWFATDAIRY_SERV = 2
+  DASHI_MIN_WGRAIN_SERV = 0
+  DASHI_MAX_WGRAIN_SERV = 3
+  
+  DASHI_MIN_ALLMEAT_SERV = 6
+  DASHI_MAX_ALLMEAT_SERV= 2
+  DASHI_MIN_REDPROC_MEAT_SERV = 1.5
+  DASHI_MAX_REDPROC_MEAT_SERV = 0.5
+  DASHI_MIN_FATOIL_SERV = 3
+  DASHI_MAX_FATOIL_SERV = 2
+  DASHI_MIN_ADDEDSUGAR_SERV = 10
+  DASHI_MAX_ADDEDSUGAR_SERV = 0
+  DASHI_MIN_SODIUM_SERV = 2300
+  DASHI_MAX_SODIUM_SERV = 0
+  
+  DASHI_HEALTHY = function(actual, min, max){
+    case_when(
+      actual >= max ~ DASHI_MAX,
+      actual <= min ~ DASHI_MIN,
+      TRUE ~ DASHI_MIN+(actual-min)*DASHI_MAX/(max-min)
+    )
+  }
+  
+  DASHI_UNHEALTHY = function(actual, min, max){
+    case_when(
+      actual >= min ~ DASHI_MIN ,
+      actual <= max ~ DASHI_MAX,
+      TRUE ~ DASHI_MIN+(actual-min)*DASHI_MAX/(max-min)
+    )
+  }
+  
+  ##DASHI calculation
+  SERV_DATA %>%
+    dplyr::mutate(
+      DASHI_VEG = DASHI_HEALTHY(VEG_SERV, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
+      DASHI_FRT = DASHI_HEALTHY(FRT_SERV, DASHI_MIN_FRT_SERV, DASHI_MAX_FRT_SERV),
+      DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
+      DASHI_LOWFATDAIRY = DASHI_HEALTHY(LOWFATDAIRY_SERV, DASHI_MIN_LOWFATDAIRY_SERV, DASHI_MAX_LOWFATDAIRY_SERV),
+      DASHI_WGRAIN = DASHI_HEALTHY(WGRAIN_SERV, DASHI_MIN_WGRAIN_SERV, DASHI_MAX_WGRAIN_SERV),
+      
+      DASHI_ALLMEAT = DASHI_UNHEALTHY(ALLMEAT_SERV, DASHI_MIN_ALLMEAT_SERV, DASHI_MAX_ALLMEAT_SERV),
+      DASHI_REDPROC_MEAT = DASHI_UNHEALTHY(REDPROC_MEAT_SERV, DASHI_MIN_REDPROC_MEAT_SERV, DASHI_MAX_REDPROC_MEAT_SERV),
+      DASHI_FATOIL = DASHI_UNHEALTHY(FATOIL_SERV, DASHI_MIN_FATOIL_SERV, DASHI_MAX_FATOIL_SERV),
+      DASHI_ADDEDSUGAR = DASHI_UNHEALTHY(ADDEDSUGAR_SERV, DASHI_MIN_ADDEDSUGAR_SERV, DASHI_MAX_ADDEDSUGAR_SERV),
+      DASHI_SODIUM = DASHI_UNHEALTHY(SODIUM_SERV, DASHI_MIN_SODIUM_SERV, DASHI_MAX_SODIUM_SERV),
+      DASHI_ALL= DASHI_VEG + DASHI_FRT + DASHI_NUTSLEG + DASHI_LOWFATDAIRY +
+        DASHI_WGRAIN + DASHI_ALLMEAT + DASHI_REDPROC_MEAT + DASHI_FATOIL + DASHI_ADDEDSUGAR + DASHI_SODIUM
+    )%>%
+    dplyr::select(RESPONDENTID, DASHI_ALL, DASHI_VEG, DASHI_FRT, DASHI_NUTSLEG, DASHI_LOWFATDAIRY, DASHI_WGRAIN,
+                  DASHI_ALLMEAT, DASHI_REDPROC_MEAT, DASHI_FATOIL, DASHI_ADDEDSUGAR, DASHI_SODIUM,
+                  
+                  DT_KCAL, F_BERRIES, F_WHOLE, VEG_SERV, FRT_SERV, NUTSLEG_SERV, LOWF_MILK_SERV, YOGURT_SERV, LOWF_ICECREAMFROYO_SERV, 
+                  LOWF_CHEESE_SERV, LOWFATDAIRY_SERV, WGRAIN_SERV, ALLMEAT_SERV, REDPROC_MEAT_SERV, FATOIL_SERV, ADDEDSUGAR_SERV, SODIUM_SERV)
+  
+}
