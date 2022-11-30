@@ -11,7 +11,7 @@
 #' @param NUTSLEG_SERV_DASH The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
 #' @param WGRAIN_SERV_DASH The serving size of whole grains, unit=1oz
 #' @param LOWF_DAIRY_SERV_DASH The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese
-#' @param SODIUM_SERV_DASH The serving size of sodium, unit=mg/day
+#' @param SODIUM_SERV_DASH The serving size of sodium, unit=mg/day per 2000 kcal
 #' @param REDPROC_MEAT_SERV_DASH The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
 #' @param SSB_FRTJ_SERV_DASH The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The DASH index/score
