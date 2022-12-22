@@ -32,7 +32,7 @@ DASH(
 
 \item{LOWF_DAIRY_SERV_DASH}{The serving size of low fat dairy, including 2\% or less fat milk + yogurt + low-fat ice cream and frozen yogurt + low-fat cheese, unit=servings/day = 1 glass milk + 1 cup yogurt + 1/2 cup ice cream/frozen yogurt + 1 slice cheese}
 
-\item{SODIUM_SERV_DASH}{The serving size of sodium, unit=mg/day}
+\item{SODIUM_SERV_DASH}{The serving size of sodium, unit=mg/day per 2000 kcal}
 
 \item{REDPROC_MEAT_SERV_DASH}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 

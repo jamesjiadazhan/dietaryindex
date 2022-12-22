@@ -49,7 +49,7 @@ AHEI(
 
 \item{TRANS_SERV_AHEI}{The serving size of trans fat, unit=\% of energy}
 
-\item{SODIUM_SERV_AHEI}{The serving size of sodium, unit=mg/day}
+\item{SODIUM_SERV_AHEI}{The serving size of sodium, unit=mg/day per 2000 kcal}
 
 \item{ALCOHOL_SERV_AHEI}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit=drink/day (12 oz beer; 5 oz wine; 1.5 oz spirits) 1 oz = 28.35 g}
 }
