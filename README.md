@@ -51,52 +51,52 @@ library(dietaryindex)
 The **dietaryindex** package currently contains the following key functions:
 
 - NHANES_FPED (after 2005)
-  -`HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
-  -`AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
-  -`DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
-  -`MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
-  -`DII_NHANES_FPED()`, Calculating the serving sizes for DII with 1 step using the NHANES_FPED data (after 2005)
+  - `HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
+  - `AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
+  - `DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
+  - `MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
+  - `DII_NHANES_FPED()`, Calculating the serving sizes for DII with 1 step using the NHANES_FPED data (after 2005)
 
 
 - ASA24
-  -`HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
-  -`AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
-  -`AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
-  -`DASH_ASA24()`, Calculating the serving sizes for DASH with 1 step using the ASA24 data
-  -`MED_ASA24()`, Calculating the serving sizes for MED with 1 step using the ASA24 data
-  -`DII_ASA24()`, Calculating the serving sizes for DII with 1 step using the ASA24 data
+  - `HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
+  - `AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
+  - `AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
+  - `DASH_ASA24()`, Calculating the serving sizes for DASH with 1 step using the ASA24 data
+  - `MED_ASA24()`, Calculating the serving sizes for MED with 1 step using the ASA24 data
+  - `DII_ASA24()`, Calculating the serving sizes for DII with 1 step using the ASA24 data
 
 
 - DHQ3
-  -`HEI2015_DHQ3()`, Calculating the serving sizes for HEI2015 with 1 step using the DHQ3 data
-  -`AHEI_DHQ3()`, Calculate the AHEI (female or male) within 1 step using the DHQ3 data
-  -`DASH_DHQ3()`, Calculating the serving sizes for DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
-  -`MED_DHQ3()`, Calculating the serving sizes for MED with 1 step using the DHQ3 data
+  - `HEI2015_DHQ3()`, Calculating the serving sizes for HEI2015 with 1 step using the DHQ3 data
+  - `AHEI_DHQ3()`, Calculate the AHEI (female or male) within 1 step using the DHQ3 data
+  - `DASH_DHQ3()`, Calculating the serving sizes for DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
+  - `MED_DHQ3()`, Calculating the serving sizes for MED with 1 step using the DHQ3 data
 
 - Generic functions
-  -`HEI2015()`, Healthy Eating Index 2015 
+  - `HEI2015()`, Healthy Eating Index 2015 
     - Ref: https://www.fns.usda.gov/how-hei-scored
-  -`AHEI()`, alternative healthy eating index 
+  - `AHEI()`, alternative healthy eating index 
     - Ref: https://academic.oup.com/jn/article/142/6/1009/4688968?login=false
-  -`AHEIP()` , alternative healthy eating index - pregnancy
+  - `AHEIP()` , alternative healthy eating index - pregnancy
     - Ref: https://www.jandonline.org/article/S0002-8223(09)00288-0/fulltext
-  -`DASH()`, Dietary Approaches to Stop Hypertension 
+  - `DASH()`, Dietary Approaches to Stop Hypertension 
     - Ref:https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/414155
-  -`DASHI()`, DASH Index in serving sizes from the DASH trial 
+  - `DASHI()`, DASH Index in serving sizes from the DASH trial 
     - Ref:
       - https://www.nhlbi.nih.gov/education/dash-eating-plan
       - https://www.nejm.org/doi/10.1056/NEJM199704173361601?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200www.ncbi.nlm.nih.gov
       - https://www.dietaryguidelines.gov/sites/default/files/2019-05/1995%20Dietary%20Guidelines%20for%20Americans.pdf
       - https://www.sciencedirect.com/science/article/pii/S0002822399004125
       - https://www.nejm.org/doi/full/10.1056/nejm200101043440101
-  -`MED()`, Mediterranean diet 
+  - `MED()`, Mediterranean diet 
     - Ref: https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.816736?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
-  -`MEDI()`, Mediterranean diet in serving sizes from the PREDIMED trial 
+  - `MEDI()`, Mediterranean diet in serving sizes from the PREDIMED trial 
     - Ref: https://www.nejm.org/doi/full/10.1056/nejmoa1800389
-  -`DII()`, Dietary Inflammation Index 
+  - `DII()`, Dietary Inflammation Index 
     - Ref: https://www.cambridge.org/core/journals/public-health-nutrition/article/designing-and-developing-a-literaturederived-populationbased-dietary-inflammatory-index/30BE2C2295CE93DC6B54F9F9AD50CC68
-  -`ACS2020_V1()`, American Cancer Society 2020 diet score
-  -`ACS2020_V2()`, Alternate calculation method of the American Cancer Society 2020 diet score, intended for use when percent calories from highly processed foods and refined grains is not available (uses daily servings per 1000 calories instead)
+  - `ACS2020_V1()`, American Cancer Society 2020 diet score
+  - `ACS2020_V2()`, Alternate calculation method of the American Cancer Society 2020 diet score, intended for use when percent calories from highly processed foods and refined grains is not available (uses daily servings per 1000 calories instead)
     - Ref: https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2793171
 
 
