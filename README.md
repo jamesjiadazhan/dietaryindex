@@ -3,21 +3,20 @@ ___
 ### Overview
 ___
 
-The goal of **dietaryindex** is to easily calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), Mediterranean Diet Index (MED), Dietary Inflammation Index (DII), and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
+The goal of **dietaryindex** is to offer streamlined methods to calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), DASH Index in serving sizes from the DASH trial(DASHI), Mediterranean Diet Index (MED), MED Index in serving sizes from the PREDIMED trial (MEDI), Dietary Inflammation Index (DII), American Cancer Society 2020 diet score, and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
 
 Version 0.13.0: American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. Internal warnings for ASA24, DHQ3, and NHANES were added to remind the appropriateness of data usage. Now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed. Block FFQ functions are not supported temporarily.
 
-The main goal of this package **dietaryindex** is for calculating different dietary pattern indexes or scores easily and conveniently. It calculates dietary indexes by 2 steps:
-1. Calculate the serving size of each food and nutrient category
-2. Calculate the individual dietary index
+The package **dietaryindex** calculates dietary indexes by 2 steps:
+Step 1. Calculate the serving size of each food and nutrient category
+Step 2. Calculate the individual dietary index using the serving size information
 
-Currently, the **dietaryindex** package works for the following 5 dietary assessment tools to calculate many dietary indexes within 1 steps:
+Currently, the **dietaryindex** package works for the following 5 dietary assessment tools to calculate many dietary indexes within 1 step (Step 1 + Step 2):
 1. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
 2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
 3. It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
-4. It can calculate HEI2015 for the NIH-AARP
 
-**dietaryindex** can also calculate these dietary pattern indexes (ACS2020_V1, ACS2020_V2, HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII) using **ALL** other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+**dietaryindex** can also calculate these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII, ACS2020_V1, ACS2020_V2) using **ALL** other dietary assessments (Step 2), if you provide the relevant serving sizes for each food/nutrient category (do Step 1 by yourself).
 - All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
 - If you are interested in the methods of the dietary indexes, an excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN_BH_FINAL.xlsx
 
@@ -51,64 +50,55 @@ library(dietaryindex)
 
 The **dietaryindex** package currently contains the following key functions:
 
-
->`HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
-
->`AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
-
->`DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
-
->`MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
-
->`DII_NHANES_FPED()`, Calculating the serving sizes for DII with 1 step using the NHANES_FPED data (after 2005)
+- NHANES_FPED (after 2005)
+  -`HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
+  -`AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
+  -`DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
+  -`MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
+  -`DII_NHANES_FPED()`, Calculating the serving sizes for DII with 1 step using the NHANES_FPED data (after 2005)
 
 
-
->`HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
-
->`AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
-
->`AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
-
->`DASH_ASA24()`, Calculating the serving sizes for DASH with 1 step using the ASA24 data
-
->`MED_ASA24()`, Calculating the serving sizes for MED with 1 step using the ASA24 data
-
->`DII_ASA24()`, Calculating the serving sizes for DII with 1 step using the ASA24 data
+- ASA24
+  -`HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
+  -`AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
+  -`AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
+  -`DASH_ASA24()`, Calculating the serving sizes for DASH with 1 step using the ASA24 data
+  -`MED_ASA24()`, Calculating the serving sizes for MED with 1 step using the ASA24 data
+  -`DII_ASA24()`, Calculating the serving sizes for DII with 1 step using the ASA24 data
 
 
->`HEI2015_DHQ3()`, Calculating the serving sizes for HEI2015 with 1 step using the DHQ3 data
+- DHQ3
+  -`HEI2015_DHQ3()`, Calculating the serving sizes for HEI2015 with 1 step using the DHQ3 data
+  -`AHEI_DHQ3()`, Calculate the AHEI (female or male) within 1 step using the DHQ3 data
+  -`DASH_DHQ3()`, Calculating the serving sizes for DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
+  -`MED_DHQ3()`, Calculating the serving sizes for MED with 1 step using the DHQ3 data
 
->`AHEI_DHQ3()`, Calculate the AHEI (female or male) within 1 step using the DHQ3 data
+- Generic functions
+  -`HEI2015()`, Healthy Eating Index 2015 
+    - Ref: https://www.fns.usda.gov/how-hei-scored
+  -`AHEI()`, alternative healthy eating index 
+    - Ref: https://academic.oup.com/jn/article/142/6/1009/4688968?login=false
+  -`AHEIP()` , alternative healthy eating index - pregnancy
+    - Ref: https://www.jandonline.org/article/S0002-8223(09)00288-0/fulltext
+  -`DASH()`, Dietary Approaches to Stop Hypertension 
+    - Ref:https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/414155
+  -`DASHI()`, DASH Index in serving sizes from the DASH trial 
+    - Ref:
+      - https://www.nhlbi.nih.gov/education/dash-eating-plan
+      - https://www.nejm.org/doi/10.1056/NEJM199704173361601?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200www.ncbi.nlm.nih.gov
+      - https://www.dietaryguidelines.gov/sites/default/files/2019-05/1995%20Dietary%20Guidelines%20for%20Americans.pdf
+      - https://www.sciencedirect.com/science/article/pii/S0002822399004125
+      - https://www.nejm.org/doi/full/10.1056/nejm200101043440101
+  -`MED()`, Mediterranean diet 
+    - Ref: https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.816736?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
+  -`MEDI()`, Mediterranean diet in serving sizes from the PREDIMED trial 
+    - Ref: https://www.nejm.org/doi/full/10.1056/nejmoa1800389
+  -`DII()`, Dietary Inflammation Index 
+    - Ref: https://www.cambridge.org/core/journals/public-health-nutrition/article/designing-and-developing-a-literaturederived-populationbased-dietary-inflammatory-index/30BE2C2295CE93DC6B54F9F9AD50CC68
+  -`ACS2020_V1()`, American Cancer Society 2020 diet score
+  -`ACS2020_V2()`, Alternate calculation method of the American Cancer Society 2020 diet score, intended for use when percent calories from highly processed foods and refined grains is not available (uses daily servings per 1000 calories instead)
+    - Ref: https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2793171
 
->`DASH_DHQ3()`, Calculating the serving sizes for DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
-
->`MED_DHQ3()`, Calculating the serving sizes for MED with 1 step using the DHQ3 data
-
-
->`HEI2015()`, Healthy Eating Index 2015 (https://www.fns.usda.gov/how-hei-scored)
-
->`AHEI()`, alternative healthy eating index (https://pubmed.ncbi.nlm.nih.gov/22513989/)
-
->`AHEIP()` , alternative healthy eating index - pregnancy (https://pubmed.ncbi.nlm.nih.gov/19465182/)
-
->`DASH()`, Dietary Approaches to Stop Hypertension (https://pubmed.ncbi.nlm.nih.gov/18413553/)
-
->`DASHI()`, Dietary Approaches to Stop Hypertension Index (modified from multiple sources to provide most updated serving size-based DASH index, including https://www.nhlbi.nih.gov/education/dash-eating-plan, https://pubmed.ncbi.nlm.nih.gov/17324731/, https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf, https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/414155, https://www.nejm.org/doi/full/10.1056/nejm199704173361601)
-
->`MED()`, Mediterranean diet (https://pubmed.ncbi.nlm.nih.gov/33574608/)
-
->`MEDI()`, Mediterranean diet index, serving size-based (https://pubmed.ncbi.nlm.nih.gov/28160450/)
-
->`DII()`, Dietary Inflammation Index (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3925198/)
-
->`ACS2020_V1()`, American Cancer Society 2020 diet score (https://pubmed.ncbi.nlm.nih.gov/35679041/)
-
->`ACS2020_V2()`, Alternate calculation method of the American Cancer Society 2020 diet score, intended for use when percent calories from highly processed foods and refined grains is not available (uses daily servings per 1000 calories instead)
-
-
-
->`HEI2015_AARP()`, Calculate the HEI2015 dietary index for the NIH-AARP per 1 day
 
 
 
@@ -312,6 +302,32 @@ DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV_DASH, SE
 
 ```
 
+#### Calculating DASHI for your own dietary assessment tool
+```
+DATA_PATH <- "/Users/james/Desktop/data.csv"
+SERV_DATA <- read_csv(DATA_PATH)
+
+DASHI(SERV_DATA, RESPONDENTID, SERV_DATA$TOTALKCAL_DASHI, SERV_DATA$VEG_SERV_DASHI, SERV_DATA$FRT_FRTJ_SERV_DASHI, SERV_DATA$NUTSLEG_SERV_DASHI, SERV_DATA$LOWF_DAIRY_SERV_DASHI, SERV_DATA$WGRAIN_SERV_DASHI, SERV_DATA$WHITEMEAT_SERV_DASHI, SERV_DATA$REDPROC_MEAT_SERV_DASHI, SERV_DATA$FATOIL_SERV_DASHI, SERV_DATA$SWEETS_SERV_DASHI, SERV_DATA$SODIUM_SERV_DASHI)
+
+#Use the example data
+data("DASH_trial")
+DASHI(
+  SERV_DATA = DASH_trial, 
+  RESPONDENTID = DASH_trial$Diet_Type,
+  TOTALKCAL_DASHI = DASH_trial$Kcal,
+  VEG_SERV_DASHI = DASH_trial$Vegetables, 
+  FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, 
+  NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, 
+  LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,
+  WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, 
+  WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, 
+  REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, 
+  FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, 
+  SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,
+  SODIUM_SERV_DASHI = DASH_trial$Sodium)
+
+```
+
 #### Calculating MED for your own dietary assessment tool
 ```
 DATA_PATH <- "/Users/james/Desktop/data.csv"
@@ -368,7 +384,7 @@ readr::write_csv(Merged_HEI2015_output, "/your_output_file_location/Merged_HEI20
 ### Related Work
 ___
 
-**dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, DHQ3, and AARP.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy and sugar sweetened beverage) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar sweetened beverage serving is estimated by dividing the total added sugar intakes in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
+**dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy and sugar sweetened beverage) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar sweetened beverage serving is estimated by dividing the total added sugar intakes in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
 For NHANES data:
 FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a exe zip file, so please unzip this file first to retrieve the SAS file on Windows. If you are a Mac user and have trouble unzipping the exe file, you can reach out to **James Jiada Zhan** via jzha832@emory.edu, so he could share unzipped FPED data with you via OneDrive individually as a courtesy.
