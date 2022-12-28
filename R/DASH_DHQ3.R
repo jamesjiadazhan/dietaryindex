@@ -23,7 +23,7 @@ DASH_DHQ3 = function(DATA_PATH){
     stop("Please use individual-level data for this function. Individual-level data should be like detail.csv")
   }
   
-  LOWF_MILK = c(5.3, 5.4, 6.3, 6.4, 10.3, 10.4)
+  SKIM_MILK = c(5.4, 6.4, 10.4)
   LOWF_CHEESE=c(50.2)
   LOWF_CREAM=c(64.2, 75.2, 80.1)
   COFFEE_TEA = c(16.1, 17.1, 64.1, 64.2, 1081.1, 1123.1, 1123.2, 1130.2, 1130.5)  
@@ -32,8 +32,8 @@ DASH_DHQ3 = function(DATA_PATH){
   
   COHORT = COHORT %>%
     dplyr::mutate(
-      LOWF_MILK_SERV = case_when(
-        `Food ID` %in% LOWF_MILK ~ `Milk (cups)`,
+      SKIM_MILK_SERV = case_when(
+        `Food ID` %in% SKIM_MILK ~ `Milk (cups)`,
         TRUE ~ 0
       ),
       LOWF_CHEESECREAM_SERV = case_when(
@@ -50,11 +50,11 @@ DASH_DHQ3 = function(DATA_PATH){
     dplyr::summarize(
       KCAL = sum(`Energy (kcal)`),
       FRT_FRTJ_SERV = sum(`Total fruit (cups)`),
-      VEG_SERV = sum(`Total red/orange vegetable (cups)` + `Dark-green vegetable (cups)`*0.5 + `Other starchy vegetable (cups)` + `Other vegetable (cups)`),
+      VEG_SERV = sum(`Dark-green vegetable (cups)` + (`Total red/orange vegetable (cups)` +  `Other starchy vegetable (cups)` + `Other vegetable (cups)`)/0.5),
       NUTSLEG_SERV = sum(`Nuts, seeds, soy, and legumes (oz)`),
       WGRAIN_SERV = sum(`Whole grain (oz)`),
-      LOWF_DAIRY_SERV = sum(LOWF_MILK_SERV+LOWF_CHEESECREAM_SERV+`Yogurt (cups)`),
-      SODIUM_SERV = sum(`Sodium (mg)`/(KCAL/1000)),
+      LOWF_DAIRY_SERV = sum(SKIM_MILK_SERV+LOWF_CHEESECREAM_SERV+`Yogurt (cups)`),
+      SODIUM_SERV = sum(`Sodium (mg)`/(KCAL/2000)),
       REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
       SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV / 26))
     )
