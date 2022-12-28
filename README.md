@@ -3,28 +3,34 @@ ___
 ### Overview
 ___
 
-The goal of **dietaryindex** is to offer streamlined methods to calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), DASH Index in serving sizes from the DASH trial(DASHI), Mediterranean Diet Index (MED), MED Index in serving sizes from the PREDIMED trial (MEDI), Dietary Inflammation Index (DII), American Cancer Society 2020 diet score, and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
+Version 0.14.0: The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
 
-Version 0.13.0: The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. Internal warnings for ASA24, DHQ3, and NHANES were added to remind the appropriateness of data usage. Now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed. Block FFQ functions are not supported temporarily.
+The goal of **dietaryindex** is to offer streamlined methods to standardize the definition of dietary patterns and assess the adherence to dietary patterns in epidemiologic and clinical studies, facilitating precision nutrition. 
 
 The package **dietaryindex** calculates dietary indexes by 2 steps:
-Step 1. Calculate the serving size of each food and nutrient category
-Step 2. Calculate the individual dietary index using the serving size information
+- Step 1. Calculate the serving size of each food and nutrient category
+- Step 2. Calculate the individual dietary index using the serving size information
 
-Currently, the **dietaryindex** package works for the following 5 dietary assessment tools to calculate many dietary indexes within 1 step (Step 1 + Step 2):
-1. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
-2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
-3. It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
+The package can calculate the following dietary pattern indexes using all dietary assessments if the serving sizes of foods/beverages are given (do Step 1 by yourself and Step 2 is done for you): 
+- Healthy Eating Index 2015 (HEI2015)
+- Alternative Healthy Eating Index (AHEI)
+- Dietary Approaches to Stop Hypertension Index (DASH)
+- DASH Index in serving sizes from the DASH trial(DASHI)
+- Mediterranean Diet Index (MED)
+- MED Index in serving sizes from the PREDIMED trial (MEDI)
+- Dietary Inflammation Index (DII)
+- American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 
-**dietaryindex** can also calculate these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII, ACS2020_V1, ACS2020_V2) using **ALL** other dietary assessments (Step 2), if you provide the relevant serving sizes for each food/nutrient category (do Step 1 by yourself).
-- All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+Meanwhile, the **dietaryindex** package can calculate many dietary indexes within 1 step (Step 1 + Step 2) using the following dietary assessments:
+- It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
+- It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
+- It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
+
+Notes:
 - If you are interested in the methods of the dietary indexes, an excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN_BH_FINAL.xlsx
-
-The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
-
-The outputs of the specific functions (e.g. DASH_ASA24) include dietary indexes, their component scores, and their food/drink serving sizes.
-
-The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. The **dietaryindex** package will install those packages for you automatically.
+- The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
+- The outputs of the specific functions (e.g. DASH_ASA24) include dietary indexes, their component scores, and their food/drink serving sizes.
+- The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. The **dietaryindex** package will install those packages for you automatically.
 
 
 ### Installation
@@ -272,7 +278,7 @@ HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$VEG_SE
 
 #Use the example data
 data("SERV_DATA_exp")
-HEI2015(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$TOTALFRT_SERV_HEI2015, SERV_DATA_exp$FRT_SERV_HEI2015, SERV_DATA_exp$VEG_SERV_HEI2015, SERV_DATA_exp$GREENNBEAN_SERV_HEI2015, SERV_DATA_exp$TOTALPRO_SERV_HEI2015,  SERV_DATA_exp$SEAPLANTPRO_SERV_HEI2015, SERV_DATA_exp$WHOLEGRAIN_SERV_HEI2015, SERV_DATA_exp$DAIRY_SERV_HEI2015, SERV_DATA_exp$FATTYACID_SERV_HEI2015, SERV_DATA_exp$REFINEDGRAIN_SERV_HEI2015,  SERV_DATA_exp$SODIUM_SERV_HEI2015, SERV_DATA_exp$ADDEDSUGAR_SERV_HEI2015, SERV_DATA_exp$SATFAT_SERV_HEI2015)
+HEI2015(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$TOTALFRT_SERV_HEI2015_exp, SERV_DATA_exp$FRT_SERV_HEI2015_exp, SERV_DATA_exp$VEG_SERV_HEI2015_exp, SERV_DATA_exp$GREENNBEAN_SERV_HEI2015_exp, SERV_DATA_exp$TOTALPRO_SERV_HEI2015_exp,  SERV_DATA_exp$SEAPLANTPRO_SERV_HEI2015_exp, SERV_DATA_exp$WHOLEGRAIN_SERV_HEI2015_exp, SERV_DATA_exp$DAIRY_SERV_HEI2015_exp, SERV_DATA_exp$FATTYACID_SERV_HEI2015_exp, SERV_DATA_exp$REFINEDGRAIN_SERV_HEI2015_exp,  SERV_DATA_exp$SODIUM_SERV_HEI2015_exp, SERV_DATA_exp$ADDEDSUGAR_SERV_HEI2015_exp, SERV_DATA_exp$SATFAT_SERV_HEI2015_exp)
 
 ```
 
@@ -285,7 +291,7 @@ AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SE
 
 #Use the example data
 data("SERV_DATA_exp")
-AHEI(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$SEX, SERV_DATA_exp$VEG_SERV_AHEI, SERV_DATA_exp$FRT_SERV_AHEI, SERV_DATA_exp$WGRAIN_SERV_AHEI, SERV_DATA_exp$NUTSLEG_SERV_AHEI, SERV_DATA_exp$N3FAT_SERV_AHEI, SERV_DATA_exp$PUFA_SERV_AHEI, SERV_DATA_exp$SSB_FRTJ_SERV_AHEI, SERV_DATA_exp$REDPROC_MEAT_SERV_AHEI, SERV_DATA_exp$TRANS_SERV_AHEI, SERV_DATA_exp$SODIUM_SERV_AHEI, SERV_DATA_exp$ALCOHOL_SERV_AHEI)
+AHEI(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$SEX, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$VEG_SERV_AHEI_exp, SERV_DATA_exp$FRT_SERV_AHEI_exp, SERV_DATA_exp$WGRAIN_SERV_AHEI_exp, SERV_DATA_exp$NUTSLEG_SERV_AHEI_exp, SERV_DATA_exp$N3FAT_SERV_AHEI_exp, SERV_DATA_exp$PUFA_SERV_AHEI_exp, SERV_DATA_exp$SSB_FRTJ_SERV_AHEI_exp, SERV_DATA_exp$REDPROC_MEAT_SERV_AHEI_exp, SERV_DATA_exp$TRANS_SERV_AHEI_exp, SERV_DATA_exp$SODIUM_SERV_AHEI_exp, SERV_DATA_exp$ALCOHOL_SERV_AHEI_exp)
 
 ```
 
@@ -294,11 +300,12 @@ AHEI(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$SEX, SERV_DATA_exp$VEG
 DATA_PATH <- "/Users/james/Desktop/data.csv"
 SERV_DATA <- read_csv(DATA_PATH)
 
-DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$LOWF_DAIRY_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$SSB_FRTJ_SERV)
+DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL_DASH, SERV_DATA$FRT_FRTJ_SERV_DASH, SERV_DATA$VEG_SERV_DASH, SERV_DATA$NUTSLEG_SERV_DASH, SERV_DATA$WGRAIN_SERV_DASH, SERV_DATA$LOWF_DAIRY_SERV_DASH, SERV_DATA$SODIUM_SERV_DASH, SERV_DATA$REDPROC_MEAT_SERV_DASH, SERV_DATA$SSB_FRTJ_SERV_DASH)
 
 #Use the example data
 data("SERV_DATA_exp")
-DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV_DASH, SERV_DATA_exp$VEG_SERV_DASH, SERV_DATA_exp$NUTSLEG_SERV_DASH, SERV_DATA_exp$WGRAIN_SERV_DASH, SERV_DATA_exp$LOWF_DAIRY_SERV_DASH, SERV_DATA_exp$SODIUM_SERV_DASH, SERV_DATA_exp$REDPROC_MEAT_SERV_DASH, SERV_DATA_exp$SSB_FRTJ_SERV_DASH)
+DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$FRT_FRTJ_SERV_DASH_exp, SERV_DATA_exp$VEG_SERV_DASH_exp, SERV_DATA_exp$NUTSLEG_SERV_DASH_exp, SERV_DATA_exp$WGRAIN_SERV_DASH_exp, SERV_DATA_exp$LOWF_DAIRY_SERV_DASH_exp, SERV_DATA_exp$SODIUM_SERV_DASH_exp, SERV_DATA_exp$REDPROC_MEAT_SERV_DASH_exp, SERV_DATA_exp$SSB_FRTJ_SERV_DASH_exp)
+
 
 ```
 
@@ -337,7 +344,8 @@ MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SE
 
 #Use the example data
 data("SERV_DATA_exp")
-MED(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV_MED, SERV_DATA_exp$VEG_SERV_MED, SERV_DATA_exp$WGRAIN_SERV_MED, SERV_DATA_exp$LEGUMES_SERV_MED, SERV_DATA_exp$NUTS_SERV_MED, SERV_DATA_exp$FISH_SERV_MED, SERV_DATA_exp$REDPROC_MEAT_SERV_MED, SERV_DATA_exp$MONSATFAT_SERV_MED, SERV_DATA_exp$ALCOHOL_SERV_MED)
+MED(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV_MED_exp, SERV_DATA_exp$VEG_SERV_MED_exp, SERV_DATA_exp$WGRAIN_SERV_MED_exp, SERV_DATA_exp$LEGUMES_SERV_MED_exp, SERV_DATA_exp$NUTS_SERV_MED_exp, SERV_DATA_exp$FISH_SERV_MED_exp, SERV_DATA_exp$REDPROC_MEAT_SERV_MED_exp, SERV_DATA_exp$MONSATFAT_SERV_MED_exp, SERV_DATA_exp$ALCOHOL_SERV_MED_exp)
+
 
 ```
 
@@ -350,6 +358,8 @@ MEDI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$OLIVE_OIL_SERV_MEDI, SERV_DATA
 
 #Use the example data
 data("PREDIMED_trial")
+
+# MEDI is 0/1 point scoring criteria.
 MEDI(
   SERV_DATA = PREDIMED_trial,
   RESPONDENTID = PREDIMED_trial$Diet_Type,
@@ -364,6 +374,23 @@ MEDI(
   SWEETS_SERV_MEDI = PREDIMED_trial$Sweets,
   DISCRET_FAT_SERV_MEDI = PREDIMED_trial$Refined_Oliveoil,
   REDPROC_MEAT_SERV_MEDI = PREDIMED_trial$Meat)
+
+# MEDI_V2 is 5 point scoring criteria
+MEDI_V2(
+    SERV_DATA = PREDIMED_trial,
+    RESPONDENTID = PREDIMED_trial$Diet_Type,
+    OLIVE_OIL_SERV_MEDI = PREDIMED_trial$Virgin_Oliveoil,
+    FRT_SERV_MEDI = PREDIMED_trial$Fruits, 
+    VEG_SERV_MEDI = PREDIMED_trial$Vegetables,
+    LEGUMES_SERV_MEDI = PREDIMED_trial$Legumes,
+    NUTS_SERV_MEDI = PREDIMED_trial$Total_nuts,
+    FISH_SEAFOOD_SERV_MEDI = PREDIMED_trial$Fish_Seafood,
+    ALCOHOL_SERV_MEDI = PREDIMED_trial$Alcohol,
+    SSB_SERV_MEDI = PREDIMED_trial$Soda_Drinks,
+    SWEETS_SERV_MEDI = PREDIMED_trial$Sweets,
+    DISCRET_FAT_SERV_MEDI = PREDIMED_trial$Refined_Oliveoil,
+    REDPROC_MEAT_SERV_MEDI = PREDIMED_trial$Meat
+)
 
 ```
 
