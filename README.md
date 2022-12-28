@@ -3,28 +3,34 @@ ___
 ### Overview
 ___
 
-The goal of **dietaryindex** is to offer streamlined methods to calculate Healthy Eating Index 2015 (HEI2015), Alternative Healthy Eating Index (AHEI), Dietary Approaches to Stop Hypertension Index (DASH), DASH Index in serving sizes from the DASH trial(DASHI), Mediterranean Diet Index (MED), MED Index in serving sizes from the PREDIMED trial (MEDI), Dietary Inflammation Index (DII), American Cancer Society 2020 diet score, and other dietary indexes from all dietary assessment tools for use in dietary analyses. 
+Version 0.13.0: The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
 
-Version 0.13.0: The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. Internal warnings for ASA24, DHQ3, and NHANES were added to remind the appropriateness of data usage. Now support more accurate dietary index calculation in ASA24 and NHANES. DHQ3 functions for AHEI, MED, HEI2015 and DASH are available. DII is now avaiable as a generic function. DII with and without alcohol overall and components score are available. Bugs about auto-pulling for variables with the same names were fixed. Block FFQ functions are not supported temporarily.
+The goal of **dietaryindex** is to offer streamlined methods to standardize the definition of dietary patterns and assess the adherence to dietary patterns in epidemiologic and clinical studies, facilitating precision nutrition. 
 
 The package **dietaryindex** calculates dietary indexes by 2 steps:
 Step 1. Calculate the serving size of each food and nutrient category
 Step 2. Calculate the individual dietary index using the serving size information
 
-Currently, the **dietaryindex** package works for the following 5 dietary assessment tools to calculate many dietary indexes within 1 step (Step 1 + Step 2):
-1. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
-2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
-3. It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
+The package can calculate the following dietary pattern indexes using all dietary assessments if the serving sizes of foods/beverages are given (do Step 1 by yourself and Step 2 is done for you): 
+- Healthy Eating Index 2015 (HEI2015)
+- Alternative Healthy Eating Index (AHEI)
+- Dietary Approaches to Stop Hypertension Index (DASH)
+- DASH Index in serving sizes from the DASH trial(DASHI)
+- Mediterranean Diet Index (MED)
+- MED Index in serving sizes from the PREDIMED trial (MEDI)
+- Dietary Inflammation Index (DII)
+- American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 
-**dietaryindex** can also calculate these dietary pattern indexes (HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII, ACS2020_V1, ACS2020_V2) using **ALL** other dietary assessments (Step 2), if you provide the relevant serving sizes for each food/nutrient category (do Step 1 by yourself).
-- All you need to do is to provide the relevant serving sizes for each food/nutrient category in the index.
+Meanwhile, the **dietaryindex** package can calculate many dietary indexes within 1 step (Step 1 + Step 2) using the following dietary assessments:
+- It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
+- It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
+- It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
+
+Notes:
 - If you are interested in the methods of the dietary indexes, an excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN_BH_FINAL.xlsx
-
-The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
-
-The outputs of the specific functions (e.g. DASH_ASA24) include dietary indexes, their component scores, and their food/drink serving sizes.
-
-The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. The **dietaryindex** package will install those packages for you automatically.
+- The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
+- The outputs of the specific functions (e.g. DASH_ASA24) include dietary indexes, their component scores, and their food/drink serving sizes.
+- The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. The **dietaryindex** package will install those packages for you automatically.
 
 
 ### Installation
