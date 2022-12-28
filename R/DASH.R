@@ -6,6 +6,7 @@
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
+#' @param TOTALKCAL_DASH The total energy intake, unit = kcal/day
 #' @param FRT_FRTJ_SERV_DASH The serving size of fruits and 100\% fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit (1 cup = 236.59 g); 1 cup fruit juice
 #' @param VEG_SERV_DASH The serving size of All vegetable except potatoes and legume, unit=servings/day (0.5 c of vege; 1 cup of green leafy (1 cup = 236.59 g)
 #' @param NUTSLEG_SERV_DASH The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings/day = 1 srv=1oz (28.35 g) of nuts or 1 TBLSP peanut butter (15 mL), 1 cup legume = 4 oz
@@ -16,11 +17,11 @@
 #' @param SSB_FRTJ_SERV_DASH The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The DASH index/score
 #' @examples
-#' DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV_DASH, SERV_DATA$VEG_SERV_DASH, SERV_DATA$NUTSLEG_SERV_DASH, SERV_DATA$WGRAIN_SERV_DASH, SERV_DATA$LOWF_DAIRY_SERV_DASH, SERV_DATA$SODIUM_SERV_DASH, SERV_DATA$REDPROC_MEAT_SERV_DASH, SERV_DATA$SSB_FRTJ_SERV_DASH)
+#' DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL_DASH, SERV_DATA$FRT_FRTJ_SERV_DASH, SERV_DATA$VEG_SERV_DASH, SERV_DATA$NUTSLEG_SERV_DASH, SERV_DATA$WGRAIN_SERV_DASH, SERV_DATA$LOWF_DAIRY_SERV_DASH, SERV_DATA$SODIUM_SERV_DASH, SERV_DATA$REDPROC_MEAT_SERV_DASH, SERV_DATA$SSB_FRTJ_SERV_DASH)
 #' @export
 
 #Score calculation for DASH
-DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_DASH, VEG_SERV_DASH, NUTSLEG_SERV_DASH, WGRAIN_SERV_DASH, LOWF_DAIRY_SERV_DASH,
+DASH = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASH, FRT_FRTJ_SERV_DASH, VEG_SERV_DASH, NUTSLEG_SERV_DASH, WGRAIN_SERV_DASH, LOWF_DAIRY_SERV_DASH,
                 SODIUM_SERV_DASH, REDPROC_MEAT_SERV_DASH, SSB_FRTJ_SERV_DASH){
   ##Create variables and functions needed for DASH calculation
   quintile_healthy = function(actual){
@@ -57,7 +58,7 @@ DASH = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_DASH, VEG_SERV_DASH, NUTS
       DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV_DASH),
       DASH_WGRAIN = quintile_healthy(WGRAIN_SERV_DASH),
       DASH_LOWF_DAIRY = quintile_healthy(LOWF_DAIRY_SERV_DASH),
-      DASH_SODIUM = quintile_unhealthy(SODIUM_SERV_DASH),
+      DASH_SODIUM = quintile_unhealthy(SODIUM_SERV_DASH/(TOTALKCAL_DASH/2000)),
       DASH_REDPROC_MEAT = quintile_unhealthy(REDPROC_MEAT_SERV_DASH),
       DASH_SSB_FRTJ = quintile_unhealthy(SSB_FRTJ_SERV_DASH),
       DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+

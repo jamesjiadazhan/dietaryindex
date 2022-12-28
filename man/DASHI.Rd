@@ -25,7 +25,7 @@ DASHI(
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
-\item{TOTALKCAL_DASHI}{The total energy intake, unit = kcal/day per 2000 kcal}
+\item{TOTALKCAL_DASHI}{The total energy intake, unit = kcal/day}
 
 \item{VEG_SERV_DASHI}{The serving size of All vegetable except potatoes and legume, unit=servings per 2000 kcal/day (1 serving = 1 cup of green leafy, 0.5 cup other vegetables (cooked or raw), 3/4 cup vegetable juice)}
 
