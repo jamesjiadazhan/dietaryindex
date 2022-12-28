@@ -6,7 +6,7 @@
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
-#' @param TOTALKCAL_DASHI The total energy intake, unit = kcal/day per 2000 kcal
+#' @param TOTALKCAL_DASHI The total energy intake, unit = kcal/day
 #' @param VEG_SERV_DASHI The serving size of All vegetable except potatoes and legume, unit=servings per 2000 kcal/day (1 serving = 1 cup of green leafy, 0.5 cup other vegetables (cooked or raw), 3/4 cup vegetable juice) 
 #' @param FRT_FRTJ_SERV_DASHI The serving size of All whole fruits + 100\% juice,  unit=servings per 2000 kcal/day (1 serving = 1 cup fruit, 1 cup fruit juice, 1/2 cup dried fruit)
 #' @param NUTSLEG_SERV_DASHI The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings per 2000 kcal/day (1 serving =  1/3 cups of nuts, 2 tablespoons peanut butter, 1/2 cup cooked beans, 1/2 cup tofu)
