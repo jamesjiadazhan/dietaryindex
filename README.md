@@ -8,8 +8,8 @@ Version 0.13.0: The original DASH trial and PREDIMED trial data are available as
 The goal of **dietaryindex** is to offer streamlined methods to standardize the definition of dietary patterns and assess the adherence to dietary patterns in epidemiologic and clinical studies, facilitating precision nutrition. 
 
 The package **dietaryindex** calculates dietary indexes by 2 steps:
-Step 1. Calculate the serving size of each food and nutrient category
-Step 2. Calculate the individual dietary index using the serving size information
+- Step 1. Calculate the serving size of each food and nutrient category
+- Step 2. Calculate the individual dietary index using the serving size information
 
 The package can calculate the following dietary pattern indexes using all dietary assessments if the serving sizes of foods/beverages are given (do Step 1 by yourself and Step 2 is done for you): 
 - Healthy Eating Index 2015 (HEI2015)
