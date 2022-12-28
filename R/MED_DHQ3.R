@@ -30,7 +30,7 @@ MED_DHQ3 = function(DATA_PATH){
       RESPONDENTID = `Respondent ID`,
       
       FRT_FRTJ_SERV = `Total fruit (cups)`,
-      VEG_SERV = `Total red/orange vegetable (cups)` + `Dark-green vegetable (cups)`*0.5 + `Other starchy vegetable (cups)` + `Other vegetable (cups)`,
+      VEG_SERV = `Dark-green vegetable (cups)` + (`Total red/orange vegetable (cups)` +  `Other starchy vegetable (cups)` + `Other vegetable (cups)`)/0.5,
       WGRAIN_SERV = `Whole grain (oz)`,
       LEGUMES_SERV = `Soy products protein foods (oz)`+`Legumes protein foods (oz)`,
       NUTS_SERV = `Nuts and seeds protein foods (oz)`,

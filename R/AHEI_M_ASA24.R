@@ -41,7 +41,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
     dplyr::group_by(UserName) %>%
     dplyr::summarize(
       ENERGY=sum(KCAL),
-      VEG_SERV = sum(V_REDOR_TOTAL + V_DRKGR*0.5 + V_STARCHY_OTHER + V_OTHER),
+      VEG_SERV = sum(V_DRKGR + (V_REDOR_TOTAL + V_STARCHY_OTHER + V_OTHER)/0.5),
       FRT_SERV = sum(F_CITMLB+F_OTHER),
       WGRAIN_SERV = sum(G_WHOLE/0.035274),
       NUTSLEG_SERV = sum(PF_NUTSDS+PF_SOY+PF_LEGUMES),
@@ -50,7 +50,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
       SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV*4 / 26)),
       REDPROC_MEAT_SERV = sum((PF_CUREDMEAT/1.5) + ((PF_MEAT+PF_ORGAN)/4)),
       TRANS_SERV = sum(0),
-      SODIUM_SERV = sum(SODI/(ENERGY/1000)),
+      SODIUM_SERV = sum(SODI/(ENERGY/2000)),
       ALCOHOL_SERV = sum(A_DRINKS)
     )
   

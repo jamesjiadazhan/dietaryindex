@@ -38,7 +38,7 @@ AHEI_DHQ3 = function(DATA_PATH){
     dplyr::summarize(
       `Sex (1=male; 2=female)` = min(`Sex (1=male; 2=female)`),
       KCAL = sum(`Energy (kcal)`),
-      VEG_SERV = sum(`Total red/orange vegetable (cups)` + `Dark-green vegetable (cups)`*0.5 + `Other starchy vegetable (cups)` + `Other vegetable (cups)`),
+      VEG_SERV = sum(`Dark-green vegetable (cups)` + (`Total red/orange vegetable (cups)` + `Other starchy vegetable (cups)` + `Other vegetable (cups)`)/0.5),
       FRT_SERV = sum(`Total fruit (cups)`-`Juice fruit (cups)`),
       WGRAIN_SERV = sum(`Whole grain (oz)`/0.035274),
       NUTSLEG_SERV = sum(`Nuts, seeds, soy, and legumes (oz)`),
@@ -47,7 +47,7 @@ AHEI_DHQ3 = function(DATA_PATH){
       SSB_FRTJ_SERV = sum(ADDED_SUGAR_SSB_SERV/ 26),
       REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
       TRANS_SERV = (sum(`*Total trans fatty acitds (g)`*9)/KCAL)*100,
-      SODIUM_SERV = sum(`Sodium (mg)`/(KCAL/1000)),
+      SODIUM_SERV = sum(`Sodium (mg)`/(KCAL/2000)),
       ALCOHOL_SERV = sum(`Alcohol (drink(s))`)
     )
   
