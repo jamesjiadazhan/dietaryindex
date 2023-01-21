@@ -25,6 +25,7 @@ Meanwhile, the **dietaryindex** package can calculate many dietary indexes withi
 - It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
 - It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
 - It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
+- It can calculate HEI2015, AHEI, DASH, MED, DII, AHEIP for the Block FFQ (DataDictionary_Muldoon_4M_microbiome_nutsDec2013)
 
 Notes:
 - If you are interested in the methods of the dietary indexes, an excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN_BH_FINAL.xlsx
@@ -57,27 +58,33 @@ library(dietaryindex)
 The **dietaryindex** package currently contains the following key functions:
 
 - NHANES_FPED (after 2005)
-  - `HEI2015_NHANES_FPED()`, Calculating the serving sizes for HEI2015 with 1 step using the NHANES_FPED data (after 2005)
-  - `AHEI_NHANES_FPED()`, Calculating the serving sizes for AHEI with 1 step using the NHANES_FPED data (after 2005)
-  - `DASH_NHANES_FPED()`, Calculating the serving sizes for DASH with 1 step using the NHANES_FPED data (after 2005)
-  - `MED_NHANES_FPED()`, Calculating the serving sizes for MED with 1 step using the NHANES_FPED data (after 2005)
-  - `DII_NHANES_FPED()`, Calculating the serving sizes for DII with 1 step using the NHANES_FPED data (after 2005)
-
+  - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data (after 2005)
+  - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
+  - `DASH_NHANES_FPED()`, Calculating DASH with 1 step using the NHANES_FPED data (after 2005)
+  - `MED_NHANES_FPED()`, Calculating MED with 1 step using the NHANES_FPED data (after 2005)
+  - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
 
 - ASA24
-  - `HEI2015_ASA24()`, Calculating the serving sizes for HEI2015 with 1 step using the ASA24 data
+  - `HEI2015_ASA24()`, Calculating HEI2015 with 1 step using the ASA24 data
   - `AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
   - `AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
-  - `DASH_ASA24()`, Calculating the serving sizes for DASH with 1 step using the ASA24 data
-  - `MED_ASA24()`, Calculating the serving sizes for MED with 1 step using the ASA24 data
-  - `DII_ASA24()`, Calculating the serving sizes for DII with 1 step using the ASA24 data
-
+  - `DASH_ASA24()`, Calculating DASH with 1 step using the ASA24 data
+  - `MED_ASA24()`, Calculating MED with 1 step using the ASA24 data
+  - `DII_ASA24()`, Calculating DII with 1 step using the ASA24 data
 
 - DHQ3
-  - `HEI2015_DHQ3()`, Calculating the serving sizes for HEI2015 with 1 step using the DHQ3 data
+  - `HEI2015_DHQ3()`, Calculating HEI2015 with 1 step using the DHQ3 data
   - `AHEI_DHQ3()`, Calculate the AHEI (female or male) within 1 step using the DHQ3 data
-  - `DASH_DHQ3()`, Calculating the serving sizes for DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
-  - `MED_DHQ3()`, Calculating the serving sizes for MED with 1 step using the DHQ3 data
+  - `DASH_DHQ3()`, Calculating DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
+  - `MED_DHQ3()`, Calculating MED with 1 step using the DHQ3 data
+  
+- BLOCK
+  - `HEI2015_BLOCK`, Calculating HEI2015 with 1 step using the BLOCK data
+  - `MED_BLOCK`, Calculating MED with 1 step using the BLOCK data
+  - `DII_BLOCK`, Calculating DII with 1 step using the BLOCK data
+  - `DASH_BLOCK`, Calculating DASH with 1 step using the BLOCK data
+  - `AHEI_BLOCK`, Calculating AHEI with 1 step using the BLOCK data
+  - `AHEIP_BLOCK`, Calculating AHEIP with 1 step using the BLOCK data
 
 - Generic functions
   - `HEI2015()`, Healthy Eating Index 2015 
@@ -104,7 +111,6 @@ The **dietaryindex** package currently contains the following key functions:
   - `ACS2020_V1()`, American Cancer Society 2020 diet score
   - `ACS2020_V2()`, Alternate calculation method of the American Cancer Society 2020 diet score, intended for use when percent calories from highly processed foods and refined grains is not available (uses daily servings per 1000 calories instead)
     - Ref: https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2793171
-
 
 
 
@@ -270,6 +276,50 @@ data("DHQ3_exp_detailed")
 DASH_DHQ3(DHQ3_exp_detailed)
 ```
 
+#### Calculating AHEI for BLOCK
+```
+DATA_PATH = "/Users/james/Desktop/block_exp.csv"
+AHEI_BLOCK(DATA_PATH)
+
+#Use the example data
+data("BLOCK_exp")
+AHEI_BLOCK(BLOCK_exp)
+```
+
+#### Calculating AHEIP for BLOCK
+```
+#Use the example data
+data("BLOCK_exp")
+AHEIP_BLOCK(BLOCK_exp)
+```
+
+#### Calculating DASH for BLOCK
+```
+#Use the example data
+data("BLOCK_exp")
+DASH_BLOCK(BLOCK_exp)
+```
+
+#### Calculating DII for BLOCK
+```
+#Use the example data
+data("BLOCK_exp")
+DII_BLOCK(BLOCK_exp)
+```
+
+#### Calculating HEI2015 for BLOCK
+```
+#Use the example data
+data("BLOCK_exp")
+HEI2015_BLOCK(BLOCK_exp)
+```
+
+#### Calculating MED for BLOCK
+```
+#Use the example data
+data("BLOCK_exp")
+MED_BLOCK(BLOCK_exp)
+```
 
 #### Calculating HEI2015 for your own dietary assessment tool
 ```
