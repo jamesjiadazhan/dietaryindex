@@ -7,8 +7,8 @@
 #' @param DATA_PATH The file path for the data. The data is Detailed analysis file, ending with detail.csv
 #' @return The AHEI and its component scores
 #' @examples
-#' DATA_PATH = "/Users/james/Desktop/data/detail.csv"
-#' AHEI_DHQ3(DATA_PATH)
+#' data("DHQ3_exp_detailed")
+#' AHEI_DHQ3(DHQ3_exp_detailed)
 #' @export
 
 AHEI_DHQ3 = function(DATA_PATH){

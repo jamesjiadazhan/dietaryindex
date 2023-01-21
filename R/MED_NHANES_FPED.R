@@ -9,10 +9,8 @@
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
 #' @return The MED and its component scores
 #' @examples
-#' FPED_PATH = "/Users/james/Desktop/data/fpre_dr1tot_1718.sas7bdat"
-#' NUTRIENT_PATH = "/Users/james/Desktop/data/DR1TOT_J.XPT"
-#' DEMO_PATH = "/Users/james/Desktop/data/DEMO_J.XPT"
-#' MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+#' data("NHANES_20172018")
+#' MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
 #' @export
 
 MED_NHANES_FPED = function(FPED_PATH, NUTRIENT_PATH, DEMO_PATH){

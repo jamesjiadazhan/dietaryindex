@@ -7,8 +7,8 @@
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
 #' @return The DII and its component scores
 #' @examples
-#' DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
-#' DII_ASA24(DATA_PATH)
+#' data("ASA24_exp")
+#' DII_ASA24(ASA24_exp)
 #' @export
 
 DII_ASA24 = function(DATA_PATH){

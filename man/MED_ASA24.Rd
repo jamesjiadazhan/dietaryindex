@@ -16,6 +16,6 @@ The MED and its component scores
 Calculate the MED for the ASA24 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
-MED_ASA24(DATA_PATH)
+data("ASA24_exp")
+MED_ASA24(ASA24_exp)
 }

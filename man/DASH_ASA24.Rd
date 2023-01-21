@@ -16,6 +16,6 @@ The DASH and its component scores
 Calculate the DASH for the ASA24 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/Items.csv"
-DASH_ASA24(DATA_PATH)
+data("ASA24_exp_detailed")
+DASH_ASA24(ASA24_exp_detailed)
 }

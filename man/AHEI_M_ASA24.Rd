@@ -16,6 +16,6 @@ The AHEI and its component scores
 Calculate the AHEI (male only) for the ASA24 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/Items.csv"
-AHEI_M_ASA24(DATA_PATH)
+data("ASA24_exp_detailed")
+AHEI_M_ASA24(ASA24_exp_detailed) # for participants who are all male
 }

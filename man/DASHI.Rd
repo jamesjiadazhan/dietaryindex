@@ -54,5 +54,6 @@ The DASHI index/score
 Calculate the DASHI dietary index (serving size-based), Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day. All serving sizes should be divided by (total energy/2000 kcal) to adjust energy intake.
 }
 \examples{
-DASHI(SERV_DATA, RESPONDENTID, SERV_DATA$TOTALKCAL_DASHI, SERV_DATA$VEG_SERV_DASHI, SERV_DATA$FRT_FRTJ_SERV_DASHI, SERV_DATA$NUTSLEG_SERV_DASHI, SERV_DATA$LOWF_DAIRY_SERV_DASHI, SERV_DATA$WGRAIN_SERV_DASHI, SERV_DATA$WHITEMEAT_SERV_DASHI, SERV_DATA$REDPROC_MEAT_SERV_DASHI, SERV_DATA$FATOIL_SERV_DASHI, SERV_DATA$SWEETS_SERV_DASHI, SERV_DATA$SODIUM_SERV_DASHI)
+data("DASH_trial")
+DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal,VEG_SERV_DASHI = DASH_trial$Vegetables, FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,SODIUM_SERV_DASHI = DASH_trial$Sodium)
 }

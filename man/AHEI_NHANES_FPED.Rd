@@ -18,7 +18,6 @@ The AHEI and its component scores and serving sizes
 Calculate the AHEI for the NHANES_FPED data (after 2005) within 1 step
 }
 \examples{
-FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
-NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
-AHEI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+data("NHANES_20172018")
+AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
 }
