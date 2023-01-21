@@ -220,11 +220,13 @@ DASH_ASA24(ASA24_exp_detailed)
 #### Calculating AHEI for ASA24
 ```
 DATA_PATH = "/Users/james/Desktop/data/items.csv"
-AHEI_ASA24(DATA_PATH)
+AHEI_F_ASA24(DATA_PATH)
+AHEI_M_ASA24(DATA_PATH)
 
 #Use the example data
 data("ASA24_exp_detailed")
-AHEI_ASA24(ASA24_exp_detailed)
+AHEI_F_ASA24(ASA24_exp_detailed) # for participants who are all female
+AHEI_M_ASA24(ASA24_exp_detailed) # for participants who are all male
 ```
 
 
@@ -421,11 +423,13 @@ ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALK
 #### Add dietary index output to your own data and save the result
 ```
 # Store the output of HEI2015 in "HEI2015_output"
-HEI2015_output = HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$VEG_SERV, SERV_DATA$FRT_SERV, SERV_DATA$WGRAIN_SERV, SERV_DATA$NUTSLEG_SERV, SERV_DATA$N3FAT_SERV, SERV_DATA$PUFA_SERV, SERV_DATA$SSB_FRTJ_SERV, SERV_DATA$REDPROC_MEAT_SERV, SERV_DATA$TRANS_SERV, SERV_DATA$SODIUM_SERV, SERV_DATA$ALCOHOL_SERV)
+data("SERV_DATA_exp")
+HEI2015_output = HEI2015(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$TOTALFRT_SERV_HEI2015_exp, SERV_DATA_exp$FRT_SERV_HEI2015_exp, SERV_DATA_exp$VEG_SERV_HEI2015_exp, SERV_DATA_exp$GREENNBEAN_SERV_HEI2015_exp, SERV_DATA_exp$TOTALPRO_SERV_HEI2015_exp,  SERV_DATA_exp$SEAPLANTPRO_SERV_HEI2015_exp, SERV_DATA_exp$WHOLEGRAIN_SERV_HEI2015_exp, SERV_DATA_exp$DAIRY_SERV_HEI2015_exp, SERV_DATA_exp$FATTYACID_SERV_HEI2015_exp, SERV_DATA_exp$REFINEDGRAIN_SERV_HEI2015_exp,  SERV_DATA_exp$SODIUM_SERV_HEI2015_exp, SERV_DATA_exp$ADDEDSUGAR_SERV_HEI2015_exp, SERV_DATA_exp$SATFAT_SERV_HEI2015_exp)
+
 
 # Merge the HEI2015_output with your own data by the participant ID
-# Here, the participant ID is "RESPONDENTID", but the actual name depends on your data and it should be the column name of SERV_DATA$RESPONDENTID in the HEI2015 function
-Merged_HEI2015_output = merge(yourdata, HEI2015_output, by="RESPONDENTID")
+# Here, the HEI2015_output'S participant ID is "RESPONDENTID", while the participant ID in your selected data may vary (SERV_DATA_exp's participant ID UserName) and it should be the column name of SERV_DATA$RESPONDENTID in the HEI2015 function
+Merged_HEI2015_output = left_join(SERV_DATA_exp, HEI2015_output, by=c("UserName" = "RESPONDENTID"))
 
 # Save the result on your computer
 readr::write_csv(Merged_HEI2015_output, "/your_output_file_location/Merged_HEI2015_output.csv")
