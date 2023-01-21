@@ -226,7 +226,7 @@ AHEI_M_ASA24(DATA_PATH)
 #Use the example data
 data("ASA24_exp_detailed")
 AHEI_F_ASA24(ASA24_exp_detailed) # for participants who are all female
-AHEI_M_ASA24(ASA24_exp_detailed) # for participants who are all female
+AHEI_M_ASA24(ASA24_exp_detailed) # for participants who are all male
 ```
 
 
