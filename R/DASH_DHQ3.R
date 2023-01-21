@@ -7,8 +7,8 @@
 #' @param DATA_PATH The file path for the data. The data is Detailed analysis file, ending with detail.csv
 #' @return The DASH and its component scores
 #' @examples
-#' DATA_PATH = "/Users/james/Desktop/data/detail.csv"
-#' DASH_DHQ3(DATA_PATH)
+#' data("DHQ3_exp_detailed")
+#' DASH_DHQ3(DHQ3_exp_detailed)
 #' @export
 
 DASH_DHQ3 = function(DATA_PATH){

@@ -7,8 +7,8 @@
 #' @param DATA_PATH The file path for the data. The file name should be like: Items.csv
 #' @return The AHEI and its component scores
 #' @examples
-#' DATA_PATH = "/Users/james/Desktop/data/Items.csv"
-#' AHEI_F_ASA24(DATA_PATH)
+#' data("ASA24_exp_detailed")
+#' AHEI_F_ASA24(ASA24_exp_detailed)
 #' @export
 
 

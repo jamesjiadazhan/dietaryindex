@@ -16,6 +16,6 @@ The DII and its component scores
 Calculate the Dietary Inflammatory Index for the ASA24 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
-DII_ASA24(DATA_PATH)
+data("ASA24_exp")
+DII_ASA24(ASA24_exp)
 }

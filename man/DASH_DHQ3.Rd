@@ -16,6 +16,6 @@ The DASH and its component scores
 Calculate the DASH for the DHQ3 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/detail.csv"
-DASH_DHQ3(DATA_PATH)
+data("DHQ3_exp_detailed")
+DASH_DHQ3(DHQ3_exp_detailed)
 }

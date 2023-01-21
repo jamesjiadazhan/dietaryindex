@@ -7,8 +7,8 @@
 #' @param DATA_PATH The file path for the data. The data is Total Daily Results file, ending with results.csv
 #' @return The MED and its component scores
 #' @examples
-#' DATA_PATH = "/Users/james/Desktop/data/results.csv"
-#' MED_DHQ3(DATA_PATH)
+#' data("DHQ3_exp")
+#' MED_DHQ3(DHQ3_exp)
 #' @export
 
 MED_DHQ3 = function(DATA_PATH){

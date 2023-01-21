@@ -47,6 +47,3 @@ The AHEIP index/score
 \description{
 Calculate the AHEIP dietary index (serving size-based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
 }
-\examples{
-AHEIP(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$VEG_SERV_AHEIP, SERV_DATA$FRT_SERV_AHEIP, SERV_DATA$WHITERED_RT_SERV_AHEIP, SERV_DATA$FIBER_SERV_AHEIP, SERV_DATA$TRANS_SERV_AHEIP, SERV_DATA$POLYSAT_RT_SERV_AHEIP, SERV_DATA$CALCIUM_SERV_AHEIP, SERV_DATA$FOLATE_SERV_AHEIP, SERV_DATA$IRON_SERV_AHEIP)
-}

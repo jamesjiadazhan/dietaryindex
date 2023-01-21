@@ -16,6 +16,6 @@ The HEI2015 and its component scores
 Calculate the HEI2015 for the DHQ3 data within 1 step
 }
 \examples{
-DATA_PATH = "/Users/james/Desktop/data/results.csv"
-HEI2015_DHQ3(DATA_PATH)
+data("DHQ3_exp")
+HEI2015_DHQ3(DHQ3_exp)
 }
