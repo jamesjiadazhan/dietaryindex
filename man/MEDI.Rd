@@ -39,7 +39,7 @@ MEDI(
 
 \item{ALCOHOL_SERV_MEDI}{The serving size of alcohol, including Wine, beer, "light" beer, liquor, unit= 14 g pure alcohol = 1 serving (12 ounces of beer, 5 ounces of wine, or 1.5 ounces of hard liquor, such as vodka or whiskey)}
 
-\item{SSB_SERV_MEDI}{The serving size of all dairy, including Milk, yogurt, cheese, custard, milk puddings, other milk products, unit=1 serving = 1 cup milk, 1 cup yogurt, 1 ½ ounces hard cheese (cheddar, mozzarella, Swiss, Parmesan), 1/3 cup shredded cheese, 2 ounces processed cheese (American), ½ cup ricotta cheese, 2 cups cottage cheese, 1 cup pudding made with milk, 1 cup frozen yogurt, 1 ½ cups ice cream}
+\item{SSB_SERV_MEDI}{The serving size of all sugar sweetened beverages, unit=1 serving = 1 cup (8 oz) or 240 mL or 240 g}
 
 \item{SWEETS_SERV_MEDI}{The serving size of all sweets, including Candy, chocolate, ice cream, cookies, cakes, pies, pastries, unit= 50 g = 1 serving (about 1.5 oz ) = 1 piece of candy, 1 chocolate bar, 1 scoop ice cream, 1 cookie, 1 cake slice, 1 pie slice, 1 pastry}
 
