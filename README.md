@@ -3,7 +3,7 @@ ___
 ### Overview
 ___
 
-Version 0.14.0: The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
+Version 0.15.0: MEDI and DASHI for NHANES functions are available. The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
 
 The goal of **dietaryindex** is to offer streamlined methods to standardize the definition of dietary patterns and assess the adherence to dietary patterns in epidemiologic and clinical studies, facilitating precision nutrition. 
 
@@ -22,7 +22,7 @@ The package can calculate the following dietary pattern indexes using all dietar
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 
 Meanwhile, the **dietaryindex** package can calculate many dietary indexes within 1 step (Step 1 + Step 2) using the following dietary assessments:
-- It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
+- It can calculate HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES_FPED (after 2005).
 - It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
 - It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
 - It can calculate HEI2015, AHEI, DASH, MED, DII, AHEIP for the Block FFQ (DataDictionary_Muldoon_4M_microbiome_nutsDec2013)
@@ -60,8 +60,10 @@ The **dietaryindex** package currently contains the following key functions:
 - NHANES_FPED (after 2005)
   - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data (after 2005)
   - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
-  - `DASH_NHANES_FPED()`, Calculating DASH with 1 step using the NHANES_FPED data (after 2005)
-  - `MED_NHANES_FPED()`, Calculating MED with 1 step using the NHANES_FPED data (after 2005)
+  - `DASH_NHANES_FPED()`, Calculating DASH (quintile-based) with 1 step using the NHANES_FPED data (after 2005)
+  - `DASHI_NHANES_FPED()`, Calculating DASHI (serving size-based from the DASH trial) with 1 step using the NHANES_FPED data (after 2005)
+  - `MED_NHANES_FPED()`, Calculating MED (median-based) with 1 step using the NHANES_FPED data (after 2005)
+  - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data (after 2005)
   - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
 
 - ASA24
@@ -130,6 +132,18 @@ data("NHANES_20172018")
 HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
 ```
 
+#### Calculating AHEI for NHANES_FPED
+```
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
+
+AHEI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+```
+
 #### Calculating MED for NHANES_FPED
 ```
 FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
@@ -141,7 +155,42 @@ MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 #Use the example data
 data("NHANES_20172018")
 MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+```
 
+#### Calculating MEDI for NHANES_FPED
+```
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
+
+MEDI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+MEDI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+```
+
+#### Calculating DASH for NHANES_FPED
+```
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
+
+DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+```
+
+#### Calculating DASHI for NHANES_FPED
+```
+FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
+NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
+
+DASHI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+
+#Use the example data
+data("NHANES_20172018")
+DASHI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
 ```
 
 #### Calculating DII for NHANES_FPED
@@ -155,31 +204,6 @@ DII_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 #Use the example data
 data("NHANES_20172018")
 DII_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
-
-```
-
-#### Calculating AHEI for NHANES_FPED
-```
-FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
-NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
-
-AHEI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
-
-#Use the example data
-data("NHANES_20172018")
-AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
-```
-
-#### Calculating DASH for NHANES_FPED
-```
-FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
-NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
-
-DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
-
-#Use the example data
-data("NHANES_20172018")
-DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
 
 ```
 
