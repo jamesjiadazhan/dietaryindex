@@ -16,7 +16,7 @@ DASHI(
   WHITEMEAT_SERV_DASHI,
   REDPROC_MEAT_SERV_DASHI,
   FATOIL_SERV_DASHI,
-  SWEETS_SERV_DASHI,
+  SNACKS_SWEETS_SERV_DASHI,
   SODIUM_SERV_DASHI
 )
 }
@@ -43,7 +43,7 @@ DASHI(
 
 \item{FATOIL_SERV_DASHI}{The serving size of discretionary fats and oils, including added Plant oil + Animal fat, unit=servings per 2000 kcal/day (1 serving = 1 tablespoon or 14 g)}
 
-\item{SWEETS_SERV_DASHI}{The serving size of sweets, unit=servings per 2000 kcal/day (1 serving = about 22 g)}
+\item{SNACKS_SWEETS_SERV_DASHI}{The serving size of sweets, unit=servings per 2000 kcal/day (1 serving = about 23 g)}
 
 \item{SODIUM_SERV_DASHI}{The serving size of sodium, unit=mg per 2000 kcal/day}
 }
@@ -55,5 +55,5 @@ Calculate the DASHI dietary index (serving size-based), Dietary Approaches to St
 }
 \examples{
 data("DASH_trial")
-DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal,VEG_SERV_DASHI = DASH_trial$Vegetables, FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,SODIUM_SERV_DASHI = DASH_trial$Sodium)
+DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal,VEG_SERV_DASHI = DASH_trial$Vegetables, FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, SNACKS_SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,SODIUM_SERV_DASHI = DASH_trial$Sodium)
 }
