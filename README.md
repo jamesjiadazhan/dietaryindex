@@ -406,7 +406,7 @@ DASHI(
   WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, 
   REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, 
   FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, 
-  SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,
+  SNACKS_SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,
   SODIUM_SERV_DASHI = DASH_trial$Sodium)
 
 ```
