@@ -1,11 +1,11 @@
 Package: dietaryindex
 Type: Package
 Title: Dietary Pattern Index Calculation Package 
-Version: 0.14.0
+Version: 0.15.0
 Author: James Jiada Zhan, Nutrition and Health Sciences PhD Program, Emory University
 Maintainer: James Jiada Zhan <jzha832@emory.edu>
 Description: Currently, the package works for the following 5 dietary assessment tools to calculate many dietary indexes within 1 steps.
-    1. It can calculate HEI2015, AHEI, DASH, MED, and DII for the NHANES_FPED (after 2005).
+    1. It can calculate HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES_FPED (after 2005).
     2. It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
     3. It can calculate HEI2015, AHEI, DASH, and MED for the DHQ3
     This package can also help you calculating dietary pattern indexes (ACS2020_V1, ACS2020_V2, HEI2015, AHEI, AHEIP, DASH, DASHI, MED, MEDI, DII) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
