@@ -44,7 +44,8 @@ To install the development version hosted on this GitHub repository, use the **d
 
 ```
 install.packages("devtools") #If you don't have "devtools" installed already
-devtools::install_github("jamesjiadazhan/dietaryindex")
+library(devtools) # Load devtools
+install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
 ```
 
 
