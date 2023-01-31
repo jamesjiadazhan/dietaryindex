@@ -147,7 +147,7 @@ AHEI_BLOCK = function(RAW_DATA){
         
         #GENDER = 1 is male
         GENDER == 1  & ALCOHOL_SERV >= 3.5 ~ 0,
-        GENDER == 1  & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        GENDER == 1  & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-3.5)*10/(2-3.5),
         GENDER == 1  & ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
         GENDER == 1  & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV-0)*10/(0.5-0),
         GENDER == 1  & ALCOHOL_SERV <= 0.125 ~ 2.5,

@@ -123,7 +123,7 @@ AHEI_M_ASA24 = function(DATA_PATH){
       ),
       AHEI_ALCOHOL_M = case_when(
         ALCOHOL_SERV >= 3.5 ~ 0,
-        ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-2.5)*10/(1.5-2.5),
+        ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV-3.5)*10/(2-3.5),
         ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
         ALCOHOL_SERV <= 0.125 ~ 2.5,
         TRUE ~  0 + (ALCOHOL_SERV-0)*10/(0.5-0)
