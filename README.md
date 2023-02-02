@@ -496,6 +496,32 @@ ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALK
 ```
 
 #### Merge 2 dietary index results together
+##### Method 1:
+```
+#1112 data
+FPED_1112= read_sas("C:/fped_dr1tot_1112.sas7bdat") 
+NUTRIENT_1112 = read_xpt("C:/DR1TOT_G.XPT") %>%
+    filter(DR1DRSTZ == 1)
+DEMO_1112 = read_xpt("C:/DEMO_G.XPT") %>%
+    filter(RIDAGEYR >= 2)
+HEI2015_NHANES_1112 = HEI2015_NHANES_FPED(FPED_1112, NUTRIENT_1112, DEMO_1112)
+
+#1314 data
+FPED_1314= read_sas("C:/fped_dr1tot_1314.sas7bdat") 
+NUTRIENT_1314 = read_xpt("C:/DR1TOT_G.XPT") %>%
+    filter(DR1DRSTZ == 1)
+DEMO_1314 = read_xpt("C:/DEMO_G.XPT") %>%
+    filter(RIDAGEYR >= 2)
+
+# merge 1112 data with 1314 data
+FPED_1112_1314 = full_join(FPED_1112, FPED_1314, by=c("SEQN" = "SEQN"))
+NUTRIENT_1112_1314 = full_join(NUTRIENT_1112, NUTRIENT_1314, by=c("SEQN" = "SEQN"))
+DEMO_1112_1314 = full_join(DEMO_1112, DEMO_1314, by=c("SEQN" = "SEQN"))
+
+# HEI2015 result
+HEI2015_NHANES_11121314 =  HEI2015_NHANES_FPED(FPED_1112_1314, NUTRIENT_1112_1314, DEMO_1112_1314)
+```
+##### Method 2:
 ```
 #NHANES 1112 data
 FPED_1112= read_sas("C:/fped_dr1tot_1112.sas7bdat") 
