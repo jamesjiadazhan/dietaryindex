@@ -3,7 +3,7 @@ ___
 ### Overview
 ___
 
-Version 0.15.0: MEDI and DASHI for NHANES functions are available. The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
+Version 0.15.1: PHDI generic function is available. MEDI and DASHI for NHANES functions are available. The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
 
 The goal of **dietaryindex** is to offer streamlined methods to standardize the definition of dietary patterns and assess the adherence to dietary patterns in epidemiologic and clinical studies, facilitating precision nutrition. 
 
@@ -20,6 +20,7 @@ The package can calculate the following dietary pattern indexes using all dietar
 - MED Index in serving sizes from the PREDIMED trial (MEDI)
 - Dietary Inflammation Index (DII)
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
+- Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
 Meanwhile, the **dietaryindex** package can calculate many dietary indexes within 1 step (Step 1 + Step 2) using the following dietary assessments:
 - It can calculate HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES_FPED (after 2005).
@@ -114,6 +115,8 @@ The **dietaryindex** package currently contains the following key functions:
   - `ACS2020_V1()`, American Cancer Society 2020 diet score
   - `ACS2020_V2()`, Alternate calculation method of the American Cancer Society 2020 diet score, intended for use when percent calories from highly processed foods and refined grains is not available (uses daily servings per 1000 calories instead)
     - Ref: https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2793171
+  - `PHDI()`, Planetary Health Diet Index from the EAT-Lancet Commission
+    - Ref: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)31788-4/fulltext
 
 
 
@@ -495,6 +498,72 @@ ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALK
 
 ```
 
+#### Calculating PHDI for your own dietary assessment tool
+```
+#Use the example data
+data("PHDI_VALIDATION")
+
+PHDI(SERV_DATA=PHDI_VALIDATION, PHDI_VALIDATION$id, PHDI_VALIDATION$gender, PHDI_VALIDATION$TOTALKCAL_PHDI, PHDI_VALIDATION$WGRAIN_SERV_PHDI, PHDI_VALIDATION$STARCHY_VEG_SERV_PHDI, PHDI_VALIDATION$VEG_SERV_PHDI, PHDI_VALIDATION$FRT_SERV_PHDI, PHDI_VALIDATION$DAIRY_SERV_PHDI, PHDI_VALIDATION$REDPROC_MEAT_SERV_PHDI, PHDI_VALIDATION$POULTRY_SERV_PHDI, PHDI_VALIDATION$EGG_SERV_PHDI, PHDI_VALIDATION$FISH_SERV_PHDI, PHDI_VALIDATION$NUTS_SERV_PHDI, PHDI_VALIDATION$LEGUMES_SERV_PHDI, PHDI_VALIDATION$SOY_SERV_PHDI, PHDI_VALIDATION$ADDED_FAT_UNSAT_SERV_PHDI, PHDI_VALIDATION$ADDED_FAT_SAT_TRANS_SERV_PHDI, PHDI_VALIDATION$ADDED_SUGAR_SERV_PHDI)
+
+```
+
+#### Merge 2 dietary index results together
+##### Method 1:
+```
+#1112 data
+FPED_1112= read_sas("C:/fped_dr1tot_1112.sas7bdat") 
+NUTRIENT_1112 = read_xpt("C:/DR1TOT_G.XPT") %>%
+    filter(DR1DRSTZ == 1)
+DEMO_1112 = read_xpt("C:/DEMO_G.XPT") %>%
+    filter(RIDAGEYR >= 2)
+HEI2015_NHANES_1112 = HEI2015_NHANES_FPED(FPED_1112, NUTRIENT_1112, DEMO_1112)
+
+#1314 data
+FPED_1314= read_sas("C:/fped_dr1tot_1314.sas7bdat") 
+NUTRIENT_1314 = read_xpt("C:/DR1TOT_G.XPT") %>%
+    filter(DR1DRSTZ == 1)
+DEMO_1314 = read_xpt("C:/DEMO_G.XPT") %>%
+    filter(RIDAGEYR >= 2)
+
+# merge 1112 data with 1314 data
+FPED_1112_1314 = full_join(FPED_1112, FPED_1314, by=c("SEQN" = "SEQN"))
+NUTRIENT_1112_1314 = full_join(NUTRIENT_1112, NUTRIENT_1314, by=c("SEQN" = "SEQN"))
+DEMO_1112_1314 = full_join(DEMO_1112, DEMO_1314, by=c("SEQN" = "SEQN"))
+
+# HEI2015 result
+HEI2015_NHANES_11121314 =  HEI2015_NHANES_FPED(FPED_1112_1314, NUTRIENT_1112_1314, DEMO_1112_1314)
+```
+##### Method 2:
+```
+#NHANES 1112 data
+FPED_1112= read_sas("C:/fped_dr1tot_1112.sas7bdat") 
+NUTRIENT_1112 = read_xpt("C:/DR1TOT_G.XPT") %>%
+    filter(DR1DRSTZ == 1)
+DEMO_1112 = read_xpt("C:/DEMO_G.XPT") %>%
+    filter(RIDAGEYR >= 2)
+HEI2015_NHANES_1112 = HEI2015_NHANES_FPED(FPED_1112, NUTRIENT_1112, DEMO_1112)
+
+#NHANES 1314 data
+FPED_1314= read_sas("C:/fped_dr1tot_1314.sas7bdat") 
+NUTRIENT_1314 = read_xpt("C:/DR1TOT_G.XPT") %>%
+    filter(DR1DRSTZ == 1)
+DEMO_1314 = read_xpt("C:/DEMO_G.XPT") %>%
+    filter(RIDAGEYR >= 2)
+
+HEI2015_NHANES_1314 = HEI2015_NHANES_FPED(FPED_1314, NUTRIENT_1314, DEMO_1314)
+
+# Merge NHANES 1112 and 1314
+HEI2015_NHANES_11121314= full_join(HEI2015_NHANES_1112, HEI2015_NHANES_1314, by=c("SEQN" = "SEQN"))
+
+
+# Note, if you would like to finally save the results in your computer, you should convert it to dataframe and then save it as csv, something like below.
+
+
+HEI2015_NHANES_11121314_df = as.data.frame(HEI2015_NHANES_11121314)
+# Save the result on your computer
+readr::write_csv(HEI2015_NHANES_11121314_df, "/your_output_file_location/HEI2015_NHANES_11121314_df.csv")
+```
+
 #### Add dietary index output to your own data and save the result
 ```
 # Store the output of HEI2015 in "HEI2015_output"
@@ -508,7 +577,6 @@ Merged_HEI2015_output = left_join(SERV_DATA_exp, HEI2015_output, by=c("UserName"
 
 # Save the result on your computer
 readr::write_csv(Merged_HEI2015_output, "/your_output_file_location/Merged_HEI2015_output.csv")
-
 ```
 
 
@@ -519,14 +587,15 @@ ___
 **dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy and sugar sweetened beverage) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar sweetened beverage serving is estimated by dividing the total added sugar intakes in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
 For NHANES data:
-FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a exe zip file, so please unzip this file first to retrieve the SAS file on Windows. If you are a Mac user and have trouble unzipping the exe file, you can reach out to **James Jiada Zhan** via jzha832@emory.edu, so he could share unzipped FPED data with you via OneDrive individually as a courtesy.
 
-NUTRIENT file refers to the DR1TOT file in the Dietary Interview - Total Nutrient Intakes, First Day, Dietary Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). 
+- FPED file refers to the DR1TOT file in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). This is a exe zip file, so please unzip this file first to retrieve the SAS file. 
 
-DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
+- NUTRIENT file refers to the DR1TOT file in the Dietary Interview - Total Nutrient Intakes, First Day, Dietary Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). 
 
-DBQ file refers to the DBQ file in the Diet Behavior & Nutrition, Questionnaire Data (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Questionnaire&CycleBeginYear=2005)
+- DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
+
+FPED, NUTRIENT, and DEMO files are available in the Google Drive collected by the package developer for your convenience (https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link). 
 
 ### Contributing & Notes
 
-**dietaryindex** is licensed under the [MIT License]. Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, **James Jiada Zhan**, via his email: jzha832@emory.edu. **James Jiada Zhan** home page at Emory is: https://www.sph.emory.edu/phd-students/profile/index.php?FID=jiada-zhan-12906. **Becky Hodge** provided significant contributions to validate this package. Thanks a lot for her help. 
+**dietaryindex** is licensed under the [MIT License](https://github.com/jamesjiadazhan/dietaryindex/blob/main/other/LICENSE.txt). Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, **James Jiada Zhan**, via his email: jzha832@emory.edu. **James Jiada Zhan** home page at Emory is: https://www.sph.emory.edu/phd-students/profile/index.php?FID=jiada-zhan-12906. **Becky Hodge** provided significant contributions to validate this package. Thanks a lot for her help. 
