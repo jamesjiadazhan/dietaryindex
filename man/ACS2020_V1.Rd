@@ -48,5 +48,6 @@ The ACS2020_V1 index/score and its component scores
 Calculate the American Cancer Society 2020 dietary index, using the daily serving sizes of foods consumed to calculate the vegetable, fruit, whole grain, red and processed meat, and sugar-sweetened beverages components. This version uses the percent of daily calories from highly processed foods and refined grains to calculate that component’s scores and is the preferred method of calculating the ACS 2020 diet score.
 }
 \examples{
-ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
+data("ACS2020_VALIDATION")
+ACS2020_V1(SERV_DATA = ACS2020_VALIDATION, RESPONDENTID = ACS2020_VALIDATION$id, GENDER = ACS2020_VALIDATION$gender, VEG_SERV_ACS2020 = ACS2020_VALIDATION$vegetable, VEG_ITEMS_SERV_ACS2020 = ACS2020_VALIDATION$vegetable_unique, FRT_SERV_ACS2020 = ACS2020_VALIDATION$fruit, FRT_ITEMS_SERV_ACS2020 = ACS2020_VALIDATION$fruit_unique, WGRAIN_SERV_ACS2020 = ACS2020_VALIDATION$whole_grain, REDPROC_MEAT_SERV_ACS2020 = ACS2020_VALIDATION$red_meat, HPFRG_RATIO_SERV_ACS2020 = ACS2020_VALIDATION$process_food, SSB_FRTJ_SERV_ACS2020 = ACS2020_VALIDATION$ssb)
 }
