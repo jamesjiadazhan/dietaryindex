@@ -7,7 +7,7 @@ ___
 
 **dietaryindex** aims to provide streamlined methods for standardizing the definition of dietary patterns and assessing adherence to dietary patterns in epidemiologic and clinical studies, promoting precision nutrition.
 
-As of version 1.0.2, the package supports the latest version of the Healthy Eating Index (HEI2020) for National Health and Nutrition Examination Survey (NHANES) data. NHANES data from 2005 to 2018 are compiled and available within the dietaryindex package. Data can be accessed with commands like `data("NHANES_20172018")` or `data("NHANES_20152016")`.
+As of version 1.0.2, the package supports the latest version of the Healthy Eating Index (HEI2020) for National Health and Nutrition Examination Survey (NHANES) data. NHANES data from 2005 to 2018 are compiled and available within the dietaryindex package. Data can be accessed with commands like `data("NHANES_20172018")` or `data("NHANES_20152016")`. Also, all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. 
 
 The **dietaryindex** package performs calculations in two steps:
 1. Compute the serving size of each food and nutrient category.
