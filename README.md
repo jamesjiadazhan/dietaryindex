@@ -3,7 +3,7 @@ ___
 ### Overview
 ___
 
-Version 0.15.1: PHDI generic function is available. MEDI and DASHI for NHANES functions are available. The original DASH trial and PREDIMED trial data are available as example data. You can calculate DASHI using the DASH trial data and MEDI using the PREDIMED trial data, which allows you compare different DASH or MED diets in multiple studies to improve the inconsistencies of evaluating and defining DASH or MED diets. American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2) are available as generic functions. 
+Version 1.0.2: HEI2020 is available for NHANES!!! Also, all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. Additionally, all NHANES data from 2005 - 2018 are compiled and available within the dietaryindex package. Just use data("NHANES_20172018") or data("NHANES_20152016") to retrieve the data before using them. 
 
 The goal of **dietaryindex** is to offer streamlined methods to standardize the definition of dietary patterns and assess the adherence to dietary patterns in epidemiologic and clinical studies, facilitating precision nutrition. 
 
@@ -12,6 +12,7 @@ The package **dietaryindex** calculates dietary indexes by 2 steps:
 - Step 2. Calculate the individual dietary index using the serving size information
 
 The package can calculate the following dietary pattern indexes using all dietary assessments if the serving sizes of foods/beverages are given (do Step 1 by yourself and Step 2 is done for you): 
+- Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
 - Healthy Eating Index 2015 (HEI2015)
 - Alternative Healthy Eating Index (AHEI)
 - Dietary Approaches to Stop Hypertension Index (DASH)
@@ -23,15 +24,24 @@ The package can calculate the following dietary pattern indexes using all dietar
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
 Meanwhile, the **dietaryindex** package can calculate many dietary indexes within 1 step (Step 1 + Step 2) using the following dietary assessments:
-- It can calculate HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES_FPED (after 2005).
+- It can calculate HEI2020, HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES_FPED (after 2005).
 - It can calculate HEI2015, AHEI, DASH, MED, and DII for the ASA24
 - It can calculate HEI2015, AHEI, DASH, MED for the DHQ3
 - It can calculate HEI2015, AHEI, DASH, MED, DII, AHEIP for the Block FFQ (DataDictionary_Muldoon_4M_microbiome_nutsDec2013)
 
+**dietaryindex** has compiled and included NHANES data from 2005 - 2018 for your convenience. This includes NHANES 2005-2006, NHANES 2007-2008, NHANES 2009-2010, NHANES 2011-2012, NHANES 2013-2014, NHANES 2015-2016, NHANES 2017-2018. To retrieve the data, use the following codes:
+- NHANES 2005-2006: data("NHANES_20052006")
+- NHANES 2007-2008: data("NHANES_20072008")
+- NHANES 2009-2010: data("NHANES_20092010")
+- NHANES 2011-2012: data("NHANES_20112012")
+- NHANES 2013-2014: data("NHANES_20132014")
+- NHANES 2015-2016: data("NHANES_20152016")
+- NHANES 2017-2018: data("NHANES_20172018")
+
 Notes:
-- If you are interested in the methods of the dietary indexes, an excel sheet for the serving size of all dietary indexes is provided: DIETARYINDEX_SERVING_SIZE_CHART_JAMES_ZHAN_BH_FINAL.xlsx
-- The outputs of the generic functions (e.g. HEI2015, DII) include dietary indexes and their component scores. 
-- The outputs of the specific functions (e.g. DASH_ASA24) include dietary indexes, their component scores, and their food/drink serving sizes.
+- If you are interested in the detailed methods of the dietary indexes, they are available in the GitHub page as Excel sheets:
+  - Step 1: Calculate the serving size of each food and nutrient category [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
+  - Step 2: Calculate the individual dietary index using the serving size information [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 - The **dietaryindex** package relies on the **dplyr**, **readr**, and **haven** packages. The **dietaryindex** package will install those packages for you automatically.
 
 
@@ -45,21 +55,37 @@ To install the development version hosted on this GitHub repository, use the **d
 
 ```
 install.packages("devtools") #If you don't have "devtools" installed already
-library(devtools) # Load devtools
-install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
+devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
+# If the previous steps not working, you can try the following steps by removing the "#" marks
+# library(devtools) # Load devtools
+# install_github("jamesjiadazhan/dietaryindex")
+```
+
+If something comes up like this, first try enter 1 in the terminal (lower box). If not successful, then try enter 2. It will take a while if you are a new R user.
+```
+  These packages have more recent versions available.
+  It is recommended to update all of them.
+  Which would you like to update?
+
+  1: All                          
+  2: CRAN packages only           
+  3: None                         
+  4: tzdb  (0.3.0 -> 0.4.0) [CRAN]
+  5: vroom (1.6.1 -> 1.6.3) [CRAN]
 ```
 
 
 ### Getting Started
 ___
 ```
+# load the package. After installing the package, the package has to be loaded before using
 library(dietaryindex)
-
 ```
 
 The **dietaryindex** package currently contains the following key functions:
 
 - NHANES_FPED (after 2005)
+  - `HEI2020_NHANES_FPED()`, Calculating HEI2020 & HEI-Toddlers-2020 with 1 step using the NHANES_FPED data (after 2005)
   - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data (after 2005)
   - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
   - `DASH_NHANES_FPED()`, Calculating DASH (quintile-based) with 1 step using the NHANES_FPED data (after 2005)
@@ -91,6 +117,9 @@ The **dietaryindex** package currently contains the following key functions:
   - `AHEIP_BLOCK`, Calculating AHEIP with 1 step using the BLOCK data
 
 - Generic functions
+  - `HEI2020()`, Healthy Eating Index 2020 & HEI-Toddlers-2020
+    - Ref: https://pubmed.ncbi.nlm.nih.gov/37201748/
+    - Ref: https://pubmed.ncbi.nlm.nih.gov/37209965/
   - `HEI2015()`, Healthy Eating Index 2015 
     - Ref: https://www.fns.usda.gov/how-hei-scored
   - `AHEI()`, alternative healthy eating index 
@@ -123,17 +152,41 @@ The **dietaryindex** package currently contains the following key functions:
 ### Examples:
 ___
 
+#### Calculating HEI2020 for NHANES_FPED
+```
+# Using the first day nutrition data
+FPED_PATH_1 = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH_1 = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH_1 = "/Users/james/Desktop/DEMO_J.XPT"
+
+HEI2020_NHANES_FPED(FPED_PATH=FPED_PATH_1, NUTRIENT_PATH=NUTRIENT_PATH_1, DEMO_PATH=DEMO_PATH_1)
+
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
+data("NHANES_20172018")
+HEI2020_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
+
+# Use the NHANES example data in 2017-2018 using only the first day nutrition data
+data("NHANES_20172018")
+HEI2020_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO)
+
+# Use the NHANES example data in 2017-2018 using only the second day nutrition data
+data("NHANES_20172018")
+HEI2020_NHANES_FPED(DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2) 
+# the sequence of DEMO, FPED, NUTRIENT data entry do not matter if you use "DEMO_PATH", "FPED_PATH2", "NUTRIENT_PATH2" to specify the data input
+```
+
 #### Calculating HEI2015 for NHANES_FPED
 ```
-FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
-NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
-DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
+# Using the first day nutrition data
+FPED_PATH_1 = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
+NUTRIENT_PATH_1 = "/Users/james/Desktop/DR1TOT_J.XPT"
+DEMO_PATH_1 = "/Users/james/Desktop/DEMO_J.XPT"
 
-HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+HEI2015_NHANES_FPED(FPED_PATH=FPED_PATH_1, NUTRIENT_PATH=NUTRIENT_PATH_1, DEMO_PATH=DEMO_PATH_1)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+HEI2015_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
 #### Calculating AHEI for NHANES_FPED
@@ -143,9 +196,9 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 AHEI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 ```
 
 #### Calculating MED for NHANES_FPED
@@ -156,9 +209,9 @@ DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+MED_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
 #### Calculating MEDI for NHANES_FPED
@@ -168,9 +221,9 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 MEDI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-MEDI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+MEDI_NHANES_FPED(FPED_IND_PATH=NHANES_20172018$FPED_IND, NUTRIENT_IND_PATH=NHANES_20172018$NUTRIENT_IND, FPED_IND_PATH2=NHANES_20172018$FPED_IND2, NUTRIENT_IND_PATH2=NHANES_20172018$NUTRIENT_IND2)
 ```
 
 #### Calculating DASH for NHANES_FPED
@@ -180,9 +233,9 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 ```
 
 #### Calculating DASHI for NHANES_FPED
@@ -192,9 +245,9 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 DASHI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-DASHI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+DASHI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 ```
 
 #### Calculating DII for NHANES_FPED
@@ -205,10 +258,9 @@ DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 DII_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 
-#Use the example data
+# Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-DII_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
-
+DII_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
 #### Calculating HEI2015 for ASA24
@@ -349,6 +401,13 @@ data("BLOCK_exp")
 MED_BLOCK(BLOCK_exp)
 ```
 
+#### Calculating HEI2020 for your own dietary assessment tool
+```
+#Use the example data
+data("HEI2020_VALIDATION")
+HEI2020(SERV_DATA = HEI2020_VALIDATION,RESPONDENTID = HEI2020_VALIDATION$id,AGE = HEI2020_VALIDATION$age,TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal,TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit,FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit,VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable,GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean,TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein,SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein,WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain,DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy,FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid,REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain,SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium,ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar,SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
+```
+
 #### Calculating HEI2015 for your own dietary assessment tool
 ```
 DATA_PATH <- "/Users/james/Desktop/data.csv"
@@ -359,7 +418,6 @@ HEI2015(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL, SERV_DATA$VEG_SE
 #Use the example data
 data("SERV_DATA_exp")
 HEI2015(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$TOTALFRT_SERV_HEI2015_exp, SERV_DATA_exp$FRT_SERV_HEI2015_exp, SERV_DATA_exp$VEG_SERV_HEI2015_exp, SERV_DATA_exp$GREENNBEAN_SERV_HEI2015_exp, SERV_DATA_exp$TOTALPRO_SERV_HEI2015_exp,  SERV_DATA_exp$SEAPLANTPRO_SERV_HEI2015_exp, SERV_DATA_exp$WHOLEGRAIN_SERV_HEI2015_exp, SERV_DATA_exp$DAIRY_SERV_HEI2015_exp, SERV_DATA_exp$FATTYACID_SERV_HEI2015_exp, SERV_DATA_exp$REFINEDGRAIN_SERV_HEI2015_exp,  SERV_DATA_exp$SODIUM_SERV_HEI2015_exp, SERV_DATA_exp$ADDEDSUGAR_SERV_HEI2015_exp, SERV_DATA_exp$SATFAT_SERV_HEI2015_exp)
-
 ```
 
 #### Calculating AHEI for your own dietary assessment tool
@@ -372,7 +430,6 @@ AHEI(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV, SE
 #Use the example data
 data("SERV_DATA_exp")
 AHEI(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$SEX, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$VEG_SERV_AHEI_exp, SERV_DATA_exp$FRT_SERV_AHEI_exp, SERV_DATA_exp$WGRAIN_SERV_AHEI_exp, SERV_DATA_exp$NUTSLEG_SERV_AHEI_exp, SERV_DATA_exp$N3FAT_SERV_AHEI_exp, SERV_DATA_exp$PUFA_SERV_AHEI_exp, SERV_DATA_exp$SSB_FRTJ_SERV_AHEI_exp, SERV_DATA_exp$REDPROC_MEAT_SERV_AHEI_exp, SERV_DATA_exp$TRANS_SERV_AHEI_exp, SERV_DATA_exp$SODIUM_SERV_AHEI_exp, SERV_DATA_exp$ALCOHOL_SERV_AHEI_exp)
-
 ```
 
 #### Calculating DASH for your own dietary assessment tool
@@ -385,8 +442,6 @@ DASH(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$TOTALKCAL_DASH, SERV_DATA$FRT_
 #Use the example data
 data("SERV_DATA_exp")
 DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_exp$FRT_FRTJ_SERV_DASH_exp, SERV_DATA_exp$VEG_SERV_DASH_exp, SERV_DATA_exp$NUTSLEG_SERV_DASH_exp, SERV_DATA_exp$WGRAIN_SERV_DASH_exp, SERV_DATA_exp$LOWF_DAIRY_SERV_DASH_exp, SERV_DATA_exp$SODIUM_SERV_DASH_exp, SERV_DATA_exp$REDPROC_MEAT_SERV_DASH_exp, SERV_DATA_exp$SSB_FRTJ_SERV_DASH_exp)
-
-
 ```
 
 #### Calculating DASHI for your own dietary assessment tool
@@ -412,7 +467,6 @@ DASHI(
   FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, 
   SNACKS_SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,
   SODIUM_SERV_DASHI = DASH_trial$Sodium)
-
 ```
 
 #### Calculating MED for your own dietary assessment tool
@@ -425,8 +479,6 @@ MED(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$FRT_FRTJ_SERV, SERV_DATA$VEG_SE
 #Use the example data
 data("SERV_DATA_exp")
 MED(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$FRT_FRTJ_SERV_MED_exp, SERV_DATA_exp$VEG_SERV_MED_exp, SERV_DATA_exp$WGRAIN_SERV_MED_exp, SERV_DATA_exp$LEGUMES_SERV_MED_exp, SERV_DATA_exp$NUTS_SERV_MED_exp, SERV_DATA_exp$FISH_SERV_MED_exp, SERV_DATA_exp$REDPROC_MEAT_SERV_MED_exp, SERV_DATA_exp$MONSATFAT_SERV_MED_exp, SERV_DATA_exp$ALCOHOL_SERV_MED_exp)
-
-
 ```
 
 #### Calculating MEDI for your own dietary assessment tool
@@ -471,7 +523,6 @@ MEDI_V2(
     DISCRET_FAT_SERV_MEDI = PREDIMED_trial$Refined_Oliveoil,
     REDPROC_MEAT_SERV_MEDI = PREDIMED_trial$Meat
 )
-
 ```
 
 #### Calculating DII for your own dietary assessment tool
@@ -484,7 +535,6 @@ DII(SERV_DATA, SERV_DATA$RESPONDENTID, REPEATNUM=1, SERV_DATA$ALCOHOL_DII, SERV_
 #Use the example data
 data("DHQ3_exp")
 DII(DHQ3_exp, DHQ3_exp$`Respondent ID`, 1, DHQ3_exp$`Alcohol (g)`, DHQ3_exp$`Vitamin B12 (mcg)`, DHQ3_exp$`Vitamin B6 (mg)`)
-
 ```
 
 #### Calculating ACS2020_V1 or ACS2020_V2 for your own dietary assessment tool
@@ -495,7 +545,6 @@ SERV_DATA <- read_csv(DATA_PATH)
 ACS2020_V1(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_RATIO_SERV_ACS2020)
 
 ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALKCAL_ACS2020, SERV_DATA$VEG_SERV_ACS2020, SERV_DATA$VEG_ITEMS_SERV_ACS2020, SERV_DATA$FRT_SERV_ACS2020, SERV_DATA$FRT_ITEMS_SERV_ACS2020, SERV_DATA$WGRAIN_SERV_ACS2020, SERV_DATA$SSB_FRTJ_SERV_ACS2020, SERV_DATA$REDPROC_MEAT_SERV_ACS2020, SERV_DATA$HPFRG_SERV_ACS2020)
-
 ```
 
 #### Calculating PHDI for your own dietary assessment tool
@@ -504,64 +553,57 @@ ACS2020_V2(SERV_DATA, SERV_DATA$RESPONDENTID, SERV_DATA$GENDER, SERV_DATA$TOTALK
 data("PHDI_VALIDATION")
 
 PHDI(SERV_DATA=PHDI_VALIDATION, PHDI_VALIDATION$id, PHDI_VALIDATION$gender, PHDI_VALIDATION$TOTALKCAL_PHDI, PHDI_VALIDATION$WGRAIN_SERV_PHDI, PHDI_VALIDATION$STARCHY_VEG_SERV_PHDI, PHDI_VALIDATION$VEG_SERV_PHDI, PHDI_VALIDATION$FRT_SERV_PHDI, PHDI_VALIDATION$DAIRY_SERV_PHDI, PHDI_VALIDATION$REDPROC_MEAT_SERV_PHDI, PHDI_VALIDATION$POULTRY_SERV_PHDI, PHDI_VALIDATION$EGG_SERV_PHDI, PHDI_VALIDATION$FISH_SERV_PHDI, PHDI_VALIDATION$NUTS_SERV_PHDI, PHDI_VALIDATION$LEGUMES_SERV_PHDI, PHDI_VALIDATION$SOY_SERV_PHDI, PHDI_VALIDATION$ADDED_FAT_UNSAT_SERV_PHDI, PHDI_VALIDATION$ADDED_FAT_SAT_TRANS_SERV_PHDI, PHDI_VALIDATION$ADDED_SUGAR_SERV_PHDI)
-
 ```
 
 #### Merge 2 dietary index results together
-##### Method 1:
 ```
-#1112 data
-FPED_1112= read_sas("C:/fped_dr1tot_1112.sas7bdat") 
-NUTRIENT_1112 = read_xpt("C:/DR1TOT_G.XPT") %>%
-    filter(DR1DRSTZ == 1)
-DEMO_1112 = read_xpt("C:/DEMO_G.XPT") %>%
-    filter(RIDAGEYR >= 2)
-HEI2015_NHANES_1112 = HEI2015_NHANES_FPED(FPED_1112, NUTRIENT_1112, DEMO_1112)
+data(NHANES_20152016)
+data(NHANES_20172018)
 
-#1314 data
-FPED_1314= read_sas("C:/fped_dr1tot_1314.sas7bdat") 
-NUTRIENT_1314 = read_xpt("C:/DR1TOT_G.XPT") %>%
-    filter(DR1DRSTZ == 1)
-DEMO_1314 = read_xpt("C:/DEMO_G.XPT") %>%
-    filter(RIDAGEYR >= 2)
+# HEI_NHANES_FPED
+## 2017-2018 day 1 and day 2
+HEI2020_NHANES_FPED_1718 = HEI2020_NHANES_FPED(
+    FPED_PATH=NHANES_20172018$FPED, 
+    NUTRIENT_PATH=NHANES_20172018$NUTRIENT, 
+    DEMO_PATH=NHANES_20172018$DEMO, 
+    FPED_PATH2=NHANES_20172018$FPED2, 
+    NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 
-# merge 1112 data with 1314 data
-FPED_1112_1314 = full_join(FPED_1112, FPED_1314, by=c("SEQN" = "SEQN"))
-NUTRIENT_1112_1314 = full_join(NUTRIENT_1112, NUTRIENT_1314, by=c("SEQN" = "SEQN"))
-DEMO_1112_1314 = full_join(DEMO_1112, DEMO_1314, by=c("SEQN" = "SEQN"))
+## 2015-2016 day 1 and day 2
+HEI2020_NHANES_FPED_1516 = HEI2020_NHANES_FPED(
+    FPED_PATH=NHANES_20152016$FPED, 
+    NUTRIENT_PATH=NHANES_20152016$NUTRIENT, 
+    DEMO_PATH=NHANES_20152016$DEMO, 
+    FPED_PATH2=NHANES_20152016$FPED2, 
+    NUTRIENT_PATH2=NHANES_20152016$NUTRIENT2)
 
-# HEI2015 result
-HEI2015_NHANES_11121314 =  HEI2015_NHANES_FPED(FPED_1112_1314, NUTRIENT_1112_1314, DEMO_1112_1314)
-```
-##### Method 2:
-```
-#NHANES 1112 data
-FPED_1112= read_sas("C:/fped_dr1tot_1112.sas7bdat") 
-NUTRIENT_1112 = read_xpt("C:/DR1TOT_G.XPT") %>%
-    filter(DR1DRSTZ == 1)
-DEMO_1112 = read_xpt("C:/DEMO_G.XPT") %>%
-    filter(RIDAGEYR >= 2)
-HEI2015_NHANES_1112 = HEI2015_NHANES_FPED(FPED_1112, NUTRIENT_1112, DEMO_1112)
+# Now, merge the two datasets
+HEI2020_NHANES_FPED_17181516 = rbind(HEI2020_NHANES_FPED_1718, HEI2020_NHANES_FPED_1516)
 
-#NHANES 1314 data
-FPED_1314= read_sas("C:/fped_dr1tot_1314.sas7bdat") 
-NUTRIENT_1314 = read_xpt("C:/DR1TOT_G.XPT") %>%
-    filter(DR1DRSTZ == 1)
-DEMO_1314 = read_xpt("C:/DEMO_G.XPT") %>%
-    filter(RIDAGEYR >= 2)
-
-HEI2015_NHANES_1314 = HEI2015_NHANES_FPED(FPED_1314, NUTRIENT_1314, DEMO_1314)
-
-# Merge NHANES 1112 and 1314
-HEI2015_NHANES_11121314= full_join(HEI2015_NHANES_1112, HEI2015_NHANES_1314, by=c("SEQN" = "SEQN"))
-
-
-# Note, if you would like to finally save the results in your computer, you should convert it to dataframe and then save it as csv, something like below.
-
-
-HEI2015_NHANES_11121314_df = as.data.frame(HEI2015_NHANES_11121314)
+HEI2020_NHANES_FPED_17181516_df = as.data.frame(HEI2020_NHANES_FPED_17181516)
 # Save the result on your computer
-readr::write_csv(HEI2015_NHANES_11121314_df, "/your_output_file_location/HEI2015_NHANES_11121314_df.csv")
+readr::write_csv(HEI2020_NHANES_FPED_17181516_df, "/your_output_file_location/HEI2020_NHANES_FPED_17181516_df.csv")
+```
+
+#### Merge dietary index results with other NHANES data
+```
+data(NHANES_20172018)
+
+# HEI_NHANES_FPED
+## 2017-2018 day 1 and day 2
+HEI2020_NHANES_FPED_1718 = HEI2020_NHANES_FPED(
+    FPED_PATH=NHANES_20172018$FPED, 
+    NUTRIENT_PATH=NHANES_20172018$NUTRIENT, 
+    DEMO_PATH=NHANES_20172018$DEMO, 
+    FPED_PATH2=NHANES_20172018$FPED2, 
+    NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
+
+# Blood pressure data
+## library(haven)
+BP_1718 = read_xpt("BPX_J.XPT")
+
+## library(dplyr)
+BP_HEI2020_1718 = inner_join(HEI2020_NHANES_FPED_1718, BP_1718, by="SEQN")
 ```
 
 #### Add dietary index output to your own data and save the result
@@ -578,8 +620,6 @@ Merged_HEI2015_output = left_join(SERV_DATA_exp, HEI2015_output, by=c("UserName"
 # Save the result on your computer
 readr::write_csv(Merged_HEI2015_output, "/your_output_file_location/Merged_HEI2015_output.csv")
 ```
-
-
 
 ### Related Work
 ___
