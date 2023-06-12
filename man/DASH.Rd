@@ -48,6 +48,6 @@ The DASH index/score
 Calculate the DASH dietary index, Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
-data("DHQ3_exp_detailed")
-DASH_DHQ3(DHQ3_exp_detailed)
+data("DASH_VALIDATION")
+DASH(DASH_VALIDATION, RESPONDENTID = DASH_VALIDATION$id, TOTALKCAL_DASH = DASH_VALIDATION$kcal, FRT_FRTJ_SERV_DASH = DASH_VALIDATION$fruit, VEG_SERV_DASH = DASH_VALIDATION$vegetable, NUTSLEG_SERV_DASH = DASH_VALIDATION$nut_legume, WGRAIN_SERV_DASH = DASH_VALIDATION$whole_grain, LOWF_DAIRY_SERV_DASH = DASH_VALIDATION$low_fat_dairy, SODIUM_SERV_DASH = DASH_VALIDATION$sodium, REDPROC_MEAT_SERV_DASH = DASH_VALIDATION$red_processed_meat, SSB_FRTJ_SERV_DASH = DASH_VALIDATION$ssb)
 }

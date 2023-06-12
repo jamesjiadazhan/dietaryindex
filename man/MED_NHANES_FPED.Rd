@@ -4,7 +4,13 @@
 \alias{MED_NHANES_FPED}
 \title{MED_NHANES_FPED}
 \usage{
-MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+MED_NHANES_FPED(
+  FPED_PATH = NULL,
+  NUTRIENT_PATH = NULL,
+  DEMO_PATH,
+  FPED_PATH2 = NULL,
+  NUTRIENT_PATH2 = NULL
+)
 }
 \arguments{
 \item{FPED_PATH}{The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat}
@@ -12,6 +18,10 @@ MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 \item{NUTRIENT_PATH}{The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT}
 
 \item{DEMO_PATH}{The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT}
+
+\item{FPED_PATH2}{The file path for the FPED data. The file name should be like: fpre_dr2tot_1718.sas7bdat}
+
+\item{NUTRIENT_PATH2}{The file path for the NUTRIENT data. The file name should be like: DR2TOT_J.XPT}
 }
 \value{
 The MED and its component scores
@@ -21,5 +31,5 @@ Calculate the MED for the NHANES_FPED data (after 2005) within 1 step
 }
 \examples{
 data("NHANES_20172018")
-MED_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+MED_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 }

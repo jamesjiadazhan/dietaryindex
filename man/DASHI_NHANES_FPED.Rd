@@ -4,12 +4,21 @@
 \alias{DASHI_NHANES_FPED}
 \title{DASHI_NHANES_FPED}
 \usage{
-DASHI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+DASHI_NHANES_FPED(
+  FPED_IND_PATH = NULL,
+  NUTRIENT_IND_PATH = NULL,
+  FPED_IND_PATH2 = NULL,
+  NUTRIENT_IND_PATH2 = NULL
+)
 }
 \arguments{
 \item{FPED_IND_PATH}{The file path for the FPED IND data. The file name should be like: fped_dr1iff.sas7bdat}
 
 \item{NUTRIENT_IND_PATH}{The file path for the NUTRIENT IND data. The file name should be like: DR1IFF_J}
+
+\item{FPED_IND_PATH2}{The file path for the FPED IND data for day 2. THE file name should be like: fped_dr2iff.sas7bdat}
+
+\item{NUTRIENT_IND_PATH2}{The file path for the NUTRIENT IND data for day 2. The file name should be like: DR2IFF_J}
 }
 \value{
 The DASHI and its component scores and serving sizes
@@ -19,5 +28,5 @@ Calculate the DASHI (serving size-based) for the NHANES_FPED data (after 2005) w
 }
 \examples{
 data("NHANES_20172018")
-DASHI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+DASHI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 }

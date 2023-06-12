@@ -4,7 +4,13 @@
 \alias{HEI2015_NHANES_FPED}
 \title{HEI2015_NHANES_FPED}
 \usage{
-HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
+HEI2015_NHANES_FPED(
+  FPED_PATH = NULL,
+  NUTRIENT_PATH = NULL,
+  DEMO_PATH,
+  FPED_PATH2 = NULL,
+  NUTRIENT_PATH2 = NULL
+)
 }
 \arguments{
 \item{FPED_PATH}{The file path for the FPED data. The file name should be like: fped_dr1tot_1112.sas7bdat}
@@ -12,14 +18,18 @@ HEI2015_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 \item{NUTRIENT_PATH}{The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT}
 
 \item{DEMO_PATH}{The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT}
+
+\item{FPED_PATH2}{The file path for the FPED2 data. The file name should be like: fped_DR2tot_1112.sas7bdat}
+
+\item{NUTRIENT_PATH2}{The file path for the NUTRIENT2 data. The file name should be like: DR2TOT_J.XPT}
 }
 \value{
-The AHEI and its component scores and serving sizes
+The HEI2015 and its component scores and serving sizes
 }
 \description{
-Calculate the HEI2015 for the NHANES_FPED data (after 2005) within 1 step
+Calculate the HEI2015 for the NHANES_FPED data (after 2005) within 1 step for day 1, day 2, or day 1 and 2 combined
 }
 \examples{
 data("NHANES_20172018")
-HEI2015_NHANES_FPED(NHANES_20172018$FPED, NHANES_20172018$NUTRIENT, NHANES_20172018$DEMO)
+HEI2015_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 }
