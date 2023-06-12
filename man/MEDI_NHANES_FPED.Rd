@@ -4,12 +4,21 @@
 \alias{MEDI_NHANES_FPED}
 \title{MEDI_NHANES_FPED}
 \usage{
-MEDI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
+MEDI_NHANES_FPED(
+  FPED_IND_PATH = NULL,
+  NUTRIENT_IND_PATH = NULL,
+  FPED_IND_PATH2 = NULL,
+  NUTRIENT_IND_PATH2 = NULL
+)
 }
 \arguments{
 \item{FPED_IND_PATH}{The file path for the FPED IND data. The file name should be like: fped_dr1iff.sas7bdat}
 
 \item{NUTRIENT_IND_PATH}{The file path for the NUTRIENT IND data. The file name should be like: DR1IFF_J}
+
+\item{FPED_IND_PATH2}{The file path for the FPED IND data for day 2. The file name should be like: fped_dr1iff.sas7bdat}
+
+\item{NUTRIENT_IND_PATH2}{The file path for the NUTRIENT IND data for day 2. The file name should be like: DR2IFF_J}
 }
 \value{
 The MEDI and its component scores and serving sizes
@@ -19,5 +28,5 @@ Calculate the MEDI (serving size-based) using a binary cutoff for the NHANES_FPE
 }
 \examples{
 data("NHANES_20172018")
-MEDI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND)
+MEDI_NHANES_FPED(FPED_IND_PATH=NHANES_20172018$FPED_IND, NUTRIENT_IND_PATH=NHANES_20172018$NUTRIENT_IND, FPED_IND_PATH2=NHANES_20172018$FPED_IND2, NUTRIENT_IND_PATH2=NHANES_20172018$NUTRIENT_IND2)
 }
