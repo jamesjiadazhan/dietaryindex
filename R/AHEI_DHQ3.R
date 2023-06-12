@@ -42,8 +42,8 @@ AHEI_DHQ3 = function(DATA_PATH){
       FRT_SERV = sum(`Total fruit (cups)`-`Juice fruit (cups)`),
       WGRAIN_SERV = sum(`Whole grain (oz)`/0.035274),
       NUTSLEG_SERV = sum(`Nuts, seeds, soy, and legumes (oz)`),
-      N3FAT_SERV = sum((`PFA 20:5 (Eicosapentaenoic) (g)`+`PFA 22:6 (Docosahexaenoic) (g)`)*1000),
       PUFA_SERV = (sum((`Total polyunsaturated fatty acids (g)`-`PFA 20:5 (Eicosapentaenoic) (g)`-`PFA 22:6 (Docosahexaenoic) (g)`)*9)/KCAL)*100,
+      N3FAT_SERV = sum((`PFA 20:5 (Eicosapentaenoic) (g)`+`PFA 22:6 (Docosahexaenoic) (g)`)*1000),
       SSB_FRTJ_SERV = sum(ADDED_SUGAR_SSB_SERV/ 26),
       REDPROC_MEAT_SERV = sum((`Cured meat protein foods (oz)`/1.5) + ((`Meat from beef, pork, veal, lamb, and game protein foods (oz)`+`Meat from organ meat protein foods (oz)`)/4)),
       TRANS_SERV = (sum(`*Total trans fatty acitds (g)`*9)/KCAL)*100,
@@ -160,7 +160,5 @@ AHEI_DHQ3 = function(DATA_PATH){
         AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
     ) %>%
     dplyr::select(RESPONDENTID, GENDER, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
-                  AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL,
-                  
-                  KCAL, VEG_SERV, FRT_SERV, WGRAIN_SERV, NUTSLEG_SERV, N3FAT_SERV, PUFA_SERV, SSB_FRTJ_SERV, REDPROC_MEAT_SERV, TRANS_SERV, SODIUM_SERV, ALCOHOL_SERV)
+                  AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL)
 }

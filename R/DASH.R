@@ -17,8 +17,8 @@
 #' @param SSB_FRTJ_SERV_DASH The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The DASH index/score
 #' @examples
-#' data("DHQ3_exp_detailed")
-#' DASH_DHQ3(DHQ3_exp_detailed)
+#' data("DASH_VALIDATION")
+#' DASH(DASH_VALIDATION, RESPONDENTID = DASH_VALIDATION$id, TOTALKCAL_DASH = DASH_VALIDATION$kcal, FRT_FRTJ_SERV_DASH = DASH_VALIDATION$fruit, VEG_SERV_DASH = DASH_VALIDATION$vegetable, NUTSLEG_SERV_DASH = DASH_VALIDATION$nut_legume, WGRAIN_SERV_DASH = DASH_VALIDATION$whole_grain, LOWF_DAIRY_SERV_DASH = DASH_VALIDATION$low_fat_dairy, SODIUM_SERV_DASH = DASH_VALIDATION$sodium, REDPROC_MEAT_SERV_DASH = DASH_VALIDATION$red_processed_meat, SSB_FRTJ_SERV_DASH = DASH_VALIDATION$ssb)
 #' @export
 
 #Score calculation for DASH
