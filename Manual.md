@@ -7,7 +7,7 @@ library(dietaryindex)
 
 The **dietaryindex** package currently contains the following key functions:
 
-- NHANES_FPED (after 2005)
+- NHANES_FPED (after 2005) 
   - `HEI2020_NHANES_FPED()`, Calculating HEI2020 & HEI-Toddlers-2020 with 1 step using the NHANES_FPED data (after 2005)
   - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data (after 2005)
   - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
@@ -16,6 +16,8 @@ The **dietaryindex** package currently contains the following key functions:
   - `MED_NHANES_FPED()`, Calculating MED (median-based) with 1 step using the NHANES_FPED data (after 2005)
   - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data (after 2005)
   - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
+
+Note: all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. See examples later. 
 
 - ASA24
   - `HEI2015_ASA24()`, Calculating HEI2015 with 1 step using the ASA24 data
