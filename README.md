@@ -1,5 +1,5 @@
 # dietaryindex
-<img src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/1b23a68c-72fa-4bd2-9b2d-6db27fe539f4" width=350>
+<img src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/53c43fbd-effa-4a43-bf81-79ef4d4514cd" width=350>
 
 ___
 ## Overview
