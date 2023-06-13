@@ -13,9 +13,9 @@
 #' @param FRT_SERV_ACS2020 The serving size of All whole fruits and no fruit juice, unit=servings/day (0.5 c of berries; 1 cup=236.59 g; 1 med fruit; 0.5 medium avocado)
 #' @param FRT_ITEMS_SERV_ACS2020 The number of unique fruits (e.g., fruit line items) asked about on that survey/app (measuring the variety of fruits). For example, 3 serving of apple, 3 servings of banana, and 3 servings of blueberry are just 3 total number line items
 #' @param WGRAIN_SERV_ACS2020 The serving size of whole grains, unit=grams/day
-#' @param SSB_FRTJ_SERV_ACS2020 The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @param REDPROC_MEAT_SERV_ACS2020 The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)
 #' @param HPFRG_SERV_ACS2020 The daily servings of highly processed foods and refined grains per 1000 kcal, note: the ultra-processed variable for the score should not double count foods included in other parts of the score, for example, sugar-sweetened beverages or processed meats
+#' @param SSB_FRTJ_SERV_ACS2020 The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)
 #' @return The ACS2020_V2 index/score and its component scores 
 #' @examples
 #' data("ACS2020_VALIDATION")
@@ -25,8 +25,8 @@
 
 #Score calculation for ACS2020_V2
 ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SERV_ACS2020, VEG_ITEMS_SERV_ACS2020, 
-                      FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, WGRAIN_SERV_ACS2020,
-                      SSB_FRTJ_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_SERV_ACS2020){
+                      FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, WGRAIN_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_SERV_ACS2020,
+                      SSB_FRTJ_SERV_ACS2020){
   
   ##Create variables and functions needed for ACS2020_V1 calculation
   quintile_healthy1 = function(actual){
@@ -99,13 +99,13 @@ ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SE
     dplyr::mutate(
       ACS2020_SSB_FRTJ = case_when(
         SSB_FRTJ_SERV_ACS2020 >= 1 ~ 0 ,
-        SSB_FRTJ_SERV_ACS2020 < 1 & SSB_FRTJ_SERV_ACS2020 >= 3/7 ~ 0.5,
-        SSB_FRTJ_SERV_ACS2020 < 3/7 & SSB_FRTJ_SERV_ACS2020 > 0 ~ 1,
+        SSB_FRTJ_SERV_ACS2020 < 1 & SSB_FRTJ_SERV_ACS2020 >= 0.428 ~ 0.5,
+        SSB_FRTJ_SERV_ACS2020 < 0.428 & SSB_FRTJ_SERV_ACS2020 > 0 ~ 1,
         SSB_FRTJ_SERV_ACS2020 <= 0 ~ 1.5,
       ),
       ACS2020_V2_ALL = ACS2020_VEG+ACS2020_VEG_ITEMS+ACS2020_FRT+ACS2020_FRT_ITEMS+ACS2020_WGRAIN+
         ACS2020_SSB_FRTJ+ACS2020_REDPROC_MEAT+ACS2020_HPFRG
     ) %>%
-    dplyr::select(RESPONDENTID, GENDER, ACS2020_V2_ALL, TOTALKCAL_ACS2020, ACS2020_VEG, ACS2020_VEG_ITEMS, ACS2020_FRT, ACS2020_FRT_ITEMS, ACS2020_WGRAIN,
-                  ACS2020_SSB_FRTJ, ACS2020_REDPROC_MEAT, ACS2020_HPFRG)
+    dplyr::select(RESPONDENTID, GENDER, ACS2020_V2_ALL, TOTALKCAL_ACS2020, ACS2020_VEG, ACS2020_VEG_ITEMS, ACS2020_FRT, ACS2020_FRT_ITEMS, ACS2020_WGRAIN, ACS2020_REDPROC_MEAT, ACS2020_HPFRG,
+                  ACS2020_SSB_FRTJ)
 }
