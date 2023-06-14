@@ -13,7 +13,7 @@ The **dietaryindex** package currently contains the following key functions:
   - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
   - `DASH_NHANES_FPED()`, Calculating DASH (quintile-based) with 1 step using the NHANES_FPED data (after 2005)
   - `DASHI_NHANES_FPED()`, Calculating DASHI (serving size-based from the DASH trial) with 1 step using the NHANES_FPED data (after 2005)
-  - `MED_NHANES_FPED()`, Calculating MED (median-based) with 1 step using the NHANES_FPED data (after 2005)
+  - `MED_NHANES_FPED()`, Calculating aMED (median-based) with 1 step using the NHANES_FPED data (after 2005)
   - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data (after 2005)
   - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
 
@@ -24,18 +24,18 @@ Note: all NHANES functions allow users to enter the first day data, or the secon
   - `AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
   - `AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
   - `DASH_ASA24()`, Calculating DASH with 1 step using the ASA24 data
-  - `MED_ASA24()`, Calculating MED with 1 step using the ASA24 data
+  - `MED_ASA24()`, Calculating aMED with 1 step using the ASA24 data
   - `DII_ASA24()`, Calculating DII with 1 step using the ASA24 data
 
 - DHQ3
   - `HEI2015_DHQ3()`, Calculating HEI2015 with 1 step using the DHQ3 data
   - `AHEI_DHQ3()`, Calculate the AHEI (female or male) within 1 step using the DHQ3 data
   - `DASH_DHQ3()`, Calculating DASH with 1 step using the DHQ3 data. The data is Detailed analysis file, ending with detail.csv
-  - `MED_DHQ3()`, Calculating MED with 1 step using the DHQ3 data
+  - `MED_DHQ3()`, Calculating aMED with 1 step using the DHQ3 data
   
 - BLOCK
   - `HEI2015_BLOCK`, Calculating HEI2015 with 1 step using the BLOCK data
-  - `MED_BLOCK`, Calculating MED with 1 step using the BLOCK data
+  - `MED_BLOCK`, Calculating aMED with 1 step using the BLOCK data
   - `DII_BLOCK`, Calculating DII with 1 step using the BLOCK data
   - `DASH_BLOCK`, Calculating DASH with 1 step using the BLOCK data
   - `AHEI_BLOCK`, Calculating AHEI with 1 step using the BLOCK data
@@ -60,7 +60,7 @@ Note: all NHANES functions allow users to enter the first day data, or the secon
       - https://www.dietaryguidelines.gov/sites/default/files/2019-05/1995%20Dietary%20Guidelines%20for%20Americans.pdf
       - https://www.sciencedirect.com/science/article/pii/S0002822399004125
       - https://www.nejm.org/doi/full/10.1056/nejm200101043440101
-  - `MED()`, Mediterranean diet 
+  - `MED()`, Alternate Mediterranean Diet Score (aMED)
     - Ref: https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.816736?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
   - `MEDI()`, Mediterranean diet in serving sizes from the PREDIMED trial 
     - Ref: https://www.nejm.org/doi/full/10.1056/nejmoa1800389
@@ -126,7 +126,7 @@ data("NHANES_20172018")
 AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 ```
 
-#### Calculating MED for NHANES_FPED
+#### Calculating aMED for NHANES_FPED
 ```
 FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
 NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
@@ -197,7 +197,7 @@ HEI2015_ASA24(DATA_PATH)
 data("ASA24_exp")
 HEI2015_ASA24(ASA24_exp)
 ```
-#### Calculating MED for ASA24
+#### Calculating aMED for ASA24
 ```
 DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
 MED_ASA24(DATA_PATH)
@@ -251,7 +251,7 @@ data("DHQ3_exp")
 HEI2015_DHQ3(DHQ3_exp)
 ```
 
-#### Calculating MED for DHQ3
+#### Calculating aMED for DHQ3
 ```
 DATA_PATH = "/Users/james/Desktop/data/results.csv"
 MED_DHQ3(DATA_PATH)
@@ -319,7 +319,7 @@ data("BLOCK_exp")
 HEI2015_BLOCK(BLOCK_exp)
 ```
 
-#### Calculating MED for BLOCK
+#### Calculating aMED for BLOCK
 ```
 #Use the example data
 data("BLOCK_exp")
@@ -394,7 +394,7 @@ DASHI(
   SODIUM_SERV_DASHI = DASH_trial$Sodium)
 ```
 
-#### Calculating MED for your own dietary assessment tool
+#### Calculating aMED for your own dietary assessment tool
 ```
 DATA_PATH <- "/Users/james/Desktop/data.csv"
 SERV_DATA <- read_csv(DATA_PATH)
