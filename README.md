@@ -5,13 +5,13 @@ ___
 ## Overview
 ___
 
-**dietaryindex** is an R package that aims to provide streamlined methods for standardizing the definition of dietary patterns and assessing adherence to dietary patterns in epidemiologic and clinical studies, promoting precision nutrition.
+**dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies, promoting precision nutrition.
 
 As of version 1.0.2, the package supports the latest version of the Healthy Eating Index (HEI2020) for National Health and Nutrition Examination Survey (NHANES) data. NHANES data from 2005 to 2018 are compiled and available within the dietaryindex package. Data can be accessed with commands like `data("NHANES_20172018")` or `data("NHANES_20152016")`. Also, all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. 
 
 The **dietaryindex** package performs calculations in two steps:
-1. Compute the serving size of each food and nutrient category.
-2. Compute the individual dietary index using the serving size information.
+1. Computation of the serving size of each food and nutrient category.
+2. Computation of the individual dietary index using the serving size information.
 
 This package can calculate the following dietary pattern indexes:
 - Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
@@ -88,7 +88,7 @@ Detailed function descriptions, examples, and NHANES data access instructions ar
 ## Related Work
 ___
 
-**dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hours dietary recalls, and even food records, while itself supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtain high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy and sugar sweetened beverage) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar sweetened beverage serving is estimated by dividing the total added sugar intakes in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
+**dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hour dietary recalls, and even food records, while it also supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtaining high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy products and sugar-sweetened beverages) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar-sweetened beverage serving is estimated by dividing the total added sugar intake in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar-sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
 For NHANES data:
 
