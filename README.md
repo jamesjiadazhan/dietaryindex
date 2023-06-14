@@ -19,7 +19,7 @@ This package can calculate the following dietary pattern indexes:
 - Alternative Healthy Eating Index (AHEI)
 - Dietary Approaches to Stop Hypertension Index (DASH)
 - DASH Index in serving sizes from the DASH trial (DASHI)
-- Mediterranean Diet Index (MED)
+- Alternate Mediterranean Diet Score (aMED)
 - MED Index in serving sizes from the PREDIMED trial (MEDI)
 - Dietary Inflammation Index (DII)
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
