@@ -7,7 +7,7 @@ library(dplyr)
 
 # Load the data
 ## set up the working directory
-setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/Validation file for publication/Raw validation files")
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/Raw validation files")
 data("NHANES_20172018")
 ACS2020_V1_VALIDATION = read_csv("ACS2020_V1_validation.csv")
 ACS2020_V2_VALIDATION = read_csv("ACS2020_V2_validation.csv")
@@ -16,6 +16,7 @@ AHEIP_VALIDATION = read_csv("AHEIP_validation.csv")
 DASH_VALIDATION = read_csv("DASH_validation.csv")
 DASHI_VALIDATION = read_csv("DASHI_validation.csv")
 DII_VALIDATION = read_csv("DII_validation.csv")
+DII_VALIDATION = read_csv("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/Raw validation files/DII_validation.csv")
 HEI2015_VALIDATION = read_csv("HEI2015_validation.csv")
 HEI2020_VALIDATION = read_csv("HEI2020_validation.csv")
 MED_VALIDATION = read_csv("MED_validation.csv")
@@ -25,7 +26,7 @@ PHDI_VALIDATION = read_csv("PHDI_validation.csv")
 
 # Generate the validation results and save them
 
-setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/Validation file for publication/HEI2015_NHANES_SAS_1718")
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_NHANES_SAS_1718")
 ## HEI2015_NHANES_FPED validation using the SAS codes from National Cancer Institute (https://epi.grants.cancer.gov/hei/sas-code.html)
 # day 1 only
 HEI2015_NHANES_FPED_1718 = HEI2015_NHANES_FPED(
@@ -46,7 +47,7 @@ HEI2015_NHANES_SAS_1718$HEI2015_TOTAL_SCORE = round(HEI2015_NHANES_SAS_1718$HEI2
 table(HEI2015_NHANES_FPED_1718$HEI2015_ALL == HEI2015_NHANES_SAS_1718$HEI2015_TOTAL_SCORE)
 ## all results are TRUE, which means the R result is the same as the SAS result
 
-setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/Validation file for publication/Final validation files")
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/Final validation files")
 
 ## ACS2020 validation (Version 1)
 ACS2020_V1_VALIDATION_RESULT = ACS2020_V1(
@@ -169,7 +170,7 @@ HEI2020_VALIDATION_RESULT_FINAL = HEI2020_VALIDATION %>%
     left_join(HEI2020_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the merged result
-write_csv(HEI2020_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/HEI2020_validation_result.csv")
+write_csv(HEI2020_VALIDATION_RESULT_FINAL, "HEI2020_validation_result.csv")
 
 ## AHEIP validation
 AHEIP_VALIDATION_RESULT = AHEIP(
@@ -191,7 +192,7 @@ AHEIP_VALIDATION_RESULT_FINAL = AHEIP_VALIDATION %>%
     left_join(AHEIP_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the merged result
-write_csv(AHEIP_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./Research rotation/Microbiome research/Diet score/dietaryindex_package/Version_control/Algorithm validation/AHEIP_validation_result.csv")
+write_csv(AHEIP_VALIDATION_RESULT_FINAL, "AHEIP_validation_result.csv")
 
 ## DASH validation
 DASH_VALIDATION_RESULT = DASH(
@@ -213,7 +214,7 @@ DASH_VALIDATION_RESULT_FINAL = DASH_VALIDATION %>%
     left_join(DASH_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the merged result
-write_csv(DASH_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./Research rotation/Microbiome research/Diet score/dietaryindex_package/Version_control/Algorithm validation/DASH_validation_result.csv")
+write_csv(DASH_VALIDATION_RESULT_FINAL, "DASH_validation_result.csv")
 
 ## DASHI validation
 DASHI_VALIDATION_RESULT = DASHI(
@@ -237,7 +238,7 @@ DASHI_VALIDATION_RESULT_FINAL = DASHI_VALIDATION %>%
     left_join(DASHI_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the merged result
-write_csv(DASHI_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./Research rotation/Microbiome research/Diet score/dietaryindex_package/Version_control/Algorithm validation/DASHI_validation_result.csv")
+write_csv(DASHI_VALIDATION_RESULT_FINAL, "DASHI_validation_result.csv")
 
 ## MED validation
 MED_VALIDATION_RESULT = MED(
@@ -258,7 +259,7 @@ MED_VALIDATION_RESULT_FINAL = MED_VALIDATION %>%
     left_join(MED_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the result
-write_csv(MED_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/MED_VALIDATION_RESULT_FINAL.csv")
+write_csv(MED_VALIDATION_RESULT_FINAL, "MED_VALIDATION_RESULT_FINAL.csv")
 
 ## MEDI validation
 MEDI_VALIDATION_RESULT = MEDI(
@@ -281,7 +282,7 @@ MEDI_VALIDATION_RESULT_FINAL = MEDI_VALIDATION %>%
     left_join(MEDI_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the result
-write_csv(MEDI_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/MEDI_validation_result.csv")
+write_csv(MEDI_VALIDATION_RESULT_FINAL, "MEDI_validation_result.csv")
 
 ## MEDI_V2 validation
 MEDI_V2_VALIDATION_RESULT = MEDI_V2(
@@ -304,7 +305,7 @@ MEDI_V2_VALIDATION_RESULT_FINAL = MEDI_V2_VALIDATION %>%
     left_join(MEDI_V2_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the result
-write_csv(MEDI_V2_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/MEDI_V2_validation_result.csv")
+write_csv(MEDI_V2_VALIDATION_RESULT_FINAL, "MEDI_V2_validation_result.csv")
 
 ## PHDI validation
 PHDI_VALIDATION_RESULT = PHDI(
@@ -334,7 +335,7 @@ PHDI_VALIDATION_RESULT_FINAL = PHDI_VALIDATION %>%
     left_join(PHDI_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the result
-write_csv(PHDI_VALIDATION_RESULT_FINAL, "PHDI_VALIDATION_RESULT_FINAL.csv")
+write_csv(PHDI_VALIDATION_RESULT_FINAL, "PHDI_validation_result.csv")
 
 ## DII validation
 DII_VALIDATION_RESULT = DII(SERV_DATA = DII_VALIDATION, RESPONDENTID = DII_VALIDATION$id, REPEATNUM = 1, ALCOHOL_DII = DII_VALIDATION$Alcohol, VITB12_DII = DII_VALIDATION$`vitamin B12`, VITB6_DII = DII_VALIDATION$`vitamin B6`, BCAROTENE_DII = DII_VALIDATION$`Beta-carotene`, CAFFEINE_DII = DII_VALIDATION$Caffeine, CARB_DII = DII_VALIDATION$Carbohydrate, CHOLES_DII = DII_VALIDATION$Cholesterol, KCAL_DII = DII_VALIDATION$Energy, EUGENOL_DII = DII_VALIDATION$Eugenol, TOTALFAT_DII = DII_VALIDATION$`Total fat`, FIBER_DII = DII_VALIDATION$Fiber, FOLICACID_DII = DII_VALIDATION$`Folic acid`, GARLIC_DII = DII_VALIDATION$Garlic, GINGER_DII = DII_VALIDATION$Ginger, IRON_DII = DII_VALIDATION$Iron, MG_DII = DII_VALIDATION$Magnesium, MUFA_DII = DII_VALIDATION$MUFA, NIACIN_DII = DII_VALIDATION$Niacin, N3FAT_DII = DII_VALIDATION$`n-3 fatty acid`, N6FAT_DII = DII_VALIDATION$`n-6 fatty acid`, ONION_DII = DII_VALIDATION$Onion, PROTEIN_DII = DII_VALIDATION$Protein, PUFA_DII = DII_VALIDATION$PUFA, RIBOFLAVIN_DII = DII_VALIDATION$Riboflavin, SAFFRON_DII = DII_VALIDATION$Saffron, SATFAT_DII = DII_VALIDATION$`Saturated fat`, SE_DII = DII_VALIDATION$Selenium, THIAMIN_DII = DII_VALIDATION$Thiamin, TRANSFAT_DII = DII_VALIDATION$`Trans fat`, TURMERIC_DII = DII_VALIDATION$Turmeric, VITA_DII = DII_VALIDATION$`Vitamin A`, VITC_DII = DII_VALIDATION$`Vitamin C`, VITD_DII = DII_VALIDATION$`Vitamin D`, VITE_DII = DII_VALIDATION$`Vitamin E`, ZN_DII = DII_VALIDATION$Zinc, TEA_DII = DII_VALIDATION$`Green/black tea`, FLA3OL_DII = DII_VALIDATION$`Flavan-3-ol`, FLAVONES_DII = DII_VALIDATION$Flavones, FLAVONOLS_DII = DII_VALIDATION$Flavonols, FLAVONONES_DII = DII_VALIDATION$Flavonones, ANTHOC_DII = DII_VALIDATION$Anthocyanidins, ISOFLAVONES_DII = DII_VALIDATION$`Isoflavones`, PEPPER_DII = DII_VALIDATION$Pepper, THYME_DII = DII_VALIDATION$Thyme_oregano, ROSEMARY_DII = DII_VALIDATION$Rosemary)
@@ -344,4 +345,4 @@ DII_VALIDATION_RESULT_FINAL = DII_VALIDATION %>%
     left_join(DII_VALIDATION_RESULT, by = c("id" = "RESPONDENTID"))
 
 # Save the result
-write_csv(DII_VALIDATION_RESULT_FINAL, "/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/Version_control/Algorithm validation/DII_validation_result.csv")
+write_csv(DII_VALIDATION_RESULT_FINAL, "DII_validation_result.csv")

@@ -238,17 +238,17 @@ MED_NHANES_FPED = function(FPED_PATH=NULL, NUTRIENT_PATH=NULL, DEMO_PATH, FPED_P
   if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
     COHORT12 <- inner_join(COHORT, COHORT2, by = "SEQN") %>%
         dplyr::mutate(
-            MED_ALL = MED_ALL.x + MED_ALL.y,
-            MED_NOETOH = MED_NOETOH.x + MED_NOETOH.y,
-            MED_FRT = MED_FRT.x + MED_FRT.y,
-            MED_VEG = MED_VEG.x + MED_VEG.y,
-            MED_WGRAIN = MED_WGRAIN.x + MED_WGRAIN.y,
-            MED_LEGUMES = MED_LEGUMES.x + MED_LEGUMES.y,
-            MED_NUTS = MED_NUTS.x + MED_NUTS.y,
-            MED_FISH = MED_FISH.x + MED_FISH.y,
-            MED_REDPROC_MEAT = MED_REDPROC_MEAT.x + MED_REDPROC_MEAT.y,
-            MED_MONSATFAT = MED_MONSATFAT.x + MED_MONSATFAT.y,
-            MED_ALCOHOL = MED_ALCOHOL.x + MED_ALCOHOL.y
+            MED_ALL = (MED_ALL.x + MED_ALL.y)/2,
+            MED_NOETOH = (MED_NOETOH.x + MED_NOETOH.y)/2,
+            MED_FRT = (MED_FRT.x + MED_FRT.y)/2,
+            MED_VEG = (MED_VEG.x + MED_VEG.y)/2,
+            MED_WGRAIN = (MED_WGRAIN.x + MED_WGRAIN.y)/2,
+            MED_LEGUMES = (MED_LEGUMES.x + MED_LEGUMES.y)/2,
+            MED_NUTS = (MED_NUTS.x + MED_NUTS.y)/2,
+            MED_FISH = (MED_FISH.x + MED_FISH.y)/2,
+            MED_REDPROC_MEAT = (MED_REDPROC_MEAT.x + MED_REDPROC_MEAT.y)/2,
+            MED_MONSATFAT = (MED_MONSATFAT.x + MED_MONSATFAT.y)/2,
+            MED_ALCOHOL = (MED_ALCOHOL.x + MED_ALCOHOL.y)/2
         ) %>%
         dplyr::select(SEQN, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
                         MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL)
