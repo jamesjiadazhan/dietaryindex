@@ -38,11 +38,8 @@ For a detailed explanation of these indexes, please check the attached Excel fil
 - [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
 - [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 
-**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files can be found here [Validation file for publication](https://github.com/jamesjiadazhan/dietaryindex/tree/main/Validation%20file%20for%20publication)
-- [Validation.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.r): This R script contains all code used during the validation process.
-- [Raw validation files](https://github.com/jamesjiadazhan/dietaryindex/tree/main/Validation%20file%20for%20publication/Raw%20validation%20files): This folder houses all the raw data files utilized in our validation.
-- [Final validation files](https://github.com/jamesjiadazhan/dietaryindex/tree/main/Validation%20file%20for%20publication/Final%20validation%20files): This folder contains the final output files from our validation process. Columns prefixed with "EXP" represent the manually computed dietary index results, which serve as our gold standard. The subsequent columns show results produced by the dietaryindex package.
-- [HEI2015_NHANES_SAS_1718](https://github.com/jamesjiadazhan/dietaryindex/tree/main/Validation%20file%20for%20publication/HEI2015_NHANES_SAS_1718): This folder includes all data files used in validating the HEI2015 results. We compared the SAS results (obtained using SAS codes from https://epi.grants.cancer.gov/hei/sas-code.html) and the dietaryindex results using the NHANES 1718 dataset. The results were found to be a 100% match, after rounding to two decimal places.
+**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files and R codes can be found here [Validation.md](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.md)
+
 
 Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
 
