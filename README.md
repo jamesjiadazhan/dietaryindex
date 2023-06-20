@@ -90,6 +90,7 @@ Detailed function descriptions, examples, and NHANES data access instructions ar
 ___
 
 Case study 1. A comparative analysis of results derived from clinical trials (i.e., The Dietary Approaches to Stop Hypertension (DASH) trial and Prevención con Dieta Mediterránea (PREDIMED) trial) juxtaposed with findings from an epidemiological study (i.e., NHANES) from 2017-2018, utilizing DASHI and MEDI dietary indexes.
+
 ![Figure 3  DASHI and MEDI dietary indexes in DASH and PREDIMED trials and NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/e36138fa-dfa5-463f-a15a-46f101444d76)
 
   
