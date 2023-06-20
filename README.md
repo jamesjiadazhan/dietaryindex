@@ -74,8 +74,12 @@ If something happens like the following, first try to enter 1 in the terminal (l
 
 ## Getting Started
 ___
-To start using dietaryindex, load the package after installation:
+To start using dietaryindex, load the dependency packages first and then load the dietaryindex package after installation:
 ```
+library(dplyr)
+library(haven)
+library(readr)
+# Loading dependency packages first can help avoid the namespace conflict if you want to use dplyr by yourself later in addition to the internal use of dplyr within the diataryindex package
 library(dietaryindex)
 ```
 
