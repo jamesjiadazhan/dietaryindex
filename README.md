@@ -53,10 +53,31 @@ To install from this GitHub repository, use the **devtools** package:
 ```
 install.packages("devtools") #If you don't have "devtools" installed already
 devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
-# If the previous steps not working, you can try the following steps by removing the "#" marks
-# library(devtools) # Load devtools
-# install_github("jamesjiadazhan/dietaryindex")
 ```
+
+If the previous steps are not working, you can try the following steps:
+```
+library(devtools) # Load devtools
+install_github("jamesjiadazhan/dietaryindex")
+```
+
+If it is still not working, you can download the package directly and then install it in your local fill. You can:
+1. Download the package as a zip file
+<img width="500" alt="image" src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/75a4f099-d407-4825-bfa1-e01b1f316c97">
+
+2. Unzip it
+   
+3. Use the following code to install the package locally. Remember to change the file path to your own file path:
+- Windows:
+  <img width="400" alt="image" src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/b9b811e9-869b-43a0-bf8c-4575ef0bc7b6">
+- Mac: right click the file and then press the Option key to show the path bar momentarily
+<img width="265" alt="image" src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/4d980a96-11f4-4852-9263-a11752add444">
+
+
+```
+install.packages("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex-main", repos = NULL, type = "source")
+```
+
 
 If something happens like the following, first try to enter 1 in the terminal (lower box). If not successful, then try to enter 2. **It will take a while if you are a new R user.**
 ```
