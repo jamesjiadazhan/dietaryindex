@@ -1,0 +1,18 @@
+citHeader("To cite the dietaryindex package in publications, please use:")
+
+citEntry(entry = "Article",
+         author = "Author A and Author B and Author C",
+         title = "myPackage: A wonderful R package for doing things",
+         journal = "Journal Name",
+         volume = "10",
+         number = "2",
+         pages = "1--10",
+         textVersion = paste("Author A, Author B, Author C (2022).",
+                             "myPackage: A wonderful R package for doing things.",
+                             "Journal Name, 10(2), 1--10."),
+         year = "2022",
+         publisher = "Publisher Name",
+         url = "http://mypackage.com",
+         header = "A BibTeX entry for LaTeX users is")
+
+citFooter("Our wonderful team thanks you for citing the dietaryindex package.")

@@ -8,16 +8,15 @@ DASHI(
   SERV_DATA,
   RESPONDENTID,
   TOTALKCAL_DASHI,
-  VEG_SERV_DASHI,
-  FRT_FRTJ_SERV_DASHI,
-  NUTSLEG_SERV_DASHI,
-  LOWF_DAIRY_SERV_DASHI,
-  WGRAIN_SERV_DASHI,
-  WHITEMEAT_SERV_DASHI,
-  REDPROC_MEAT_SERV_DASHI,
-  FATOIL_SERV_DASHI,
-  SNACKS_SWEETS_SERV_DASHI,
-  SODIUM_SERV_DASHI
+  TOTAL_FAT_DASHI,
+  SAT_FAT_DASHI,
+  PROTEIN_DASHI,
+  CHOLESTEROL_DASHI,
+  FIBER_DASHI,
+  POTASSIUM_DASHI,
+  MAGNESIUM_DASHI,
+  CALCIUM_DASHI,
+  SODIUM_DASHI
 )
 }
 \arguments{
@@ -27,33 +26,31 @@ DASHI(
 
 \item{TOTALKCAL_DASHI}{The total energy intake, unit = kcal/day}
 
-\item{VEG_SERV_DASHI}{The serving size of All vegetable except potatoes and legume, unit=servings per 2000 kcal/day (1 serving = 1 cup of green leafy, 0.5 cup other vegetables (cooked or raw), 3/4 cup vegetable juice)}
+\item{TOTAL_FAT_DASHI}{The total fat intake, unit = g/day}
 
-\item{FRT_FRTJ_SERV_DASHI}{The serving size of All whole fruits + 100\% juice,  unit=servings per 2000 kcal/day (1 serving = 1 cup fruit, 1 cup fruit juice, 1/2 cup dried fruit)}
+\item{SAT_FAT_DASHI}{The saturated fat intake, unit = g/day}
 
-\item{NUTSLEG_SERV_DASHI}{The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings per 2000 kcal/day (1 serving =  1/3 cups of nuts, 2 tablespoons peanut butter, 1/2 cup cooked beans, 1/2 cup tofu)}
+\item{PROTEIN_DASHI}{The protein intake, unit = g/day}
 
-\item{LOWF_DAIRY_SERV_DASHI}{The serving size of low fat dairy, unit=servings per 2000 kcal/day (1 serving = 1 cup milk or yogurt, 1 1/2 oz natural cheese (e.g. Cheddar), 2 oz processed cheese (e.g. American))}
+\item{CHOLESTEROL_DASHI}{The cholesterol intake, unit = mg/day}
 
-\item{WGRAIN_SERV_DASHI}{The serving size of whole grains, unit=servings per 2000 kcal/day (1 serving = 1oz)}
+\item{FIBER_DASHI}{The fiber intake, unit = g/day}
 
-\item{WHITEMEAT_SERV_DASHI}{The serving size of poultry and fish, unit=servings per 2000 kcal/day (1 serving = 2.5oz)}
+\item{POTASSIUM_DASHI}{The potassium intake, unit = mg/day}
 
-\item{REDPROC_MEAT_SERV_DASHI}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings per 2000 kcal/day (1 serving = 2.5oz)}
+\item{MAGNESIUM_DASHI}{The magnesium intake, unit = mg/day}
 
-\item{FATOIL_SERV_DASHI}{The serving size of discretionary fats and oils, including added Plant oil + Animal fat, unit=servings per 2000 kcal/day (1 serving = 1 tablespoon or 14 g)}
+\item{CALCIUM_DASHI}{The calcium intake, unit = mg/day}
 
-\item{SNACKS_SWEETS_SERV_DASHI}{The serving size of sweets, unit=servings per 2000 kcal/day (1 serving = about 23 g)}
-
-\item{SODIUM_SERV_DASHI}{The serving size of sodium, unit=mg per 2000 kcal/day}
+\item{SODIUM_DASHI}{The sodium intake, unit = mg/day}
 }
 \value{
 The DASHI index/score
 }
 \description{
-Calculate the DASHI dietary index (serving size-based), Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day. All serving sizes should be divided by (total energy/2000 kcal) to adjust energy intake.
+Calculate the DASHI dietary index (nutrient-based), Dietary Approaches to Stop Hypertension, using given the nutrients consumed per 1 day. All nutrients will be divided by (total energy/2000 kcal) to adjust energy intake.
 }
 \examples{
 data("DASH_trial")
-DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal,VEG_SERV_DASHI = DASH_trial$Vegetables, FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, SNACKS_SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,SODIUM_SERV_DASHI = DASH_trial$Sodium)
+DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal, TOTAL_FAT_DASHI = DASH_trial$Totalfat_Percent, SAT_FAT_DASHI = DASH_trial$Satfat_Percent, PROTEIN_DASHI = DASH_trial$Protein_Percent, CHOLESTEROL_DASHI = DASH_trial$Cholesterol, FIBER_DASHI = DASH_trial$Fiber, POTASSIUM_DASHI = DASH_trial$Potassium, MAGNESIUM_DASHI = DASH_trial$Magnesium, CALCIUM_DASHI = DASH_trial$Calcium, SODIUM_DASHI = DASH_trial$Sodium)
 }

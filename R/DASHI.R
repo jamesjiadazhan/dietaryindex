@@ -1,56 +1,52 @@
 #' DASHI
 #'
-#' Calculate the DASHI dietary index (serving size-based), Dietary Approaches to Stop Hypertension, using given the serving sizes of foods and nutrients consumed per 1 day. All serving sizes should be divided by (total energy/2000 kcal) to adjust energy intake.
+#' Calculate the DASHI dietary index (nutrient-based), Dietary Approaches to Stop Hypertension, using given the nutrients consumed per 1 day. All nutrients will be divided by (total energy/2000 kcal) to adjust energy intake.
 #' @import dplyr
 #' @import readr
 #' @import haven
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param TOTALKCAL_DASHI The total energy intake, unit = kcal/day
-#' @param VEG_SERV_DASHI The serving size of All vegetable except potatoes and legume, unit=servings per 2000 kcal/day (1 serving = 1 cup of green leafy, 0.5 cup other vegetables (cooked or raw), 3/4 cup vegetable juice) 
-#' @param FRT_FRTJ_SERV_DASHI The serving size of All whole fruits + 100\% juice,  unit=servings per 2000 kcal/day (1 serving = 1 cup fruit, 1 cup fruit juice, 1/2 cup dried fruit)
-#' @param NUTSLEG_SERV_DASHI The serving size of Nuts, legumes, and vegetable protein (e.g., tofu), unit=servings per 2000 kcal/day (1 serving =  1/3 cups of nuts, 2 tablespoons peanut butter, 1/2 cup cooked beans, 1/2 cup tofu)
-#' @param LOWF_DAIRY_SERV_DASHI The serving size of low fat dairy, unit=servings per 2000 kcal/day (1 serving = 1 cup milk or yogurt, 1 1/2 oz natural cheese (e.g. Cheddar), 2 oz processed cheese (e.g. American))
-#' @param WGRAIN_SERV_DASHI The serving size of whole grains, unit=servings per 2000 kcal/day (1 serving = 1oz)
-#' @param WHITEMEAT_SERV_DASHI The serving size of poultry and fish, unit=servings per 2000 kcal/day (1 serving = 2.5oz)
-#' @param REDPROC_MEAT_SERV_DASHI The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings per 2000 kcal/day (1 serving = 2.5oz)
-#' @param FATOIL_SERV_DASHI The serving size of discretionary fats and oils, including added Plant oil + Animal fat, unit=servings per 2000 kcal/day (1 serving = 1 tablespoon or 14 g)
-#' @param SNACKS_SWEETS_SERV_DASHI The serving size of sweets, unit=servings per 2000 kcal/day (1 serving = about 23 g)
-#' @param SODIUM_SERV_DASHI The serving size of sodium, unit=mg per 2000 kcal/day
+#' @param TOTAL_FAT_DASHI The total fat intake, unit = g/day
+#' @param SAT_FAT_DASHI The saturated fat intake, unit = g/day
+#' @param PROTEIN_DASHI The protein intake, unit = g/day
+#' @param CHOLESTEROL_DASHI The cholesterol intake, unit = mg/day
+#' @param FIBER_DASHI The fiber intake, unit = g/day
+#' @param POTASSIUM_DASHI The potassium intake, unit = mg/day
+#' @param MAGNESIUM_DASHI The magnesium intake, unit = mg/day
+#' @param CALCIUM_DASHI The calcium intake, unit = mg/day
+#' @param SODIUM_DASHI The sodium intake, unit = mg/day
 #' @return The DASHI index/score
 #' @examples
 #' data("DASH_trial")
-#' DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal,VEG_SERV_DASHI = DASH_trial$Vegetables, FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, SNACKS_SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,SODIUM_SERV_DASHI = DASH_trial$Sodium)
+#' DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal, TOTAL_FAT_DASHI = DASH_trial$Totalfat_Percent, SAT_FAT_DASHI = DASH_trial$Satfat_Percent, PROTEIN_DASHI = DASH_trial$Protein_Percent, CHOLESTEROL_DASHI = DASH_trial$Cholesterol, FIBER_DASHI = DASH_trial$Fiber, POTASSIUM_DASHI = DASH_trial$Potassium, MAGNESIUM_DASHI = DASH_trial$Magnesium, CALCIUM_DASHI = DASH_trial$Calcium, SODIUM_DASHI = DASH_trial$Sodium)
 #' @export
 
 #Score calculation for DASHI
-DASHI = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASHI, VEG_SERV_DASHI, FRT_FRTJ_SERV_DASHI, NUTSLEG_SERV_DASHI, LOWF_DAIRY_SERV_DASHI, WGRAIN_SERV_DASHI,
-                 WHITEMEAT_SERV_DASHI, REDPROC_MEAT_SERV_DASHI, FATOIL_SERV_DASHI, SNACKS_SWEETS_SERV_DASHI, SODIUM_SERV_DASHI){
-  ##Create variables and functions needed for DASHI calculation
-  DASHI_MIN = 0
-  DASHI_MAX = 5
-  
-  DASHI_MIN_VEG_SERV = 0
-  DASHI_MAX_VEG_SERV = 4
-  DASHI_MIN_FRT_FRTJ_SERV = 0
-  DASHI_MAX_FRT_FRTJ_SERV = 5
-  DASHI_MIN_NUTSLEG_SERV = 0
-  DASHI_MAX_NUTSLEG_SERV = 4/7
-  DASHI_MIN_LOWF_DAIRY_SERV = 0
-  DASHI_MAX_LOWF_DAIRY_SERV = 2
-  DASHI_MIN_WGRAIN_SERV = 0
-  DASHI_MAX_WGRAIN_SERV = 4
-  DASHI_MIN_WHITEMEAT_SERV = 0
-  DASHI_MAX_WHITEMEAT_SERV= 1.1
+DASHI = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASHI, TOTAL_FAT_DASHI, SAT_FAT_DASHI, PROTEIN_DASHI, CHOLESTEROL_DASHI, FIBER_DASHI, POTASSIUM_DASHI, MAGNESIUM_DASHI, CALCIUM_DASHI, SODIUM_DASHI){
 
-  DASHI_MIN_REDPROC_MEAT_SERV = 1.5
-  DASHI_MAX_REDPROC_MEAT_SERV = 0.5
-  DASHI_MIN_FATOIL_SERV = 6
-  DASHI_MAX_FATOIL_SERV = 2.5
-  DASHI_MIN_SNACKS_SWEETS_SERV = 4
-  DASHI_MAX_SNACKS_SWEETS_SERV = 5/7
-  DASHI_MIN_SODIUM_SERV = 3000
-  DASHI_MAX_SODIUM_SERV = 1150
+    ##Create variables and functions needed for DASHI calculation
+    DASHI_MIN = 0
+    DASHI_MAX = 1
+
+    DASHI_MIN_TOTAL_FAT = 37
+    DASHI_MAX_TOTAL_FAT = 27
+    DASHI_MIN_SAT_FAT = 16
+    DASHI_MAX_SAT_FAT = 6
+    DASHI_MIN_PROTEIN = 15
+    DASHI_MAX_PROTEIN = 18
+    DASHI_MIN_CHOLESTEROL = 285.7
+    DASHI_MAX_CHOLESTEROL = 142.8
+    DASHI_MIN_FIBER = 8.6
+    DASHI_MAX_FIBER = 29.5
+    DASHI_MIN_POTASSIUM = 1619
+    DASHI_MAX_POTASSIUM = 4476
+    DASHI_MIN_MAGNESIUM = 157
+    DASHI_MAX_MAGNESIUM = 476
+    DASHI_MIN_CALCIUM = 429
+    DASHI_MAX_CALCIUM = 1181
+    DASHI_MIN_SODIUM = 2857
+    DASHI_MAX_SODIUM = 2286
   
   DASHI_HEALTHY = function(actual, min, max){
     case_when(
@@ -71,35 +67,32 @@ DASHI = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASHI, VEG_SERV_DASHI, FRT_F
   ##DASHI calculation
   SERV_DATA %>%
     dplyr::mutate(
-      RESPONDENTID = RESPONDENTID,
-      DASHI_TOTALKCAL = TOTALKCAL_DASHI,
-      VEG_SERV_DASHI = VEG_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      FRT_FRTJ_SERV_DASHI = FRT_FRTJ_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      NUTSLEG_SERV_DASHI = NUTSLEG_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      LOWF_DAIRY_SERV_DASHI = LOWF_DAIRY_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      WGRAIN_SERV_DASHI = WGRAIN_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      WHITEMEAT_SERV_DASHI = WHITEMEAT_SERV_DASHI/(DASHI_TOTALKCAL/2000),
+        RESPONDENTID = RESPONDENTID,
+        TOTALKCAL_DASHI = TOTALKCAL_DASHI,
+        TOTAL_FAT_DASHI = TOTAL_FAT_DASHI,
+        SAT_FAT_DASHI = SAT_FAT_DASHI,
+        PROTEIN_DASHI = PROTEIN_DASHI,
+        CHOLESTEROL_DASHI = CHOLESTEROL_DASHI,
+        FIBER_DASHI = FIBER_DASHI,
+        POTASSIUM_DASHI = POTASSIUM_DASHI,
+        MAGNESIUM_DASHI = MAGNESIUM_DASHI,
+        CALCIUM_DASHI = CALCIUM_DASHI,
+        SODIUM_DASHI = SODIUM_DASHI,
 
-      REDPROC_MEAT_SERV_DASHI = REDPROC_MEAT_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      FATOIL_SERV_DASHI = FATOIL_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      SNACKS_SWEETS_SERV_DASHI = SNACKS_SWEETS_SERV_DASHI/(DASHI_TOTALKCAL/2000),
-      SODIUM_SERV_DASHI = SODIUM_SERV_DASHI/(DASHI_TOTALKCAL/2000),
+        DASHI_TOTAL_FAT = DASHI_UNHEALTHY(TOTAL_FAT_DASHI, DASHI_MIN_TOTAL_FAT, DASHI_MAX_TOTAL_FAT),
+        DASHI_SAT_FAT = DASHI_UNHEALTHY(SAT_FAT_DASHI, DASHI_MIN_SAT_FAT, DASHI_MAX_SAT_FAT),
+        DASHI_CHOLESTEROL = DASHI_UNHEALTHY(CHOLESTEROL_DASHI, DASHI_MIN_CHOLESTEROL, DASHI_MAX_CHOLESTEROL),
+        DASHI_SODIUM = DASHI_UNHEALTHY(SODIUM_DASHI, DASHI_MIN_SODIUM, DASHI_MAX_SODIUM),
 
-      DASHI_VEG = DASHI_HEALTHY(VEG_SERV_DASHI, DASHI_MIN_VEG_SERV, DASHI_MAX_VEG_SERV),
-      DASHI_FRT = DASHI_HEALTHY(FRT_FRTJ_SERV_DASHI, DASHI_MIN_FRT_FRTJ_SERV, DASHI_MAX_FRT_FRTJ_SERV),
-      DASHI_NUTSLEG = DASHI_HEALTHY(NUTSLEG_SERV_DASHI, DASHI_MIN_NUTSLEG_SERV, DASHI_MAX_NUTSLEG_SERV),
-      DASHI_LOWFATDAIRY = DASHI_HEALTHY(LOWF_DAIRY_SERV_DASHI, DASHI_MIN_LOWF_DAIRY_SERV, DASHI_MAX_LOWF_DAIRY_SERV),
-      DASHI_WGRAIN = DASHI_HEALTHY(WGRAIN_SERV_DASHI, DASHI_MIN_WGRAIN_SERV, DASHI_MAX_WGRAIN_SERV),
-      DASHI_WHITEMEAT = DASHI_HEALTHY(WHITEMEAT_SERV_DASHI, DASHI_MIN_WHITEMEAT_SERV, DASHI_MAX_WHITEMEAT_SERV),
+        DASHI_PROTEIN = DASHI_HEALTHY(PROTEIN_DASHI, DASHI_MIN_PROTEIN, DASHI_MAX_PROTEIN),
+        DASHI_FIBER = DASHI_HEALTHY(FIBER_DASHI, DASHI_MIN_FIBER, DASHI_MAX_FIBER),
+        DASHI_POTASSIUM = DASHI_HEALTHY(POTASSIUM_DASHI, DASHI_MIN_POTASSIUM, DASHI_MAX_POTASSIUM),
+        DASHI_MAGNESIUM = DASHI_HEALTHY(MAGNESIUM_DASHI, DASHI_MIN_MAGNESIUM, DASHI_MAX_MAGNESIUM),
+        DASHI_CALCIUM = DASHI_HEALTHY(CALCIUM_DASHI, DASHI_MIN_CALCIUM, DASHI_MAX_CALCIUM),
 
-      DASHI_REDPROC_MEAT = DASHI_UNHEALTHY(REDPROC_MEAT_SERV_DASHI, DASHI_MIN_REDPROC_MEAT_SERV, DASHI_MAX_REDPROC_MEAT_SERV),
-      DASHI_FATOIL = DASHI_UNHEALTHY(FATOIL_SERV_DASHI, DASHI_MIN_FATOIL_SERV, DASHI_MAX_FATOIL_SERV),
-      DASHI_SNACKS_SWEETS = DASHI_UNHEALTHY(SNACKS_SWEETS_SERV_DASHI, DASHI_MIN_SNACKS_SWEETS_SERV, DASHI_MAX_SNACKS_SWEETS_SERV),
-      DASHI_SODIUM = DASHI_UNHEALTHY(SODIUM_SERV_DASHI, DASHI_MIN_SODIUM_SERV, DASHI_MAX_SODIUM_SERV),
+        DASHI_ALL = DASHI_TOTAL_FAT + DASHI_SAT_FAT + DASHI_CHOLESTEROL + DASHI_SODIUM +
+        DASHI_PROTEIN + DASHI_FIBER + DASHI_POTASSIUM + DASHI_MAGNESIUM + DASHI_CALCIUM
 
-      DASHI_ALL= DASHI_VEG + DASHI_FRT + DASHI_NUTSLEG + DASHI_LOWFATDAIRY +
-        DASHI_WGRAIN + DASHI_WHITEMEAT + DASHI_REDPROC_MEAT + DASHI_FATOIL + DASHI_SNACKS_SWEETS + DASHI_SODIUM
     )%>%
-    dplyr::select(RESPONDENTID, DASHI_ALL, DASHI_TOTALKCAL, DASHI_VEG, DASHI_FRT, DASHI_NUTSLEG, DASHI_LOWFATDAIRY, DASHI_WGRAIN,
-                  DASHI_WHITEMEAT, DASHI_REDPROC_MEAT, DASHI_FATOIL, DASHI_SNACKS_SWEETS, DASHI_SODIUM)
+    dplyr::select(RESPONDENTID, DASHI_ALL, TOTALKCAL_DASHI, DASHI_TOTAL_FAT, DASHI_SAT_FAT, DASHI_PROTEIN, DASHI_CHOLESTEROL, DASHI_FIBER, DASHI_POTASSIUM, DASHI_MAGNESIUM, DASHI_CALCIUM, DASHI_SODIUM)
 }
