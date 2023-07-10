@@ -14,9 +14,9 @@ ACS2020_V2(
   FRT_SERV_ACS2020,
   FRT_ITEMS_SERV_ACS2020,
   WGRAIN_SERV_ACS2020,
-  SSB_FRTJ_SERV_ACS2020,
   REDPROC_MEAT_SERV_ACS2020,
-  HPFRG_SERV_ACS2020
+  HPFRG_SERV_ACS2020,
+  SSB_FRTJ_SERV_ACS2020
 )
 }
 \arguments{
@@ -38,11 +38,11 @@ ACS2020_V2(
 
 \item{WGRAIN_SERV_ACS2020}{The serving size of whole grains, unit=grams/day}
 
-\item{SSB_FRTJ_SERV_ACS2020}{The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)}
-
 \item{REDPROC_MEAT_SERV_ACS2020}{The serving size of red and processed meats, including Beef, pork, lamb, goat, veal, sausages, bacon, salami, ham, hot dog, deli meat, unit=servings/day; 1 srv= 4 oz. unprocessed meat; 1.5 oz. processed meat (1 oz. = 28.35 g)}
 
 \item{HPFRG_SERV_ACS2020}{The daily servings of highly processed foods and refined grains per 1000 kcal, note: the ultra-processed variable for the score should not double count foods included in other parts of the score, for example, sugar-sweetened beverages or processed meats}
+
+\item{SSB_FRTJ_SERV_ACS2020}{The serving size of sugar-sweetened beverages and non-100\% fruit juice, unit=servings/day = 1 ser= 8oz (1 oz. = 28.35 g)}
 }
 \value{
 The ACS2020_V2 index/score and its component scores

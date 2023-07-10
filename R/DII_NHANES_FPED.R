@@ -44,6 +44,9 @@ DII_NHANES_FPED = function(FPED_PATH=NULL, NUTRIENT_PATH=NULL, DEMO_PATH, FPED_P
         stop("Please use the population-level data. The file name should be like: Totals.csv")
     }
     
+    # print a reminder that this function does not use all the original DII variables
+    print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+
     NUTRIENT = NUTRIENT %>%
         filter(DR1DRSTZ == 1) %>%
         arrange(SEQN)
