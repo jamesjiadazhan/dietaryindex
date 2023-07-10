@@ -19,13 +19,10 @@ The **dietaryindex** package currently contains the following key functions:
     - Ref: https://www.jandonline.org/article/S0002-8223(09)00288-0/fulltext
   - `DASH()`, Dietary Approaches to Stop Hypertension 
     - Ref:https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/414155
-  - `DASHI()`, DASH Index in serving sizes from the DASH trial 
+  - `DASHI()`, DASH Index in nutrients from the DASH trial 
     - Ref:
-      - https://www.nhlbi.nih.gov/education/dash-eating-plan
       - https://www.nejm.org/doi/10.1056/NEJM199704173361601?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200www.ncbi.nlm.nih.gov
-      - https://www.dietaryguidelines.gov/sites/default/files/2019-05/1995%20Dietary%20Guidelines%20for%20Americans.pdf
-      - https://www.sciencedirect.com/science/article/pii/S0002822399004125
-      - https://www.nejm.org/doi/full/10.1056/nejm200101043440101
+      - https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/413957
   - `MED()`, Alternate Mediterranean Diet Score (aMED)
     - Ref: https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.816736?url_ver=Z39.88-2003&rfr_id=ori:rid:crossref.org&rfr_dat=cr_pub%20%200pubmed
   - `MEDI()`, Mediterranean diet in serving sizes from the PREDIMED trial 
@@ -43,7 +40,7 @@ The **dietaryindex** package currently contains the following key functions:
   - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data (after 2005)
   - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
   - `DASH_NHANES_FPED()`, Calculating DASH (quintile-based) with 1 step using the NHANES_FPED data (after 2005)
-  - `DASHI_NHANES_FPED()`, Calculating DASHI (serving size-based from the DASH trial) with 1 step using the NHANES_FPED data (after 2005)
+  - `DASHI_NHANES_FPED()`, Calculating DASHI (nutrient-based from the DASH trial) with 1 step using the NHANES_FPED data (after 2005)
   - `MED_NHANES_FPED()`, Calculating aMED (median-based) with 1 step using the NHANES_FPED data (after 2005)
   - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data (after 2005)
   - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
@@ -171,7 +168,7 @@ DASHI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-DASHI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
+DASHI_NHANES_FPED(NUTRIENT_PATH = NHANES_20172018$NUTRIENT, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2)
 ```
 
 #### Calculating DII for NHANES_FPED
@@ -370,27 +367,9 @@ DASH(SERV_DATA_exp, SERV_DATA_exp$UserName, SERV_DATA_exp$TOTALKCAL, SERV_DATA_e
 
 #### Calculating DASHI for your own dietary assessment tool
 ```
-DATA_PATH <- "/Users/james/Desktop/data.csv"
-SERV_DATA <- read_csv(DATA_PATH)
-
-DASHI(SERV_DATA, RESPONDENTID, SERV_DATA$TOTALKCAL_DASHI, SERV_DATA$VEG_SERV_DASHI, SERV_DATA$FRT_FRTJ_SERV_DASHI, SERV_DATA$NUTSLEG_SERV_DASHI, SERV_DATA$LOWF_DAIRY_SERV_DASHI, SERV_DATA$WGRAIN_SERV_DASHI, SERV_DATA$WHITEMEAT_SERV_DASHI, SERV_DATA$REDPROC_MEAT_SERV_DASHI, SERV_DATA$FATOIL_SERV_DASHI, SERV_DATA$SWEETS_SERV_DASHI, SERV_DATA$SODIUM_SERV_DASHI)
-
 #Use the example data
 data("DASH_trial")
-DASHI(
-  SERV_DATA = DASH_trial, 
-  RESPONDENTID = DASH_trial$Diet_Type,
-  TOTALKCAL_DASHI = DASH_trial$Kcal,
-  VEG_SERV_DASHI = DASH_trial$Vegetables, 
-  FRT_FRTJ_SERV_DASHI = DASH_trial$Fruits_Juices, 
-  NUTSLEG_SERV_DASHI = DASH_trial$Nuts_Seeds_Legumes, 
-  LOWF_DAIRY_SERV_DASHI = DASH_trial$Lowfat_Dairy,
-  WGRAIN_SERV_DASHI = DASH_trial$Wholegrains, 
-  WHITEMEAT_SERV_DASHI = DASH_trial$Whitemeat, 
-  REDPROC_MEAT_SERV_DASHI = DASH_trial$Beef_Pork_Ham, 
-  FATOIL_SERV_DASHI = DASH_trial$Fat_Oils_salad_dressing, 
-  SNACKS_SWEETS_SERV_DASHI = DASH_trial$Snacks_Sweets,
-  SODIUM_SERV_DASHI = DASH_trial$Sodium)
+DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal, TOTAL_FAT_DASHI = DASH_trial$Totalfat_Percent, SAT_FAT_DASHI = DASH_trial$Satfat_Percent, PROTEIN_DASHI = DASH_trial$Protein_Percent, CHOLESTEROL_DASHI = DASH_trial$Cholesterol, FIBER_DASHI = DASH_trial$Fiber, POTASSIUM_DASHI = DASH_trial$Potassium, MAGNESIUM_DASHI = DASH_trial$Magnesium, CALCIUM_DASHI = DASH_trial$Calcium, SODIUM_DASHI = DASH_trial$Sodium)
 ```
 
 #### Calculating aMED for your own dietary assessment tool
