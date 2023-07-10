@@ -112,15 +112,16 @@ ___
 
 Case study 1. A comparative analysis of results derived from clinical trials (i.e., The Dietary Approaches to Stop Hypertension (DASH) trial and Prevención con Dieta Mediterránea (PREDIMED) trial) juxtaposed with findings from an epidemiological study (i.e., NHANES) from 2017-2018, utilizing DASHI and MEDI dietary indexes.
 
-![Figure 3  DASHI and MEDI dietary indexes in DASH and PREDIMED trials and NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/e36138fa-dfa5-463f-a15a-46f101444d76)
+![Figure 3  DASHI and MEDI dietary indexes in DASH and PREDIMED trials and NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/d75701d6-4e98-499d-80e9-e976f4c3f8c4)
 
-  
+
 Case study 2. A time series of cross-sectional computation of the HEI2020 in the NHANES dataset spanning 2005 to 2018, stratifying into toddler and non-toddler populations.
 ![Figure 4  HEI2020 from 2005 to 2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/3606ef7b-56e6-450d-895f-9f00c2e984cb)
 
 
 Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020, AHEI, DASH, DASHI, MED, MEDI, DII—within a single year (2017-2018), leveraging data from the NHANES study.
-![Figure 5  Multiple Dietary indexes, using the NHANES data in 2017-2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/ba51579e-5774-47df-ae72-cc8840f7f110)
+![Figure 5  Multiple Dietary indexes, using the NHANES data in 2017-2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/85218a10-8bd1-4d39-a08f-09f2a0945d3c)
+
 
 All the R codes for the demonstrations can be found here: [Case study 1,2,3.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Case%20study%201%2C2%2C3.r)
 
