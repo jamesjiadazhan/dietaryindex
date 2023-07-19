@@ -62,12 +62,12 @@ Note: all NHANES functions allow users to enter the first day data, or the secon
   - `MED_DHQ3()`, Calculating aMED with 1 step using the DHQ3 data
   
 - BLOCK
-  - `HEI2015_BLOCK`, Calculating HEI2015 with 1 step using the BLOCK data
-  - `MED_BLOCK`, Calculating aMED with 1 step using the BLOCK data
-  - `DII_BLOCK`, Calculating DII with 1 step using the BLOCK data
-  - `DASH_BLOCK`, Calculating DASH with 1 step using the BLOCK data
-  - `AHEI_BLOCK`, Calculating AHEI with 1 step using the BLOCK data
-  - `AHEIP_BLOCK`, Calculating AHEIP with 1 step using the BLOCK data
+  - `HEI2015_BLOCK()`, Calculating HEI2015 with 1 step using the BLOCK data
+  - `MED_BLOCK()`, Calculating aMED with 1 step using the BLOCK data
+  - `DII_BLOCK()`, Calculating DII with 1 step using the BLOCK data
+  - `DASH_BLOCK()`, Calculating DASH with 1 step using the BLOCK data
+  - `AHEI_BLOCK()`, Calculating AHEI with 1 step using the BLOCK data
+  - `AHEIP_BLOCK()`, Calculating AHEIP with 1 step using the BLOCK data
 
 
 ### Examples:
