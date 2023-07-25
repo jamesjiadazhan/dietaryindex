@@ -61,7 +61,7 @@ library(devtools) # Load devtools
 install_github("jamesjiadazhan/dietaryindex")
 ```
 
-If it is still not working, you can download the package directly and then install it in your local fill. You can:
+If it is still not working, you can download the package directly and then install it in your local folder. You can:
 1. Download the package as a zip file
 <img width="500" alt="image" src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/75a4f099-d407-4825-bfa1-e01b1f316c97">
 
