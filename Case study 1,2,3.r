@@ -24,12 +24,28 @@ library(dietaryindex)
 data("DASH_trial")
 data("PREDIMED_trial")
 data("NHANES_20172018")
-data("NHANES_20152016")
-data("NHANES_20132014")
-data("NHANES_20112012")
-data("NHANES_20092010")
-data("NHANES_20072008")
-data("NHANES_20052006")
+
+# set up working dictionary
+setwd("/Users/james/Desktop/NHANES_combined")
+
+# Load the NHANES data from 2005 to 2018
+## NHANES 2005-2006
+load("NHANES_20052006.rda")
+
+## NHANES 2007-2008
+load("NHANES_20072008.rda")
+
+## NHANES 2009-2010
+load("NHANES_20092010.rda")
+
+## NHANES 2011-2012
+load("NHANES_20112012.rda")
+
+## NHANES 2013-2014
+load("NHANES_20132014.rda")
+
+## NHANES 2015-2016
+load("NHANES_20152016.rda")
 
 # DASHI from the DASH trial
 DASHI_DASH = DASHI(
