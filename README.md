@@ -25,14 +25,33 @@ This package can calculate the following dietary pattern indexes:
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
-**dietaryindex** has compiled and included NHANES data from 2005 - 2018 for your convenience. This includes NHANES 2005-2006, NHANES 2007-2008, NHANES 2009-2010, NHANES 2011-2012, NHANES 2013-2014, NHANES 2015-2016, NHANES 2017-2018. To retrieve the data, use the following codes:
-- NHANES 2005-2006: data("NHANES_20052006")
-- NHANES 2007-2008: data("NHANES_20072008")
-- NHANES 2009-2010: data("NHANES_20092010")
-- NHANES 2011-2012: data("NHANES_20112012")
-- NHANES 2013-2014: data("NHANES_20132014")
-- NHANES 2015-2016: data("NHANES_20152016")
-- NHANES 2017-2018: data("NHANES_20172018")
+**dietaryindex** has compiled NHANES data from 2005 - 2018 for your convenience. This includes NHANES 2005-2006, NHANES 2007-2008, NHANES 2009-2010, NHANES 2011-2012, NHANES 2013-2014, NHANES 2015-2016, NHANES 2017-2018. To retrieve the data, download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D) and use the following codes to load the data:
+```
+# set up working dictionary
+setwd("/Users/james/Desktop/NHANES_combined")
+
+# Load the NHANES data from 2005 to 2018
+## NHANES 2005-2006
+load("NHANES_20052006.rda")
+
+## NHANES 2007-2008
+load("NHANES_20072008.rda")
+
+## NHANES 2009-2010
+load("NHANES_20092010.rda")
+
+## NHANES 2011-2012
+load("NHANES_20112012.rda")
+
+## NHANES 2013-2014
+load("NHANES_20132014.rda")
+
+## NHANES 2015-2016
+load("NHANES_20152016.rda")
+
+## NHANES 2017-2018
+load("NHANES_20172018.rda")
+```
 
 For a detailed explanation of these indexes, please check the attached Excel files:
 - [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
