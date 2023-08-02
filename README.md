@@ -49,8 +49,8 @@ load("NHANES_20132014.rda")
 ## NHANES 2015-2016
 load("NHANES_20152016.rda")
 
-## NHANES 2017-2018
-load("NHANES_20172018.rda")
+## NHANES 2017-2018 from dietaryindex package
+data("NHANES_20172018")
 ```
 
 For a detailed explanation of these indexes, please check the attached Excel files:
