@@ -4,10 +4,12 @@
 \alias{AHEI_F_ASA24}
 \title{AHEI_F_ASA24}
 \usage{
-AHEI_F_ASA24(DATA_PATH)
+AHEI_F_ASA24(DATA_PATH, SSB_code = NULL)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Items.csv}
+
+\item{SSB_code}{The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file}
 }
 \value{
 The AHEI and its component scores

@@ -21,50 +21,51 @@
 #' DASH(DASH_VALIDATION, RESPONDENTID = DASH_VALIDATION$id, TOTALKCAL_DASH = DASH_VALIDATION$kcal, FRT_FRTJ_SERV_DASH = DASH_VALIDATION$fruit, VEG_SERV_DASH = DASH_VALIDATION$vegetable, NUTSLEG_SERV_DASH = DASH_VALIDATION$nut_legume, WGRAIN_SERV_DASH = DASH_VALIDATION$whole_grain, LOWF_DAIRY_SERV_DASH = DASH_VALIDATION$low_fat_dairy, SODIUM_SERV_DASH = DASH_VALIDATION$sodium, REDPROC_MEAT_SERV_DASH = DASH_VALIDATION$red_processed_meat, SSB_FRTJ_SERV_DASH = DASH_VALIDATION$ssb)
 #' @export
 
-#Score calculation for DASH
+# Score calculation for DASH
 DASH = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASH, FRT_FRTJ_SERV_DASH, VEG_SERV_DASH, NUTSLEG_SERV_DASH, WGRAIN_SERV_DASH, LOWF_DAIRY_SERV_DASH,
-                SODIUM_SERV_DASH, REDPROC_MEAT_SERV_DASH, SSB_FRTJ_SERV_DASH){
-  ##Create variables and functions needed for DASH calculation
-  quintile_healthy = function(actual){
-    quintile = quantile(actual, probs=seq(0, 1, by=0.2))
-    case_when(
-      actual <= quintile[6] & actual >= quintile[5] ~ 5,
-      actual < quintile[5] & actual >= quintile[4] ~ 4,
-      actual < quintile[4] & actual >= quintile[3] ~ 3,
-      actual < quintile[3] & actual >= quintile[2] ~ 2,
-      actual < quintile[2] & actual >= quintile[1] ~ 1
-    )
-  }
-  
-  quintile_unhealthy = function(actual){
-    quintile = quantile(actual, probs=seq(0, 1, by=0.2))
-    case_when(
-      actual <= quintile[6] & actual >= quintile[5] ~ 1,
-      actual < quintile[5] & actual >= quintile[4] ~ 2,
-      actual < quintile[4] & actual >= quintile[3] ~ 3,
-      actual < quintile[3] & actual >= quintile[2] ~ 4,
-      actual < quintile[2] & actual >= quintile[1] ~ 5
-    )
-  }
-  
-  print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
-  
-  ##DASH calculation
-  SERV_DATA %>%
-    dplyr::mutate(
-      RESPONDENTID = RESPONDENTID,
-      
-      DASH_FRT = quintile_healthy(FRT_FRTJ_SERV_DASH),
-      DASH_VEG = quintile_healthy(VEG_SERV_DASH),
-      DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV_DASH),
-      DASH_WGRAIN = quintile_healthy(WGRAIN_SERV_DASH),
-      DASH_LOWF_DAIRY = quintile_healthy(LOWF_DAIRY_SERV_DASH),
-      DASH_SODIUM = quintile_unhealthy(SODIUM_SERV_DASH/(TOTALKCAL_DASH/2000)),
-      DASH_REDPROC_MEAT = quintile_unhealthy(REDPROC_MEAT_SERV_DASH),
-      DASH_SSB_FRTJ = quintile_unhealthy(SSB_FRTJ_SERV_DASH),
-      DASH_ALL = DASH_FRT+DASH_VEG+DASH_NUTSLEG+DASH_WGRAIN+DASH_LOWF_DAIRY+
-        DASH_SODIUM+DASH_REDPROC_MEAT+DASH_SSB_FRTJ
-    )%>%
-    dplyr::select(RESPONDENTID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
-                  DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ)
+                SODIUM_SERV_DASH, REDPROC_MEAT_SERV_DASH, SSB_FRTJ_SERV_DASH) {
+    ## Create variables and functions needed for DASH calculation
+    quintile_healthy = function(actual) {
+        quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
+        case_when(
+            actual <= quintile[6] & actual >= quintile[5] ~ 5,
+            actual < quintile[5] & actual >= quintile[4] ~ 4,
+            actual < quintile[4] & actual >= quintile[3] ~ 3,
+            actual < quintile[3] & actual >= quintile[2] ~ 2,
+            actual < quintile[2] & actual >= quintile[1] ~ 1
+        )
+    }
+
+    quintile_unhealthy = function(actual) {
+        quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
+        case_when(
+            actual <= quintile[6] & actual >= quintile[5] ~ 1,
+            actual < quintile[5] & actual >= quintile[4] ~ 2,
+            actual < quintile[4] & actual >= quintile[3] ~ 3,
+            actual < quintile[3] & actual >= quintile[2] ~ 4,
+            actual < quintile[2] & actual >= quintile[1] ~ 5
+        )
+    }
+
+    print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+
+    ## DASH calculation
+    SERV_DATA %>%
+        dplyr::mutate(
+            RESPONDENTID = RESPONDENTID,
+            DASH_FRT = quintile_healthy(FRT_FRTJ_SERV_DASH),
+            DASH_VEG = quintile_healthy(VEG_SERV_DASH),
+            DASH_NUTSLEG = quintile_healthy(NUTSLEG_SERV_DASH),
+            DASH_WGRAIN = quintile_healthy(WGRAIN_SERV_DASH),
+            DASH_LOWF_DAIRY = quintile_healthy(LOWF_DAIRY_SERV_DASH),
+            DASH_SODIUM = quintile_unhealthy(SODIUM_SERV_DASH / (TOTALKCAL_DASH / 2000)),
+            DASH_REDPROC_MEAT = quintile_unhealthy(REDPROC_MEAT_SERV_DASH),
+            DASH_SSB_FRTJ = quintile_unhealthy(SSB_FRTJ_SERV_DASH),
+            DASH_ALL = DASH_FRT + DASH_VEG + DASH_NUTSLEG + DASH_WGRAIN + DASH_LOWF_DAIRY +
+                DASH_SODIUM + DASH_REDPROC_MEAT + DASH_SSB_FRTJ
+        ) %>%
+        dplyr::select(
+            RESPONDENTID, DASH_ALL, DASH_FRT, DASH_VEG, DASH_NUTSLEG, DASH_WGRAIN, DASH_LOWF_DAIRY,
+            DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ
+        )
 }

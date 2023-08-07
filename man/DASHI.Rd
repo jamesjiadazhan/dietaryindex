@@ -52,5 +52,5 @@ Calculate the DASHI dietary index (nutrient-based), Dietary Approaches to Stop H
 }
 \examples{
 data("DASH_trial")
-DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type,TOTALKCAL_DASHI = DASH_trial$Kcal, TOTAL_FAT_DASHI = DASH_trial$Totalfat_Percent, SAT_FAT_DASHI = DASH_trial$Satfat_Percent, PROTEIN_DASHI = DASH_trial$Protein_Percent, CHOLESTEROL_DASHI = DASH_trial$Cholesterol, FIBER_DASHI = DASH_trial$Fiber, POTASSIUM_DASHI = DASH_trial$Potassium, MAGNESIUM_DASHI = DASH_trial$Magnesium, CALCIUM_DASHI = DASH_trial$Calcium, SODIUM_DASHI = DASH_trial$Sodium)
+DASHI(SERV_DATA = DASH_trial, RESPONDENTID = DASH_trial$Diet_Type, TOTALKCAL_DASHI = DASH_trial$Kcal, TOTAL_FAT_DASHI = DASH_trial$Totalfat_Percent, SAT_FAT_DASHI = DASH_trial$Satfat_Percent, PROTEIN_DASHI = DASH_trial$Protein_Percent, CHOLESTEROL_DASHI = DASH_trial$Cholesterol, FIBER_DASHI = DASH_trial$Fiber, POTASSIUM_DASHI = DASH_trial$Potassium, MAGNESIUM_DASHI = DASH_trial$Magnesium, CALCIUM_DASHI = DASH_trial$Calcium, SODIUM_DASHI = DASH_trial$Sodium)
 }

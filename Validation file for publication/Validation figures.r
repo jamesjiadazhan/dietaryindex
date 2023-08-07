@@ -1,8 +1,12 @@
 # produce validation graph
+
+# set up working directory
 setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/Final validation files")
 library(ggplot2)
 library(dplyr)
-library(readr)    
+library(readr)
+
+# read in dietaryindex-calculated and hand-calculated validation results
 ACS2020_V1_validation_result = read_csv("ACS2020_V1_validation_result.csv")
 ACS2020_V2_validation_result = read_csv("ACS2020_V2_validation_result.csv")
 AHEI_validation_result = read_csv("AHEI_validation_result.csv")
@@ -17,9 +21,18 @@ MEDI_validation_result = read_csv("MEDI_validation_result.csv")
 MEDI_V2_validation_result = read_csv("MEDI_V2_validation_result.csv")
 PHDI_validation_result = read_csv("PHDI_validation_result.csv")
 
-setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_NHANES_SAS_1718")
+# read in NHANES NCI SAS and dietaryindex-calculated validation results
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_NHANES_1718")
 SAS_HEI2015_1718 = read_csv("SAS_HEI2015_1718.csv")
 dietaryindex_HEI2015_1718 = read_csv("dietaryindex_HEI2015_1718.csv")
+
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_ASA24_example_data")
+HEI2015_ASA24_NCI_SAS = read_csv("HEI2015_ASA24_NCI_SAS.csv")
+HEI2015_ASA24_dietaryindex = read_csv("HEI2015_ASA24_dietaryindex.csv")
+
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_DHQ3_example_data")
+HEI2015_DHQ3_NCI_SAS = read_csv("Sample total daily results.csv", skip = 1)
+HEI2015_DHQ3_dietaryindex = read_csv("HEI2015_DHQ3_dietaryindex.csv")
 
 # Define a function to compute accuracy
 get_accuracy <- function(x, y) {
@@ -29,6 +42,17 @@ get_accuracy <- function(x, y) {
   y <- round(y, 2)
   return ((sum(x == y, na.rm = TRUE) / length(x)) * 100)
 }
+
+# Define a function to compute accuracy
+get_accuracy_diff <- function(x, y) {
+  # the maximum tolerance for the difference between x and y
+  tolerance <- 0.5
+  # Subtract data1 from data2 (or vice versa) and take the absolute value of the differences
+  diff <- abs(x - y)
+  return ((sum(diff <= tolerance, na.rm = TRUE) / length(x)) * 100)
+}
+
+############### Total score of all dietary indexes validation ###############
 
 # Initialize a data frame to store results for the total dietary index score for all dietary indexes
 results <- data.frame(
@@ -68,129 +92,23 @@ print(results)
 # Plot results
 ggplot(results, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("Dietary indexes") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20)) 
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        ) 
 
-
-###### list all the column names
-# r$> colnames(ACS2020_V1_validation_result)
-#  [1] "id"                       "gender"                   "kcal"                     "vegetable"                "vegetable_unique"         "fruit"                    "fruit_unique"            
-#  [8] "whole_grain"              "red_meat"                 "process_food"             "ssb"                      "EXP_ACS_ALL"              "EXP_ACS_VEGETABLE"        "EXP_ACS_VEGETABLE_UNIQUE"
-# [15] "EXP_ACS_FRUIT"            "EXP_ACS_FRUIT_UNIQUE"     "EXP_ACS_WHOLE_GRAIN"      "EXP_ACS_RED_MEAT"         "EXP_ACS_PROCESSED_FOOD"   "EXP_ACS_SSB"              "GENDER"                  
-# [22] "ACS2020_V1_ALL"           "ACS2020_VEG"              "ACS2020_VEG_ITEMS"        "ACS2020_FRT"              "ACS2020_FRT_ITEMS"        "ACS2020_WGRAIN"           "ACS2020_REDPROC_MEAT"    
-# [29] "ACS2020_HPFRG_RATIO"      "ACS2020_SSB_FRTJ"   
-
-# r$> colnames(ACS2020_V2_validation_result)
-#  [1] "id"                       "gender"                   "kcal"                     "vegetable"                "vegetable_unique"         "fruit"                    "fruit_unique"            
-#  [8] "whole_grain"              "red_meat"                 "process_food"             "ssb"                      "EXP_ACS_ALL"              "EXP_ACS_VEGETABLE"        "EXP_ACS_VEGETABLE_UNIQUE"
-# [15] "EXP_ACS_FRUIT"            "EXP_ACS_FRUIT_UNIQUE"     "EXP_ACS_WHOLE_GRAIN"      "EXP_ACS_RED_MEAT"         "EXP_ACS_PROCESSED_FOOD"   "EXP_ACS_SSB"              "GENDER"                  
-# [22] "ACS2020_V2_ALL"           "TOTALKCAL_ACS2020"        "ACS2020_VEG"              "ACS2020_VEG_ITEMS"        "ACS2020_FRT"              "ACS2020_FRT_ITEMS"        "ACS2020_WGRAIN"          
-# [29] "ACS2020_REDPROC_MEAT"     "ACS2020_HPFRG"            "ACS2020_SSB_FRTJ"  
-
-# r$> colnames(AHEI_validation_result)
-#  [1] "id"                    "gender"                "kcal"                  "vegetable"             "fruit"                 "whole_grain"           "nut_legume"            "n3_fat"               
-#  [9] "pufa"                  "ssb_fruit_juice"       "red_processed_meat"    "trans_fat"             "sodium"                "alcohol"               "EXP_AHEI_ALL"          "EXP_AHEI_NOETOH"      
-# [17] "EXP_AHEI_VEG"          "EXP_AHEI_FRT"          "EXP_AHEI_WGRAIN"       "EXP_AHEI_NUTSLEG"      "EXP_AHEI_N3FAT"        "EXP_AHEI_PUFA"         "EXP_AHEI_SSB_FRTJ"     "EXP_AHEI_REDPROC_MEAT"
-# [25] "EXP_AHEI_TRANS"        "EXP_AHEI_SODIUM"       "EXP_AHEI_ALCOHOL"      "GENDER"                "AHEI_ALL"              "AHEI_NOETOH"           "AHEI_VEG"              "AHEI_FRT"             
-# [33] "AHEI_WGRAIN"           "AHEI_NUTSLEG"          "AHEI_N3FAT"            "AHEI_PUFA"             "AHEI_SSB_FRTJ"         "AHEI_REDPROC_MEAT"     "AHEI_TRANS"            "AHEI_SODIUM"          
-# [41] "AHEI_ALCOHOL"   
-
-# r$> colnames(AHEIP_validation_result)
-#  [1] "id"                            "gender"                        "kcal"                          "vegetable"                     "whole_fruit"                   "white_meat_red_meat"          
-#  [7] "fiber"                         "trans_fat"                     "poly_fat_sat_fat"              "calcium"                       "folate"                        "iron"                         
-# [13] "EXP_AHEIP_ALL"                 "EXP_AHEIP_VEGETABLE"           "EXP_AHEIP_WHOLE_FRUIT"         "EXP_AHEIP_WHITE_MEAT_RED_MEAT" "EXP_AHEIP_FIBER"               "EXP_AHEIP_TRANS_FAT"          
-# [19] "EXP_AHEIP_POLY_FAT_SAT_FAT"    "EXP_AHEIP_CALCIUM"             "EXP_AHEIP_FOLATE"              "EXP_AHEIP_IRON"                "AHEIP_ALL"                     "AHEIP_VEG"                    
-# [25] "AHEIP_FRT"                     "AHEIP_WHITEREAD"               "AHEIP_FIBER"                   "AHEIP_TRANS"                   "AHEIP_POLYSAT"                 "AHEIP_CALCIUM"                
-# [31] "AHEIP_FOLATE"                  "AHEIP_IRON"        
-
-# r$> colnames(DASH_validation_result)
-#  [1] "id"                          "gender"                      "kcal"                        "fruit"                       "vegetable"                   "nut_legume"                  "whole_grain"                 "low_fat_dairy"              
-#  [9] "sodium"                      "red_processed_meat"          "ssb"                         "EXP_DASH_ALL"                "EXP_DASH_FRUIT"              "EXP_DASH_VEGETABLE"          "EXP_DASH_NUT_LEGUME"         "EXP_DASH_WHOLE_GRAIN"       
-# [17] "EXP_DASH_LOW_FAT_DAIRY"      "EXP_DASH_SODIUM"             "EXP_DASH_RED_PROCESSED_MEAT" "EXP_DASH_SSB"                "DASH_ALL"                    "DASH_FRT"                    "DASH_VEG"                    "DASH_NUTSLEG"               
-# [25] "DASH_WGRAIN"                 "DASH_LOWF_DAIRY"             "DASH_SODIUM"                 "DASH_REDPROC_MEAT"           "DASH_SSB_FRTJ"    
-
-# r$> colnames(DASHI_validation_result)
-#  [1] "id"                           "gender"                       "kcal"                         "vegetable"                    "fruit"                        "nut_legume"                   "low_fat_dairy"                "whole_grain"                 
-#  [9] "poultry_fish"                 "red_processed_meat"           "discret_oil_fat"              "snacks_sweets"                "sodium"                       "EXP_DASHI_ALL"                "EXP_DASHI_VEGETABLE"          "EXP_DASHI_FRUIT"             
-# [17] "EXP_DASHI_NUT_LEGUME"         "EXP_DASHI_LOW_FAT_DAIRY"      "EXP_DASHI_WHOLE_GRAIN"        "EXP_DASHI_POULTRY_FISH"       "EXP_DASHI_RED_PROCESSED_MEAT" "EXP_DASHI_DISCRET_OIL_FAT"    "EXP_DASHI_SNACKS_SWEETS"      "EXP_DASHI_SODIUM"            
-# [25] "DASHI_ALL"                    "DASHI_TOTALKCAL"              "DASHI_VEG"                    "DASHI_FRT"                    "DASHI_NUTSLEG"                "DASHI_LOWFATDAIRY"            "DASHI_WGRAIN"                 "DASHI_WHITEMEAT"             
-# [33] "DASHI_REDPROC_MEAT"           "DASHI_FATOIL"                 "DASHI_SNACKS_SWEETS"          "DASHI_SODIUM"       
-
-# r$> colnames(DII_validation_result)
-#   [1] "id"                  "Alcohol"             "vitamin B12"         "vitamin B6"          "Beta-carotene"       "Caffeine"            "Carbohydrate"        "Cholesterol"         "Energy"              "Eugenol"             "Total fat"          
-#  [12] "Fiber"               "Folic acid"          "Garlic"              "Ginger"              "Iron"                "Magnesium"           "MUFA"                "Niacin"              "n-3 fatty acid"      "n-6 fatty acid"      "Onion"              
-#  [23] "Protein"             "PUFA"                "Riboflavin"          "Saffron"             "Saturated fat"       "Selenium"            "Thiamin"             "Trans fat"           "Turmeric"            "Vitamin A"           "Vitamin C"          
-#  [34] "Vitamin D"           "Vitamin E"           "Zinc"                "Green/black tea"     "Flavan-3-ol"         "Flavones"            "Flavonols"           "Flavonones"          "Anthocyanidins"      "Isoflavones"         "Pepper"             
-#  [45] "Thyme_oregano"       "Rosemary"            "EXP_DII_ALL"         "EXP_ALCOHOL_DII"     "EXP_VITB12_DII"      "EXP_VITB6_DII"       "EXP_BCAROTENE_DII"   "EXP_CAFFEINE_DII"    "EXP_CARB_DII"        "EXP_CHOLES_DII"      "EXP_KCAL_DII"       
-#  [56] "EXP_EUGENOL_DII"     "EXP_TOTALFAT_DII"    "EXP_FIBER_DII"       "EXP_FOLICACID_DII"   "EXP_GARLIC_DII"      "EXP_GINGER_DII"      "EXP_IRON_DII"        "EXP_MG_DII"          "EXP_MUFA_DII"        "EXP_NIACIN_DII"      "EXP_N3FAT_DII"      
-#  [67] "EXP_N6FAT_DII"       "EXP_ONION_DII"       "EXP_PROTEIN_DII"     "EXP_PUFA_DII"        "EXP_RIBOFLAVIN_DII"  "EXP_SAFFRON_DII"     "EXP_SATFAT_DII"      "EXP_SE_DII"          "EXP_THIAMIN_DII"     "EXP_TRANSFAT_DII"    "EXP_TURMERIC_DII"   
-#  [78] "EXP_VITA_DII"        "EXP_VITC_DII"        "EXP_VITD_DII"        "EXP_VITE_DII"        "EXP_ZN_DII"          "EXP_TEA_DII"         "EXP_FLA3OL_DII"      "EXP_FLAVONES_DII"    "EXP_FLAVONOLS_DII"   "EXP_FLAVONONES_DII"  "EXP_ANTHOC_DII"     
-#  [89] "EXP_ISOFLAVONES_DII" "EXP_PEPPER_DII"      "EXP_THYME_DII"       "EXP_ROSEMARY_DII"    "DII_ALL"             "DII_NOETOH"          "REPEATNUM"           "ALCOHOL_DII"         "VITB12_DII"          "VITB6_DII"           "BCAROTENE_DII"      
-# [100] "CAFFEINE_DII"        "CARB_DII"            "CHOLES_DII"          "KCAL_DII"            "EUGENOL_DII"         "TOTALFAT_DII"        "FIBER_DII"           "FOLICACID_DII"       "GARLIC_DII"          "GINGER_DII"          "IRON_DII"           
-# [111] "MG_DII"              "MUFA_DII"            "NIACIN_DII"          "N3FAT_DII"           "N6FAT_DII"           "ONION_DII"           "PROTEIN_DII"         "PUFA_DII"            "RIBOFLAVIN_DII"      "SAFFRON_DII"         "SATFAT_DII"         
-# [122] "SE_DII"              "THIAMIN_DII"         "TRANSFAT_DII"        "TURMERIC_DII"        "VITA_DII"            "VITC_DII"            "VITD_DII"            "VITE_DII"            "ZN_DII"              "TEA_DII"             "FLA3OL_DII"         
-# [133] "FLAVONES_DII"        "FLAVONOLS_DII"       "FLAVONONES_DII"      "ANTHOC_DII"          "ISOFLAVONES_DII"     "PEPPER_DII"          "THYME_DII"           "ROSEMARY_DII"    
-
-# r$> colnames(HEI2015_validation_result)
-#  [1] "id"                       "gender"                   "kcal"                     "total_fruit"              "whole_fruit"              "total_vegetable"          "green_and_bean"           "total_protein"            "seafood_plant_protein"   
-# [10] "whole_grain"              "dairy"                    "fatty_acid"               "refined_grain"            "sodium"                   "added_sugar"              "saturated_fat"            "EXP_HEI2015_ALL"          "EXP_HEI2015_TOTALFRT"    
-# [19] "EXP_HEI2015_FRT"          "EXP_HEI2015_VEG"          "EXP_HEI2015_GREENNBEAN"   "EXP_HEI2015_TOTALPRO"     "EXP_HEI2015_SEAPLANTPRO"  "EXP_HEI2015_WHOLEGRAIN"   "EXP_HEI2015_DAIRY"        "EXP_HEI2015_FATTYACID"    "EXP_HEI2015_REFINEDGRAIN"
-# [28] "EXP_HEI2015_SODIUM"       "EXP_HEI2015_ADDEDSUGAR"   "EXP_HEI2015_SATFAT"       "TOTALKCAL_HEI2015"        "HEI2015_ALL"              "HEI2015_TOTALFRT"         "HEI2015_FRT"              "HEI2015_VEG"              "HEI2015_GREENNBEAN"      
-# [37] "HEI2015_TOTALPRO"         "HEI2015_SEAPLANTPRO"      "HEI2015_WHOLEGRAIN"       "HEI2015_DAIRY"            "HEI2015_FATTYACID"        "HEI2015_REFINEDGRAIN"     "HEI2015_SODIUM"           "HEI2015_ADDEDSUGAR"       "HEI2015_SATFAT"   
-
-# r$> colnames(HEI2020_validation_result)
-#  [1] "id"                       "gender"                   "age"                      "kcal"                     "total_fruit"              "whole_fruit"              "total_vegetable"          "green_and_bean"           "total_protein"           
-# [10] "seafood_plant_protein"    "whole_grain"              "dairy"                    "fatty_acid"               "refined_grain"            "sodium"                   "added_sugar"              "saturated_fat"            "EXP_HEI2020_ALL"         
-# [19] "EXP_HEI2020_TOTALFRT"     "EXP_HEI2020_FRT"          "EXP_HEI2020_VEG"          "EXP_HEI2020_GREENNBEAN"   "EXP_HEI2020_TOTALPRO"     "EXP_HEI2020_SEAPLANTPRO"  "EXP_HEI2020_WHOLEGRAIN"   "EXP_HEI2020_DAIRY"        "EXP_HEI2020_FATTYACID"   
-# [28] "EXP_HEI2020_REFINEDGRAIN" "EXP_HEI2020_SODIUM"       "EXP_HEI2020_ADDEDSUGAR"   "EXP_HEI2020_SATFAT"       "TOTALKCAL_HEI2020"        "HEI2020_ALL"              "HEI2020_TOTALFRT"         "HEI2020_FRT"              "HEI2020_VEG"             
-# [37] "HEI2020_GREENNBEAN"       "HEI2020_TOTALPRO"         "HEI2020_SEAPLANTPRO"      "HEI2020_WHOLEGRAIN"       "HEI2020_DAIRY"            "HEI2020_FATTYACID"        "HEI2020_REFINEDGRAIN"     "HEI2020_SODIUM"           "HEI2020_ADDEDSUGAR"      
-# [46] "HEI2020_SATFAT"    
-
-# r$> colnames(MED_validation_result)
-#  [1] "id"                         "gender"                     "kcal"                       "fruit"                      "vegetable"                  "whole_grain"                "legume"                     "nut"                       
-#  [9] "fish"                       "red_processed_meat"         "monofat_satfat"             "alcohol"                    "EXP_MED_ALL"                "EXP_MED_FRUIT"              "EXP_MED_VEGETABLE"          "EXP_MED_WHOLE_GRAIN"       
-# [17] "EXP_MED_LEGUME"             "EXP_MED_NUT"                "EXP_MED_FISH"               "EXP_MED_RED_PROCESSED_MEAT" "EXP_MED_MONOFAT_SATFAT"     "EXP_MED_ALCOHOL"            "MED_ALL"                    "MED_NOETOH"                
-# [25] "MED_FRT"                    "MED_VEG"                    "MED_WGRAIN"                 "MED_LEGUMES"                "MED_NUTS"                   "MED_FISH"                   "MED_REDPROC_MEAT"           "MED_MONSATFAT"             
-# [33] "MED_ALCOHOL"   
-
-# r$> colnames(MEDI_validation_result)
-#  [1] "id"                   "gender"               "kcal"                 "olive_oil"            "vegetable"            "fruit"                "legume"               "nut"                  "fish"                 "alcohol"             
-# [11] "ssb"                  "sweets"               "discret_fat"          "red_meat"             "EXP_MEDI_ALL"         "EXP_MEDI_OLIVE_OIL"   "EXP_MEDI_VEGETABLE"   "EXP_MEDI_FRUIT"       "EXP_MEDI_LEGUME"      "EXP_MEDI_NUT"        
-# [21] "EXP_MEDI_FISH"        "EXP_MEDI_ALCOHOL"     "EXP_MEDI_SSB"         "EXP_MEDI_SWEETS"      "EXP_MEDI_DISCRET_FAT" "EXP_MEDI_RED_MEAT"    "MEDI_ALL"             "MEDI_NOETOH"          "MEDI_OLIVE_OIL"       "MEDI_FRT"            
-# [31] "MEDI_VEG"             "MEDI_LEGUMES"         "MEDI_NUTS"            "MEDI_FISH"            "MEDI_ALCOHOL"         "MEDI_SSB"             "MEDI_SWEETS"          "MEDI_DISCRET_FAT"     "MEDI_REDPROC_MEAT"   
-
-# r$> colnames(MEDI_V2_validation_result)
-#  [1] "id"                   "gender"               "kcal"                 "olive_oil"            "vegetable"            "fruit"                "legume"               "nut"                  "fish"                 "alcohol"             
-# [11] "ssb"                  "sweets"               "discret_fat"          "red_meat"             "EXP_MEDI_ALL"         "EXP_MEDI_OLIVE_OIL"   "EXP_MEDI_VEGETABLE"   "EXP_MEDI_FRUIT"       "EXP_MEDI_LEGUME"      "EXP_MEDI_NUT"        
-# [21] "EXP_MEDI_FISH"        "EXP_MEDI_ALCOHOL"     "EXP_MEDI_SSB"         "EXP_MEDI_SWEETS"      "EXP_MEDI_DISCRET_FAT" "EXP_MEDI_RED_MEAT"    "MEDI_V2_ALL"          "MEDI_V2_NOETOH"       "MEDI_OLIVE_OIL"       "MEDI_FRT"            
-# [31] "MEDI_VEG"             "MEDI_LEGUMES"         "MEDI_NUTS"            "MEDI_FISH"            "MEDI_ALCOHOL"         "MEDI_SSB"             "MEDI_SWEETS"          "MEDI_DISCRET_FAT"     "MEDI_REDPROC_MEAT"   
-
-# r$> colnames(PHDI_validation_result)
-#  [1] "id"                            "gender"                        "TOTALKCAL_PHDI.x"              "WGRAIN_SERV_PHDI"              "STARCHY_VEG_SERV_PHDI"         "VEG_SERV_PHDI"                 "FRT_SERV_PHDI"                
-#  [8] "DAIRY_SERV_PHDI"               "REDPROC_MEAT_SERV_PHDI"        "POULTRY_SERV_PHDI"             "EGG_SERV_PHDI"                 "FISH_SERV_PHDI"                "NUTS_SERV_PHDI"                "LEGUMES_SERV_PHDI"            
-# [15] "SOY_SERV_PHDI"                 "ADDED_FAT_UNSAT_SERV_PHDI"     "ADDED_FAT_SAT_TRANS_SERV_PHDI" "ADDED_SUGAR_SERV_PHDI"         "EXP_PHDI_ALL"                  "EXP_PHDI_WGRAIN"               "EXP_PHDI_STARCHY_VEG"         
-# [22] "EXP_PHDI_VEG"                  "EXP_PHDI_FRT"                  "EXP_PHDI_DAIRY"                "EXP_PHDI_REDPROC_MEAT"         "EXP_PHDI_POULTRY"              "EXP_PHDI_EGG"                  "EXP_PHDI_FISH"                
-# [29] "EXP_PHDI_NUTS"                 "EXP_PHDI_LEGUMES"              "EXP_PHDI_SOY"                  "EXP_PHDI_ADDED_FAT_UNSAT"      "EXP_PHDI_ADDED_FAT_SAT"        "EXP_PHDI_ADDED_SUGAR"          "PHDI_ALL"                     
-# [36] "TOTALKCAL_PHDI.y"              "PHDI_WGRAIN"                   "PHDI_VEG"                      "PHDI_FRT"                      "PHDI_DAIRY"                    "PHDI_REDPROC_MEAT"             "PHDI_POULTRY"                 
-# [43] "PHDI_EGG"                      "PHDI_FISH"                     "PHDI_NUTS"                     "PHDI_LEGUMES"                  "PHDI_SOY"                      "PHDI_ADDED_FAT_UNSAT"          "PHDI_ADDED_FAT_SAT"           
-# [50] "PHDI_ADDED_SUGAR"   
-
-# r$> colnames(SAS_HEI2015_1718)
-#  [1] "SEQN"                     "DR1TKCAL"                 "HEI2015C1_TOTALVEG"       "HEI2015C2_GREEN_AND_BEAN" "HEI2015C3_TOTALFRUIT"     "HEI2015C4_WHOLEFRUIT"     "HEI2015C5_WHOLEGRAIN"     "HEI2015C6_TOTALDAIRY"     "HEI2015C7_TOTPROT"       
-# [10] "HEI2015C8_SEAPLANT_PROT"  "HEI2015C9_FATTYACID"      "HEI2015C10_SODIUM"        "HEI2015C11_REFINEDGRAIN"  "HEI2015C12_SFAT"          "HEI2015C13_ADDSUG"        "HEI2015_TOTAL_SCORE"     
-
-# r$> colnames(dietaryindex_HEI2015_1718)
-#  [1] "SEQN"                 "HEI2015_ALL"          "HEI2015_TOTALFRT"     "HEI2015_FRT"          "HEI2015_VEG"          "HEI2015_GREENNBEAN"   "HEI2015_TOTALPRO"     "HEI2015_SEAPLANTPRO"  "HEI2015_WHOLEGRAIN"   "HEI2015_DAIRY"       
-# [11] "HEI2015_FATTYACID"    "HEI2015_REFINEDGRAIN" "HEI2015_SODIUM"       "HEI2015_ADDEDSUGAR"   "HEI2015_SATFAT"    
+######## ACS2020_V1 validation ##########
 
 # Initialize a data frame to store results for all dietary index component scores in ACS2020_V1
 results_ACS2020_V1 <- data.frame(
@@ -225,17 +143,23 @@ print(results_ACS2020_V1)
 # Plot results
 ggplot(results_ACS2020_V1, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("ACS2020_V1") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+######### ACS2020_V2 validation ##########
 
 # Initialize a data frame to store results for all dietary index component scores in ACS2020_V2
 results_ACS2020_V2 <- data.frame(
@@ -270,17 +194,23 @@ print(results_ACS2020_V2)
 # Plot results
 ggplot(results_ACS2020_V2, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("ACS2020_V2") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+################# AHEI validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in AHEI
 results_AHEI <- data.frame(
@@ -319,17 +249,23 @@ print(results_AHEI)
 # Plot results
 ggplot(results_AHEI, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("AHEI") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+################# AHEIP validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in AHEIP
 results_AHEIP <- data.frame(
@@ -365,17 +301,23 @@ print(results_AHEIP)
 # Plot results
 ggplot(results_AHEIP, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("AHEIP") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+################# DASH validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in DASH
 results_DASH <- data.frame(
@@ -410,17 +352,23 @@ print(results_DASH)
 # Plot results
 ggplot(results_DASH, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("DASH") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+################# DASHI validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in DASHI
 results_DASHI <- data.frame(
@@ -429,20 +377,22 @@ results_DASHI <- data.frame(
   stringsAsFactors = FALSE
 )
 
+colnames(DASHI_validation_result)
+
 # List of all your datasets and their corresponding column names for DASHI
 datasets_DASHI <- list(
     DASHI_ALL = list(data = DASHI_validation_result, cols = c("EXP_DASHI_ALL", "DASHI_ALL")),
-    DASHI_VEGETABLE = list(data = DASHI_validation_result, cols = c("EXP_DASHI_VEGETABLE", "DASHI_VEG")),
-    DASHI_FRUIT = list(data = DASHI_validation_result, cols = c("EXP_DASHI_FRUIT", "DASHI_FRT")),
-    DASHI_NUT_LEGUME = list(data = DASHI_validation_result, cols = c("EXP_DASHI_NUT_LEGUME", "DASHI_NUTSLEG")),
-    DASHI_LOW_FAT_DAIRY = list(data = DASHI_validation_result, cols = c("EXP_DASHI_LOW_FAT_DAIRY", "DASHI_LOWFATDAIRY")),
-    DASHI_WHOLE_GRAIN = list(data = DASHI_validation_result, cols = c("EXP_DASHI_WHOLE_GRAIN", "DASHI_WGRAIN")),
-    DASHI_POULTRY_FISH = list(data = DASHI_validation_result, cols = c("EXP_DASHI_POULTRY_FISH", "DASHI_WHITEMEAT")),
-    DASHI_RED_PROCESSED_MEAT = list(data = DASHI_validation_result, cols = c("EXP_DASHI_RED_PROCESSED_MEAT", "DASHI_REDPROC_MEAT")),
-    DASHI_DISCRET_OIL_FAT = list(data = DASHI_validation_result, cols = c("EXP_DASHI_DISCRET_OIL_FAT", "DASHI_FATOIL")),
-    DASHI_SNACKS_SWEETS = list(data = DASHI_validation_result, cols = c("EXP_DASHI_SNACKS_SWEETS", "DASHI_SNACKS_SWEETS")),
+    DASHI_TOTAL_FAT = list(data = DASHI_validation_result, cols = c("EXP_DASHI_TOTAL_FAT", "DASHI_TOTAL_FAT")),
+    DASHI_SAT_FAT = list(data = DASHI_validation_result, cols = c("EXP_DASHI_SAT_FAT", "DASHI_SAT_FAT")),
+    DASHI_PROTEIN = list(data = DASHI_validation_result, cols = c("EXP_DASHI_PROTEIN", "DASHI_PROTEIN")),
+    DASHI_CHOLESTEROL = list(data = DASHI_validation_result, cols = c("EXP_DASHI_CHOLESTEROL", "DASHI_CHOLESTEROL")),
+    DASHI_FIBER = list(data = DASHI_validation_result, cols = c("EXP_DASHI_FIBER", "DASHI_FIBER")),
+    DASHI_POTASSIUM = list(data = DASHI_validation_result, cols = c("EXP_DASHI_POTASSIUM", "DASHI_POTASSIUM")),
+    DASHI_MAGNESIUM = list(data = DASHI_validation_result, cols = c("EXP_DASHI_MAGNESIUM", "DASHI_MAGNESIUM")),
+    DASHI_CALCIUM = list(data = DASHI_validation_result, cols = c("EXP_DASHI_CALCIUM", "DASHI_CALCIUM")),
     DASHI_SODIUM = list(data = DASHI_validation_result, cols = c("EXP_DASHI_SODIUM", "DASHI_SODIUM"))
 )
+
 
 # Compute accuracy for each dataset in DASHI
 for (name in names(datasets_DASHI)) {
@@ -457,17 +407,23 @@ print(results_DASHI)
 # Plot results
 ggplot(results_DASHI, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("DASHI") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+################# DII validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in DII
 results_DII <- data.frame(
@@ -537,17 +493,23 @@ print(results_DII)
 # Plot results
 ggplot(results_DII, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("DII") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 20),
+        plot.subtitle = element_text(size = 15),
         axis.title = element_text(size = 20),
         axis.text = element_text(size = 15),
         legend.text = element_text(size = 15),
-        legend.title = element_text(size = 20))
+        legend.title = element_text(size = 20),
+        axis.text.x = element_blank()
+        )
+
+################### HEI2015 validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in HEI2015
 results_HEI2015 <- data.frame(
@@ -587,18 +549,23 @@ print(results_HEI2015)
 # Plot results
 ggplot(results_HEI2015, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
     geom_bar(stat = "identity") +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
     ylab("Accuracy (%)") +
-    xlab("HEI2015") +
+    xlab(NULL) +
     ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+    # add a subtitie
+    labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
     # increase the title size
     theme(
         plot.title = element_text(size = 15),
+        plot.subtitle = element_text(size = 10),
         axis.title = element_text(size = 15),
         axis.text = element_text(size = 10),
         legend.text = element_text(size = 10),
-        legend.title = element_text(size = 15))
-    
+        legend.title = element_text(size = 15),
+        axis.text.x = element_blank()
+        )
+
+################### HEI2020 validation ######################
 
 # Initialize a data frame to store results for all HEI2020 component scores
 results_HEI2020 <- data.frame(
@@ -638,18 +605,23 @@ print(results_HEI2020)
 # Plot results
 ggplot(results_HEI2020, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ylab("Accuracy (%)") +
-  xlab("HEI2020") +
+  xlab(NULL) +
   ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
     axis.title = element_text(size = 20),
     axis.text = element_text(size = 15),
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 20)
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
   )
+
+################### MED validation ######################
 
 # Initialize a data frame to store results for all MED component scores
 results_MED <- data.frame(
@@ -685,18 +657,23 @@ print(results_MED)
 # Plot results
 ggplot(results_MED, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ylab("Accuracy (%)") +
-  xlab("MED") +
+  xlab(NULL) +
   ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
     axis.title = element_text(size = 20),
     axis.text = element_text(size = 15),
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 20)
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
   )
+
+################### MEDI validation ######################
 
 # Initialize a data frame to store results for all MEDI component scores
 results_MEDI <- data.frame(
@@ -734,18 +711,23 @@ print(results_MEDI)
 # Plot results
 ggplot(results_MEDI, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ylab("Accuracy (%)") +
-  xlab("MEDI") +
+  xlab(NULL) +
   ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
     axis.title = element_text(size = 20),
     axis.text = element_text(size = 15),
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 20)
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
   )
+
+################### MEDI_V2 validation ######################
 
 # Initialize a data frame to store results for all MEDI_V2 component scores
 results_MEDI_V2 <- data.frame(
@@ -783,18 +765,24 @@ print(results_MEDI_V2)
 # Plot results
 ggplot(results_MEDI_V2, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ylab("Accuracy (%)") +
-  xlab("MEDI_V2") +
+  xlab(NULL) +
   ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
     axis.title = element_text(size = 20),
     axis.text = element_text(size = 15),
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 20)
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
   )
+
+
+################### PHDI validation ######################
 
 # Initialize a data frame to store results for all PHDI component scores
 results_PHDI <- data.frame(
@@ -836,20 +824,25 @@ print(results_PHDI)
 # Plot results
 ggplot(results_PHDI, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ylab("Accuracy (%)") +
-  xlab("PHDI") +
+  xlab(NULL) +
   ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. hand-calculated Dietary Index Values") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
     axis.title = element_text(size = 20),
     axis.text = element_text(size = 15),
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 20)
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
   )
 
-# Initialize a data frame to store results for all HEI2015_1718 component scores
+
+###################### HEI2015 validation in NHANES using dietaryindex-calculated results vs. National Cancer Institute (NCI) SAS results ######################
+# Initialize a data frame to store results for all HEI2015_1718 results
 results_HEI2015_1718 <- data.frame(
   Dataset = character(),
   Accuracy = numeric(),
@@ -890,15 +883,151 @@ print(results_HEI2015_1718)
 # Plot results
 ggplot(results_HEI2015_1718, aes(x = Component, y = Accuracy, fill = Component)) +
   geom_bar(stat = "identity") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ylab("Accuracy (%)") +
-  xlab("Component") +
-  ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. SAS-calculated Dietary Index Values from NCI") +
+  xlab(NULL) +
+  ggtitle("Accuracy of HEI2015 in NHANES: dietaryindex-calculated vs. SAS-calculated Dietary Index Values from NCI") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
     axis.title = element_text(size = 20),
     axis.text = element_text(size = 15),
     legend.text = element_text(size = 15),
-    legend.title = element_text(size = 20)
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
+  )
+
+
+###################### HEI2015 validation in ASA24 using dietaryindex-calculated results vs. National Cancer Institute (NCI) SAS results ######################
+# Initialize a data frame to store results for all HEI2015_ASA24 results
+results_HEI2015_ASA24 <- data.frame(
+  Dataset = character(),
+  Accuracy = numeric(),
+  stringsAsFactors = FALSE
+)
+
+colnames(HEI2015_ASA24_NCI_SAS)
+colnames(HEI2015_ASA24_dietaryindex)
+
+# r$> colnames(HEI2015_ASA24_NCI_SAS)
+#  [1] "UserName"                 "UserID"                   "RecallNo"                 "KCAL"                     "HEI2015C1_TOTALVEG"       "HEI2015C2_GREEN_AND_BEAN"
+#  [7] "HEI2015C3_TOTALFRUIT"     "HEI2015C4_WHOLEFRUIT"     "HEI2015C5_WHOLEGRAIN"     "HEI2015C6_TOTALDAIRY"     "HEI2015C7_TOTPROT"        "HEI2015C8_SEAPLANT_PROT" 
+# [13] "HEI2015C9_FATTYACID"      "HEI2015C10_SODIUM"        "HEI2015C11_REFINEDGRAIN"  "HEI2015C12_SFAT"          "HEI2015C13_ADDSUG"        "HEI2015_TOTAL_SCORE"     
+
+# r$> colnames(HEI2015_ASA24_dietaryindex)
+#  [1] "UserName"             "UserID"               "TOTALKCAL"            "HEI2015_ALL"          "HEI2015_TOTALFRT"     "HEI2015_FRT"          "HEI2015_VEG"          "HEI2015_GREENNBEAN"  
+#  [9] "HEI2015_TOTALPRO"     "HEI2015_SEAPLANTPRO"  "HEI2015_WHOLEGRAIN"   "HEI2015_DAIRY"        "HEI2015_FATTYACID"    "HEI2015_REFINEDGRAIN" "HEI2015_SODIUM"       "HEI2015_ADDEDSUGAR"  
+# [17] "HEI2015_SATFAT"
+
+# Create a list with HEI2015_ASA24_NCI_SAS and HEI2015_ASA24_dietaryindex
+datasets_HEI2015_ASA24<- list(
+    HEI2015_ALL = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015_TOTAL_SCORE", "HEI2015_ALL")),
+    HEI2015_TOTALFRT = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C3_TOTALFRUIT", "HEI2015_TOTALFRT")),
+    HEI2015_FRT = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C4_WHOLEFRUIT", "HEI2015_FRT")),
+    HEI2015_VEG = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C1_TOTALVEG", "HEI2015_VEG")),
+    HEI2015_GREENNBEAN = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C2_GREEN_AND_BEAN", "HEI2015_GREENNBEAN")),
+    HEI2015_TOTALPRO = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C7_TOTPROT", "HEI2015_TOTALPRO")),
+    HEI2015_SEAPLANTPRO = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C8_SEAPLANT_PROT", "HEI2015_SEAPLANTPRO")),
+    HEI2015_WHOLEGRAIN = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C5_WHOLEGRAIN", "HEI2015_WHOLEGRAIN")),
+    HEI2015_DAIRY = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C6_TOTALDAIRY", "HEI2015_DAIRY")),
+    HEI2015_FATTYACID = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C9_FATTYACID", "HEI2015_FATTYACID")),
+    HEI2015_REFINEDGRAIN = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C11_REFINEDGRAIN", "HEI2015_REFINEDGRAIN")),
+    HEI2015_SODIUM = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C10_SODIUM", "HEI2015_SODIUM")),
+    HEI2015_ADDEDSUGAR = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C13_ADDSUG", "HEI2015_ADDEDSUGAR")),
+    HEI2015_SATFAT = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C12_SFAT", "HEI2015_SATFAT"))
+    )
+
+# Compute accuracy for each dataset in PHDI
+for (name in names(datasets_HEI2015_ASA24)) {
+  dataset <- datasets_HEI2015_ASA24[[name]]
+  data1_values <- as.numeric(dataset$data1[[dataset$cols[1]]])  # Convert to numeric
+  data2_values <- as.numeric(dataset$data2[[dataset$cols[2]]])  # Convert to numeric
+
+  accuracy <- get_accuracy(data1_values, data2_values)
+  results_HEI2015_ASA24 <- rbind(results_HEI2015_ASA24, data.frame(Component = name, Accuracy = accuracy))
+}
+
+# Print results
+print(results_HEI2015_ASA24)
+
+# Plot results
+ggplot(results_HEI2015_ASA24, aes(x = Component, y = Accuracy, fill = Component)) +
+  geom_bar(stat = "identity") +
+  ylab("Accuracy (%)") +
+  xlab(NULL) +
+  ggtitle("Accuracy of HEI2015 in ASA24: dietaryindex-calculated vs. SAS-calculated Dietary Index Values from NCI") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
+  # increase the title size
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
+    axis.title = element_text(size = 20),
+    axis.text = element_text(size = 15),
+    legend.text = element_text(size = 15),
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
+  )
+
+############### HEI2015 validation in DHQ3 using dietaryindex-calculated results vs. National Cancer Institute (NCI) SAS results ######################
+# Initialize a data frame to store results for all HEI2015_DHQ3 results
+results_HEI2015_DHQ3 <- data.frame(
+  Dataset = character(),
+  Accuracy = numeric(),
+  stringsAsFactors = FALSE
+)
+
+colnames(HEI2015_DHQ3_NCI_SAS)
+colnames(HEI2015_DHQ3_dietaryindex)
+
+# Create a list with HEI2015_DHQ3_NCI_SAS and HEI2015_DHQ3_dietaryindex
+datasets_HEI2015_DHQ3<- list(
+    HEI2015_ALL = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("Total HEI-2015 Score", "HEI2015_ALL")),
+    HEI2015_TOTALFRT = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Total Fruits - Component Score", "HEI2015_TOTALFRT")),
+    HEI2015_FRT = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Whole Fruits - Component Score", "HEI2015_FRT")),
+    HEI2015_VEG = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Total Vegetables - Component Score", "HEI2015_VEG")),
+    HEI2015_GREENNBEAN = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Greens and Beans - Component Score", "HEI2015_GREENNBEAN")),
+    HEI2015_TOTALPRO = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Total Protein Foods - Component Score", "HEI2015_TOTALPRO")),
+    HEI2015_SEAPLANTPRO = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Seafood and Plant Proteins - Component Score", "HEI2015_SEAPLANTPRO")),
+    HEI2015_WHOLEGRAIN = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Whole Grains - Component Score", "HEI2015_WHOLEGRAIN")),
+    HEI2015_DAIRY = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Dairy - Component Score", "HEI2015_DAIRY")),
+    HEI2015_FATTYACID = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Fatty Acids - Component Score", "HEI2015_FATTYACID")),
+    HEI2015_REFINEDGRAIN = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Refined Grains - Component Score", "HEI2015_REFINEDGRAIN")),
+    HEI2015_SODIUM = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Sodium - Component Score", "HEI2015_SODIUM")),
+    HEI2015_ADDEDSUGAR = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Added Sugars - Component Score", "HEI2015_ADDEDSUGAR")),
+    HEI2015_SATFAT = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Saturated Fats - Component Score", "HEI2015_SATFAT"))
+    )
+
+# Compute accuracy for each dataset in PHDI
+for (name in names(datasets_HEI2015_DHQ3)) {
+  dataset <- datasets_HEI2015_DHQ3[[name]]
+  data1_values <- as.numeric(dataset$data1[[dataset$cols[1]]])  # Convert to numeric
+  data2_values <- as.numeric(dataset$data2[[dataset$cols[2]]])  # Convert to numeric
+
+  accuracy <- get_accuracy_diff(data1_values, data2_values)
+  results_HEI2015_DHQ3 <- rbind(results_HEI2015_DHQ3, data.frame(Component = name, Accuracy = accuracy))
+}
+
+# Print results
+print(results_HEI2015_DHQ3)
+
+# Plot results
+ggplot(results_HEI2015_DHQ3, aes(x = Component, y = Accuracy, fill = Component)) +
+  geom_bar(stat = "identity") +
+  ylab("Accuracy (%)") +
+  xlab(NULL) +
+  ggtitle("Accuracy of HEI2015 in DHQ3: dietaryindex-calculated vs. internal-calculated Dietary Index Values from NCI") +
+  # add a subtitie
+  labs(subtitle = "Check if the differences between 2 dietary indexes are within 0.5") +
+  # increase the title size
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
+    axis.title = element_text(size = 20),
+    axis.text = element_text(size = 15),
+    legend.text = element_text(size = 15),
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
   )
