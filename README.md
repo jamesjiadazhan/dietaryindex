@@ -7,6 +7,12 @@ ___
 
 **dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies, promoting precision nutrition.
 
+If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
+
+- *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
+
+
+
 As of version 1.0.2, the package supports the latest version of the Healthy Eating Index (HEI2020) for National Health and Nutrition Examination Survey (NHANES) data. NHANES data from 2005 to 2018 are compiled and available within the dietaryindex package. Data can be accessed with commands like `data("NHANES_20172018")` or `data("NHANES_20152016")`. Also, all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. 
 
 The **dietaryindex** package performs calculations in two steps:
