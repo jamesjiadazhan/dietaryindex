@@ -55,5 +55,5 @@ Calculate the MEDI dietary index (serving size-based), Mediterranean, using give
 }
 \examples{
 data("PREDIMED_trial")
-MEDI(SERV_DATA = PREDIMED_trial,RESPONDENTID = PREDIMED_trial$Diet_Type,OLIVE_OIL_SERV_MEDI = PREDIMED_trial$Virgin_Oliveoil,FRT_SERV_MEDI = PREDIMED_trial$Fruits, VEG_SERV_MEDI = PREDIMED_trial$Vegetables,LEGUMES_SERV_MEDI = PREDIMED_trial$Legumes,NUTS_SERV_MEDI = PREDIMED_trial$Total_nuts,FISH_SEAFOOD_SERV_MEDI = PREDIMED_trial$Fish_Seafood,ALCOHOL_SERV_MEDI = PREDIMED_trial$Alcohol,SSB_SERV_MEDI = PREDIMED_trial$Soda_Drinks,SWEETS_SERV_MEDI = PREDIMED_trial$Sweets,DISCRET_FAT_SERV_MEDI = PREDIMED_trial$Refined_Oliveoil,REDPROC_MEAT_SERV_MEDI = PREDIMED_trial$Meat)
+MEDI(SERV_DATA = PREDIMED_trial, RESPONDENTID = PREDIMED_trial$Diet_Type, OLIVE_OIL_SERV_MEDI = PREDIMED_trial$Virgin_Oliveoil, FRT_SERV_MEDI = PREDIMED_trial$Fruits, VEG_SERV_MEDI = PREDIMED_trial$Vegetables, LEGUMES_SERV_MEDI = PREDIMED_trial$Legumes, NUTS_SERV_MEDI = PREDIMED_trial$Total_nuts, FISH_SEAFOOD_SERV_MEDI = PREDIMED_trial$Fish_Seafood, ALCOHOL_SERV_MEDI = PREDIMED_trial$Alcohol, SSB_SERV_MEDI = PREDIMED_trial$Soda_Drinks, SWEETS_SERV_MEDI = PREDIMED_trial$Sweets, DISCRET_FAT_SERV_MEDI = PREDIMED_trial$Refined_Oliveoil, REDPROC_MEAT_SERV_MEDI = PREDIMED_trial$Meat)
 }

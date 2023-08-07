@@ -20,6 +20,8 @@ AHEI_NHANES_FPED(
 \item{FPED_IND_PATH2}{The file path for the FPED IND data for day 2. The file name should be like: fped_dr2iff.sas7bdat}
 
 \item{NUTRIENT_IND_PATH2}{The file path for the NUTRIENT IND data for day 2. The file name should be like: DR2IFF_J}
+
+\item{SSB_code}{The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file.}
 }
 \value{
 The AHEI and its component scores and serving sizes

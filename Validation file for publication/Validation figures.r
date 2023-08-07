@@ -1,8 +1,12 @@
 # produce validation graph
+
+# set up working directory
 setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/Final validation files")
 library(ggplot2)
 library(dplyr)
-library(readr)    
+library(readr)
+
+# read in dietaryindex-calculated and hand-calculated validation results
 ACS2020_V1_validation_result = read_csv("ACS2020_V1_validation_result.csv")
 ACS2020_V2_validation_result = read_csv("ACS2020_V2_validation_result.csv")
 AHEI_validation_result = read_csv("AHEI_validation_result.csv")
@@ -17,9 +21,18 @@ MEDI_validation_result = read_csv("MEDI_validation_result.csv")
 MEDI_V2_validation_result = read_csv("MEDI_V2_validation_result.csv")
 PHDI_validation_result = read_csv("PHDI_validation_result.csv")
 
-setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_NHANES_SAS_1718")
+# read in NHANES NCI SAS and dietaryindex-calculated validation results
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_NHANES_1718")
 SAS_HEI2015_1718 = read_csv("SAS_HEI2015_1718.csv")
 dietaryindex_HEI2015_1718 = read_csv("dietaryindex_HEI2015_1718.csv")
+
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_ASA24_example_data")
+HEI2015_ASA24_NCI_SAS = read_csv("HEI2015_ASA24_NCI_SAS.csv")
+HEI2015_ASA24_dietaryindex = read_csv("HEI2015_ASA24_dietaryindex.csv")
+
+setwd("/Users/james/Desktop/Emory University - Ph.D./dietaryindex_package/dietaryindex/Validation file for publication/HEI2015_DHQ3_example_data")
+HEI2015_DHQ3_NCI_SAS = read_csv("Sample total daily results.csv", skip = 1)
+HEI2015_DHQ3_dietaryindex = read_csv("HEI2015_DHQ3_dietaryindex.csv")
 
 # Define a function to compute accuracy
 get_accuracy <- function(x, y) {
@@ -29,6 +42,17 @@ get_accuracy <- function(x, y) {
   y <- round(y, 2)
   return ((sum(x == y, na.rm = TRUE) / length(x)) * 100)
 }
+
+# Define a function to compute accuracy
+get_accuracy_diff <- function(x, y) {
+  # the maximum tolerance for the difference between x and y
+  tolerance <- 0.5
+  # Subtract data1 from data2 (or vice versa) and take the absolute value of the differences
+  diff <- abs(x - y)
+  return ((sum(diff <= tolerance, na.rm = TRUE) / length(x)) * 100)
+}
+
+############### Total score of all dietary indexes validation ###############
 
 # Initialize a data frame to store results for the total dietary index score for all dietary indexes
 results <- data.frame(
@@ -85,6 +109,9 @@ ggplot(results, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         ) 
 
 
+######## ACS2020_V1 validation ##########
+
+
 # Initialize a data frame to store results for all dietary index component scores in ACS2020_V1
 results_ACS2020_V1 <- data.frame(
   Dataset = character(),
@@ -134,6 +161,9 @@ ggplot(results_ACS2020_V1, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         )
 
+######### ACS2020_V2 validation ##########
+
+
 # Initialize a data frame to store results for all dietary index component scores in ACS2020_V2
 results_ACS2020_V2 <- data.frame(
   Dataset = character(),
@@ -182,6 +212,9 @@ ggplot(results_ACS2020_V2, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         legend.title = element_text(size = 20),
         axis.text.x = element_blank()
         )
+
+
+################# AHEI validation ######################
 
 # Initialize a data frame to store results for all dietary index component scores in AHEI
 results_AHEI <- data.frame(
@@ -236,6 +269,10 @@ ggplot(results_AHEI, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         )
 
+
+################# AHEIP validation ######################
+
+
 # Initialize a data frame to store results for all dietary index component scores in AHEIP
 results_AHEIP <- data.frame(
   Dataset = character(),
@@ -286,6 +323,9 @@ ggplot(results_AHEIP, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         )
 
+################# DASH validation ######################
+
+
 # Initialize a data frame to store results for all dietary index component scores in DASH
 results_DASH <- data.frame(
   Dataset = character(),
@@ -334,6 +374,9 @@ ggplot(results_DASH, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         legend.title = element_text(size = 20),
         axis.text.x = element_blank()
         )
+
+################# DASHI validation ######################
+
 
 # Initialize a data frame to store results for all dietary index component scores in DASHI
 results_DASHI <- data.frame(
@@ -387,6 +430,9 @@ ggplot(results_DASHI, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         legend.title = element_text(size = 20),
         axis.text.x = element_blank()
         )
+
+
+################# DII validation ######################
 
 
 # Initialize a data frame to store results for all dietary index component scores in DII
@@ -473,6 +519,9 @@ ggplot(results_DII, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         )
 
+################### HEI2015 validation ######################
+
+
 # Initialize a data frame to store results for all dietary index component scores in HEI2015
 results_HEI2015 <- data.frame(
   Dataset = character(),
@@ -526,7 +575,9 @@ ggplot(results_HEI2015, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         legend.title = element_text(size = 15),
         axis.text.x = element_blank()
         )
-    
+
+################### HEI2020 validation ######################
+
 
 # Initialize a data frame to store results for all HEI2020 component scores
 results_HEI2020 <- data.frame(
@@ -582,6 +633,8 @@ ggplot(results_HEI2020, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
     axis.text.x = element_blank()
   )
 
+################### MED validation ######################
+
 # Initialize a data frame to store results for all MED component scores
 results_MED <- data.frame(
   Dataset = character(),
@@ -631,6 +684,8 @@ ggplot(results_MED, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
     legend.title = element_text(size = 20),
     axis.text.x = element_blank()
   )
+
+################### MEDI validation ######################
 
 # Initialize a data frame to store results for all MEDI component scores
 results_MEDI <- data.frame(
@@ -684,6 +739,8 @@ ggplot(results_MEDI, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
     axis.text.x = element_blank()
   )
 
+################### MEDI_V2 validation ######################
+
 # Initialize a data frame to store results for all MEDI_V2 component scores
 results_MEDI_V2 <- data.frame(
   Dataset = character(),
@@ -735,6 +792,9 @@ ggplot(results_MEDI_V2, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
     legend.title = element_text(size = 20),
     axis.text.x = element_blank()
   )
+
+
+################### PHDI validation ######################
 
 # Initialize a data frame to store results for all PHDI component scores
 results_PHDI <- data.frame(
@@ -792,7 +852,9 @@ ggplot(results_PHDI, aes(x = Dataset, y = Accuracy, fill = Dataset)) +
     axis.text.x = element_blank()
   )
 
-# Initialize a data frame to store results for all HEI2015_1718 component scores
+
+###################### HEI2015 validation in NHANES using dietaryindex-calculated results vs. National Cancer Institute (NCI) SAS results ######################
+# Initialize a data frame to store results for all HEI2015_1718 results
 results_HEI2015_1718 <- data.frame(
   Dataset = character(),
   Accuracy = numeric(),
@@ -835,9 +897,142 @@ ggplot(results_HEI2015_1718, aes(x = Component, y = Accuracy, fill = Component))
   geom_bar(stat = "identity") +
   ylab("Accuracy (%)") +
   xlab(NULL) +
-  ggtitle("Comparison of Accuracy: dietaryindex-calculated vs. SAS-calculated Dietary Index Values from NCI") +
+  ggtitle("Accuracy of HEI2015 in NHANES: dietaryindex-calculated vs. SAS-calculated Dietary Index Values from NCI") +
   # add a subtitie
   labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
+  # increase the title size
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
+    axis.title = element_text(size = 20),
+    axis.text = element_text(size = 15),
+    legend.text = element_text(size = 15),
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
+  )
+
+
+###################### HEI2015 validation in ASA24 using dietaryindex-calculated results vs. National Cancer Institute (NCI) SAS results ######################
+# Initialize a data frame to store results for all HEI2015_ASA24 results
+results_HEI2015_ASA24 <- data.frame(
+  Dataset = character(),
+  Accuracy = numeric(),
+  stringsAsFactors = FALSE
+)
+
+colnames(HEI2015_ASA24_NCI_SAS)
+colnames(HEI2015_ASA24_dietaryindex)
+
+# r$> colnames(HEI2015_ASA24_NCI_SAS)
+#  [1] "UserName"                 "UserID"                   "RecallNo"                 "KCAL"                     "HEI2015C1_TOTALVEG"       "HEI2015C2_GREEN_AND_BEAN"
+#  [7] "HEI2015C3_TOTALFRUIT"     "HEI2015C4_WHOLEFRUIT"     "HEI2015C5_WHOLEGRAIN"     "HEI2015C6_TOTALDAIRY"     "HEI2015C7_TOTPROT"        "HEI2015C8_SEAPLANT_PROT" 
+# [13] "HEI2015C9_FATTYACID"      "HEI2015C10_SODIUM"        "HEI2015C11_REFINEDGRAIN"  "HEI2015C12_SFAT"          "HEI2015C13_ADDSUG"        "HEI2015_TOTAL_SCORE"     
+
+# r$> colnames(HEI2015_ASA24_dietaryindex)
+#  [1] "UserName"             "UserID"               "TOTALKCAL"            "HEI2015_ALL"          "HEI2015_TOTALFRT"     "HEI2015_FRT"          "HEI2015_VEG"          "HEI2015_GREENNBEAN"  
+#  [9] "HEI2015_TOTALPRO"     "HEI2015_SEAPLANTPRO"  "HEI2015_WHOLEGRAIN"   "HEI2015_DAIRY"        "HEI2015_FATTYACID"    "HEI2015_REFINEDGRAIN" "HEI2015_SODIUM"       "HEI2015_ADDEDSUGAR"  
+# [17] "HEI2015_SATFAT"
+
+# Create a list with HEI2015_ASA24_NCI_SAS and HEI2015_ASA24_dietaryindex
+datasets_HEI2015_ASA24<- list(
+    HEI2015_ALL = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015_TOTAL_SCORE", "HEI2015_ALL")),
+    HEI2015_TOTALFRT = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C3_TOTALFRUIT", "HEI2015_TOTALFRT")),
+    HEI2015_FRT = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C4_WHOLEFRUIT", "HEI2015_FRT")),
+    HEI2015_VEG = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C1_TOTALVEG", "HEI2015_VEG")),
+    HEI2015_GREENNBEAN = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C2_GREEN_AND_BEAN", "HEI2015_GREENNBEAN")),
+    HEI2015_TOTALPRO = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C7_TOTPROT", "HEI2015_TOTALPRO")),
+    HEI2015_SEAPLANTPRO = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C8_SEAPLANT_PROT", "HEI2015_SEAPLANTPRO")),
+    HEI2015_WHOLEGRAIN = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C5_WHOLEGRAIN", "HEI2015_WHOLEGRAIN")),
+    HEI2015_DAIRY = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C6_TOTALDAIRY", "HEI2015_DAIRY")),
+    HEI2015_FATTYACID = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C9_FATTYACID", "HEI2015_FATTYACID")),
+    HEI2015_REFINEDGRAIN = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C11_REFINEDGRAIN", "HEI2015_REFINEDGRAIN")),
+    HEI2015_SODIUM = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C10_SODIUM", "HEI2015_SODIUM")),
+    HEI2015_ADDEDSUGAR = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C13_ADDSUG", "HEI2015_ADDEDSUGAR")),
+    HEI2015_SATFAT = list(data1 = HEI2015_ASA24_NCI_SAS, data2 = HEI2015_ASA24_dietaryindex, cols = c("HEI2015C12_SFAT", "HEI2015_SATFAT"))
+    )
+
+# Compute accuracy for each dataset in PHDI
+for (name in names(datasets_HEI2015_ASA24)) {
+  dataset <- datasets_HEI2015_ASA24[[name]]
+  data1_values <- as.numeric(dataset$data1[[dataset$cols[1]]])  # Convert to numeric
+  data2_values <- as.numeric(dataset$data2[[dataset$cols[2]]])  # Convert to numeric
+
+  accuracy <- get_accuracy(data1_values, data2_values)
+  results_HEI2015_ASA24 <- rbind(results_HEI2015_ASA24, data.frame(Component = name, Accuracy = accuracy))
+}
+
+# Print results
+print(results_HEI2015_ASA24)
+
+# Plot results
+ggplot(results_HEI2015_ASA24, aes(x = Component, y = Accuracy, fill = Component)) +
+  geom_bar(stat = "identity") +
+  ylab("Accuracy (%)") +
+  xlab(NULL) +
+  ggtitle("Accuracy of HEI2015 in ASA24: dietaryindex-calculated vs. SAS-calculated Dietary Index Values from NCI") +
+  # add a subtitie
+  labs(subtitle = "Exact match by rounding both results to the nearest two decimal places") +
+  # increase the title size
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 15),
+    axis.title = element_text(size = 20),
+    axis.text = element_text(size = 15),
+    legend.text = element_text(size = 15),
+    legend.title = element_text(size = 20),
+    axis.text.x = element_blank()
+  )
+
+############### HEI2015 validation in DHQ3 using dietaryindex-calculated results vs. National Cancer Institute (NCI) SAS results ######################
+# Initialize a data frame to store results for all HEI2015_DHQ3 results
+results_HEI2015_DHQ3 <- data.frame(
+  Dataset = character(),
+  Accuracy = numeric(),
+  stringsAsFactors = FALSE
+)
+
+colnames(HEI2015_DHQ3_NCI_SAS)
+colnames(HEI2015_DHQ3_dietaryindex)
+
+# Create a list with HEI2015_DHQ3_NCI_SAS and HEI2015_DHQ3_dietaryindex
+datasets_HEI2015_DHQ3<- list(
+    HEI2015_ALL = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("Total HEI-2015 Score", "HEI2015_ALL")),
+    HEI2015_TOTALFRT = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Total Fruits - Component Score", "HEI2015_TOTALFRT")),
+    HEI2015_FRT = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Whole Fruits - Component Score", "HEI2015_FRT")),
+    HEI2015_VEG = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Total Vegetables - Component Score", "HEI2015_VEG")),
+    HEI2015_GREENNBEAN = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Greens and Beans - Component Score", "HEI2015_GREENNBEAN")),
+    HEI2015_TOTALPRO = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Total Protein Foods - Component Score", "HEI2015_TOTALPRO")),
+    HEI2015_SEAPLANTPRO = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Seafood and Plant Proteins - Component Score", "HEI2015_SEAPLANTPRO")),
+    HEI2015_WHOLEGRAIN = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Whole Grains - Component Score", "HEI2015_WHOLEGRAIN")),
+    HEI2015_DAIRY = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Dairy - Component Score", "HEI2015_DAIRY")),
+    HEI2015_FATTYACID = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Fatty Acids - Component Score", "HEI2015_FATTYACID")),
+    HEI2015_REFINEDGRAIN = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Refined Grains - Component Score", "HEI2015_REFINEDGRAIN")),
+    HEI2015_SODIUM = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Sodium - Component Score", "HEI2015_SODIUM")),
+    HEI2015_ADDEDSUGAR = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Added Sugars - Component Score", "HEI2015_ADDEDSUGAR")),
+    HEI2015_SATFAT = list(data1 = HEI2015_DHQ3_NCI_SAS, data2 = HEI2015_DHQ3_dietaryindex, cols = c("HEI-2015 - Saturated Fats - Component Score", "HEI2015_SATFAT"))
+    )
+
+# Compute accuracy for each dataset in PHDI
+for (name in names(datasets_HEI2015_DHQ3)) {
+  dataset <- datasets_HEI2015_DHQ3[[name]]
+  data1_values <- as.numeric(dataset$data1[[dataset$cols[1]]])  # Convert to numeric
+  data2_values <- as.numeric(dataset$data2[[dataset$cols[2]]])  # Convert to numeric
+
+  accuracy <- get_accuracy_diff(data1_values, data2_values)
+  results_HEI2015_DHQ3 <- rbind(results_HEI2015_DHQ3, data.frame(Component = name, Accuracy = accuracy))
+}
+
+# Print results
+print(results_HEI2015_DHQ3)
+
+# Plot results
+ggplot(results_HEI2015_DHQ3, aes(x = Component, y = Accuracy, fill = Component)) +
+  geom_bar(stat = "identity") +
+  ylab("Accuracy (%)") +
+  xlab(NULL) +
+  ggtitle("Accuracy of HEI2015 in DHQ3: dietaryindex-calculated vs. internal-calculated Dietary Index Values from NCI") +
+  # add a subtitie
+  labs(subtitle = "Check if the differences between 2 dietary indexes are within 0.5") +
   # increase the title size
   theme(
     plot.title = element_text(size = 20),

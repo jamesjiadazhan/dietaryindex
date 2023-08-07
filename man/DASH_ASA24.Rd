@@ -4,10 +4,21 @@
 \alias{DASH_ASA24}
 \title{DASH_ASA24}
 \usage{
-DASH_ASA24(DATA_PATH)
+DASH_ASA24(
+  DATA_PATH,
+  SKIM_MILK_CODE = NULL,
+  LOWF_CHEESE_CODE = NULL,
+  SSB_code = NULL
+)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Items.csv}
+
+\item{SKIM_MILK_CODE}{The food code for skim milk, default is the skim milk code from 17-18 FNDDS file}
+
+\item{LOWF_CHEESE_CODE}{The food code for low-fat cheese, default is the low-fat cheese code from 17-18 FNDDS file}
+
+\item{SSB_code}{The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file}
 }
 \value{
 The DASH and its component scores

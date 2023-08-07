@@ -10,7 +10,7 @@ HEI2015_ASA24(DATA_PATH)
 \item{DATA_PATH}{The file path for the data. The file name should be like: Totals.csv.}
 }
 \value{
-The HEI2015 and its component scores
+The average HEI2015 and its component scores for each individual per day.
 }
 \description{
 Calculate the HEI2015 for the ASA24 data within 1 step
