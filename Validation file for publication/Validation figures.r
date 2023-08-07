@@ -108,7 +108,9 @@ ggplot(results, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         ) 
 
+
 ######## ACS2020_V1 validation ##########
+
 
 # Initialize a data frame to store results for all dietary index component scores in ACS2020_V1
 results_ACS2020_V1 <- data.frame(
@@ -161,6 +163,7 @@ ggplot(results_ACS2020_V1, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
 
 ######### ACS2020_V2 validation ##########
 
+
 # Initialize a data frame to store results for all dietary index component scores in ACS2020_V2
 results_ACS2020_V2 <- data.frame(
   Dataset = character(),
@@ -209,6 +212,7 @@ ggplot(results_ACS2020_V2, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         legend.title = element_text(size = 20),
         axis.text.x = element_blank()
         )
+
 
 ################# AHEI validation ######################
 
@@ -265,7 +269,9 @@ ggplot(results_AHEI, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         )
 
+
 ################# AHEIP validation ######################
+
 
 # Initialize a data frame to store results for all dietary index component scores in AHEIP
 results_AHEIP <- data.frame(
@@ -319,6 +325,7 @@ ggplot(results_AHEIP, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
 
 ################# DASH validation ######################
 
+
 # Initialize a data frame to store results for all dietary index component scores in DASH
 results_DASH <- data.frame(
   Dataset = character(),
@@ -369,6 +376,7 @@ ggplot(results_DASH, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         )
 
 ################# DASHI validation ######################
+
 
 # Initialize a data frame to store results for all dietary index component scores in DASHI
 results_DASHI <- data.frame(
@@ -423,7 +431,9 @@ ggplot(results_DASHI, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         axis.text.x = element_blank()
         )
 
+
 ################# DII validation ######################
+
 
 # Initialize a data frame to store results for all dietary index component scores in DII
 results_DII <- data.frame(
@@ -511,6 +521,7 @@ ggplot(results_DII, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
 
 ################### HEI2015 validation ######################
 
+
 # Initialize a data frame to store results for all dietary index component scores in HEI2015
 results_HEI2015 <- data.frame(
   Dataset = character(),
@@ -566,6 +577,7 @@ ggplot(results_HEI2015, aes(x = Dataset, y = Accuracy, fill=Dataset)) +
         )
 
 ################### HEI2020 validation ######################
+
 
 # Initialize a data frame to store results for all HEI2020 component scores
 results_HEI2020 <- data.frame(
