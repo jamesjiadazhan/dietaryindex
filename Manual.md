@@ -8,9 +8,10 @@ library(dietaryindex)
 The **dietaryindex** package currently contains the following key functions:
 
 - Generic functions
-  - `HEI2020()`, Healthy Eating Index 2020 & HEI-Toddlers-2020
+  - `HEI2020()`, `HEI2020_V2()`, Healthy Eating Index 2020 & HEI-Toddlers-2020
     - Ref: https://pubmed.ncbi.nlm.nih.gov/37201748/
     - Ref: https://pubmed.ncbi.nlm.nih.gov/37209965/
+    - The only difference for HEI2020_V2 is that it has different serving size definitions for added sugar (tsp, teaspoon) and saturated fat (g, gram). In HEI2020, the required serving sizes for added sugar and saturated fat are % of total energy, which may be hard to calculate. Thus, HEI2020_V2 is provided separately as a potentially convenient option. Note, 1 tsp of added sugar is equal to 4 grams in dietaryindex.
   - `HEI2015()`, Healthy Eating Index 2015 
     - Ref: https://www.fns.usda.gov/how-hei-scored
   - `AHEI()`, alternative healthy eating index 
@@ -327,6 +328,9 @@ MED_BLOCK(BLOCK_exp)
 #Use the example data
 data("HEI2020_VALIDATION")
 HEI2020(SERV_DATA = HEI2020_VALIDATION,RESPONDENTID = HEI2020_VALIDATION$id,AGE = HEI2020_VALIDATION$age,TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal,TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit,FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit,VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable,GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean,TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein,SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein,WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain,DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy,FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid,REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain,SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium,ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar,SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
+
+HEI2020_V2(SERV_DATA = HEI2020_VALIDATION,RESPONDENTID = HEI2020_VALIDATION$id,AGE = HEI2020_VALIDATION$age,TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal,TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit,FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit,VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable,GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean,TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein,SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein,WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain,DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy,FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid,REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain,SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium,ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar,SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
+
 ```
 
 #### Calculating HEI2015 for your own dietary assessment tool
