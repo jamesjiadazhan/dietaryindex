@@ -31,7 +31,7 @@ This package can calculate the following dietary pattern indexes:
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
-**dietaryindex** has compiled NHANES data from 2005 - 2018 for your convenience. This includes NHANES 2005-2006, NHANES 2007-2008, NHANES 2009-2010, NHANES 2011-2012, NHANES 2013-2014, NHANES 2015-2016, NHANES 2017-2018. To retrieve the data, download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D) and use the following codes to load the data:
+**dietaryindex** has compiled NHANES data from 2005 - 2020 for your convenience. This includes NHANES 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data, download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D) and use the following codes to load the data:
 ```
 # set up working dictionary
 setwd("/Users/james/Desktop/NHANES_combined")
@@ -57,13 +57,18 @@ load("NHANES_20152016.rda")
 
 ## NHANES 2017-2018 from dietaryindex package
 data("NHANES_20172018")
+
+## NHANES 2017-2020
+load("NHANES_20172020.rda")
+
 ```
 
 For a detailed explanation of these indexes, please check the attached Excel files:
 - [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
 - [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 
-**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files and R codes can be found here [Validation.md](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.md)
+**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files and R codes can be found here: 
+- [Validation.md](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.md)
 
 Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
 
@@ -129,7 +134,8 @@ library(readr)
 library(dietaryindex)
 ```
 
-Detailed function descriptions, examples, and NHANES data access instructions are provided here: [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
+Detailed function descriptions, examples, and NHANES data access instructions are provided here: 
+- [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
 
 
 ## Demonstrations
@@ -147,7 +153,8 @@ Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020,
 ![Figure 5  Multiple Dietary indexes, using the NHANES data in 2017-2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/85218a10-8bd1-4d39-a08f-09f2a0945d3c)
 
 
-All the R codes for the demonstrations can be found here: [Case study 1,2,3.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Case%20study%201%2C2%2C3.r)
+All the R codes for the demonstrations can be found here: 
+- [Case study 1,2,3.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Case%20study%201%2C2%2C3.r)
 
 
 ## Related Work
@@ -155,7 +162,8 @@ ___
 
 **dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hour dietary recalls, and even food records, while it also supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtaining high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy products and sugar-sweetened beverages) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar-sweetened beverage serving is estimated by dividing the total added sugar intake in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar-sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
-Just to emphasize, detailed function descriptions, examples, and NHANES data access instructions are provided here: [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
+Just to emphasize, detailed function descriptions, examples, and NHANES data access instructions are provided here: 
+- [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
 
 For NHANES data:
 
