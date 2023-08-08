@@ -1,6 +1,6 @@
-#' HEI2020 Calculation
+#' HEI2020_V2 Calculation
 #'
-#' Calculate the HEI2020 dietary index, Healthy eating index 2020 and HEI-Toddlers-2020, using given the serving sizes of foods and nutrients consumed per 1 day
+#' Calculate the HEI2020_V2 dietary index, Healthy eating index 2020 and HEI-Toddlers-2020, using given the serving sizes of foods and nutrients consumed per 1 day. This version has the Added sugar serving size as tsp (teaspoon) and the saturated fat serving size as g (gram), instead of the % of total energy for added sugar and saturated fat in the original HEI2020.
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -19,19 +19,19 @@
 #' @param FATTYACID_SERV_HEI2020 The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g
 #' @param REFINEDGRAIN_SERV_HEI2020 The serving size of refined grains, unit=oz. eq.
 #' @param SODIUM_SERV_HEI2020 The serving size of sodium, unit=g
-#' @param ADDEDSUGAR_SERV_HEI2020 The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal
-#' @param SATFAT_SERV_HEI2020 The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal
-#' @return The HEI2020 index/score
+#' @param ADDEDSUGAR_SERV_HEI2020 The serving size of added sugar, unit=tsp
+#' @param SATFAT_SERV_HEI2020 The serving size of Total Saturated Fatty Acids, unit=g
+#' @return The HEI2020_V2 index/score
 #' @examples
 #' data("HEI2020_VALIDATION")
-#' HEI2020(SERV_DATA = HEI2020_VALIDATION, RESPONDENTID = HEI2020_VALIDATION$id, AGE = HEI2020_VALIDATION$age, TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal, TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit, FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit, VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable, GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean, TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein, SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein, WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain, DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy, FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid, REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain, SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium, ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar, SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
+#' HEI2020_V2(SERV_DATA = HEI2020_VALIDATION, RESPONDENTID = HEI2020_VALIDATION$id, AGE = HEI2020_VALIDATION$age, TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal, TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit, FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit, VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable, GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean, TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein, SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein, WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain, DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy, FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid, REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain, SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium, ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar, SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
 #' @export
 
-# Score calculation for HEI2020
-HEI2020 = function(SERV_DATA, RESPONDENTID, AGE, TOTALKCAL_HEI2020, TOTALFRT_SERV_HEI2020, FRT_SERV_HEI2020, VEG_SERV_HEI2020, GREENNBEAN_SERV_HEI2020, TOTALPRO_SERV_HEI2020,
-                   SEAPLANTPRO_SERV_HEI2020, WHOLEGRAIN_SERV_HEI2020, DAIRY_SERV_HEI2020, FATTYACID_SERV_HEI2020, REFINEDGRAIN_SERV_HEI2020,
-                   SODIUM_SERV_HEI2020, ADDEDSUGAR_SERV_HEI2020, SATFAT_SERV_HEI2020) {
-    ## Create variables needed for HEI2020 calculation
+# Score calculation for HEI2020_V2
+HEI2020_V2 = function(SERV_DATA, RESPONDENTID, AGE, TOTALKCAL_HEI2020, TOTALFRT_SERV_HEI2020, FRT_SERV_HEI2020, VEG_SERV_HEI2020, GREENNBEAN_SERV_HEI2020, TOTALPRO_SERV_HEI2020,
+                      SEAPLANTPRO_SERV_HEI2020, WHOLEGRAIN_SERV_HEI2020, DAIRY_SERV_HEI2020, FATTYACID_SERV_HEI2020, REFINEDGRAIN_SERV_HEI2020,
+                      SODIUM_SERV_HEI2020, ADDEDSUGAR_SERV_HEI2020, SATFAT_SERV_HEI2020) {
+    ## Create variables needed for HEI2020_V2 calculation
     HEI2020_MIN = 0
     HEI2020_MAX1 = 5
     HEI2020_MAX2 = 10
@@ -117,7 +117,7 @@ HEI2020 = function(SERV_DATA, RESPONDENTID, AGE, TOTALKCAL_HEI2020, TOTALFRT_SER
         )
     }
 
-
+    # calculate the serving size for each food group
     SERV_DATA = SERV_DATA %>%
         dplyr::mutate(
             RESPONDENTID = RESPONDENTID,
@@ -138,12 +138,17 @@ HEI2020 = function(SERV_DATA, RESPONDENTID, AGE, TOTALKCAL_HEI2020, TOTALFRT_SER
             ## unhealthy food groups
             REFINEDGRAIN_SERV_HEI2020 = REFINEDGRAIN_SERV_HEI2020 / (TOTALKCAL_HEI2020 / 1000),
             SODIUM_SERV_HEI2020 = (SODIUM_SERV_HEI2020) / (TOTALKCAL_HEI2020 / 1000),
-            ADDEDSUGAR_SERV_HEI2020 = ADDEDSUGAR_SERV_HEI2020,
-            SATFAT_SERV_HEI2020 = SATFAT_SERV_HEI2020
+            ### calculate the % of total energy for added sugar using tsp as the input serving size, given that 1 tsp = 4g, 1g = 4kcal
+            ADDEDSUGAR_SERV_HEI2020 = ((ADDEDSUGAR_SERV_HEI2020 * 4 * 4) / TOTALKCAL_HEI2020) * 100,
+            ### calculate the % of total energy for saturated fat using g as the input serving size, given that 1g = 9 kcal
+            SATFAT_SERV_HEI2020 = ((SATFAT_SERV_HEI2020 * 9) / TOTALKCAL_HEI2020) * 100
         ) %>%
         mutate(
+            # calculate the HEI2020_V2 score for each food group given the serving size
+
+            ## healthy food groups
             HEI2020_TOTALFRT = case_when(
-                # only calculate HEI2020 for children 2 years and older and adults
+                # only calculate HEI2020_V2 for children 2 years and older and adults
                 AGE >= 2 ~ HEI2020_HEALTHY1(TOTALFRT_SERV_HEI2020, HEI2020_MIN_TOTALFRT_SERV, HEI2020_MAX_TOTALFRT_SERV),
                 # for children under 2 years old, use the toddler's standard
                 AGE < 2 ~ HEI2020_HEALTHY1(TOTALFRT_SERV_HEI2020, HEI2020_TODDLERS_MIN_TOTALFRT_SERV, HEI2020_TODDLERS_MAX_TOTALFRT_SERV),
@@ -180,6 +185,8 @@ HEI2020 = function(SERV_DATA, RESPONDENTID, AGE, TOTALKCAL_HEI2020, TOTALFRT_SER
                 AGE >= 2 ~ HEI2020_HEALTHY2(FATTYACID_SERV_HEI2020, HEI2020_MIN_FATTYACID_SERV, HEI2020_MAX_FATTYACID_SERV),
                 AGE < 2 ~ HEI2020_HEALTHY2(FATTYACID_SERV_HEI2020, HEI2020_TODDLERS_MIN_FATTYACID_SERV, HEI2020_TODDLERS_MAX_FATTYACID_SERV),
             ),
+
+            ## unhealthy food groups
             HEI2020_REFINEDGRAIN = case_when(
                 AGE >= 2 ~ HEI2020_UNHEALTHY(REFINEDGRAIN_SERV_HEI2020, HEI2020_MIN_REFINEDGRAIN_SERV, HEI2020_MAX_REFINEDGRAIN_SERV),
                 AGE < 2 ~ HEI2020_UNHEALTHY(REFINEDGRAIN_SERV_HEI2020, HEI2020_TODDLERS_MIN_REFINEDGRAIN_SERV, HEI2020_TODDLERS_MAX_REFINEDGRAIN_SERV),
@@ -196,6 +203,8 @@ HEI2020 = function(SERV_DATA, RESPONDENTID, AGE, TOTALKCAL_HEI2020, TOTALFRT_SER
                 AGE >= 2 ~ HEI2020_UNHEALTHY(SATFAT_SERV_HEI2020, HEI2020_MIN_SATFAT_SERV, HEI2020_MAX_SATFAT_SERV),
                 AGE < 2 ~ HEI2020_UNHEALTHY(SATFAT_SERV_HEI2020, HEI2020_TODDLERS_MIN_SATFAT_SERV, HEI2020_TODDLERS_MAX_SATFAT_SERV),
             ),
+
+            ## total HEI2020 score
             HEI2020_ALL = HEI2020_TOTALFRT + HEI2020_FRT + HEI2020_VEG + HEI2020_GREENNBEAN +
                 HEI2020_TOTALPRO + HEI2020_SEAPLANTPRO + HEI2020_WHOLEGRAIN + HEI2020_DAIRY +
                 HEI2020_FATTYACID + HEI2020_REFINEDGRAIN + HEI2020_SODIUM + HEI2020_ADDEDSUGAR +
