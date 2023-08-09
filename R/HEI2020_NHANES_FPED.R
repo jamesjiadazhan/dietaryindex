@@ -78,6 +78,7 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
     HEI2020_TODDLERS_MIN_SATFAT_SERV = 18.2
     HEI2020_TODDLERS_MAX_SATFAT_SERV = 12.2
 
+    # create functions for HEI2020 calculation
     HEI2020_HEALTHY1 = function(actual, min, max) {
         case_when(
             actual >= max ~ HEI2020_MAX1,
@@ -145,11 +146,14 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             arrange(SEQN)
 
         FPED = FPED %>%
-            arrange(SEQN)
+            arrange(SEQN) %>%
+            # only calculate HEI2020 for toddlers 1 year and older and adults
+            filter(RIDAGEYR >= 1)
 
+        # merge the NUTRIENT, DEMO, and FPED data
         COHORT = NUTRIENT %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
-            left_join(FPED, by = c("SEQN" = "SEQN"))
+            inner_join(FPED, by = c("SEQN" = "SEQN"))
 
         # calculate the HEI2020 food group serving size / 1000 kcal
         COHORT = COHORT %>%
@@ -254,6 +258,7 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             }
         }
 
+        # select the columns that are needed for the HEI2020 
         COHORT = COHORT %>%
             dplyr::select(
                 SEQN, RIDAGEYR, HEI2020_ALL, HEI2020_TOTALFRT, HEI2020_FRT, HEI2020_VEG, HEI2020_GREENNBEAN,
@@ -294,16 +299,19 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
 
 
         DEMO = DEMO %>%
-            filter(RIDAGEYR >= 2) %>%
+            # only select the people who are 1 years old or older
+            filter(RIDAGEYR >= 1) %>%
             dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
             arrange(SEQN)
 
         FPED2 = FPED2 %>%
-            arrange(SEQN)
+            arrange(SEQN) %>%
+            # only select the people who are 1 years old or older
+            filter(RIDAGEYR >= 1)
 
         COHORT2 = NUTRIENT2 %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
-            left_join(FPED2, by = c("SEQN" = "SEQN"))
+            inner_join(FPED2, by = c("SEQN" = "SEQN"))
 
         COHORT2 = COHORT2 %>%
             dplyr::mutate(

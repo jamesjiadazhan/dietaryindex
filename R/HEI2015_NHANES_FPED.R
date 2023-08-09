@@ -109,16 +109,19 @@ HEI2015_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
 
 
         DEMO = DEMO %>%
+            # only include people who are 2 years old or older
             filter(RIDAGEYR >= 2) %>%
             dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
             arrange(SEQN)
 
         FPED = FPED %>%
-            arrange(SEQN)
+            arrange(SEQN) %>%
+            # only include people who are 2 years old or older
+            filter(RIDAGEYR >= 2)
 
         COHORT = NUTRIENT %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
-            left_join(FPED, by = c("SEQN" = "SEQN"))
+            inner_join(FPED, by = c("SEQN" = "SEQN"))
 
         COHORT = COHORT %>%
             dplyr::mutate(
@@ -219,16 +222,20 @@ HEI2015_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
 
 
         DEMO = DEMO %>%
+            # only keep the people who are 2 years old or older
             filter(RIDAGEYR >= 2) %>%
             dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
             arrange(SEQN)
 
         FPED2 = FPED2 %>%
-            arrange(SEQN)
+            arrange(SEQN) %>%
+            # only keep the people who are 2 years old or older
+            filter(RIDAGEYR >= 2)
+
 
         COHORT2 = NUTRIENT2 %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
-            left_join(FPED2, by = c("SEQN" = "SEQN"))
+            inner_join(FPED2, by = c("SEQN" = "SEQN"))
 
         COHORT2 = COHORT2 %>%
             dplyr::mutate(
