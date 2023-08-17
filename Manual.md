@@ -49,6 +49,8 @@ The **dietaryindex** package currently contains the following key functions:
 Note: all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. See examples later. 
 
 - ASA24
+  - `HEI2020_ASA24()`, Calculating HEI2020 for non-toddlers (age > 2 years) with 1 step using the ASA24 data
+  - `HEI2020_TODDLERS_ASA24()`, Calculating HEI2020 for non-toddlers (age 1-2 years) with 1 step using the ASA24 data
   - `HEI2015_ASA24()`, Calculating HEI2015 with 1 step using the ASA24 data
   - `AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
   - `AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
@@ -185,6 +187,32 @@ data("NHANES_20172018")
 DII_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
+#### Calculating HEI2020 for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+# if you want to summarize all recalls into a result via average
+HEI2020_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
+# if you want to use all individual recalls
+HEI2020_ASA24(DATA_PATH, RECALL_SUMMARIZE = FALSE)
+
+#Use the example data
+data("ASA24_exp")
+HEI2015_ASA24(ASA24_exp, RECALL_SUMMARIZE = TRUE)
+HEI2015_ASA24(ASA24_exp, RECALL_SUMMARIZE = FALSE)
+```
+#### Calculating HEI2020_toddlers for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+# if you want to summarize all recalls into a result via average
+HEI2020_TODDLERS_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
+# if you want to use all individual recalls
+HEI2020_TODDLERS_ASA24(DATA_PATH, RECALL_SUMMARIZE = FALSE)
+
+#Use the example data
+data("ASA24_exp")
+HEI2020_TODDLERS_ASA24(ASA24_exp, RECALL_SUMMARIZE = TRUE)
+HEI2020_TODDLERS_ASA24(ASA24_exp, RECALL_SUMMARIZE = FALSE)
+```
 #### Calculating HEI2015 for ASA24
 ```
 DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
