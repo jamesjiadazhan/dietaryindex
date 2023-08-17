@@ -4,7 +4,7 @@
 \alias{HEI2015_ASA24}
 \title{HEI2015_ASA24}
 \usage{
-HEI2015_ASA24(DATA_PATH)
+HEI2015_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Totals.csv.}
@@ -17,5 +17,5 @@ Calculate the HEI2015 for the ASA24 data within 1 step
 }
 \examples{
 data("ASA24_exp")
-HEI2015_ASA24(ASA24_exp)
+HEI2015_ASA24(ASA24_exp, RECALL_SUMMARIZE = TRUE)
 }
