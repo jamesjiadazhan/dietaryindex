@@ -8,7 +8,8 @@ DASH_ASA24(
   DATA_PATH,
   SKIM_MILK_CODE = NULL,
   LOWF_CHEESE_CODE = NULL,
-  SSB_code = NULL
+  SSB_code = NULL,
+  RECALL_SUMMARIZE = TRUE
 )
 }
 \arguments{
@@ -28,5 +29,5 @@ Calculate the DASH for the ASA24 data within 1 step
 }
 \examples{
 data("ASA24_exp_detailed")
-DASH_ASA24(ASA24_exp_detailed)
+DASH_ASA24(ASA24_exp_detailed, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
 }

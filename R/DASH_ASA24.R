@@ -11,11 +11,11 @@
 #' @return The DASH and its component scores
 #' @examples
 #' data("ASA24_exp_detailed")
-#' DASH_ASA24(ASA24_exp_detailed)
+#' DASH_ASA24(ASA24_exp_detailed, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
 #' @export
 
 
-DASH_ASA24 = function(DATA_PATH, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL) {
+DASH_ASA24 = function(DATA_PATH, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     if (is.character(DATA_PATH) == TRUE) {
         COHORT = read_csv(DATA_PATH)
     } else {
@@ -83,22 +83,34 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL,
             SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV * 4 / 26)),
             ## save the group level variables for later use and silent the warning message
             .groups = "keep"
-        ) %>%
-        # average across all days reported to results per person per day
-        dplyr::group_by(UserName, UserID) %>%
-        dplyr::summarize(
-            ENERGY = mean(ENERGY),
-            FRT_FRTJ_SERV = mean(FRT_FRTJ_SERV),
-            VEG_SERV = mean(VEG_SERV),
-            NUTSLEG_SERV = mean(NUTSLEG_SERV),
-            WGRAIN_SERV = mean(WGRAIN_SERV),
-            LOWF_DAIRY_SERV = mean(LOWF_DAIRY_SERV),
-            SODIUM_SERV = mean(SODIUM_SERV),
-            REDPROC_MEAT_SERV = mean(REDPROC_MEAT_SERV),
-            SSB_FRTJ_SERV = mean(SSB_FRTJ_SERV),
-            ## save the group level variables for later use and silent the warning message
-            .groups = "keep"
         )
+    
+    # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
+    if (RECALL_SUMMARIZE == TRUE){
+
+        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
+
+        COHORT = COHORT %>%
+            # average across all days reported to results per person per day
+            dplyr::group_by(UserName, UserID) %>%
+            dplyr::summarize(
+                ENERGY = mean(ENERGY),
+                FRT_FRTJ_SERV = mean(FRT_FRTJ_SERV),
+                VEG_SERV = mean(VEG_SERV),
+                NUTSLEG_SERV = mean(NUTSLEG_SERV),
+                WGRAIN_SERV = mean(WGRAIN_SERV),
+                LOWF_DAIRY_SERV = mean(LOWF_DAIRY_SERV),
+                SODIUM_SERV = mean(SODIUM_SERV),
+                REDPROC_MEAT_SERV = mean(REDPROC_MEAT_SERV),
+                SSB_FRTJ_SERV = mean(SSB_FRTJ_SERV),
+                ## save the group level variables for later use and silent the warning message
+                .groups = "keep"
+            )
+    }
+    # if RECALL_SUMMARIZE = FALSE, keep the food group and nutrient intake over all days reported per individual per day
+    else {
+        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+    }
 
     ## Create variables and functions needed for DASH calculation
     quintile_healthy = function(actual) {
@@ -124,8 +136,6 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL,
     }
 
     print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
-    print("The output is the average dietary index and its component scores for each individual per day, handling the multiple recalls or single recall for each individual accordingly.")
-
 
     ## DASH calculation
     COHORT %>%

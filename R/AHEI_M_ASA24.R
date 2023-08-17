@@ -9,11 +9,11 @@
 #' @return The AHEI and its component scores
 #' @examples
 #' data("ASA24_exp_detailed")
-#' AHEI_M_ASA24(ASA24_exp_detailed) # for participants who are all male
+#' AHEI_M_ASA24(ASA24_exp_detailed, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) # for participants who are all male
 #' @export
 
 
-AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL) {
+AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     if (is.character(DATA_PATH) == TRUE) {
         COHORT = read_csv(DATA_PATH)
     } else {
@@ -64,26 +64,37 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL) {
             ## save the group level variables for later use and silent the warning message
             .groups = "keep"
         ) %>%
-        # average across all days reported to results per person per day
-        dplyr::group_by(UserName, UserID) %>%
-        dplyr::summarize(
-            ENERGY = mean(ENERGY),
-            VEG_SERV = mean(VEG_SERV),
-            FRT_SERV = mean(FRT_SERV),
-            WGRAIN_SERV = mean(WGRAIN_SERV),
-            NUTSLEG_SERV = mean(NUTSLEG_SERV),
-            PUFA_SERV = mean(PUFA_SERV),
-            N3FAT_SERV = mean(N3FAT_SERV),
-            SSB_FRTJ_SERV = mean(SSB_FRTJ_SERV),
-            REDPROC_MEAT_SERV = mean(REDPROC_MEAT_SERV),
-            SODIUM_SERV = mean(SODIUM_SERV),
-            ALCOHOL_SERV = mean(ALCOHOL_SERV),
-            ## save the group level variables for later use and silent the warning message
-            .groups = "keep"
-        )
+        ungroup()
 
+    # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
+    if (RECALL_SUMMARIZE == TRUE){
 
+        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
+        COHORT = COHORT %>%
+            # average across all days reported to results per person per day
+            dplyr::group_by(UserName, UserID) %>%
+            dplyr::summarize(
+                ENERGY = mean(ENERGY),
+                VEG_SERV = mean(VEG_SERV),
+                FRT_SERV = mean(FRT_SERV),
+                WGRAIN_SERV = mean(WGRAIN_SERV),
+                NUTSLEG_SERV = mean(NUTSLEG_SERV),
+                PUFA_SERV = mean(PUFA_SERV),
+                N3FAT_SERV = mean(N3FAT_SERV),
+                SSB_FRTJ_SERV = mean(SSB_FRTJ_SERV),
+                REDPROC_MEAT_SERV = mean(REDPROC_MEAT_SERV),
+                SODIUM_SERV = mean(SODIUM_SERV),
+                ALCOHOL_SERV = mean(ALCOHOL_SERV),
+                ## save the group level variables for later use and silent the warning message
+                .groups = "keep"
+            )
+    }
+    # if RECALL_SUMMARIZE = FALSE, keep the food group and nutrient intake over all days reported per individual per day
+    else {
+        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+    }
+ 
     ## Create variables needed for AHEI calculation
     AHEI_MIN = 0
     AHEI_MAX = 10
@@ -159,7 +170,6 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL) {
         )
 
     print("Reminder: this AHEI index is for male only. Please stratify your data first and provide male only data.")
-
 
     COHORT %>%
         dplyr::select(

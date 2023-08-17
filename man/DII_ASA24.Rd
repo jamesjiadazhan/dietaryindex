@@ -4,7 +4,7 @@
 \alias{DII_ASA24}
 \title{DII_ASA24}
 \usage{
-DII_ASA24(DATA_PATH)
+DII_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Totals.csv.}
@@ -17,5 +17,5 @@ Calculate the Dietary Inflammatory Index for the ASA24 data within 1 step
 }
 \examples{
 data("ASA24_exp")
-DII_ASA24(ASA24_exp)
+DII_ASA24(ASA24_exp, RECALL_SUMMARIZE = TRUE)
 }

@@ -4,7 +4,7 @@
 \alias{AHEI_M_ASA24}
 \title{AHEI_M_ASA24}
 \usage{
-AHEI_M_ASA24(DATA_PATH, SSB_code = NULL)
+AHEI_M_ASA24(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Items.csv}
@@ -19,5 +19,5 @@ Calculate the AHEI (male only) for the ASA24 data within 1 step
 }
 \examples{
 data("ASA24_exp_detailed")
-AHEI_M_ASA24(ASA24_exp_detailed) # for participants who are all male
+AHEI_M_ASA24(ASA24_exp_detailed, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) # for participants who are all male
 }

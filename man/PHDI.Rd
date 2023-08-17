@@ -27,7 +27,7 @@ PHDI(
 )
 }
 \arguments{
-\item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and NUTSrients}
+\item{SERV_DATA}{The raw data file that includes all the serving sizes of foods and nutrients consumed per 1 day}
 
 \item{RESPONDENTID}{The unique participant ID for each participant}
 
@@ -69,7 +69,7 @@ PHDI(
 The PHDI index/score, PHDI and its component scores
 }
 \description{
-Calculate the PHDI, The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and NUTSrients consumed per 1 day
+Calculate the PHDI, The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and nutrients consumed per 1 day
 }
 \examples{
 data("PHDI_VALIDATION")

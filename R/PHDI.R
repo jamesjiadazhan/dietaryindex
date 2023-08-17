@@ -1,10 +1,10 @@
 #' PHD Calculation
 #'
-#' Calculate the PHDI, The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and NUTSrients consumed per 1 day
+#' Calculate the PHDI, The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and nutrients consumed per 1 day
 #' @import dplyr
 #' @import readr
 #' @import haven
-#' @param SERV_DATA The raw data file that includes all the serving sizes of foods and NUTSrients
+#' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients consumed per 1 day
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param GENDER The gender of the participant. 2 is female and 1 is male.
 #' @param TOTALKCAL_PHDI The total kcal
