@@ -5,6 +5,7 @@
 #' @import readr
 #' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Totals.csv.
+#' @param RECALL_SUMMARIZE Whether to summarize the food group and nutrient intake over all days reported per individual per day. Default is TRUE.
 #' @return The MED and its component scores
 #' @examples
 #' data("ASA24_exp")

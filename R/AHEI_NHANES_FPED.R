@@ -16,17 +16,19 @@
 #' @export
 
 AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED_IND_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL, SSB_code = NULL) {
+
     # stop if the input data is not provided for any day
     if (is.null(FPED_IND_PATH) & is.null(NUTRIENT_IND_PATH) & is.null(FPED_IND_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
         stop("Please provide the file path for the FPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
     }
 
     if (is.null(SSB_code)) {
-        # load the SSB codes from 17-18 FNDDS file
+        # load the SSB codes from 17-18 FNDDS file as default
         data("SSB_FNDDS_1718")
         SSB = unique(SSB_FNDDS_1718$`Food code`)
         print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
+        # use the provided SSB code
         SSB = SSB_code
     }
 
@@ -91,6 +93,7 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
         #   stop("Please use individual-level data for this function. Individual-level nutrient data should be like DR1IFF_J.XPT. Individual-level FPED data should be like fped_dr1iff_1718.sas7bdat")
         # }
 
+        # Select only the high quality data
         NUTRIENT_IND = NUTRIENT_IND %>%
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)
@@ -98,9 +101,11 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
         FPED_IND = FPED_IND %>%
             arrange(SEQN)
 
+        # merge the FPED and nutrient data
         COHORT = NUTRIENT_IND %>%
             left_join(FPED_IND, by = c("SEQN", "DR1ILINE"))
 
+        # Create the serving size variables for AHEI calculation
         COHORT = COHORT %>%
             dplyr::mutate(
                 # create the variable for added sugars from SSB
@@ -127,9 +132,10 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 ALCOHOL_SERV = sum(DR1I_A_DRINKS)
             )
 
+        # Rank the sodium by decile
         SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11))
 
-        ## AHEI calculation
+        ## AHEI score calculation
         COHORT = COHORT %>%
             dplyr::mutate(
                 AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),

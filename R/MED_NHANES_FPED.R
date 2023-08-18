@@ -21,6 +21,7 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         stop("Please provide the file path for the FPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
     }
 
+    # if only day 1 data is provided
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH)) {
         if (is.character(FPED_PATH) == TRUE) {
             FPED = read_sas(FPED_PATH)
@@ -44,10 +45,10 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             stop("Please use the population-level first day data. The file name should be like: Totals.csv")
         }
 
+        # Select only the high quality data
         NUTRIENT = NUTRIENT %>%
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)
-
 
         DEMO = DEMO %>%
             filter(RIDAGEYR >= 2) %>%
@@ -57,13 +58,13 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         FPED = FPED %>%
             arrange(SEQN)
 
+        # Merge demographic data with nutrient data and FPED data
         COHORT = NUTRIENT %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             left_join(FPED, by = c("SEQN" = "SEQN"))
 
 
-        # Match participant response food frequency to the standard food frequency response code
-
+        # Calculate the serving size for MED index
         COHORT = COHORT %>%
             filter(DR1TKCAL > 0) %>%
             dplyr::mutate(
@@ -98,9 +99,7 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             )
         }
 
-        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
-
-
+        # Calculate the MED index
         COHORT = COHORT %>%
             dplyr::mutate(
                 MED_FRT = median_healthy(FRT_FRTJ_SERV),
@@ -202,8 +201,6 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             )
         }
 
-        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
-
 
         COHORT2 = COHORT2 %>%
             dplyr::mutate(
@@ -229,10 +226,12 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
     }
 
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2)) {
+        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT)
     }
 
     if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
+        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT2)
     }
 
@@ -256,6 +255,7 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 SEQN, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
                 MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL
             )
+        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT12)
     }
 }

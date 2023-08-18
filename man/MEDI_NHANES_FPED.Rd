@@ -8,7 +8,11 @@ MEDI_NHANES_FPED(
   FPED_IND_PATH = NULL,
   NUTRIENT_IND_PATH = NULL,
   FPED_IND_PATH2 = NULL,
-  NUTRIENT_IND_PATH2 = NULL
+  NUTRIENT_IND_PATH2 = NULL,
+  SWEETS_code = NULL,
+  FAT_OIL_code = NULL,
+  SSB_code = NULL,
+  OLIVE_OIL_code = NULL
 )
 }
 \arguments{
@@ -19,6 +23,14 @@ MEDI_NHANES_FPED(
 \item{FPED_IND_PATH2}{The file path for the FPED IND data for day 2. The file name should be like: fped_dr1iff.sas7bdat}
 
 \item{NUTRIENT_IND_PATH2}{The file path for the NUTRIENT IND data for day 2. The file name should be like: DR2IFF_J}
+
+\item{SWEETS_code}{The code for sweets in the FPED data. The default food codes are from the FPED data for NHANES 2017-2018}
+
+\item{FAT_OIL_code}{The code for fat and oil in the FPED data. The default food codes are from the FPED data for NHANES 2017-2018}
+
+\item{SSB_code}{The code for sugar-sweetened beverages in the FPED data. The default food codes are from the FPED data for NHANES 2017-2018}
+
+\item{OLIVE_OIL_code}{The code for olive oil in the FPED data. The default food codes are from the FPED data for NHANES 2017-2018}
 }
 \value{
 The MEDI and its component scores and serving sizes
