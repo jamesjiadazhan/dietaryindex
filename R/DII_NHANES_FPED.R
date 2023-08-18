@@ -19,6 +19,34 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         stop("Please provide the file path for the FPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
     }
 
+    # Load the DII internal database for the calculation
+    Variable = c(
+        "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
+        "TOTALFAT", "FIBER", "FOLICACID", "GARLIC", "GINGER", "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "ONION", "PROTEIN", "PUFA",
+        "RIBOFLAVIN", "SAFFRON", "SATFAT", "SE", "THIAMIN", "TRANSFAT", "TURMERIC", "VITA", "VITC", "VITD", "VITE", "ZN", "TEA",
+        "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME", "ROSEMARY"
+    )
+
+    Overall_inflammatory_score = c(
+        -0.278, 0.106, -0.365, -0.584, -0.11, 0.097, 0.11, 0.18, -0.14, 0.298, -0.663, -0.19, -0.412, -0.453, 0.032, -0.484, -0.009,
+        -0.246, -0.436, -0.159, -0.301, 0.021, -0.337, -0.068, -0.14, 0.373, -0.191, -0.098, 0.229, -0.785, -0.401, -0.424, -0.446, -0.419, -0.313,
+        -0.536, -0.415, -0.616, -0.467, -0.25, -0.131, -0.593, -0.131, -0.102, -0.013
+    )
+
+    Global_mean = c(
+        13.98, 5.15, 1.47, 3718, 8.05, 272.2, 279.4, 2056, 0.01, 71.4, 18.8, 273, 4.35, 59, 13.35, 310.1, 27, 25.9, 1.06, 10.8, 35.9,
+        79.4, 13.88, 1.7, 0.37, 28.6, 67, 1.7, 3.15, 533.6, 983.9, 118.2, 6.26, 8.73, 9.84,
+        1.69, 95.8, 1.55, 17.7, 11.7, 18.05, 1.2, 10, 0.33, 1
+    )
+
+    SD = c(
+        3.72, 2.7, 0.74, 1720, 6.67, 40, 51.2, 338, 0.08, 19.4, 4.9, 70.7, 2.9, 63.2, 3.71, 139.4, 6.1, 11.77, 1.06, 7.5, 18.4, 13.9, 3.76, 0.79, 1.78,
+        8, 25.1, 0.66, 3.75, 754.3, 518.6, 43.46, 2.21, 1.49, 2.19,
+        1.53, 85.9, 0.07, 6.79, 3.82, 21.14, 0.2, 7.07, 0.99, 15
+    )
+
+    DII_STD = data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
+
     # first day data calculation if the user provides the first day data for FPED_PATH and NUTRIENT_PATH
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH)) {
         if (is.character(FPED_PATH) == TRUE) {
@@ -43,9 +71,7 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             stop("Please use the population-level first day data. The file name should be like: Totals.csv")
         }
 
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
-
+        # Select only the high quality data
         NUTRIENT = NUTRIENT %>%
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)
@@ -58,6 +84,7 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         FPED = FPED %>%
             arrange(SEQN)
 
+        # Merge the demographic data with the nutrient and FPED data
         COHORT = NUTRIENT %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             left_join(FPED, by = c("SEQN" = "SEQN"))
@@ -104,33 +131,6 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         COHORT = COHORT %>%
             tidyr::pivot_longer(-SEQN, names_to = "Variable", values_to = "Value")
 
-        Variable = c(
-            "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
-            "TOTALFAT", "FIBER", "FOLICACID", "GARLIC", "GINGER", "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "ONION", "PROTEIN", "PUFA",
-            "RIBOFLAVIN", "SAFFRON", "SATFAT", "SE", "THIAMIN", "TRANSFAT", "TURMERIC", "VITA", "VITC", "VITD", "VITE", "ZN", "TEA",
-            "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME", "ROSEMARY"
-        )
-
-        Overall_inflammatory_score = c(
-            -0.278, 0.106, -0.365, -0.584, -0.11, 0.097, 0.11, 0.18, -0.14, 0.298, -0.663, -0.19, -0.412, -0.453, 0.032, -0.484, -0.009,
-            -0.246, -0.436, -0.159, -0.301, 0.021, -0.337, -0.068, -0.14, 0.373, -0.191, -0.098, 0.229, -0.785, -0.401, -0.424, -0.446, -0.419, -0.313,
-            -0.536, -0.415, -0.616, -0.467, -0.25, -0.131, -0.593, -0.131, -0.102, -0.013
-        )
-
-        Global_mean = c(
-            13.98, 5.15, 1.47, 3718, 8.05, 272.2, 279.4, 2056, 0.01, 71.4, 18.8, 273, 4.35, 59, 13.35, 310.1, 27, 25.9, 1.06, 10.8, 35.9,
-            79.4, 13.88, 1.7, 0.37, 28.6, 67, 1.7, 3.15, 533.6, 983.9, 118.2, 6.26, 8.73, 9.84,
-            1.69, 95.8, 1.55, 17.7, 11.7, 18.05, 1.2, 10, 0.33, 1
-        )
-
-        SD = c(
-            3.72, 2.7, 0.74, 1720, 6.67, 40, 51.2, 338, 0.08, 19.4, 4.9, 70.7, 2.9, 63.2, 3.71, 139.4, 6.1, 11.77, 1.06, 7.5, 18.4, 13.9, 3.76, 0.79, 1.78,
-            8, 25.1, 0.66, 3.75, 754.3, 518.6, 43.46, 2.21, 1.49, 2.19,
-            1.53, 85.9, 0.07, 6.79, 3.82, 21.14, 0.2, 7.07, 0.99, 15
-        )
-
-        DII_STD = base::data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
-
         # Score calculation for DII
         COHORT = COHORT %>%
             dplyr::inner_join(DII_STD, by = c("Variable")) %>%
@@ -142,44 +142,44 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
             dplyr::group_by(SEQN) %>%
             dplyr::summarize(
-                DII_ALL = base::sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+                DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
                     VITA, VITC, VITD, VITE, ZN,
                     na.rm = TRUE
                 ),
-                DII_NOETOH = base::sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+                DII_NOETOH = sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
                     VITA, VITC, VITD, VITE, ZN,
                     na.rm = TRUE
                 ),
-                ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE),
-                VITB12 = base::sum(VITB12, na.rm = TRUE),
-                VITB6 = base::sum(VITB6, na.rm = TRUE),
-                BCAROTENE = base::sum(BCAROTENE, na.rm = TRUE),
-                CAFFEINE = base::sum(CAFFEINE, na.rm = TRUE),
-                CARB = base::sum(CARB, na.rm = TRUE),
-                CHOLES = base::sum(CHOLES, na.rm = TRUE),
-                KCAL = base::sum(KCAL, na.rm = TRUE),
-                TOTALFAT = base::sum(TOTALFAT, na.rm = TRUE),
-                FIBER = base::sum(FIBER, na.rm = TRUE),
-                FOLICACID = base::sum(FOLICACID, na.rm = TRUE),
-                IRON = base::sum(IRON, na.rm = TRUE),
-                MG = base::sum(MG, na.rm = TRUE),
-                MUFA = base::sum(MUFA, na.rm = TRUE),
-                NIACIN = base::sum(NIACIN, na.rm = TRUE),
-                N3FAT = base::sum(N3FAT, na.rm = TRUE),
-                N6FAT = base::sum(N6FAT, na.rm = TRUE),
-                PROTEIN = base::sum(PROTEIN, na.rm = TRUE),
-                PUFA = base::sum(PUFA, na.rm = TRUE),
-                RIBOFLAVIN = base::sum(RIBOFLAVIN, na.rm = TRUE),
-                SATFAT = base::sum(SATFAT, na.rm = TRUE),
-                SE = base::sum(SE, na.rm = TRUE),
-                THIAMIN = base::sum(THIAMIN, na.rm = TRUE),
-                VITA = base::sum(VITA, na.rm = TRUE),
-                VITC = base::sum(VITC, na.rm = TRUE),
-                VITD = base::sum(VITD, na.rm = TRUE),
-                VITE = base::sum(VITE, na.rm = TRUE),
-                ZN = base::sum(ZN, na.rm = TRUE)
+                ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
+                VITB12 = sum(VITB12, na.rm = TRUE),
+                VITB6 = sum(VITB6, na.rm = TRUE),
+                BCAROTENE = sum(BCAROTENE, na.rm = TRUE),
+                CAFFEINE = sum(CAFFEINE, na.rm = TRUE),
+                CARB = sum(CARB, na.rm = TRUE),
+                CHOLES = sum(CHOLES, na.rm = TRUE),
+                KCAL = sum(KCAL, na.rm = TRUE),
+                TOTALFAT = sum(TOTALFAT, na.rm = TRUE),
+                FIBER = sum(FIBER, na.rm = TRUE),
+                FOLICACID = sum(FOLICACID, na.rm = TRUE),
+                IRON = sum(IRON, na.rm = TRUE),
+                MG = sum(MG, na.rm = TRUE),
+                MUFA = sum(MUFA, na.rm = TRUE),
+                NIACIN = sum(NIACIN, na.rm = TRUE),
+                N3FAT = sum(N3FAT, na.rm = TRUE),
+                N6FAT = sum(N6FAT, na.rm = TRUE),
+                PROTEIN = sum(PROTEIN, na.rm = TRUE),
+                PUFA = sum(PUFA, na.rm = TRUE),
+                RIBOFLAVIN = sum(RIBOFLAVIN, na.rm = TRUE),
+                SATFAT = sum(SATFAT, na.rm = TRUE),
+                SE = sum(SE, na.rm = TRUE),
+                THIAMIN = sum(THIAMIN, na.rm = TRUE),
+                VITA = sum(VITA, na.rm = TRUE),
+                VITC = sum(VITC, na.rm = TRUE),
+                VITD = sum(VITD, na.rm = TRUE),
+                VITE = sum(VITE, na.rm = TRUE),
+                ZN = sum(ZN, na.rm = TRUE)
             )
     }
 
@@ -265,32 +265,6 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         COHORT2 = COHORT2 %>%
             tidyr::pivot_longer(-SEQN, names_to = "Variable", values_to = "Value")
 
-        Variable = c(
-            "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
-            "TOTALFAT", "FIBER", "FOLICACID", "GARLIC", "GINGER", "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "ONION", "PROTEIN", "PUFA",
-            "RIBOFLAVIN", "SAFFRON", "SATFAT", "SE", "THIAMIN", "TRANSFAT", "TURMERIC", "VITA", "VITC", "VITD", "VITE", "ZN", "TEA",
-            "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME", "ROSEMARY"
-        )
-
-        Overall_inflammatory_score = c(
-            -0.278, 0.106, -0.365, -0.584, -0.11, 0.097, 0.11, 0.18, -0.14, 0.298, -0.663, -0.19, -0.412, -0.453, 0.032, -0.484, -0.009,
-            -0.246, -0.436, -0.159, -0.301, 0.021, -0.337, -0.068, -0.14, 0.373, -0.191, -0.098, 0.229, -0.785, -0.401, -0.424, -0.446, -0.419, -0.313,
-            -0.536, -0.415, -0.616, -0.467, -0.25, -0.131, -0.593, -0.131, -0.102, -0.013
-        )
-
-        Global_mean = c(
-            13.98, 5.15, 1.47, 3718, 8.05, 272.2, 279.4, 2056, 0.01, 71.4, 18.8, 273, 4.35, 59, 13.35, 310.1, 27, 25.9, 1.06, 10.8, 35.9,
-            79.4, 13.88, 1.7, 0.37, 28.6, 67, 1.7, 3.15, 533.6, 983.9, 118.2, 6.26, 8.73, 9.84,
-            1.69, 95.8, 1.55, 17.7, 11.7, 18.05, 1.2, 10, 0.33, 1
-        )
-
-        SD = c(
-            3.72, 2.7, 0.74, 1720, 6.67, 40, 51.2, 338, 0.08, 19.4, 4.9, 70.7, 2.9, 63.2, 3.71, 139.4, 6.1, 11.77, 1.06, 7.5, 18.4, 13.9, 3.76, 0.79, 1.78,
-            8, 25.1, 0.66, 3.75, 754.3, 518.6, 43.46, 2.21, 1.49, 2.19,
-            1.53, 85.9, 0.07, 6.79, 3.82, 21.14, 0.2, 7.07, 0.99, 15
-        )
-
-        DII_STD = base::data.frame(Variable, Overall_inflammatory_score, Global_mean, SD)
 
         # Score calculation for DII
         COHORT2 = COHORT2 %>%
@@ -303,52 +277,56 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
             dplyr::group_by(SEQN) %>%
             dplyr::summarize(
-                DII_ALL = base::sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+                DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
                     VITA, VITC, VITD, VITE, ZN,
                     na.rm = TRUE
                 ),
-                DII_NOETOH = base::sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
+                DII_NOETOH = sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
                     IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
                     VITA, VITC, VITD, VITE, ZN,
                     na.rm = TRUE
                 ),
-                ALCOHOL = base::sum(ALCOHOL, na.rm = TRUE),
-                VITB12 = base::sum(VITB12, na.rm = TRUE),
-                VITB6 = base::sum(VITB6, na.rm = TRUE),
-                BCAROTENE = base::sum(BCAROTENE, na.rm = TRUE),
-                CAFFEINE = base::sum(CAFFEINE, na.rm = TRUE),
-                CARB = base::sum(CARB, na.rm = TRUE),
-                CHOLES = base::sum(CHOLES, na.rm = TRUE),
-                KCAL = base::sum(KCAL, na.rm = TRUE),
-                TOTALFAT = base::sum(TOTALFAT, na.rm = TRUE),
-                FIBER = base::sum(FIBER, na.rm = TRUE),
-                FOLICACID = base::sum(FOLICACID, na.rm = TRUE),
-                IRON = base::sum(IRON, na.rm = TRUE),
-                MG = base::sum(MG, na.rm = TRUE),
-                MUFA = base::sum(MUFA, na.rm = TRUE),
-                NIACIN = base::sum(NIACIN, na.rm = TRUE),
-                N3FAT = base::sum(N3FAT, na.rm = TRUE),
-                N6FAT = base::sum(N6FAT, na.rm = TRUE),
-                PROTEIN = base::sum(PROTEIN, na.rm = TRUE),
-                PUFA = base::sum(PUFA, na.rm = TRUE),
-                RIBOFLAVIN = base::sum(RIBOFLAVIN, na.rm = TRUE),
-                SATFAT = base::sum(SATFAT, na.rm = TRUE),
-                SE = base::sum(SE, na.rm = TRUE),
-                THIAMIN = base::sum(THIAMIN, na.rm = TRUE),
-                VITA = base::sum(VITA, na.rm = TRUE),
-                VITC = base::sum(VITC, na.rm = TRUE),
-                VITD = base::sum(VITD, na.rm = TRUE),
-                VITE = base::sum(VITE, na.rm = TRUE),
-                ZN = base::sum(ZN, na.rm = TRUE)
+                ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
+                VITB12 = sum(VITB12, na.rm = TRUE),
+                VITB6 = sum(VITB6, na.rm = TRUE),
+                BCAROTENE = sum(BCAROTENE, na.rm = TRUE),
+                CAFFEINE = sum(CAFFEINE, na.rm = TRUE),
+                CARB = sum(CARB, na.rm = TRUE),
+                CHOLES = sum(CHOLES, na.rm = TRUE),
+                KCAL = sum(KCAL, na.rm = TRUE),
+                TOTALFAT = sum(TOTALFAT, na.rm = TRUE),
+                FIBER = sum(FIBER, na.rm = TRUE),
+                FOLICACID = sum(FOLICACID, na.rm = TRUE),
+                IRON = sum(IRON, na.rm = TRUE),
+                MG = sum(MG, na.rm = TRUE),
+                MUFA = sum(MUFA, na.rm = TRUE),
+                NIACIN = sum(NIACIN, na.rm = TRUE),
+                N3FAT = sum(N3FAT, na.rm = TRUE),
+                N6FAT = sum(N6FAT, na.rm = TRUE),
+                PROTEIN = sum(PROTEIN, na.rm = TRUE),
+                PUFA = sum(PUFA, na.rm = TRUE),
+                RIBOFLAVIN = sum(RIBOFLAVIN, na.rm = TRUE),
+                SATFAT = sum(SATFAT, na.rm = TRUE),
+                SE = sum(SE, na.rm = TRUE),
+                THIAMIN = sum(THIAMIN, na.rm = TRUE),
+                VITA = sum(VITA, na.rm = TRUE),
+                VITC = sum(VITC, na.rm = TRUE),
+                VITD = sum(VITD, na.rm = TRUE),
+                VITE = sum(VITE, na.rm = TRUE),
+                ZN = sum(ZN, na.rm = TRUE)
             )
     }
 
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2)) {
+        # print a reminder that this function does not use all the original DII variables
+        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT)
     }
 
     if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
+        # print a reminder that this function does not use all the original DII variables
+        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT2)
     }
 
@@ -392,6 +370,8 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
                 VITA, VITC, VITD, VITE, ZN
             )
+        # print a reminder that this function does not use all the original DII variables
+        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT12)
     }
 }

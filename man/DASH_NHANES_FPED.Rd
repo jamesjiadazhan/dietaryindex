@@ -8,7 +8,10 @@ DASH_NHANES_FPED(
   FPED_IND_PATH = NULL,
   NUTRIENT_IND_PATH = NULL,
   FPED_IND_PATH2 = NULL,
-  NUTRIENT_IND_PATH2 = NULL
+  NUTRIENT_IND_PATH2 = NULL,
+  SKIM_MILK_code = NULL,
+  LOWF_CHEESE_code = NULL,
+  SSB_code = NULL
 )
 }
 \arguments{
@@ -19,6 +22,12 @@ DASH_NHANES_FPED(
 \item{FPED_IND_PATH2}{The file path for the FPED IND data for day 2. The file name should be like: fped_dr2iff.sas7bdat}
 
 \item{NUTRIENT_IND_PATH2}{The file path for the NUTRIENT IND data for day 2. The file name should be like: DR2IFF_J}
+
+\item{SKIM_MILK_code}{The food code for skim milk. The default food codes are from 17-18 FNDDS file.}
+
+\item{LOWF_CHEESE_code}{The food code for low-fat cheese. The default food codes are from 17-18 FNDDS file.}
+
+\item{SSB_code}{The food code for sugar-sweetened beverages (SSB). The default food codes are from 17-18 FNDDS file.}
 }
 \value{
 The DASH and its component scores and serving sizes

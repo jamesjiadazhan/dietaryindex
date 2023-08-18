@@ -70,6 +70,7 @@ DASHI_NHANES_FPED = function(NUTRIENT_PATH = NULL, NUTRIENT_PATH2 = NULL) {
             stop("Please use the population-level data for the first day data. The file name should contain: TOT")
         }
 
+        # Select only the high quality data
         COHORT = NUTRIENT %>%
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)

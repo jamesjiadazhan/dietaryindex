@@ -27,7 +27,10 @@
 ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SERV_ACS2020, VEG_ITEMS_SERV_ACS2020,
                       FRT_SERV_ACS2020, FRT_ITEMS_SERV_ACS2020, WGRAIN_SERV_ACS2020, REDPROC_MEAT_SERV_ACS2020, HPFRG_SERV_ACS2020,
                       SSB_FRTJ_SERV_ACS2020) {
-    ## Create variables and functions needed for ACS2020_V1 calculation
+
+    # Create variables and functions needed for ACS2020_V1 calculation
+
+    ## Create the function to calculate the quintile for healthy foods with score 0, 0.25, 0.5, 0.75
     quintile_healthy1 = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
         case_when(
@@ -38,6 +41,7 @@ ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SE
         )
     }
 
+    ## Create the function to calculate the quintile for healthy foods with score 0, 1, 2, 3
     quintile_healthy4 = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
         case_when(
@@ -48,6 +52,7 @@ ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SE
         )
     }
 
+    ## Create the function to calculate the quintile for unhealthy foods with score 0, 0.5, 1, 1.5
     quintile_unhealthy2 = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
         case_when(
@@ -58,6 +63,7 @@ ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SE
         )
     }
 
+    ## Create the function to calculate the quintile for unhealthy foods with score 0, 1, 2, 3
     quintile_unhealthy4 = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.25), na.rm = TRUE)
         case_when(
@@ -70,7 +76,7 @@ ACS2020_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_ACS2020, VEG_SE
 
     print("Reminder: this ACS2020_V2 index uses quartiles to rank participants' food/drink serving sizes and then calculate the component scores, which may generate results that are specific to your study population but not comparable to other populations.")
 
-    ## ACS2020 calculation
+    ## ACS2020 calculation for each component and the total score
     SERV_DATA %>%
         dplyr::mutate(
             RESPONDENTID = RESPONDENTID,

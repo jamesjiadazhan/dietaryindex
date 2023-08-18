@@ -8,6 +8,8 @@ DII_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Totals.csv.}
+
+\item{RECALL_SUMMARIZE}{Whether to summarize the food group and nutrient intake over all days reported per individual per day. Default is TRUE.}
 }
 \value{
 The DII and its component scores

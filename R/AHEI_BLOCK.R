@@ -18,6 +18,7 @@ AHEI_BLOCK = function(RAW_DATA) {
         RAW_DATA = RAW_DATA
     }
 
+    # Standard food frequency and portion
     STD_FOOD_FREQ = c(1, 2, 3, 4, 5, 6, 7, 8, 9)
     STD_FREQ_SERV = c(0, 1 / 90, 1 / 30, 2.5 / 30, 1 / 7, 2 / 7, 3.5 / 7, 5.5 / 7, 1)
     STD_FOOD_PORT = c(1, 2, 3, 4)
@@ -76,6 +77,7 @@ AHEI_BLOCK = function(RAW_DATA) {
     AHEI_MIN_TRANS_SERV = 4
     AHEI_MAX_TRANS_SERV = 0.5
 
+    # Functions to calculate AHEI component scores - healthy
     SCORE_HEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score) {
         case_when(
             actual_serv >= max_serv ~ max_score,
@@ -84,7 +86,7 @@ AHEI_BLOCK = function(RAW_DATA) {
         )
     }
 
-
+    # Functions to calculate AHEI component scores - unhealthy
     SCORE_UNHEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score) {
         case_when(
             actual_serv >= min_serv ~ min_score,
@@ -93,8 +95,10 @@ AHEI_BLOCK = function(RAW_DATA) {
         )
     }
 
+    # Calculate quantiles for AHEI sodium component scores
     SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11))
 
+    # Calculate AHEI total and component scores
     SERV_DATA %>%
         dplyr::mutate(
             RESPONDENTID = RESPONDENTID,

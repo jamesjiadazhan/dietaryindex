@@ -6,8 +6,8 @@
 \usage{
 DASH_ASA24(
   DATA_PATH,
-  SKIM_MILK_CODE = NULL,
-  LOWF_CHEESE_CODE = NULL,
+  SKIM_MILK_code = NULL,
+  LOWF_CHEESE_code = NULL,
   SSB_code = NULL,
   RECALL_SUMMARIZE = TRUE
 )
@@ -15,11 +15,13 @@ DASH_ASA24(
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Items.csv}
 
-\item{SKIM_MILK_CODE}{The food code for skim milk, default is the skim milk code from 17-18 FNDDS file}
+\item{SKIM_MILK_code}{The food code for skim milk, default is the skim milk code from 17-18 FNDDS file}
 
-\item{LOWF_CHEESE_CODE}{The food code for low-fat cheese, default is the low-fat cheese code from 17-18 FNDDS file}
+\item{LOWF_CHEESE_code}{The food code for low-fat cheese, default is the low-fat cheese code from 17-18 FNDDS file}
 
 \item{SSB_code}{The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file}
+
+\item{RECALL_SUMMARIZE}{Whether to summarize the recalls to the person level, default is TRUE}
 }
 \value{
 The DASH and its component scores
@@ -29,5 +31,5 @@ Calculate the DASH for the ASA24 data within 1 step
 }
 \examples{
 data("ASA24_exp_detailed")
-DASH_ASA24(ASA24_exp_detailed, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
+DASH_ASA24(ASA24_exp_detailed, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
 }
