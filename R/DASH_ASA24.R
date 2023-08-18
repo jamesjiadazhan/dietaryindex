@@ -5,17 +5,18 @@
 #' @import readr
 #' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Items.csv
-#' @param SKIM_MILK_CODE The food code for skim milk, default is the skim milk code from 17-18 FNDDS file
-#' @param LOWF_CHEESE_CODE The food code for low-fat cheese, default is the low-fat cheese code from 17-18 FNDDS file
+#' @param SKIM_MILK_code The food code for skim milk, default is the skim milk code from 17-18 FNDDS file
+#' @param LOWF_CHEESE_code The food code for low-fat cheese, default is the low-fat cheese code from 17-18 FNDDS file
 #' @param SSB_code The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file
+#' @param RECALL_SUMMARIZE Whether to summarize the recalls to the person level, default is TRUE
 #' @return The DASH and its component scores
 #' @examples
 #' data("ASA24_exp_detailed")
-#' DASH_ASA24(ASA24_exp_detailed, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
+#' DASH_ASA24(ASA24_exp_detailed, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
 #' @export
 
 
-DASH_ASA24 = function(DATA_PATH, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
+DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     if (is.character(DATA_PATH) == TRUE) {
         COHORT = read_csv(DATA_PATH)
     } else {
@@ -34,18 +35,18 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_CODE = NULL, LOWF_CHEESE_CODE = NULL,
         SSB = SSB_code
     }
 
-    if (is.null(SKIM_MILK_CODE)) {
+    if (is.null(SKIM_MILK_code)) {
         SKIM_MILK = c(11111170, 11113000, 11114320, 11115000, 11120000, 11121300, 11212050, 11511000, 11511300, 11511610, 11512020, 11512110, 11513300, 11513370, 11513384, 11513394, 11513700, 11513804, 11513854, 11514140, 11514350, 11519205)
         print("Since no skim milk code is provided, the default skim milk code from 17-18 FNDDS file is used.")
     } else {
-        SKIM_MILK = SKIM_MILK_CODE
+        SKIM_MILK = SKIM_MILK_code
     }
 
-    if (is.null(LOWF_CHEESE_CODE)) {
+    if (is.null(LOWF_CHEESE_code)) {
         LOWF_CHEESE = c(14204010, 14204020, 14206010, 14207010)
         print("Since no low-fat cheese code is provided, the default low-fat cheese code from 17-18 FNDDS file is used.")
     } else {
-        LOWF_CHEESE = LOWF_CHEESE_CODE
+        LOWF_CHEESE = LOWF_CHEESE_code
     }
 
 

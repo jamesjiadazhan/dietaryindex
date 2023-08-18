@@ -49,6 +49,7 @@ HEI2015_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
     HEI2015_MIN_SATFAT_SERV = 16
     HEI2015_MAX_SATFAT_SERV = 8
 
+    # Create functions for HEI2015 calculation
     HEI2015_HEALTHY1 = function(actual, min, max) {
         case_when(
             actual >= max ~ HEI2015_MAX1,
@@ -102,6 +103,7 @@ HEI2015_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             stop("Please use the population-level data for the first day data. The file name should contain: TOT")
         }
 
+        # Select only the high quality data
         NUTRIENT = NUTRIENT %>%
             filter(DR1DRSTZ == 1) %>%
             dplyr::select(SEQN, DR1TKCAL, DR1TSFAT, DR1TALCO, DR1TSODI, DR1DRSTZ, DR1TMFAT, DR1TPFAT) %>%
@@ -119,10 +121,12 @@ HEI2015_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             # only include people who are 2 years old or older
             filter(RIDAGEYR >= 2)
 
+        # Merge the demographic data with the nutrient and FPED data
         COHORT = NUTRIENT %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             inner_join(FPED, by = c("SEQN" = "SEQN"))
 
+        # Calculate the serving size for HEI2015
         COHORT = COHORT %>%
             dplyr::mutate(
                 TOTALFRT_SERV = DR1T_F_TOTAL / (DR1TKCAL / 1000),
@@ -144,6 +148,7 @@ HEI2015_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
                 TOTALKCAL = DR1TKCAL
             )
 
+        # Calculate the HEI2015 score
         COHORT = COHORT %>%
             dplyr::mutate(
                 HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),

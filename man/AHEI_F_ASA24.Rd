@@ -10,6 +10,8 @@ AHEI_F_ASA24(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE)
 \item{DATA_PATH}{The file path for the data. The file name should be like: Items.csv}
 
 \item{SSB_code}{The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file}
+
+\item{RECALL_SUMMARIZE}{Whether to summarize the recalls to the participant level, default is TRUE}
 }
 \value{
 The AHEI and its component scores

@@ -8,6 +8,8 @@ HEI2015_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
 }
 \arguments{
 \item{DATA_PATH}{The file path for the data. The file name should be like: Totals.csv.}
+
+\item{RECALL_SUMMARIZE}{If TRUE, the function calculates total food group and nutrient intake over all possible days and then average them by reporting dietary index per individual per day. If FALSE, the function calculates dietary index per individual per recall.}
 }
 \value{
 The average HEI2015 and its component scores for each individual per day.

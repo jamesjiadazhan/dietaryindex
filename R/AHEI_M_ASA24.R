@@ -6,6 +6,7 @@
 #' @import haven
 #' @param DATA_PATH The file path for the data. The file name should be like: Items.csv
 #' @param SSB_code The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file
+#' @param RECALL_SUMMARIZE Whether to summarize the recalls to the participant level, default is TRUE
 #' @return The AHEI and its component scores
 #' @examples
 #' data("ASA24_exp_detailed")
@@ -21,7 +22,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     }
 
     if (is.null(SSB_code)) {
-        # load the SSB codes from 17-18 FNDDS file
+        # load the SSB codes from 17-18 FNDDS file as default
         COFFEE = c(12200100, 12210200, 12210210, 12210260, 12210270, 12210280, 12210310, 12210400, 12210420, 12210430, 12210440, 12210505, 12210520, 91703600, 92100000, 92100500, 92101000, 92101500, 92101600, 92101610, 92101630, 92101700, 92101800, 92101810, 92101820, 92101850, 92101851, 92101900, 92101901, 92101903, 92101904, 92101905, 92101906, 92101910, 92101911, 92101913, 92101917, 92101918, 92101919, 92101920, 92101921, 92101923, 92101925, 92101926, 92101928, 92101930, 92101931, 92101933, 92101935, 92101936, 92101938, 92101950, 92101955, 92101960, 92101965, 92101970, 92101975, 92102000, 92102010, 92102020, 92102030, 92102040, 92102050, 92102060, 92102070, 92102080, 92102090, 92102100, 92102110, 92102400, 92102401, 92102450, 92102500, 92102501, 92102502, 92102503, 92102504, 92102505, 92102510, 92102511, 92102512, 92102513, 92102514, 92102515, 92102600, 92102601, 92102602, 92102610, 92102611, 92102612, 92103000, 92104000, 92111000, 92111010, 92114000, 92121000, 92121001, 92121010, 92121020, 92121030, 92121040, 92121041, 92121050, 92130000, 92130001, 92130005, 92130006, 92130010, 92130011, 92130020, 92130021, 92130030, 92130031, 92152000, 92152010, 92161000, 92161001, 92161002, 92162000, 92162001, 92162002, 92171000, 92171010, 92191100, 92191105, 92191200, 92191400, 92192000, 92192030, 92192040, 92193000, 92193005, 92193020, 92193025, 92201010, 92291300, 93202000, 93301400)
         TEA = c(53246000, 92302000, 92302500, 92303010, 92303100, 92304100, 92305010, 92305040, 92305050, 92305090, 92305110, 92305180, 92305900, 92305910, 92305920, 92306000, 92306090, 92306700, 92306800, 92307000, 92307400, 92308000, 92308010, 92308020, 92308030, 92308040, 92308050, 92308500, 92308510, 92308520, 92308530, 92308540, 92308550, 92309000, 92309010, 92309020, 92309030, 92309040, 92309050, 92309500, 92309510, 92309520)
         COFFEE_TEA = c(COFFEE, TEA)
@@ -32,6 +33,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
         SSB = c(COFFEE_TEA, DRINK)
         print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
+        # If SSB code is provided, use the provided SSB code
         SSB = SSB_code
     }
 
@@ -39,7 +41,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
         stop("Please use the individual-level data since this function needs to calculate sugar sweetened beverage serving using data from individual food items. The file name should be like: Items.csv")
     }
 
-    # Calculates total food group and nutrient intake over all possible days reported per individual per day.
+    # Calculates the serving size for AHEI
     COHORT = COHORT %>%
         dplyr::mutate(
             ADDED_SUGAR_SSB_SERV = case_when(
@@ -115,6 +117,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     AHEI_MIN_REDPROC_MEAT_SERV = 1.5
     AHEI_MAX_REDPROC_MEAT_SERV = 0
 
+    # Create the healthy score function
     SCORE_HEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score) {
         case_when(
             actual_serv >= max_serv ~ max_score,
@@ -123,6 +126,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
         )
     }
 
+    # Create the unhealthy score function
     SCORE_UNHEALTHY = function(actual_serv, min_serv, max_serv, min_score, max_score) {
         case_when(
             actual_serv >= min_serv ~ min_score,
@@ -131,8 +135,10 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
         )
     }
 
+    # Rank the sodium intake by decile
     SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11))
 
+    # Calculate the AHEI score
     COHORT = COHORT %>%
         dplyr::mutate(
             AHEI_VEG = SCORE_HEALTHY(VEG_SERV, AHEI_MIN_VEG_SERV, AHEI_MAX_VEG_SERV, AHEI_MIN, AHEI_MAX),
