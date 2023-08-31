@@ -122,10 +122,12 @@ library(readr)
 library(dietaryindex)
 ```
 
+
 ## Detailed function descriptions, examples, and NHANES data access instructions are provided here: 
 ___
 - [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
 - [Manual with data format and function output overviews](https://jamesjiadazhan.github.io/dietaryindex_manual/)
+
 
 
 ## Demonstrations
@@ -152,8 +154,6 @@ ___
 
 **dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hour dietary recalls, and even food records, while it also supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtaining high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy products and sugar-sweetened beverages) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar-sweetened beverage serving is estimated by dividing the total added sugar intake in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar-sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
-Just to emphasize, detailed function descriptions, examples, and NHANES data access instructions are provided here: 
-- [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
 
 For NHANES data:
 
