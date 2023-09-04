@@ -4,16 +4,9 @@ rm(list=ls())
 install.packages("devtools") #If you don't have "devtools" installed already
 devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
 
-# remove utils from library if you want to reload the package
-install.packages("/Users/james/Downloads/dietaryindex-main", repos = NULL, type = "source")
-
-# If the previous steps not working, you can try the following steps by removing the "#" marks
-# library(devtools) # Load devtools
-# install_github("jamesjiadazhan/dietaryindex")
 
 library(ggplot2)
 library(dplyr)
-# library(magrittr)
 library(tidyr)
 
 library(dietaryindex)
@@ -174,20 +167,6 @@ y_case1 = y_case1*100
 
 ## create a data frame
 df_case1 = data.frame(x_case1, y_case1)
-
-## plot the data with histogram with different colors for different x values
-ggplot(df_case1, aes(x_case1, y_case1, fill=x_case1)) + 
-  geom_bar(stat = "identity") + theme_bw() + 
-  labs(x = "Dietary Index", y = "Mean dietary index percentile", title = "DASHI and MEDI Dietary Indexes in the DASH and PREDIMED trials and NHANES 2017-2018", fill = "Group") + 
-  theme(plot.title = element_text(size=22)) +
-  theme(axis.title.x = element_text(size=18)) +
-  theme(axis.title.y = element_text(size=18)) +
-  theme(axis.text.x = element_text(size=14)) +
-  theme(aspect.ratio = 0.5) +
-  # add numeric labels to the bars
-  geom_text(aes(label = round(y_case1, 2)), vjust = -0.5, size = 3.5) +
-  # rotate the x axis labels by 90 degrees
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ## plot the data with histogram with different colors for different x values
 ggplot(df_case1, aes(x_case1, y_case1, fill=x_case1)) + 
