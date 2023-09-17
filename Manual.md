@@ -15,7 +15,7 @@ The **dietaryindex** package currently contains the following key functions:
   - `HEI2015()`, Healthy Eating Index 2015 
     - Ref: https://www.fns.usda.gov/how-hei-scored
   - `AHEI()`, alternative healthy eating index 
-    - Ref: https://academic.oup.com/jn/article/142/6/1009/4688968?login=false
+    - Ref: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3738221/
   - `AHEIP()` , alternative healthy eating index - pregnancy
     - Ref: https://www.jandonline.org/article/S0002-8223(09)00288-0/fulltext
   - `DASH()`, Dietary Approaches to Stop Hypertension 
