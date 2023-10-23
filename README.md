@@ -11,6 +11,7 @@ ___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
 
 - *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
+- https://www.biorxiv.org/content/10.1101/2023.08.07.548466v2
 
 
 As of version 1.0.3, the package supports the latest version of the Healthy Eating Index (HEI2020 and HEI-Toddlers 2020) for National Health and Nutrition Examination Survey (NHANES) data and ASA24. Now ASA24 can generate flexible outputs, depending on if RECALL_SUMMARIZE is TRUE or FALSE. If RECALL_SUMMARIZE is TRUE, all dietary recall results will be summarized via average. If not, all individual recall results will be shown. Also, all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. 
