@@ -89,6 +89,9 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             left_join(FPED, by = c("SEQN" = "SEQN"))
 
+        # Check if DR1TVD exists in the data frame
+        has_DR1TVD <- "DR1TVD" %in% colnames(COHORT)
+
         # Serving size calculation for DII
         COHORT = COHORT %>%
             filter(DR1TKCAL > 0) %>%
@@ -118,18 +121,35 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 THIAMIN = DR1TVB1,
                 VITA = DR1TVARA,
                 VITC = DR1TVC,
-                VITD = tryCatch(DR1TVD * 0.025, error = function(e) return(NULL)),
+                VITD = if (has_DR1TVD) DR1TVD * 0.025 else NULL,
                 VITE = DR1TATOC,
                 ZN = DR1TZINC
-            ) %>%
-            dplyr::select(
-                SEQN, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                VITA, VITC, VITD, VITE, ZN
             )
 
+        # Columns to select
+        select_cols <- c(
+            "SEQN", "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "TOTALFAT", "FIBER", "FOLICACID",
+            "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "PROTEIN", "PUFA", "RIBOFLAVIN", "SATFAT", "SE", "THIAMIN",
+            "VITA", "VITC", "VITE", "ZN"
+        )
+
+        # Include VITD if it exists
+        if (has_DR1TVD) {
+            select_cols <- c(select_cols, "VITD")
+            print("VITD is included in the calculation in the first day of NHANES data.")
+        } else {
+            print("VITD is not included in the calculation in the first day of NHANES data.")
+        }
+
+
         COHORT = COHORT %>%
+            # Select only the necessary columns
+            dplyr::select(one_of(select_cols)) %>%
+            # transform the data frame from wide to long
             tidyr::pivot_longer(-SEQN, names_to = "Variable", values_to = "Value")
+
+        # Select all the columns except SEQN
+        component_variable = setdiff(select_cols, "SEQN")
 
         # Score calculation for DII
         COHORT = COHORT %>%
@@ -142,44 +162,9 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
             dplyr::group_by(SEQN) %>%
             dplyr::summarize(
-                DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                    IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                    VITA, VITC, VITD, VITE, ZN,
-                    na.rm = TRUE
-                ),
-                DII_NOETOH = sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                    IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                    VITA, VITC, VITD, VITE, ZN,
-                    na.rm = TRUE
-                ),
-                ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
-                VITB12 = sum(VITB12, na.rm = TRUE),
-                VITB6 = sum(VITB6, na.rm = TRUE),
-                BCAROTENE = sum(BCAROTENE, na.rm = TRUE),
-                CAFFEINE = sum(CAFFEINE, na.rm = TRUE),
-                CARB = sum(CARB, na.rm = TRUE),
-                CHOLES = sum(CHOLES, na.rm = TRUE),
-                KCAL = sum(KCAL, na.rm = TRUE),
-                TOTALFAT = sum(TOTALFAT, na.rm = TRUE),
-                FIBER = sum(FIBER, na.rm = TRUE),
-                FOLICACID = sum(FOLICACID, na.rm = TRUE),
-                IRON = sum(IRON, na.rm = TRUE),
-                MG = sum(MG, na.rm = TRUE),
-                MUFA = sum(MUFA, na.rm = TRUE),
-                NIACIN = sum(NIACIN, na.rm = TRUE),
-                N3FAT = sum(N3FAT, na.rm = TRUE),
-                N6FAT = sum(N6FAT, na.rm = TRUE),
-                PROTEIN = sum(PROTEIN, na.rm = TRUE),
-                PUFA = sum(PUFA, na.rm = TRUE),
-                RIBOFLAVIN = sum(RIBOFLAVIN, na.rm = TRUE),
-                SATFAT = sum(SATFAT, na.rm = TRUE),
-                SE = sum(SE, na.rm = TRUE),
-                THIAMIN = sum(THIAMIN, na.rm = TRUE),
-                VITA = sum(VITA, na.rm = TRUE),
-                VITC = sum(VITC, na.rm = TRUE),
-                VITD = sum(VITD, na.rm = TRUE),
-                VITE = sum(VITE, na.rm = TRUE),
-                ZN = sum(ZN, na.rm = TRUE)
+                DII_ALL = sum(across(all_of(component_variable), \(x) sum(x, na.rm = TRUE))),
+                DII_NOETOH = sum(across(all_of(setdiff(component_variable, "ALCOHOL")), \(x) sum(x, na.rm = TRUE))),
+                across(all_of(component_variable), \(x) sum(x, na.rm = TRUE))
             )
     }
 
@@ -223,6 +208,9 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             left_join(FPED2, by = c("SEQN" = "SEQN"))
 
+        # Check if DR2TVD exists in the data frame
+        has_DR2TVD <- "DR2TVD" %in% colnames(COHORT2)
+
         # Serving size calculation for DII
         COHORT2 = COHORT2 %>%
             filter(DR2TKCAL > 0) %>%
@@ -252,19 +240,35 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 THIAMIN = DR2TVB1,
                 VITA = DR2TVARA,
                 VITC = DR2TVC,
-                VITD = tryCatch(DR2TVD * 0.025, error = function(e) return(NULL)),
+                VITD = if (has_DR2TVD) DR2TVD * 0.025 else NULL,
                 VITE = DR2TATOC,
                 ZN = DR2TZINC
-            ) %>%
-            dplyr::select(
-                SEQN, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                VITA, VITC, VITD, VITE, ZN
             )
 
+        # Columns to select
+        select_cols <- c(
+            "SEQN", "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "TOTALFAT", "FIBER", "FOLICACID",
+            "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "PROTEIN", "PUFA", "RIBOFLAVIN", "SATFAT", "SE", "THIAMIN",
+            "VITA", "VITC", "VITE", "ZN"
+        )
+
+        # Include VITD if it exists
+        if (has_DR2TVD) {
+            select_cols <- c(select_cols, "VITD")
+            print("VITD is included in the calculation in the second day of NHANES data.")
+        } else {
+            print("VITD is not included in the calculation in the second day of NHANES data.")
+        }
+
+
         COHORT2 = COHORT2 %>%
+            # Select only the necessary columns
+            dplyr::select(one_of(select_cols)) %>%
+            # transform the data frame from wide to long
             tidyr::pivot_longer(-SEQN, names_to = "Variable", values_to = "Value")
 
+        # Select all the columns except SEQN
+        component_variable = setdiff(select_cols, "SEQN")
 
         # Score calculation for DII
         COHORT2 = COHORT2 %>%
@@ -277,44 +281,9 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             tidyr::pivot_wider(names_from = Variable, values_from = IND_DII_SCORE) %>%
             dplyr::group_by(SEQN) %>%
             dplyr::summarize(
-                DII_ALL = sum(ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                    IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                    VITA, VITC, VITD, VITE, ZN,
-                    na.rm = TRUE
-                ),
-                DII_NOETOH = sum(VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                    IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                    VITA, VITC, VITD, VITE, ZN,
-                    na.rm = TRUE
-                ),
-                ALCOHOL = sum(ALCOHOL, na.rm = TRUE),
-                VITB12 = sum(VITB12, na.rm = TRUE),
-                VITB6 = sum(VITB6, na.rm = TRUE),
-                BCAROTENE = sum(BCAROTENE, na.rm = TRUE),
-                CAFFEINE = sum(CAFFEINE, na.rm = TRUE),
-                CARB = sum(CARB, na.rm = TRUE),
-                CHOLES = sum(CHOLES, na.rm = TRUE),
-                KCAL = sum(KCAL, na.rm = TRUE),
-                TOTALFAT = sum(TOTALFAT, na.rm = TRUE),
-                FIBER = sum(FIBER, na.rm = TRUE),
-                FOLICACID = sum(FOLICACID, na.rm = TRUE),
-                IRON = sum(IRON, na.rm = TRUE),
-                MG = sum(MG, na.rm = TRUE),
-                MUFA = sum(MUFA, na.rm = TRUE),
-                NIACIN = sum(NIACIN, na.rm = TRUE),
-                N3FAT = sum(N3FAT, na.rm = TRUE),
-                N6FAT = sum(N6FAT, na.rm = TRUE),
-                PROTEIN = sum(PROTEIN, na.rm = TRUE),
-                PUFA = sum(PUFA, na.rm = TRUE),
-                RIBOFLAVIN = sum(RIBOFLAVIN, na.rm = TRUE),
-                SATFAT = sum(SATFAT, na.rm = TRUE),
-                SE = sum(SE, na.rm = TRUE),
-                THIAMIN = sum(THIAMIN, na.rm = TRUE),
-                VITA = sum(VITA, na.rm = TRUE),
-                VITC = sum(VITC, na.rm = TRUE),
-                VITD = sum(VITD, na.rm = TRUE),
-                VITE = sum(VITE, na.rm = TRUE),
-                ZN = sum(ZN, na.rm = TRUE)
+                DII_ALL = sum(across(all_of(component_variable), \(x) sum(x, na.rm = TRUE))),
+                DII_NOETOH = sum(across(all_of(setdiff(component_variable, "ALCOHOL")), \(x) sum(x, na.rm = TRUE))),
+                across(all_of(component_variable), \(x) sum(x, na.rm = TRUE))
             )
     }
 
@@ -330,46 +299,33 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         return(COHORT2)
     }
 
-    # merge two days data if they both exist
-    if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
-        COHORT12 <- inner_join(COHORT, COHORT2, by = "SEQN") %>%
-            mutate(
-                DII_ALL = (DII_ALL.x + DII_ALL.y) / 2,
-                DII_NOETOH = (DII_NOETOH.x + DII_NOETOH.y) / 2,
-                ALCOHOL = (ALCOHOL.x + ALCOHOL.y) / 2,
-                VITB12 = (VITB12.x + VITB12.y) / 2,
-                VITB6 = (VITB6.x + VITB6.y) / 2,
-                BCAROTENE = (BCAROTENE.x + BCAROTENE.y) / 2,
-                CAFFEINE = (CAFFEINE.x + CAFFEINE.y) / 2,
-                CARB = (CARB.x + CARB.y) / 2,
-                CHOLES = (CHOLES.x + CHOLES.y) / 2,
-                KCAL = (KCAL.x + KCAL.y) / 2,
-                TOTALFAT = (TOTALFAT.x + TOTALFAT.y) / 2,
-                FIBER = (FIBER.x + FIBER.y) / 2,
-                FOLICACID = (FOLICACID.x + FOLICACID.y) / 2,
-                IRON = (IRON.x + IRON.y) / 2,
-                MG = (MG.x + MG.y) / 2,
-                MUFA = (MUFA.x + MUFA.y) / 2,
-                NIACIN = (NIACIN.x + NIACIN.y) / 2,
-                N3FAT = (N3FAT.x + N3FAT.y) / 2,
-                N6FAT = (N6FAT.x + N6FAT.y) / 2,
-                PROTEIN = (PROTEIN.x + PROTEIN.y) / 2,
-                PUFA = (PUFA.x + PUFA.y) / 2,
-                RIBOFLAVIN = (RIBOFLAVIN.x + RIBOFLAVIN.y) / 2,
-                SATFAT = (SATFAT.x + SATFAT.y) / 2,
-                SE = (SE.x + SE.y) / 2,
-                THIAMIN = (THIAMIN.x + THIAMIN.y) / 2,
-                VITA = (VITA.x + VITA.y) / 2,
-                VITC = (VITC.x + VITC.y) / 2,
-                VITD = (VITD.x + VITD.y) / 2,
-                VITE = (VITE.x + VITE.y) / 2,
-                ZN = (ZN.x + ZN.y) / 2
-            ) %>%
-            dplyr::select(
-                SEQN, DII_ALL, DII_NOETOH, ALCOHOL, VITB12, VITB6, BCAROTENE, CAFFEINE, CARB, CHOLES, KCAL, TOTALFAT, FIBER, FOLICACID,
-                IRON, MG, MUFA, NIACIN, N3FAT, N6FAT, PROTEIN, PUFA, RIBOFLAVIN, SATFAT, SE, THIAMIN,
-                VITA, VITC, VITD, VITE, ZN
-            )
+    # Check which columns exist in both COHORT and COHORT2
+    common_cols <- intersect(colnames(COHORT), colnames(COHORT2))
+
+    # Remove 'SEQN' as it is the joining key, not an average-able variable
+    common_cols <- setdiff(common_cols, "SEQN")
+
+    # Initialize an empty data frame for the joined and averaged data
+    COHORT12 <- data.frame()
+
+    # Perform the join and averaging only if both data sets are non-null and have common columns
+    if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2) & length(common_cols) > 0) {
+        # Perform inner join to merge the two data sets
+        COHORT12 <- inner_join(COHORT, COHORT2, by = "SEQN")
+
+        # Dynamically generate the mutate expressions for averaging the common columns between the two data sets
+        avg_exprs <- setNames(lapply(common_cols, function(col) {
+            rlang::parse_expr(paste0(col, " = (", col, ".x + ", col, ".y) / 2"))
+        }), common_cols)
+
+        # Perform the averaging calculations
+        COHORT12 <- COHORT12 %>%
+            mutate(!!!avg_exprs)
+
+        # Explicitly select the columns of interest
+        COHORT12 <- COHORT12 %>%
+            dplyr::select(SEQN, !!!common_cols)
+
         # print a reminder that this function does not use all the original DII variables
         print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT12)

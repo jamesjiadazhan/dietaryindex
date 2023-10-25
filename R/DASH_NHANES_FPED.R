@@ -40,14 +40,14 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
         SSB = SSB_code
     }
 
-    if (is.null(SKIM_MILK_code)){
+    if (is.null(SKIM_MILK_code)) {
         SKIM_MILK = c(11111170, 11113000, 11114320, 11115000, 11120000, 11121300, 11212050)
         print("Since no skim milk code is provided, the default skim milk code from 17-18 FNDDS file is used.")
     } else {
         SKIM_MILK = SKIM_MILK_code
     }
 
-    if (is.null(LOWF_CHEESE_code)){
+    if (is.null(LOWF_CHEESE_code)) {
         LOWF_CHEESE = c(14204010, 14204020, 14206010, 14207010)
         print("Since no low-fat cheese code is provided, the default low-fat cheese code from 17-18 FNDDS file is used.")
     } else {

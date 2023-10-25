@@ -69,8 +69,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
         ungroup()
 
     # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
-    if (RECALL_SUMMARIZE == TRUE){
-
+    if (RECALL_SUMMARIZE == TRUE) {
         print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         COHORT = COHORT %>%
@@ -96,7 +95,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     else {
         print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
- 
+
     ## Create variables needed for AHEI calculation
     AHEI_MIN = 0
     AHEI_MAX = 10

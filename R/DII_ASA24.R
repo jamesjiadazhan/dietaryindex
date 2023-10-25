@@ -24,8 +24,7 @@ DII_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
     }
 
     # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
-    if (RECALL_SUMMARIZE == TRUE){
-
+    if (RECALL_SUMMARIZE == TRUE) {
         print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         ## get sum per person of variables of interest if multiple recalls from the same person exist
@@ -139,7 +138,6 @@ DII_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
                 ## save the group level variables for later use and silent the warning message
                 .groups = "keep"
             )
-
     }
     # if RECALL_SUMMARIZE = FALSE, keep the food group and nutrient intake over all days reported per individual per day
     else {

@@ -16,7 +16,6 @@
 #' @export
 
 AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED_IND_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL, SSB_code = NULL) {
-
     # stop if the input data is not provided for any day
     if (is.null(FPED_IND_PATH) & is.null(NUTRIENT_IND_PATH) & is.null(FPED_IND_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
         stop("Please provide the file path for the FPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
