@@ -8,13 +8,14 @@ library(dietaryindex)
 The **dietaryindex** package currently contains the following key functions:
 
 - Generic functions
-  - `HEI2020()`, Healthy Eating Index 2020 & HEI-Toddlers-2020
+  - `HEI2020()`, `HEI2020_V2()`, Healthy Eating Index 2020 & HEI-Toddlers-2020
     - Ref: https://pubmed.ncbi.nlm.nih.gov/37201748/
     - Ref: https://pubmed.ncbi.nlm.nih.gov/37209965/
+    - The only difference for HEI2020_V2 is that it has different serving size definitions for added sugar (tsp, teaspoon) and saturated fat (g, gram). In HEI2020, the required serving sizes for added sugar and saturated fat are % of total energy, which may be hard to calculate. Thus, HEI2020_V2 is provided separately as a potentially convenient option. Note, 1 tsp of added sugar is equal to 4 grams in dietaryindex.
   - `HEI2015()`, Healthy Eating Index 2015 
     - Ref: https://www.fns.usda.gov/how-hei-scored
   - `AHEI()`, alternative healthy eating index 
-    - Ref: https://academic.oup.com/jn/article/142/6/1009/4688968?login=false
+    - Ref: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3738221/
   - `AHEIP()` , alternative healthy eating index - pregnancy
     - Ref: https://www.jandonline.org/article/S0002-8223(09)00288-0/fulltext
   - `DASH()`, Dietary Approaches to Stop Hypertension 
@@ -48,6 +49,8 @@ The **dietaryindex** package currently contains the following key functions:
 Note: all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. See examples later. 
 
 - ASA24
+  - `HEI2020_ASA24()`, Calculating HEI2020 for non-toddlers (age > 2 years) with 1 step using the ASA24 data
+  - `HEI2020_TODDLERS_ASA24()`, Calculating HEI2020 for non-toddlers (age 1-2 years) with 1 step using the ASA24 data
   - `HEI2015_ASA24()`, Calculating HEI2015 with 1 step using the ASA24 data
   - `AHEI_F_ASA24()`, Calculate the AHEI (female only) within 1 step using the ASA24 data
   - `AHEI_M_ASA24()`, Calculate the AHEI (male only) within 1 step using the ASA24 data
@@ -184,6 +187,32 @@ data("NHANES_20172018")
 DII_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
+#### Calculating HEI2020 for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+# if you want to summarize all recalls into a result via average
+HEI2020_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
+# if you want to use all individual recalls
+HEI2020_ASA24(DATA_PATH, RECALL_SUMMARIZE = FALSE)
+
+#Use the example data
+data("ASA24_exp")
+HEI2015_ASA24(ASA24_exp, RECALL_SUMMARIZE = TRUE)
+HEI2015_ASA24(ASA24_exp, RECALL_SUMMARIZE = FALSE)
+```
+#### Calculating HEI2020_toddlers for ASA24
+```
+DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
+# if you want to summarize all recalls into a result via average
+HEI2020_TODDLERS_ASA24(DATA_PATH, RECALL_SUMMARIZE = TRUE)
+# if you want to use all individual recalls
+HEI2020_TODDLERS_ASA24(DATA_PATH, RECALL_SUMMARIZE = FALSE)
+
+#Use the example data
+data("ASA24_exp")
+HEI2020_TODDLERS_ASA24(ASA24_exp, RECALL_SUMMARIZE = TRUE)
+HEI2020_TODDLERS_ASA24(ASA24_exp, RECALL_SUMMARIZE = FALSE)
+```
 #### Calculating HEI2015 for ASA24
 ```
 DATA_PATH = "/Users/james/Desktop/data/Totals.csv"
@@ -327,6 +356,9 @@ MED_BLOCK(BLOCK_exp)
 #Use the example data
 data("HEI2020_VALIDATION")
 HEI2020(SERV_DATA = HEI2020_VALIDATION,RESPONDENTID = HEI2020_VALIDATION$id,AGE = HEI2020_VALIDATION$age,TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal,TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit,FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit,VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable,GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean,TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein,SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein,WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain,DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy,FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid,REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain,SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium,ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar,SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
+
+HEI2020_V2(SERV_DATA = HEI2020_VALIDATION,RESPONDENTID = HEI2020_VALIDATION$id,AGE = HEI2020_VALIDATION$age,TOTALKCAL_HEI2020 = HEI2020_VALIDATION$kcal,TOTALFRT_SERV_HEI2020 = HEI2020_VALIDATION$total_fruit,FRT_SERV_HEI2020 = HEI2020_VALIDATION$whole_fruit,VEG_SERV_HEI2020 = HEI2020_VALIDATION$total_vegetable,GREENNBEAN_SERV_HEI2020 = HEI2020_VALIDATION$green_and_bean,TOTALPRO_SERV_HEI2020 = HEI2020_VALIDATION$total_protein,SEAPLANTPRO_SERV_HEI2020 = HEI2020_VALIDATION$seafood_plant_protein,WHOLEGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$whole_grain,DAIRY_SERV_HEI2020 = HEI2020_VALIDATION$dairy,FATTYACID_SERV_HEI2020 = HEI2020_VALIDATION$fatty_acid,REFINEDGRAIN_SERV_HEI2020 = HEI2020_VALIDATION$refined_grain,SODIUM_SERV_HEI2020 = HEI2020_VALIDATION$sodium,ADDEDSUGAR_SERV_HEI2020 = HEI2020_VALIDATION$added_sugar,SATFAT_SERV_HEI2020 = HEI2020_VALIDATION$saturated_fat)
+
 ```
 
 #### Calculating HEI2015 for your own dietary assessment tool
