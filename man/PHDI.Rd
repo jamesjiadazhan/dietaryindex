@@ -59,11 +59,11 @@ PHDI(
 
 \item{SOY_SERV_PHDI}{The serving size of Soy products, including Tofu, tempeh, soy milk, soy yogurt, soy cheese, unit=grams/day}
 
-\item{ADDED_FAT_UNSAT_SERV_PHDI}{The serving size of Added unsaturated fat, e.g. olive soybean, rapeseed, sunflower, peanuts oil, excluding transfat, unit=% of total kcal/day}
+\item{ADDED_FAT_UNSAT_SERV_PHDI}{The serving size of Added unsaturated fat, e.g. olive soybean, rapeseed, sunflower, peanuts oil, excluding transfat, unit=percent of total kcal/day}
 
-\item{ADDED_FAT_SAT_TRANS_SERV_PHDI}{The serving size of Added saturated fats and trans fat, e.g. butter, lard, coconuts oil, palm oil, unit=% of total kcal/day}
+\item{ADDED_FAT_SAT_TRANS_SERV_PHDI}{The serving size of Added saturated fats and trans fat, e.g. butter, lard, coconuts oil, palm oil, unit=percent of total kcal/day}
 
-\item{ADDED_SUGAR_SERV_PHDI}{The serving size of Added sugar, including the added sugar from all sweeteners and fruit juice, unit=% of total kcal/day}
+\item{ADDED_SUGAR_SERV_PHDI}{The serving size of Added sugar, including the added sugar from all sweeteners and fruit juice, unit=percent of total kcal/day}
 }
 \value{
 The PHDI index/score, PHDI and its component scores
