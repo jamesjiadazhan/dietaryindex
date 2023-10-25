@@ -258,7 +258,7 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             }
         }
 
-        # select the columns that are needed for the HEI2020 
+        # select the columns that are needed for the HEI2020
         COHORT = COHORT %>%
             dplyr::select(
                 SEQN, RIDAGEYR, HEI2020_ALL, HEI2020_TOTALFRT, HEI2020_FRT, HEI2020_VEG, HEI2020_GREENNBEAN,

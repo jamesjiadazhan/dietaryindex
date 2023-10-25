@@ -23,11 +23,11 @@ HEI2015_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
         stop("Please use the population-level data. The file name should be like: Totals.csv")
     }
 
-    
+
     # If RECALL_SUMMARIZE is TRUE, the function calculates total food group and nutrient intake over all possible days and then average them by reporting dietary index per individual per day.
-    if (RECALL_SUMMARIZE == TRUE){
+    if (RECALL_SUMMARIZE == TRUE) {
         print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
-        
+
         ## get sum per person of variables of interest if multiple recalls from the same person exist
         COHORT = COHORT %>%
             # arrange by UserName, UserID
@@ -139,7 +139,7 @@ HEI2015_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
                 ## save the group level variables for later use and silent the warning message
                 .groups = "keep"
             )
-    } 
+    }
     # If RECALL_SUMMARIZE is FALSE, the function calculates total food group and nutrient intake over all possible days reported per individual per day.
     else {
         # do nothing
