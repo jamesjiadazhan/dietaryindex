@@ -20,9 +20,9 @@
 #' @param NUTS_SERV_PHDI The serving size of nuts and seeds, including peanuts, tree nuts- - walnuts, almond, hazelnuts, pecan, cashew, pistachio, unit=grams/day
 #' @param LEGUMES_SERV_PHDI The serving size of Nonsoy LEGUMES, including Beans, peas, lentils, chickpeas, unit=grams/day
 #' @param SOY_SERV_PHDI The serving size of Soy products, including Tofu, tempeh, soy milk, soy yogurt, soy cheese, unit=grams/day
-#' @param ADDED_FAT_UNSAT_SERV_PHDI The serving size of Added unsaturated fat, e.g. olive soybean, rapeseed, sunflower, peanuts oil, excluding transfat, unit=% of total kcal/day
-#' @param ADDED_FAT_SAT_TRANS_SERV_PHDI The serving size of Added saturated fats and trans fat, e.g. butter, lard, coconuts oil, palm oil, unit=% of total kcal/day
-#' @param ADDED_SUGAR_SERV_PHDI The serving size of Added sugar, including the added sugar from all sweeteners and fruit juice, unit=% of total kcal/day
+#' @param ADDED_FAT_UNSAT_SERV_PHDI The serving size of Added unsaturated fat, e.g. olive soybean, rapeseed, sunflower, peanuts oil, excluding transfat, unit=percent of total kcal/day
+#' @param ADDED_FAT_SAT_TRANS_SERV_PHDI The serving size of Added saturated fats and trans fat, e.g. butter, lard, coconuts oil, palm oil, unit=percent of total kcal/day
+#' @param ADDED_SUGAR_SERV_PHDI The serving size of Added sugar, including the added sugar from all sweeteners and fruit juice, unit=percent of total kcal/day
 #' @return The PHDI index/score, PHDI and its component scores
 #' @examples
 #' data("PHDI_VALIDATION")
