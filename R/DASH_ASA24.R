@@ -85,10 +85,9 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL,
             ## save the group level variables for later use and silent the warning message
             .groups = "keep"
         )
-    
-    # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
-    if (RECALL_SUMMARIZE == TRUE){
 
+    # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
+    if (RECALL_SUMMARIZE == TRUE) {
         print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         COHORT = COHORT %>%

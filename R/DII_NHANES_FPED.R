@@ -91,7 +91,7 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
 
         # Check if DR1TVD exists in the data frame
         has_DR1TVD <- "DR1TVD" %in% colnames(COHORT)
-        
+
         # Serving size calculation for DII
         COHORT = COHORT %>%
             filter(DR1TKCAL > 0) %>%
@@ -141,7 +141,7 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             print("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
-        
+
         COHORT = COHORT %>%
             # Select only the necessary columns
             dplyr::select(one_of(select_cols)) %>%
@@ -260,7 +260,7 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             print("VITD is not included in the calculation in the second day of NHANES data.")
         }
 
-        
+
         COHORT2 = COHORT2 %>%
             # Select only the necessary columns
             dplyr::select(one_of(select_cols)) %>%
@@ -310,19 +310,18 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
 
     # Perform the join and averaging only if both data sets are non-null and have common columns
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2) & length(common_cols) > 0) {
-        
         # Perform inner join to merge the two data sets
         COHORT12 <- inner_join(COHORT, COHORT2, by = "SEQN")
-        
+
         # Dynamically generate the mutate expressions for averaging the common columns between the two data sets
         avg_exprs <- setNames(lapply(common_cols, function(col) {
             rlang::parse_expr(paste0(col, " = (", col, ".x + ", col, ".y) / 2"))
         }), common_cols)
-        
+
         # Perform the averaging calculations
         COHORT12 <- COHORT12 %>%
             mutate(!!!avg_exprs)
-        
+
         # Explicitly select the columns of interest
         COHORT12 <- COHORT12 %>%
             dplyr::select(SEQN, !!!common_cols)

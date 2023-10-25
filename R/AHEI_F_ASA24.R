@@ -70,7 +70,7 @@ AHEI_F_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
         ungroup()
 
     # if RECALL_SUMMARIZE = TRUE, summarize each individual food pattern variables into one row per person for all days reported
-    if (RECALL_SUMMARIZE == TRUE){
+    if (RECALL_SUMMARIZE == TRUE) {
         print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         COHORT = COHORT %>%
@@ -93,7 +93,7 @@ AHEI_F_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
             )
     }
     # if RECALL_SUMMARIZE = FALSE, keep the original data structure and do not summarize
-    else{
+    else {
         print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
 
