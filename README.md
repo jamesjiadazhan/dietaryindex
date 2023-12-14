@@ -32,7 +32,7 @@ This package can calculate the following dietary pattern indexes:
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
-**dietaryindex** has compiled NHANES data from 2005 - 2020 for your convenience. This includes NHANES 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
+**dietaryindex** has compiled NHANES data from 1999 - 2020 for your convenience. This includes NHANES 1999-2002 (MPED was merged by USDA), 2003-2004, 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
 - Download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D)
 - Download the **NHANES_combined** folder from the GitHub dietaryindex_NHANES page (https://github.com/jamesjiadazhan/dietaryindex_NHANES/tree/main/data/NHANES_combined)
 
