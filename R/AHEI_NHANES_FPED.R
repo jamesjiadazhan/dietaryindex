@@ -167,12 +167,12 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                         RIAGENDR == 2 & ALCOHOL_SERV >= 2.5 ~ 0,
                         RIAGENDR == 2 & ALCOHOL_SERV < 2.5 & ALCOHOL_SERV > 1.5 ~ 0 + (ALCOHOL_SERV - 2.5) * 10 / (1.5 - 2.5),
                         RIAGENDR == 2 & ALCOHOL_SERV <= 1.5 & ALCOHOL_SERV >= 0.5 ~ 10,
-                        RIAGENDR == 2 & ALCOHOL_SERV < 0.5 ~ 0 + (ALCOHOL_SERV - 0) * 10 / (0.5 - 0),
+                        RIAGENDR == 2 & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV - 0) * 10 / (0.5 - 0),
                         RIAGENDR == 2 & ALCOHOL_SERV <= 0.125 ~ 2.5,
                         RIAGENDR == 1 & ALCOHOL_SERV >= 3.5 ~ 0,
                         RIAGENDR == 1 & ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV - 3.5) * 10 / (2 - 3.5),
                         RIAGENDR == 1 & ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
-                        RIAGENDR == 1 & ALCOHOL_SERV < 0.5 ~ (ALCOHOL_SERV - 0) * 10 / (0.5 - 0),
+                        RIAGENDR == 1 & ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ (ALCOHOL_SERV - 0) * 10 / (0.5 - 0),
                         RIAGENDR == 1 & ALCOHOL_SERV <= 0.125 ~ 2.5
                     ),
                 AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
