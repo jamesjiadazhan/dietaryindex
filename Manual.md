@@ -45,6 +45,7 @@ The **dietaryindex** package currently contains the following key functions:
   - `MED_NHANES_FPED()`, Calculating aMED (median-based) with 1 step using the NHANES_FPED data (after 2005)
   - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data (after 2005)
   - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
+  - `DII_NHANES_MPED()`, Calculating DII with 1 step using the NHANES_MPED data (1999-2004)
 
 Note: all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. See examples later. 
 
@@ -185,6 +186,11 @@ DII_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
 DII_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
+```
+
+#### Calculating DII for NHANES_MPED
+```
+DII_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
 ```
 
 #### Calculating HEI2020 for ASA24
