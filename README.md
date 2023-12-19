@@ -69,6 +69,28 @@ load("NHANES_20172020.rda")
 
 ```
 
+
+For NHANES data:
+
+- FPED population file refers to the files in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). They look like FPED_DR1TOT or FPED_DR2TOT.
+  - ![image](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/bffd4196-fdc8-40ce-be83-21d701a5f408)
+
+
+- The FPED individual files look like FPED_DR1IFF or FPED_DR2IFF.
+  - ![image](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/199ba4bd-702f-4530-9f44-8dfab4c6d9f0)
+ 
+
+- NUTRIENT population file refers to the files in the Dietary Interview - Total Nutrient Intakes, First Day or Second Day (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). They look like DR1TOT_J or DR2TOT_J
+  - ![image](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/a36e1de0-c7b0-4c48-a320-55c7b5034c5d)
+ 
+- The NUTRIENT individual files look like DR1IFF_D or DR2IFF_D.
+  - ![image](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/721e7677-fcac-40e0-8a9b-1b61cfcaf180)
+ 
+
+- DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
+  - ![image](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/75898baa-c615-4446-bca2-9ccd01bf5879)
+
+
 For a detailed explanation of these indexes, please check the attached Excel files:
 - [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
 - [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
@@ -156,17 +178,8 @@ ___
 **dietaryindex** is mainly intended as a versatile tool to help for calculating different dietary indexes conveniently. It is designed to be flexible to work for almost all types of dietary assessment tools, including food frequency questionnaires, 24-hour dietary recalls, and even food records, while it also supports many 1-step dietary index calculations for NHANES, ASA24, and DHQ3.  Please follow the instruction of your specific dietary assessment tools and relevant articles regarding how to accurately define the serving size (see above) if it is not provided in our package, as they are the key to obtaining high-quality dietary indexes. **dietaryindex** also provides some help in defining the serving size in the help file, argument section. Note: some very specific dietary index components (low-fat dairy products and sugar-sweetened beverages) are not easily available and thus are difficult to assess. The author used individual-level food data to compute the population-level food group data. For example, the sugar-sweetened beverage serving is estimated by dividing the total added sugar intake in grams from beverages by 26, because 1 bottle (8 oz) of Coke has 26 g added sugars and this is used as the benchmark, as different sugar-sweetened beverages have largely different added sugar contents. Please use your own judgment to determine if the dietary indexes calculated using the **dietaryindex** package is appropriate for your research.
 
 
-For NHANES data:
+ 
 
-- FPED population file refers to the files in the Food Patterns equivalents for foods in the WWEIA (https://www.ars.usda.gov/northeast-area/beltsville-md-bhnrc/beltsville-human-nutrition-research-center/food-surveys-research-group/docs/fped-databases/). They look like FPED_DR1TOT or FPED_DR2TOT.
-  - The FPED individual files look like FPED_DR1IFF or FPED_DR2IFF.
-
-- NUTRIENT population file refers to the files in the Dietary Interview - Total Nutrient Intakes, First Day or Second Day (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Dietary&CycleBeginYear=2005). They look like 
-  - The NUTRIENT individual files look like DR1IFF_D or DR2IFF_D.
-
-- DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
-
-FPED, NUTRIENT, and DEMO files are available within the package and in the Google Drive collected by the package developer for your convenience (https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link). 
 
 ### Contributing & Notes
 **dietaryindex** is licensed under the [MIT License](https://github.com/jamesjiadazhan/dietaryindex/blob/main/other/LICENSE.txt). Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests, and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, **Jiada (James) Zhan**, via his email: jzha832@emory.edu. **Jiada (James) Zhan** home page at Emory is: https://www.sph.emory.edu/phd-students/profile/index.php?FID=jiada-zhan-12906. **Becky Hodge** at the American Cancer Society provided substantial contributions to validate this package. **Michael L Orr** at Dean Jones/ Young-Mi Go Lab at Emory University helped design the dietaryindex logo. Thanks a lot for their help.
