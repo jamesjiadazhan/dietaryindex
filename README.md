@@ -32,6 +32,52 @@ This package can calculate the following dietary pattern indexes:
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
+
+
+## Installation
+___
+
+Currently, **dietaryindex** is not available on [CRAN]
+
+To install from this GitHub repository, use the **devtools** package:
+
+```
+install.packages("devtools") #If you don't have "devtools" installed already
+devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
+```
+
+If the previous steps are not working, you can try the following steps:
+```
+library(devtools) # Load devtools
+install_github("jamesjiadazhan/dietaryindex")
+```
+
+
+If something happens like the following, first try to enter 1 in the terminal (lower box). If not successful, then try to enter 2. **It will take a while if you are a new R user.**
+```
+  These packages have more recent versions available.
+  It is recommended to update all of them.
+  Which would you like to update?
+
+  1: All                          
+  2: CRAN packages only           
+  3: None                         
+  4: tzdb  (0.3.0 -> 0.4.0) [CRAN]
+  5: vroom (1.6.1 -> 1.6.3) [CRAN]
+```
+
+## Getting Started
+___
+To start using dietaryindex, load the dependency packages first and then load the dietaryindex package after installation:
+```
+library(dplyr)
+library(haven)
+library(readr)
+# Loading dependency packages first can help avoid the namespace conflict if you want to use dplyr by yourself later in addition to the internal use of dplyr within the diataryindex package
+library(dietaryindex)
+```
+
+
 **dietaryindex** has compiled NHANES data from 1999 - 2020 for your convenience. This includes NHANES 1999-2000, 2001-2002, 2003-2004, 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
 - Download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D)
 - Download the **NHANES_combined** folder from the GitHub dietaryindex_NHANES page (https://github.com/jamesjiadazhan/dietaryindex_NHANES/tree/main/data/NHANES_combined)
@@ -100,50 +146,6 @@ For a detailed explanation of these indexes, please check the attached Excel fil
 
 Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
 
-
-## Installation
-___
-
-Currently, **dietaryindex** is not available on [CRAN]
-
-To install from this GitHub repository, use the **devtools** package:
-
-```
-install.packages("devtools") #If you don't have "devtools" installed already
-devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
-```
-
-If the previous steps are not working, you can try the following steps:
-```
-library(devtools) # Load devtools
-install_github("jamesjiadazhan/dietaryindex")
-```
-
-
-If something happens like the following, first try to enter 1 in the terminal (lower box). If not successful, then try to enter 2. **It will take a while if you are a new R user.**
-```
-  These packages have more recent versions available.
-  It is recommended to update all of them.
-  Which would you like to update?
-
-  1: All                          
-  2: CRAN packages only           
-  3: None                         
-  4: tzdb  (0.3.0 -> 0.4.0) [CRAN]
-  5: vroom (1.6.1 -> 1.6.3) [CRAN]
-```
-
-
-## Getting Started
-___
-To start using dietaryindex, load the dependency packages first and then load the dietaryindex package after installation:
-```
-library(dplyr)
-library(haven)
-library(readr)
-# Loading dependency packages first can help avoid the namespace conflict if you want to use dplyr by yourself later in addition to the internal use of dplyr within the diataryindex package
-library(dietaryindex)
-```
 
 
 ## Detailed function descriptions, examples, and NHANES data access instructions are provided here: 
