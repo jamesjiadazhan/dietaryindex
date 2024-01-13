@@ -150,24 +150,24 @@ Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
 
 ## Detailed function descriptions, examples, and NHANES data access instructions are provided here: 
 ___
-- [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
 - [Manual with data format and function output overviews](https://jamesjiadazhan.github.io/dietaryindex_manual/)
 
 
 
 ## Demonstrations
+### We included complex survey design when analzying NHANES data so all results are weighted accordingly to represent US population.
 ___
 
 Case study 1. A comparative analysis of results derived from clinical trials (i.e., The Dietary Approaches to Stop Hypertension (DASH) trial and Prevención con Dieta Mediterránea (PREDIMED) trial) juxtaposed with findings from an epidemiological study (i.e., NHANES) from 2017-2018, utilizing DASHI and MEDI dietary indexes.
-![Figure 5  DASHI and MEDI dietary indexes in DASH and PREDIMED trials and NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/c0b79f28-7856-471a-8fde-8ce81de80517)
+![Figure 5  DASHI and MEDI dietary indexes comparison](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/1e4b391a-faea-45c7-913b-65fee2349e47)
 
 
 Case study 2. A time series of cross-sectional computation of the HEI2020 in the NHANES dataset spanning 2005 to 2018, stratifying into toddler and non-toddler populations.
-![Figure 6  HEI2020 from 2005 to 2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/3606ef7b-56e6-450d-895f-9f00c2e984cb)
+![Figure 6  HEI2020 from 2005 to 2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/eb61257b-afae-497a-8263-1e677356a060)
 
 
 Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020, AHEI, DASH, DASHI, MED, MEDI, DII—within a single year (2017-2018), leveraging data from the NHANES study.
-![Figure 7  Multiple Dietary indexes, using the NHANES data in 2017-2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/e99c703b-6901-4eb1-8023-79b67304b626)
+![Figure 7  Multiple Dietary indexes, using the NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/f6240fc1-7938-41f8-b78a-6865964ad3c1)
 
 
 All the R codes for the demonstrations can be found here: 
