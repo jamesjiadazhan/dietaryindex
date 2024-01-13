@@ -167,7 +167,7 @@ Case study 2. A time series of cross-sectional computation of the HEI2020 in the
 
 
 Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020, AHEI, DASH, DASHI, MED, MEDI, DII—within a single year (2017-2018), leveraging data from the NHANES study.
-![Figure 7  Multiple Dietary indexes, using the NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/f6240fc1-7938-41f8-b78a-6865964ad3c1)
+![Figure 7  Multiple Dietary indexes, using the NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/b33705e6-2ab6-4019-958e-dda0ec2d1c71)
 
 
 All the R codes for the demonstrations can be found here: 
