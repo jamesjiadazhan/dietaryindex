@@ -69,5 +69,5 @@ PHDI_V2(
 The PHDI index/score, PHDI and its component scores
 }
 \description{
-Calculate the PHDI with all gram-based variables (convert ADDED_FAT_UNSAT_SERV_PHDI, ADDED_FAT_SAT_TRANS_SERV_PHDI, ADDED_SUGAR_SERV_PHDI to % kcal automatically using TOTALKCAL_PHDI), The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and nutrients consumed per 1 day
+Calculate the PHDI with all gram-based variables (convert ADDED_FAT_UNSAT_SERV_PHDI, ADDED_FAT_SAT_TRANS_SERV_PHDI, ADDED_SUGAR_SERV_PHDI to percent kcal automatically using TOTALKCAL_PHDI), The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and nutrients consumed per 1 day
 }
