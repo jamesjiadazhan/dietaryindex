@@ -1,6 +1,6 @@
 #' PHDI Calculation
 #'
-#' Calculate the PHDI, The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and nutrients consumed per 1 day
+#' Calculate the PHDI with all gram-based variables (convert ADDED_FAT_UNSAT_SERV_PHDI, ADDED_FAT_SAT_TRANS_SERV_PHDI, ADDED_SUGAR_SERV_PHDI to % kcal automatically using TOTALKCAL_PHDI), The Planetary Health Diet Index that quantifies adherence to the reference diet included in the EAT-Lancet report Willett et al (2019), using the serving sizes of foods and nutrients consumed per 1 day
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -20,17 +20,14 @@
 #' @param NUTS_SERV_PHDI The serving size of nuts and seeds, including peanuts, tree nuts- - walnuts, almond, hazelnuts, pecan, cashew, pistachio, unit=grams/day
 #' @param LEGUMES_SERV_PHDI The serving size of Nonsoy LEGUMES, including Beans, peas, lentils, chickpeas, unit=grams/day
 #' @param SOY_SERV_PHDI The serving size of Soy products, including Tofu, tempeh, soy milk, soy yogurt, soy cheese, unit=grams/day
-#' @param ADDED_FAT_UNSAT_SERV_PHDI The serving size of Added unsaturated fat, e.g. olive soybean, rapeseed, sunflower, peanuts oil, excluding transfat, unit=percent of total kcal/day
-#' @param ADDED_FAT_SAT_TRANS_SERV_PHDI The serving size of Added saturated fats and trans fat, e.g. butter, lard, coconuts oil, palm oil, unit=percent of total kcal/day
-#' @param ADDED_SUGAR_SERV_PHDI The serving size of Added sugar, including the added sugar from all sweeteners and fruit juice, unit=percent of total kcal/day
+#' @param ADDED_FAT_UNSAT_SERV_PHDI The serving size of Added unsaturated fat, e.g. olive soybean, rapeseed, sunflower, peanuts oil, excluding transfat, unit=grams/day
+#' @param ADDED_FAT_SAT_TRANS_SERV_PHDI The serving size of Added saturated fats and trans fat, e.g. butter, lard, coconuts oil, palm oil, unit=grams/day
+#' @param ADDED_SUGAR_SERV_PHDI The serving size of Added sugar, including the added sugar from all sweeteners and fruit juice, unit=grams/day
 #' @return The PHDI index/score, PHDI and its component scores
-#' @examples
-#' data("PHDI_VALIDATION")
-#' PHDI(SERV_DATA = PHDI_VALIDATION, PHDI_VALIDATION$id, PHDI_VALIDATION$gender, PHDI_VALIDATION$TOTALKCAL_PHDI, PHDI_VALIDATION$WGRAIN_SERV_PHDI, PHDI_VALIDATION$STARCHY_VEG_SERV_PHDI, PHDI_VALIDATION$VEG_SERV_PHDI, PHDI_VALIDATION$FRT_SERV_PHDI, PHDI_VALIDATION$DAIRY_SERV_PHDI, PHDI_VALIDATION$REDPROC_MEAT_SERV_PHDI, PHDI_VALIDATION$POULTRY_SERV_PHDI, PHDI_VALIDATION$EGG_SERV_PHDI, PHDI_VALIDATION$FISH_SERV_PHDI, PHDI_VALIDATION$NUTS_SERV_PHDI, PHDI_VALIDATION$LEGUMES_SERV_PHDI, PHDI_VALIDATION$SOY_SERV_PHDI, PHDI_VALIDATION$ADDED_FAT_UNSAT_SERV_PHDI, PHDI_VALIDATION$ADDED_FAT_SAT_TRANS_SERV_PHDI, PHDI_VALIDATION$ADDED_SUGAR_SERV_PHDI)
 #' @export
 
 # Score calculation for PHDI
-PHDI = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_PHDI, WGRAIN_SERV_PHDI, STARCHY_VEG_SERV_PHDI, VEG_SERV_PHDI, FRT_SERV_PHDI, DAIRY_SERV_PHDI, REDPROC_MEAT_SERV_PHDI, POULTRY_SERV_PHDI, EGG_SERV_PHDI, FISH_SERV_PHDI, NUTS_SERV_PHDI, LEGUMES_SERV_PHDI, SOY_SERV_PHDI, ADDED_FAT_UNSAT_SERV_PHDI, ADDED_FAT_SAT_TRANS_SERV_PHDI, ADDED_SUGAR_SERV_PHDI) {
+PHDI_V2 = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_PHDI, WGRAIN_SERV_PHDI, STARCHY_VEG_SERV_PHDI, VEG_SERV_PHDI, FRT_SERV_PHDI, DAIRY_SERV_PHDI, REDPROC_MEAT_SERV_PHDI, POULTRY_SERV_PHDI, EGG_SERV_PHDI, FISH_SERV_PHDI, NUTS_SERV_PHDI, LEGUMES_SERV_PHDI, SOY_SERV_PHDI, ADDED_FAT_UNSAT_SERV_PHDI, ADDED_FAT_SAT_TRANS_SERV_PHDI, ADDED_SUGAR_SERV_PHDI) {
     ## Create variables and functions needed for PHDI calculation
     PHDI_MIN = 0
     PHDI_MAX = 10
@@ -85,6 +82,15 @@ PHDI = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_PHDI, WGRAIN_SERV_PHD
             TRUE ~ min_score + (actual_serv - min_serv) * max_score / (max_serv - min_serv)
         )
     }
+
+    ## update the serving size of ADDED_FAT_UNSAT_SERV_PHDI, ADDED_FAT_SAT_TRANS_SERV_PHDI, and ADDED_SUGAR_SERV_PHDI to % kcal
+    SERV_DATA = SERV_DATA %>%
+        mutate(
+            ### 1 gram of fat = 9 kcal. 1 gram of carbohydrate = 4 kcal. Multiply by 100 to get percentage
+            ADDED_FAT_UNSAT_SERV_PHDI = (ADDED_FAT_UNSAT_SERV_PHDI * 9 / TOTALKCAL_PHDI) * 100,
+            ADDED_FAT_SAT_TRANS_SERV_PHDI = (ADDED_FAT_SAT_TRANS_SERV_PHDI * 9 / TOTALKCAL_PHDI) * 100,
+            ADDED_SUGAR_SERV_PHDI = (ADDED_SUGAR_SERV_PHDI * 4 / TOTALKCAL_PHDI) * 100
+        )
 
     ## PHDI calculation
     SERV_DATA %>%

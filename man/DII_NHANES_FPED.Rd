@@ -20,7 +20,7 @@ DII_NHANES_FPED(
 \item{DEMO_PATH}{The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT}
 }
 \value{
-The DII and its component scores
+The DII and its component scores: DII is the total DII score (the sum of all component scores); DII_NOETOH is the DII score without alcohol
 }
 \description{
 Calculate the DII for the NHANES_FPED data (after 2005) within 1 step
