@@ -88,7 +88,16 @@ Then, use the following codes to load the data:
 # set up working dictionary
 setwd("/Users/james/Desktop/NHANES_combined")
 
-# Load the NHANES data from 2005 to 2020
+# Load the NHANES data from 1999 to 2020
+## NHANES 1999-2000
+load("NHANES_19992000.rda")
+
+## NHANES 2001-2002
+load("NHANES_20012002.rda")
+
+## NHANES 2003-2004
+load("NHANES_20032004.rda")
+
 ## NHANES 2005-2006
 load("NHANES_20052006.rda")
 
