@@ -77,7 +77,46 @@ library(readr)
 library(dietaryindex)
 ```
 
+For a detailed explanation of all dietary indexes available, please check the attached Excel files:
+- [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
+- [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 
+**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files and R codes can be found here: 
+- [Validation.md](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.md)
+
+Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
+
+
+
+## Manual: 
+___
+### Detailed function descriptions, examples, and NHANES data access instructions are provided here
+- [Manual with data format and function output overviews](https://jamesjiadazhan.github.io/dietaryindex_manual/)
+
+
+
+## Demonstrations
+### We included complex survey design when analzying NHANES data so all results are weighted accordingly to represent US population.
+___
+
+Case study 1. A comparative analysis of results derived from clinical trials (i.e., The Dietary Approaches to Stop Hypertension (DASH) trial and Prevención con Dieta Mediterránea (PREDIMED) trial) juxtaposed with findings from an epidemiological study (i.e., NHANES) from 2017-2018, utilizing DASHI and MEDI dietary indexes.
+![Figure 5  DASHI and MEDI dietary indexes comparison](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/1e4b391a-faea-45c7-913b-65fee2349e47)
+
+
+Case study 2. A time series of cross-sectional computation of the HEI2020 in the NHANES dataset spanning 2005 to 2018, stratifying into toddler and non-toddler populations.
+![Figure 6  HEI2020 from 2005 to 2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/eb61257b-afae-497a-8263-1e677356a060)
+
+
+Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020, AHEI, DASHI, MEDI, DII—within a single year (2017-2018), leveraging data from the NHANES study.
+![Figure 7  Multiple Dietary indexes, using the NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/d1a268a8-63a2-47ee-9d6b-251b01544680)
+
+
+All the R codes for the demonstrations can be found here: 
+- [Case study 1,2,3.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Case%20study%201%2C2%2C3.r)
+
+
+
+## NHANES data and functions
 **dietaryindex** has compiled NHANES data from 1999 - 2020 for your convenience. This includes NHANES 1999-2000, 2001-2002, 2003-2004, 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
 - Download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D)
 - Download the **NHANES_combined** folder from the GitHub dietaryindex_NHANES page (https://github.com/jamesjiadazhan/dietaryindex_NHANES/tree/main/data/NHANES_combined)
@@ -145,42 +184,6 @@ For NHANES data:
 - DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
   - ![image](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/75898baa-c615-4446-bca2-9ccd01bf5879)
 
-
-For a detailed explanation of these indexes, please check the attached Excel files:
-- [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
-- [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
-
-**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files and R codes can be found here: 
-- [Validation.md](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.md)
-
-Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
-
-
-
-## Detailed function descriptions, examples, and NHANES data access instructions are provided here: 
-___
-- [Manual with data format and function output overviews](https://jamesjiadazhan.github.io/dietaryindex_manual/)
-
-
-
-## Demonstrations
-### We included complex survey design when analzying NHANES data so all results are weighted accordingly to represent US population.
-___
-
-Case study 1. A comparative analysis of results derived from clinical trials (i.e., The Dietary Approaches to Stop Hypertension (DASH) trial and Prevención con Dieta Mediterránea (PREDIMED) trial) juxtaposed with findings from an epidemiological study (i.e., NHANES) from 2017-2018, utilizing DASHI and MEDI dietary indexes.
-![Figure 5  DASHI and MEDI dietary indexes comparison](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/1e4b391a-faea-45c7-913b-65fee2349e47)
-
-
-Case study 2. A time series of cross-sectional computation of the HEI2020 in the NHANES dataset spanning 2005 to 2018, stratifying into toddler and non-toddler populations.
-![Figure 6  HEI2020 from 2005 to 2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/eb61257b-afae-497a-8263-1e677356a060)
-
-
-Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020, AHEI, DASHI, MEDI, DII—within a single year (2017-2018), leveraging data from the NHANES study.
-![Figure 7  Multiple Dietary indexes, using the NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/d1a268a8-63a2-47ee-9d6b-251b01544680)
-
-
-All the R codes for the demonstrations can be found here: 
-- [Case study 1,2,3.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Case%20study%201%2C2%2C3.r)
 
 
 ## Related Work
