@@ -21,16 +21,16 @@ The **dietaryindex** package performs calculations in two steps:
 2. Computation of the individual dietary index using the serving size information.
 
 This package can calculate the following dietary pattern indexes:
-- Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
-- Healthy Eating Index 2015 (HEI2015)
-- Alternative Healthy Eating Index (AHEI)
-- Dietary Approaches to Stop Hypertension Index (DASH)
-- DASH Index in serving sizes from the DASH trial (DASHI)
-- Alternate Mediterranean Diet Score (aMED)
-- MED Index in serving sizes from the PREDIMED trial (MEDI)
-- Dietary Inflammation Index (DII)
-- American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
-- Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
+- **Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020)**
+- **Healthy Eating Index 2015 (HEI2015)**
+- **Alternative Healthy Eating Index (AHEI)**
+- **Dietary Approaches to Stop Hypertension Index (DASH)**
+- **DASH Index in serving sizes from the DASH trial (DASHI)**
+- **Alternate Mediterranean Diet Score (aMED)**
+- **MED Index in serving sizes from the PREDIMED trial (MEDI)**
+- **Dietary Inflammation Index (DII)**
+- **American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)**
+- **Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)**
 
 
 
