@@ -53,17 +53,17 @@ HEI2020(
 
 \item{REFINEDGRAIN_SERV_HEI2020}{The serving size of refined grains, unit=oz. eq.}
 
-\item{SODIUM_SERV_HEI2020}{The serving size of sodium, unit=g}
+\item{SODIUM_SERV_HEI2020}{The serving size of sodium, unit=mg}
 
-\item{ADDEDSUGAR_SERV_HEI2020}{The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal}
+\item{ADDEDSUGAR_SERV_HEI2020}{The serving size of added sugar, unit=tsp}
 
-\item{SATFAT_SERV_HEI2020}{The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal}
+\item{SATFAT_SERV_HEI2020}{The serving size of Total Saturated Fatty Acids, unit=g}
 }
 \value{
 The HEI2020 index/score
 }
 \description{
-Calculate the HEI2020 dietary index, Healthy eating index 2020 and HEI-Toddlers-2020, using given the serving sizes of foods and nutrients consumed per 1 day
+Calculate the HEI2020 dietary index, Healthy eating index 2020 and HEI-Toddlers-2020, using given the serving sizes of foods and nutrients consumed per 1 day. This version has the Added sugar serving size as tsp (teaspoon) and the saturated fat serving size as g (gram), instead of the % of total energy for added sugar and saturated fat in the original HEI2020.
 }
 \examples{
 data("HEI2020_VALIDATION")

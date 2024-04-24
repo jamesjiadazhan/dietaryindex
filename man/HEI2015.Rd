@@ -50,11 +50,11 @@ HEI2015(
 
 \item{REFINEDGRAIN_SERV_HEI2015}{The serving size of refined grains, unit=oz. eq.}
 
-\item{SODIUM_SERV_HEI2015}{The serving size of sodium, unit=g}
+\item{SODIUM_SERV_HEI2015}{The serving size of sodium, unit=mg}
 
-\item{ADDEDSUGAR_SERV_HEI2015}{The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal}
+\item{ADDEDSUGAR_SERV_HEI2015}{The serving size of added sugar, unit=tsp}
 
-\item{SATFAT_SERV_HEI2015}{The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal}
+\item{SATFAT_SERV_HEI2015}{The serving size of Total Saturated Fatty Acids, unit=g}
 }
 \value{
 The HEI2015 index/score
