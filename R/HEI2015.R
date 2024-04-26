@@ -17,9 +17,9 @@
 #' @param DAIRY_SERV_HEI2015 The serving size of all dairy, unit=cup eq.
 #' @param FATTYACID_SERV_HEI2015 The serving size of (Total Monounsaturated Fatty Acids + Total Polyunsaturated Fatty Acids)/Total Saturated Fatty Acids, unit=g
 #' @param REFINEDGRAIN_SERV_HEI2015 The serving size of refined grains, unit=oz. eq.
-#' @param SODIUM_SERV_HEI2015 The serving size of sodium, unit=g
-#' @param ADDEDSUGAR_SERV_HEI2015 The serving size of added sugar, unit=\% of total energy, 1 tsp = 4g, 1g = 4kcal
-#' @param SATFAT_SERV_HEI2015 The serving size of Total Saturated Fatty Acids, unit=\% of energy, 1g = 9 kcal
+#' @param SODIUM_SERV_HEI2015 The serving size of sodium, unit=mg
+#' @param ADDEDSUGAR_SERV_HEI2015 The serving size of added sugar, unit=tsp
+#' @param SATFAT_SERV_HEI2015 The serving size of Total Saturated Fatty Acids, unit=g
 #' @return The HEI2015 index/score
 #' @examples
 #' data("HEI2015_VALIDATION")
@@ -101,9 +101,10 @@ HEI2015 = function(SERV_DATA, RESPONDENTID, TOTALKCAL_HEI2015, TOTALFRT_SERV_HEI
             DAIRY_SERV_HEI2015 = DAIRY_SERV_HEI2015 / (TOTALKCAL_HEI2015 / 1000),
             FATTYACID_SERV_HEI2015 = FATTYACID_SERV_HEI2015,
             REFINEDGRAIN_SERV_HEI2015 = REFINEDGRAIN_SERV_HEI2015 / (TOTALKCAL_HEI2015 / 1000),
-            SODIUM_SERV_HEI2015 = (SODIUM_SERV_HEI2015) / (TOTALKCAL_HEI2015 / 1000),
-            ADDEDSUGAR_SERV_HEI2015 = ADDEDSUGAR_SERV_HEI2015,
-            SATFAT_SERV_HEI2015 = SATFAT_SERV_HEI2015,
+            SODIUM_SERV_HEI2015 = (SODIUM_SERV_HEI2015/1000) / (TOTALKCAL_HEI2015 / 1000),
+            ADDEDSUGAR_SERV_HEI2015 = ((ADDEDSUGAR_SERV_HEI2015 * 4 * 4) / TOTALKCAL_HEI2015) * 100,
+            SATFAT_SERV_HEI2015 = ((SATFAT_SERV_HEI2015 * 9) / TOTALKCAL_HEI2015) * 100,
+            
             HEI2015_TOTALFRT = HEI2015_HEALTHY1(TOTALFRT_SERV_HEI2015, HEI2015_MIN_TOTALFRT_SERV, HEI2015_MAX_TOTALFRT_SERV),
             HEI2015_FRT = HEI2015_HEALTHY1(FRT_SERV_HEI2015, HEI2015_MIN_FRT_SERV, HEI2015_MAX_FRT_SERV),
             HEI2015_VEG = HEI2015_HEALTHY1(VEG_SERV_HEI2015, HEI2015_MIN_VEG_SERV, HEI2015_MAX_VEG_SERV),
