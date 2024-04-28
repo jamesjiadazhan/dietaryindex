@@ -1,1 +1,3 @@
-^Validation file for publication/
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
