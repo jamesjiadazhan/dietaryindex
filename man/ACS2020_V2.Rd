@@ -50,7 +50,3 @@ The ACS2020_V2 index/score and its component scores
 \description{
 Calculate the American Cancer Society 2020 dietary index version 2 (using servings/d per 1000 kcal), using given the serving sizes of foods and nutrients consumed per 1 day.
 }
-\examples{
-data("ACS2020_VALIDATION")
-ACS2020_V1(SERV_DATA = ACS2020_VALIDATION, RESPONDENTID = ACS2020_VALIDATION$id, GENDER = ACS2020_VALIDATION$gender, VEG_SERV_ACS2020 = ACS2020_VALIDATION$vegetable, VEG_ITEMS_SERV_ACS2020 = ACS2020_VALIDATION$vegetable_unique, FRT_SERV_ACS2020 = ACS2020_VALIDATION$fruit, FRT_ITEMS_SERV_ACS2020 = ACS2020_VALIDATION$fruit_unique, WGRAIN_SERV_ACS2020 = ACS2020_VALIDATION$whole_grain, REDPROC_MEAT_SERV_ACS2020 = ACS2020_VALIDATION$red_meat, HPFRG_RATIO_SERV_ACS2020 = ACS2020_VALIDATION$process_food, SSB_FRTJ_SERV_ACS2020 = ACS2020_VALIDATION$ssb)
-}
