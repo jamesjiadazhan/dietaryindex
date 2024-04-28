@@ -1,8 +1,5 @@
-# dietaryindex
-<img src="https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/45209422-a330-4e91-b2bf-4bdb829b65de" width=350>
+# dietaryindex 
 
-
-___
 ## Overview
 ___
 
@@ -11,72 +8,70 @@ ___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
 
 - *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
-- https://www.biorxiv.org/content/10.1101/2023.08.07.548466v2
+  - https://www.biorxiv.org/content/10.1101/2023.08.07.548466v2
 
-
-As of version 1.0.3, the package supports the latest version of the Healthy Eating Index (HEI2020 and HEI-Toddlers 2020) for National Health and Nutrition Examination Survey (NHANES) data and ASA24. Now ASA24 can generate flexible outputs, depending on if RECALL_SUMMARIZE is TRUE or FALSE. If RECALL_SUMMARIZE is TRUE, all dietary recall results will be summarized via average. If not, all individual recall results will be shown. Also, all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. 
 
 The **dietaryindex** package performs calculations in two steps:
+
 1. Computation of the serving size of each food and nutrient category.
+
 2. Computation of the individual dietary index using the serving size information.
 
 This package can calculate the following dietary pattern indexes:
 - Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
+
 - Healthy Eating Index 2015 (HEI2015)
+
 - Alternative Healthy Eating Index (AHEI)
+
 - Dietary Approaches to Stop Hypertension Index (DASH)
+
 - DASH Index in serving sizes from the DASH trial (DASHI)
+
 - Alternate Mediterranean Diet Score (aMED)
+
 - MED Index in serving sizes from the PREDIMED trial (MEDI)
+
 - Dietary Inflammation Index (DII)
+
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
+
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
-**dietaryindex** has compiled NHANES data from 2005 - 2020 for your convenience. This includes NHANES 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
-- Download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D)
-- Download the **NHANES_combined** folder from the GitHub dietaryindex_NHANES page (https://github.com/jamesjiadazhan/dietaryindex_NHANES/tree/main/data/NHANES_combined)
-
-
-Then, use the following codes to load the data:
-```
-# set up working dictionary
-setwd("/Users/james/Desktop/NHANES_combined")
-
-# Load the NHANES data from 2005 to 2020
-## NHANES 2005-2006
-load("NHANES_20052006.rda")
-
-## NHANES 2007-2008
-load("NHANES_20072008.rda")
-
-## NHANES 2009-2010
-load("NHANES_20092010.rda")
-
-## NHANES 2011-2012
-load("NHANES_20112012.rda")
-
-## NHANES 2013-2014
-load("NHANES_20132014.rda")
-
-## NHANES 2015-2016
-load("NHANES_20152016.rda")
-
-## NHANES 2017-2018 from dietaryindex package
-data("NHANES_20172018")
-
-## NHANES 2017-2020
-load("NHANES_20172020.rda")
-
-```
 
 For a detailed explanation of these indexes, please check the attached Excel files:
+
 - [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
+
 - [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 
-**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. Validation files and R codes can be found here: 
-- [Validation.md](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Validation%20file%20for%20publication/Validation.md)
+___
+**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. 
 
-Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
+**Validation R codes can be found in the Validation page within Article header on the top of the page.**
+
+- For validation details, download the **Validation file for publication.zip** to obtain the following files:
+
+  - **Validation.r**: This R script contains all code used to generate the final validation files during the validation process.
+
+  - **Validation figures.r**: This R script contains all codes used to produce validation figures during the validation.
+
+  - **Raw validation files**: This folder houses all the raw simulation data files utilized in our validation.
+
+  - **Final validation files**: This folder contains the final output files from our validation process. Columns prefixed with "EXP" represent the manually computed dietary index results, which serve as our gold standard. The subsequent columns show results produced by the dietaryindex package.
+
+  - **HEI2015_NHANES_SAS_1718**: This folder includes all data files used in validating the HEI2015 results. We compared the SAS results (obtained using SAS codes from https://epi.grants.cancer.gov/hei/sas-code.html) and the dietaryindex results using the NHANES 1718 dataset. The results were found to be a 100% match, after rounding to two decimal places.
+
+  - **Figure 1. Comparison of Accuracy**: dietaryindex-calculated vs. hand-calculated Dietary Index Values using the simulation datasets (sample sizes range from 10 to 26).
+
+  - **Figure 2. Accuracy of HEI2015 in NHANES**: dietaryindex-calculated vs. SAS-calculated results from National Cancer Institute using the NHANES 2017-2018 data (n=7122).
+
+  - **Figure 3. Accuracy of HEI2015 in ASA24**: dietaryindex-calculated vs. SAS-calculated results from National Cancer Institute using the ASA24 example data (n=21).
+
+  - **Figure 4. Accuracy of HEI2015 in DHQ3**: dietaryindex-calculated vs. internal-calculated results from National Cancer Institute using the DHQ3 example data (n=23).
+  
+  - **Supplementary Material 3 Validation Figures.docx**: This word document includes all figures for the detailed validation of each dietary index, including the total dietary index and individual component dietary indexes. 
+
 
 
 ## Installation
@@ -85,6 +80,8 @@ ___
 Currently, **dietaryindex** is not available on [CRAN]
 
 To install from this GitHub repository, use the **devtools** package:
+
+Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
 
 ```
 install.packages("devtools") #If you don't have "devtools" installed already
@@ -112,43 +109,8 @@ If something happens like the following, first try to enter 1 in the terminal (l
 ```
 
 
-## Getting Started
+## Getting Started: Check the "Get started" header on the top of the page
 ___
-To start using dietaryindex, load the dependency packages first and then load the dietaryindex package after installation:
-```
-library(dplyr)
-library(haven)
-library(readr)
-# Loading dependency packages first can help avoid the namespace conflict if you want to use dplyr by yourself later in addition to the internal use of dplyr within the diataryindex package
-library(dietaryindex)
-```
-
-
-## Detailed function descriptions, examples, and NHANES data access instructions are provided here: 
-___
-- [Manual](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Manual.md)
-- [Manual with data format and function output overviews](https://jamesjiadazhan.github.io/dietaryindex_manual/)
-
-
-
-## Demonstrations
-___
-
-Case study 1. A comparative analysis of results derived from clinical trials (i.e., The Dietary Approaches to Stop Hypertension (DASH) trial and Prevención con Dieta Mediterránea (PREDIMED) trial) juxtaposed with findings from an epidemiological study (i.e., NHANES) from 2017-2018, utilizing DASHI and MEDI dietary indexes.
-![Figure 5  DASHI and MEDI dietary indexes in DASH and PREDIMED trials and NHANES 17-18](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/c0b79f28-7856-471a-8fde-8ce81de80517)
-
-
-Case study 2. A time series of cross-sectional computation of the HEI2020 in the NHANES dataset spanning 2005 to 2018, stratifying into toddler and non-toddler populations.
-![Figure 6  HEI2020 from 2005 to 2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/3606ef7b-56e6-450d-895f-9f00c2e984cb)
-
-
-Case study 3. A comprehensive calculation of multiple dietary indexes—HEI2020, AHEI, DASH, DASHI, MED, MEDI, DII—within a single year (2017-2018), leveraging data from the NHANES study.
-![Figure 7  Multiple Dietary indexes, using the NHANES data in 2017-2018](https://github.com/jamesjiadazhan/dietaryindex/assets/108076575/e99c703b-6901-4eb1-8023-79b67304b626)
-
-
-All the R codes for the demonstrations can be found here: 
-- [Case study 1,2,3.r](https://github.com/jamesjiadazhan/dietaryindex/blob/main/Case%20study%201%2C2%2C3.r)
-
 
 ## Related Work
 ___
