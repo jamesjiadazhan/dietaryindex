@@ -5,6 +5,12 @@ ___
 
 **dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies, promoting precision nutrition.
 
+## User-friendly tutorial page
+___
+### We have created a modern, user-friendly tutorial page for the dietaryindex package.
+- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/index.html)
+
+
 ## Citation
 ___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
@@ -22,7 +28,8 @@ The **dietaryindex** package performs calculations in two steps:
 
 ## What dietaryindex can do
 ___
-This package can calculate the following dietary pattern indexes:
+This package can calculate the following dietary pattern indexes. For more details, [check here](https://jamesjiadazhan.github.io/dietaryindex_manual/reference/index.html)
+
 - Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
 
 - Healthy Eating Index 2015 (HEI2015)
@@ -56,7 +63,7 @@ ___
 **dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions in the **dietaryindex** work as expected. 
 
 ### Validation R codes can be found in the Validation page within Article header on the top of the page
-- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/)
+- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/articles/validation.html)
 
 - For validation details, download the **Validation file for publication.zip** to obtain the following files:
 
@@ -120,7 +127,7 @@ If something happens like the following, first try to enter 1 in the terminal (l
 ## Getting Started
 ___
 ### Check the "Get started" header on the top of the page
-- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/)
+- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/articles/dietaryindex.html)
 
 
 ## Related Work
