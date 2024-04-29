@@ -5,18 +5,23 @@ ___
 
 **dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies, promoting precision nutrition.
 
+## Citation
+___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
 
 - *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
   - https://www.biorxiv.org/content/10.1101/2023.08.07.548466v2
 
-
+## How dietaryindex works
+___
 The **dietaryindex** package performs calculations in two steps:
 
 1. Computation of the serving size of each food and nutrient category.
 
 2. Computation of the individual dietary index using the serving size information.
 
+## What dietaryindex can do
+___
 This package can calculate the following dietary pattern indexes:
 - Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
 
@@ -38,17 +43,20 @@ This package can calculate the following dietary pattern indexes:
 
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
 
-
+## How to use dietaryindex functions appropriately with specific data inputs
+___
 For a detailed explanation of these indexes, please check the attached Excel files:
 
 - [dietaryindex_SERVING_SIZE_DEFINITION.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SERVING_SIZE_DEFINITION.xlsx)
 
 - [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 
+## Validation
 ___
-**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions within **dietaryindex** perform as expected. 
+**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions in the **dietaryindex** work as expected. 
 
-**Validation R codes can be found in the Validation page within Article header on the top of the page.**
+### Validation R codes can be found in the Validation page within Article header on the top of the page
+- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/)
 
 - For validation details, download the **Validation file for publication.zip** to obtain the following files:
 
@@ -109,8 +117,11 @@ If something happens like the following, first try to enter 1 in the terminal (l
 ```
 
 
-## Getting Started: Check the "Get started" header on the top of the page
+## Getting Started
 ___
+### Check the "Get started" header on the top of the page
+- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/)
+
 
 ## Related Work
 ___
@@ -131,4 +142,5 @@ For NHANES data:
 FPED, NUTRIENT, and DEMO files are available within the package and in the Google Drive collected by the package developer for your convenience (https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link). 
 
 ### Contributing & Notes
+___
 **dietaryindex** is licensed under the [MIT License](https://github.com/jamesjiadazhan/dietaryindex/blob/main/other/LICENSE.txt). Please check out the [Contribution guide](https://github.com/jamesjiadazhan/dietaryindex/blob/main/CONTRIBUTING.md) for questions, feature requests, and bug reports. The maintainer will review pull requests and incorporate contributions at his discretion. You may also reach out to the maintainer, **Jiada (James) Zhan**, via his email: jzha832@emory.edu. **Jiada (James) Zhan** home page at Emory is: https://www.sph.emory.edu/phd-students/profile/index.php?FID=jiada-zhan-12906. **Becky Hodge** at the American Cancer Society provided substantial contributions to validate this package. **Michael L Orr** at Dean Jones/ Young-Mi Go Lab at Emory University helped design the dietaryindex logo. Thanks a lot for their help.
