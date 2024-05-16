@@ -116,22 +116,22 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL,
     quintile_healthy = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
         case_when(
-            actual <= quintile[6] & actual >= quintile[5] ~ 5,
-            actual < quintile[5] & actual >= quintile[4] ~ 4,
-            actual < quintile[4] & actual >= quintile[3] ~ 3,
-            actual < quintile[3] & actual >= quintile[2] ~ 2,
-            actual < quintile[2] & actual >= quintile[1] ~ 1
+            actual < quintile[2] & actual >= quintile[1] | actual == 0 ~ 1,
+            actual < quintile[3] & actual >= quintile[2] & actual != 0 ~ 2,
+            actual < quintile[4] & actual >= quintile[3] & actual != 0 ~ 3,
+            actual < quintile[5] & actual >= quintile[4] & actual != 0 ~ 4,
+            actual <= quintile[6] & actual >= quintile[5] & actual != 0 ~ 5
         )
     }
 
     quintile_unhealthy = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
         case_when(
-            actual <= quintile[6] & actual >= quintile[5] ~ 1,
-            actual < quintile[5] & actual >= quintile[4] ~ 2,
-            actual < quintile[4] & actual >= quintile[3] ~ 3,
-            actual < quintile[3] & actual >= quintile[2] ~ 4,
-            actual < quintile[2] & actual >= quintile[1] ~ 5
+            actual < quintile[2] & actual >= quintile[1] | actual == 0 ~ 5,
+            actual < quintile[3] & actual >= quintile[2] & actual != 0 ~ 4,
+            actual < quintile[4] & actual >= quintile[3] & actual != 0 ~ 3,
+            actual < quintile[5] & actual >= quintile[4] & actual != 0 ~ 2,
+            actual <= quintile[6] & actual >= quintile[5] & actual != 0 ~ 1
         )
     }
 
