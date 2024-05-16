@@ -24,19 +24,20 @@
 # Score calculation for MED
 MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_MED, VEG_SERV_MED, WGRAIN_SERV_MED, LEGUMES_SERV_MED, NUTS_SERV_MED,
                FISH_SERV_MED, REDPROC_MEAT_SERV_MED, MONSATFAT_SERV_MED, ALCOHOL_SERV_MED) {
+  
     ## Create variables and functions needed for MED
     median_healthy = function(actual) {
-        median_score = median(actual)
+        median_score = median(actual, na.rm = TRUE)
         case_when(
-            actual < median_score ~ 0,
+            actual < median_score | actual == 0 ~ 0,
             actual >= median_score ~ 1
         )
     }
 
     median_unhealthy = function(actual) {
-        median_score = median(actual)
+        median_score = median(actual, na.rm = TRUE)
         case_when(
-            actual < median_score ~ 1,
+            actual < median_score | actual == 0 ~ 1,
             actual >= median_score ~ 0
         )
     }
