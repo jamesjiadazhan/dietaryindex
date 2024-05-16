@@ -24,26 +24,27 @@
 # Score calculation for DASH
 DASH = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASH, FRT_FRTJ_SERV_DASH, VEG_SERV_DASH, NUTSLEG_SERV_DASH, WGRAIN_SERV_DASH, LOWF_DAIRY_SERV_DASH,
                 SODIUM_SERV_DASH, REDPROC_MEAT_SERV_DASH, SSB_FRTJ_SERV_DASH) {
+  
     ## Create variables and functions needed for DASH calculation
     quintile_healthy = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
         case_when(
-            actual <= quintile[6] & actual >= quintile[5] ~ 5,
-            actual < quintile[5] & actual >= quintile[4] ~ 4,
-            actual < quintile[4] & actual >= quintile[3] ~ 3,
-            actual < quintile[3] & actual >= quintile[2] ~ 2,
-            actual < quintile[2] & actual >= quintile[1] ~ 1
+            actual < quintile[2] & actual >= quintile[1] | actual == 0 ~ 1,
+            actual < quintile[3] & actual >= quintile[2] & actual != 0 ~ 2,
+            actual < quintile[4] & actual >= quintile[3] & actual != 0 ~ 3,
+            actual < quintile[5] & actual >= quintile[4] & actual != 0 ~ 4,
+            actual <= quintile[6] & actual >= quintile[5] & actual != 0 ~ 5
         )
     }
 
     quintile_unhealthy = function(actual) {
         quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
         case_when(
-            actual <= quintile[6] & actual >= quintile[5] ~ 1,
-            actual < quintile[5] & actual >= quintile[4] ~ 2,
-            actual < quintile[4] & actual >= quintile[3] ~ 3,
-            actual < quintile[3] & actual >= quintile[2] ~ 4,
-            actual < quintile[2] & actual >= quintile[1] ~ 5
+            actual < quintile[2] & actual >= quintile[1] | actual == 0 ~ 5,
+            actual < quintile[3] & actual >= quintile[2] & actual != 0 ~ 4,
+            actual < quintile[4] & actual >= quintile[3] & actual != 0 ~ 3,
+            actual < quintile[5] & actual >= quintile[4] & actual != 0 ~ 2,
+            actual <= quintile[6] & actual >= quintile[5] & actual != 0 ~ 1
         )
     }
 
