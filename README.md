@@ -148,7 +148,9 @@ For NHANES data:
 
 - DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
 
-FPED, NUTRIENT, and DEMO files are available within the package and in the Google Drive collected by the package developer for your convenience (https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link). 
+FPED, NUTRIENT, and DEMO files are available within the package and in the another GitHub repository and Google Drive collected by the package developer for your convenience
+- https://github.com/jamesjiadazhan/dietaryindex_manual
+- https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link 
 
 ### Contributing & Notes
 ___
