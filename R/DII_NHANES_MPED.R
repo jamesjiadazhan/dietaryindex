@@ -268,6 +268,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                     DR1TIRON = DRXTIRON,
                     DR1TMAGN = DRXTMAGN,
                     DR1TNIAC = DRXTNIAC,
+                    DR1TP182 = DRXTP182,
                     DR1TP183 = DRXTP183,
                     DR1TP184 = DRXTP184,
                     DR1TP204 = DRXTP204,
@@ -315,6 +316,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                     DR1TIRON = DRXTIRON,
                     DR1TMAGN = DRXTMAGN,
                     DR1TNIAC = DRXTNIAC,
+                    DR1TP182 = DRXTP182,
                     DR1TP183 = DRXTP183,
                     DR1TP184 = DRXTP184,
                     DR1TP204 = DRXTP204,
@@ -439,7 +441,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 MUFA = DR1TMFAT,
                 NIACIN = DR1TNIAC,
                 N3FAT = DR1TP183 + DR1TP184 + DR1TP205 + DR1TP225 + DR1TP226,
-                N6FAT = DR1TP183 + DR1TP204,
+                N6FAT = DR1TP182 + DR1TP204,
                 PROTEIN = DR1TPROT,
                 PUFA = DR1TPFAT,
                 RIBOFLAVIN = DR1TVB2,
@@ -448,7 +450,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 THIAMIN = DR1TVB1,
                 VITA = DR1TVARA,
                 VITC = DR1TVC,
-                VITD = if (has_DR1TVD) DR1TVD * 0.025 else NULL,
+                VITD = if (has_DR1TVD) DR1TVD else NULL,
                 VITE = DR1TATOC,
                 ZN = DR1TZINC
             )
@@ -606,7 +608,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 MUFA = DR2TMFAT,
                 NIACIN = DR2TNIAC,
                 N3FAT = DR2TP183 + DR2TP184 + DR2TP205 + DR2TP225 + DR2TP226,
-                N6FAT = DR2TP183 + DR2TP204,
+                N6FAT = DR2TP182 + DR2TP204,
                 PROTEIN = DR2TPROT,
                 PUFA = DR2TPFAT,
                 RIBOFLAVIN = DR2TVB2,
@@ -615,7 +617,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 THIAMIN = DR2TVB1,
                 VITA = DR2TVARA,
                 VITC = DR2TVC,
-                VITD = if (has_DR2TVD) DR2TVD * 0.025 else NULL,
+                VITD = if (has_DR2TVD) DR2TVD else NULL,
                 VITE = DR2TATOC,
                 ZN = DR2TZINC
             )

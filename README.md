@@ -3,7 +3,7 @@
 ## Overview
 ___
 
-**dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies.
+**dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies. It has been peer-reviewed and published in the **American Journal of Clinical Nutrition**.
 
 ## User-friendly tutorial page
 ___
@@ -14,8 +14,10 @@ ___
 ## Citation
 ___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
-
-- *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
+- **American Journal of Clinical Nutrition**:
+  - https://doi.org/10.1016/j.ajcnut.2024.08.021
+- Preprint:
+  - *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
   - https://www.biorxiv.org/content/10.1101/2023.08.07.548466v2
 
 ## How dietaryindex works
@@ -146,7 +148,9 @@ For NHANES data:
 
 - DEMO file refers to the DEMO file in the Demographic Variables & Sample Weights (example: 05-06 https://wwwn.cdc.gov/nchs/nhanes/search/datapage.aspx?Component=Demographics&CycleBeginYear=2005)
 
-FPED, NUTRIENT, and DEMO files are available within the package and in the Google Drive collected by the package developer for your convenience (https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link). 
+FPED, NUTRIENT, and DEMO files are available within the package and in the another GitHub repository and Google Drive collected by the package developer for your convenience
+- https://github.com/jamesjiadazhan/dietaryindex_manual
+- https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link 
 
 ### Contributing & Notes
 ___
