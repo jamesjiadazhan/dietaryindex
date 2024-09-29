@@ -1,6 +1,6 @@
-#' DII_NHANES_MPED
+#' AHEI_NHANES_MPED
 #'
-#' Calculate the DII for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
+#' Calculate the AHEI for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -11,45 +11,28 @@
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
 #' @param NUTRIENT_PATH2 The file path for the NUTRIENT2 data for the day 2 data. The file name should be like: DR2TOT_J.XPT
 #' @param NUTRIENT_IND_PATH2 The file path for the NUTRIENT_IND2 data for the day 2 data The file name should be like: DR2IFF_J.XPT
-#' @return The DII and its component scores and serving sizes
+#' @param SSB_code The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file.
+#' @return The AHEI and its component scores and serving sizes
 #' @examples
 #' data("NHANES_20032004")
-#' DII_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+#' AHEI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
 #' @export
 
-DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
-    ## Create variables needed for DII calculation
-    DII_MIN = 0
-    DII_MAX1 = 5
-    DII_MAX2 = 10
-
-    DII_HEALTHY1 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ DII_MAX1,
-            actual <= min ~ DII_MIN,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX1 / (max - min)
-        )
-    }
-
-    DII_HEALTHY2 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ DII_MAX2,
-            actual <= min ~ DII_MIN,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX2 / (max - min)
-        )
-    }
-
-    DII_UNHEALTHY = function(actual, min, max) {
-        case_when(
-            actual >= min ~ DII_MIN,
-            actual <= max ~ DII_MAX2,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX2 / (max - min)
-        )
-    }
+AHEI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL, SSB_code = NULL) {
 
     # stop if the input data is not provided for any day
-    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        stop("Please provide the file path for the MPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
+    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_IND_PATH) & is.null(NUTRIENT_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
+        stop("Please provide the file path for the NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
+    }
+
+    if (is.null(SSB_code)) {
+        # load the SSB codes from 17-18 FNDDS file as default
+        data("SSB_FNDDS_1718")
+        SSB = unique(SSB_FNDDS_1718$`Food code`)
+        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+    } else {
+        # use the provided SSB code
+        SSB = SSB_code
     }
 
     # load the MPED per 100 gram data
@@ -256,34 +239,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TVB12 = DRXTVB12,
-                    DR1TVB6 = DRXTVB6,
-                    DR1TBCAR = DRXTBCAR,
-                    DR1TCAFF = DRXTCAFF,
-                    DR1TCARB = DRXTCARB,
-                    DR1TCHOL = DRXTCHOL,
-                    DR1TTFAT = DRXTTFAT,
-                    DR1TFIBE = DRXTFIBE,
-                    DR1TFA = DRXTFA,
-                    DR1TIRON = DRXTIRON,
-                    DR1TMAGN = DRXTMAGN,
-                    DR1TNIAC = DRXTNIAC,
-                    DR1TP183 = DRXTP183,
-                    DR1TP184 = DRXTP184,
-                    DR1TP204 = DRXTP204,
-                    DR1TP205 = DRXTP205,
-                    DR1TP225 = DRXTP225,
-                    DR1TP226 = DRXTP226,
-                    DR1TPROT = DRXTPROT,
-                    DR1TPFAT = DRXTPFAT,
-                    DR1TVB2 = DRXTVB2,
-                    DR1TSFAT = DRXTSFAT,
-                    DR1TSELE = DRXTSELE,
-                    DR1TVB1 = DRXTVB1,
-                    DR1TVARA = DRXTVARA,
-                    DR1TVC = DRXTVC,
-                    DR1TATOC = DRXTATOC,
-                    DR1TZINC = DRXTZINC
+                    DR1TPFAT = DRXTPFAT
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -303,34 +259,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TVB12 = DRXTVB12,
-                    DR1TVB6 = DRXTVB6,
-                    DR1TBCAR = DRXTCARO,
-                    DR1TCAFF = DRXTCAFF,
-                    DR1TCARB = DRXTCARB,
-                    DR1TCHOL = DRXTCHOL,
-                    DR1TTFAT = DRXTTFAT,
-                    DR1TFIBE = DRXTFIBE,
-                    DR1TFA = DRXTFOLA,
-                    DR1TIRON = DRXTIRON,
-                    DR1TMAGN = DRXTMAGN,
-                    DR1TNIAC = DRXTNIAC,
-                    DR1TP183 = DRXTP183,
-                    DR1TP184 = DRXTP184,
-                    DR1TP204 = DRXTP204,
-                    DR1TP205 = DRXTP205,
-                    DR1TP225 = DRXTP225,
-                    DR1TP226 = DRXTP226,
-                    DR1TPROT = DRXTPROT,
-                    DR1TPFAT = DRXTPFAT,
-                    DR1TVB2 = DRXTVB2,
-                    DR1TSFAT = DRXTSFAT,
-                    DR1TSELE = DRXTSELE,
-                    DR1TVB1 = DRXTVB1,
-                    DR1TVARA = DRXTVARE,
-                    DR1TVC = DRXTVC,
-                    DR1TATOC = DRXTVE,
-                    DR1TZINC = DRXTZINC
+                    DR1TPFAT = DRXTPFAT
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -405,11 +334,24 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # arrange the data by SEQN
         MPED_IND_2 <- MPED_IND %>%
             arrange(SEQN)
+        
+        # Create the variable for added sugars from SSB
+        MPED_IND_2 = MPED_IND_2 %>%
+            dplyr::mutate(
+                # create the variable for added sugars from SSB
+                ADDED_SUGAR_SSB_SERV = case_when(
+                    DR1IFDCD %in% SSB ~ ADD_SUG,
+                    TRUE ~ 0
+                )
+            )
+        
+        # Add ADDED_SUGAR_SSB_SERV to the list
+        selected_columns <- c(selected_columns, "ADDED_SUGAR_SSB_SERV")
 
         # calculate the sum of each food group for each individual
         MPED <- MPED_IND_2 %>%
             group_by(SEQN) %>%
-            summarise(across(all_of(selected_columns), sum, .names = "{.col}"), na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine nutrient and demographic data on a person level;
         COHORT = inner_join(NUTRIENT_2, DEMO_2, by = "SEQN")
@@ -417,100 +359,48 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # combine all data on a person level;
         COHORT_2 = left_join(COHORT, MPED, by = "SEQN")
 
-        # Check if DR1TVD exists in the data frame
-        has_DR1TVD <- "DR1TVD" %in% colnames(COHORT)
-
-        # calculate the DII food group serving size / 1000 kcal
+        # calculate the AHEI food group serving size / 1000 kcal
         COHORT_3 = COHORT_2 %>%
             dplyr::mutate(
-                ALCOHOL = DR1TALCO,
-                VITB12 = DR1TVB12,
-                VITB6 = DR1TVB6,
-                BCAROTENE = DR1TBCAR,
-                CAFFEINE = DR1TCAFF / 1000,
-                CARB = DR1TCARB,
-                CHOLES = DR1TCHOL,
-                KCAL = DR1TKCAL,
-                TOTALFAT = DR1TTFAT,
-                FIBER = DR1TFIBE,
-                FOLICACID = DR1TFA,
-                IRON = DR1TIRON,
-                MG = DR1TMAGN,
-                MUFA = DR1TMFAT,
-                NIACIN = DR1TNIAC,
-                N3FAT = DR1TP183 + DR1TP184 + DR1TP205 + DR1TP225 + DR1TP226,
-                N6FAT = DR1TP183 + DR1TP204,
-                PROTEIN = DR1TPROT,
-                PUFA = DR1TPFAT,
-                RIBOFLAVIN = DR1TVB2,
-                SATFAT = DR1TSFAT,
-                SE = DR1TSELE,
-                THIAMIN = DR1TVB1,
-                VITA = DR1TVARA,
-                VITC = DR1TVC,
-                VITD = if (has_DR1TVD) DR1TVD * 0.025 else NULL,
-                VITE = DR1TATOC,
-                ZN = DR1TZINC
+                VEG_SERV = V_DRKGR + ((V_ORANGE + V_TOMATO + V_OTHER + V_STARCY) / 0.5),
+                FRT_SERV = WHOLEFRT,
+                WGRAIN_SERV = G_WHL / 0.035274,
+                NUTSLEG_SERV = M_NUTSD + M_SOY + LEGUMES*4,
+                PUFA_SERV = (((DR1TP182 + DR1TP183 + DR1TP184 + DR1TP204 + DR1TP225) * 9) / DR1TKCAL) * 100,
+                N3FAT_SERV = (DR1TP205 + DR1TP226) * 1000,
+                SSB_FRTJ_SERV = (ADDED_SUGAR_SSB_SERV * 4 / 26),
+                REDPROC_MEAT_SERV = (M_FRANK / 1.5) + ((M_MEAT + M_ORGAN) / 4),
+                SODIUM_SERV = DR1TSODI / (DR1TKCAL / 2000),
+                ALCOHOL_SERV = A_BEV
             )
 
-        # Columns to select
-        select_cols <- c(
-            "SEQN", "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "TOTALFAT", "FIBER", "FOLICACID",
-            "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "PROTEIN", "PUFA", "RIBOFLAVIN", "SATFAT", "SE", "THIAMIN",
-            "VITA", "VITC", "VITE", "ZN"
-        )
-
-        # Include VITD if it exists
-        if (has_DR1TVD) {
-            message("VITD is included in the calculation in the first day of NHANES data.")
-            # use the DII generic function to calculate the DII total and component scores
-        } else {
-            message("VITD is not included in the calculation in the first day of NHANES data.")
-        }
-
-        COHORT_4 = DII(
-            SERV_DATA = COHORT_3,
-            RESPONDENTID = COHORT_3$SEQN,
-            REPEATNUM = 1,
-            ALCOHOL_DII = COHORT_3$ALCOHOL,
-            VITB12_DII = COHORT_3$VITB12,
-            VITB6_DII = COHORT_3$VITB6,
-            BCAROTENE_DII = COHORT_3$BCAROTENE,
-            CAFFEINE_DII = COHORT_3$CAFFEINE,
-            CARB_DII = COHORT_3$CARB,
-            CHOLES_DII = COHORT_3$CHOLES,
-            KCAL_DII = COHORT_3$KCAL,
-            TOTALFAT_DII = COHORT_3$TOTALFAT,
-            FIBER_DII = COHORT_3$FIBER,
-            FOLICACID_DII = COHORT_3$FOLICACID,
-            IRON_DII = COHORT_3$IRON,
-            MG_DII = COHORT_3$MG,
-            MUFA_DII = COHORT_3$MUFA,
-            NIACIN_DII = COHORT_3$NIACIN,
-            N3FAT_DII = COHORT_3$N3FAT,
-            N6FAT_DII = COHORT_3$N6FAT,
-            PROTEIN_DII = COHORT_3$PROTEIN,
-            PUFA_DII = COHORT_3$PUFA,
-            RIBOFLAVIN_DII = COHORT_3$RIBOFLAVIN,
-            SATFAT_DII = COHORT_3$SATFAT,
-            SE_DII = COHORT_3$SE,
-            THIAMIN_DII = COHORT_3$THIAMIN,
-            VITA_DII = COHORT_3$VITA,
-            VITC_DII = COHORT_3$VITC,
-            VITD_DII = COHORT_3$VITD,
-            VITE_DII = COHORT_3$VITE,
-            ZN_DII = COHORT_3$ZN
+        # use the AHEI generic function to calculate the AHEI total and component scores
+        COHORT_4 = AHEI(
+            SERV_DATA = COHORT_3, 
+            RESPONDENTID = COHORT_3$SEQN, 
+            GENDER = COHORT_3$RIAGENDR, 
+            TOTALKCAL_AHEI = COHORT_3$DR1TKCAL, 
+            VEG_SERV_AHEI = COHORT_3$VEG_SERV, 
+            FRT_SERV_AHEI = COHORT_3$FRT_SERV, 
+            WGRAIN_SERV_AHEI = COHORT_3$WGRAIN_SERV, 
+            NUTSLEG_SERV_AHEI = COHORT_3$NUTSLEG_SERV, 
+            N3FAT_SERV_AHEI = COHORT_3$N3FAT_SERV, 
+            PUFA_SERV_AHEI = COHORT_3$PUFA_SERV, 
+            SSB_FRTJ_SERV_AHEI = COHORT_3$SSB_FRTJ_SERV, 
+            REDPROC_MEAT_SERV_AHEI = COHORT_3$REDPROC_MEAT_SERV, 
+            TRANS_SERV_AHEI = NA, 
+            SODIUM_SERV_AHEI = COHORT_3$SODIUM_SERV, 
+            ALCOHOL_SERV_AHEI = COHORT_3$ALCOHOL_SERV
         )
 
         COHORT_4 = COHORT_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
             ) %>%
-            ## ungroup RESPONDENTID
-            ungroup() %>%
-            ## remove RESPONDENTID
-            select(-RESPONDENTID) %>%
-            select(SEQN, DII_ALL:ROSEMARY_DII)
+            dplyr::select(
+                SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
+            )
     }
 
     # start with the second day data calculation
@@ -533,6 +423,33 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
 
         if ("DR2ILINE" %in% colnames(NUTRIENT2) | "DRXILINE" %in% colnames(NUTRIENT2)) {
             stop("Please use the population-level data for the second day data. The file name should contain: TOT")
+        }
+
+        # if NHANES 2001-2002 data is used as evidenced by the presence of DRDDRSTZ
+        if ("DRDDRSTZ" %in% colnames(NUTRIENT2)) {
+            NUTRIENT2 = NUTRIENT2 %>%
+                mutate(
+                    DR2DRSTZ = DRDDRSTZ,
+                    DR2TKCAL = DRXTKCAL,
+                    DR2TSFAT = DRXTSFAT,
+                    DR2TALCO = DRXTALCO,
+                    DR2TSODI = DRDTSODI,
+                    DR2TMFAT = DRXTMFAT,
+                    DR2TPFAT = DRXTPFAT
+                )
+        }
+        # if NHANES 1999-2000 data is used as evidenced by the presence of DRXDRSTZ
+        else if ("DRDDRSTS" %in% colnames(NUTRIENT2)) {
+            NUTRIENT2 = NUTRIENT2 %>%
+                mutate(
+                    DR2DRSTZ = DRDDRSTS,
+                    DR2TKCAL = DRXTKCAL,
+                    DR2TSFAT = DRXTSFAT,
+                    DR2TALCO = DRXTALCO,
+                    DR2TSODI = DRDTSODI,
+                    DR2TMFAT = DRXTMFAT,
+                    DR2TPFAT = DRXTPFAT
+                )
         }
 
 
@@ -572,11 +489,24 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # arrange the data by SEQN
         MPED_IND2_2 <- MPED_IND2 %>%
             arrange(SEQN)
+        
+        # Create the variable for added sugars from SSB
+        MPED_IND2_2 = MPED_IND2_2 %>%
+            dplyr::mutate(
+                # create the variable for added sugars from SSB
+                ADDED_SUGAR_SSB_SERV = case_when(
+                    DR2IFDCD %in% SSB ~ ADD_SUG,
+                    TRUE ~ 0
+                )
+            )
+
+        # Add ADDED_SUGAR_SSB_SERV to the list
+        selected_columns <- c(selected_columns, "ADDED_SUGAR_SSB_SERV")
 
         # calculate the sum of each food group for each individual
         MPED2 <- MPED_IND2_2 %>%
             group_by(SEQN) %>%
-            summarise_at(vars(selected_columns), sum, na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine NUTRIENT2 and demographic data on a person level;
         COHORT2 = inner_join(NUTRIENT2_2, DEMO_2, by = "SEQN")
@@ -584,134 +514,76 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # combine all data on a person level;
         COHORT2_2 = left_join(COHORT2, MPED2, by = "SEQN")
 
-        # Check if DR2TVD exists in the data frame
-        has_DR2TVD <- "DR2TVD" %in% colnames(COHORT2)
-
-        # calculate the DII food group serving size / 1000 kcal
+        # calculate the AHEI food group serving size / 1000 kcal
         COHORT2_3 = COHORT2_2 %>%
             dplyr::mutate(
-                ALCOHOL = DR2TALCO,
-                VITB12 = DR2TVB12,
-                VITB6 = DR2TVB6,
-                BCAROTENE = DR2TBCAR,
-                CAFFEINE = DR2TCAFF / 1000,
-                CARB = DR2TCARB,
-                CHOLES = DR2TCHOL,
-                KCAL = DR2TKCAL,
-                TOTALFAT = DR2TTFAT,
-                FIBER = DR2TFIBE,
-                FOLICACID = DR2TFA,
-                IRON = DR2TIRON,
-                MG = DR2TMAGN,
-                MUFA = DR2TMFAT,
-                NIACIN = DR2TNIAC,
-                N3FAT = DR2TP183 + DR2TP184 + DR2TP205 + DR2TP225 + DR2TP226,
-                N6FAT = DR2TP183 + DR2TP204,
-                PROTEIN = DR2TPROT,
-                PUFA = DR2TPFAT,
-                RIBOFLAVIN = DR2TVB2,
-                SATFAT = DR2TSFAT,
-                SE = DR2TSELE,
-                THIAMIN = DR2TVB1,
-                VITA = DR2TVARA,
-                VITC = DR2TVC,
-                VITD = if (has_DR2TVD) DR2TVD * 0.025 else NULL,
-                VITE = DR2TATOC,
-                ZN = DR2TZINC
+                VEG_SERV = V_DRKGR + ((V_ORANGE + V_TOMATO + V_OTHER + V_STARCY) / 0.5),
+                FRT_SERV = WHOLEFRT,
+                WGRAIN_SERV = G_WHL / 0.035274,
+                NUTSLEG_SERV = M_NUTSD + M_SOY + LEGUMES*4,
+                PUFA_SERV = (((DR2TP182 + DR2TP183 + DR2TP184 + DR2TP204 + DR2TP225) * 9) / DR2TKCAL) * 100,
+                N3FAT_SERV = (DR2TP205 + DR2TP226) * 1000,
+                SSB_FRTJ_SERV = (ADDED_SUGAR_SSB_SERV * 4 / 26),
+                REDPROC_MEAT_SERV = (M_FRANK / 1.5) + ((M_MEAT + M_ORGAN) / 4),
+                SODIUM_SERV = DR2TSODI / (DR2TKCAL / 2000),
+                ALCOHOL_SERV = A_BEV
             )
 
-        # Include VITD if it exists
-        if (has_DR2TVD) {
-            message("VITD is included in the calculation in the first day of NHANES data.")
-        } else {
-            message("VITD is not included in the calculation in the first day of NHANES data.")
-        }
-
-        COHORT2_4 = DII(
+        # use the AHEI generic function to calculate the AHEI total and component scores
+        COHORT2_4 = AHEI(
             SERV_DATA = COHORT2_3,
             RESPONDENTID = COHORT2_3$SEQN,
-            REPEATNUM = 1,
-            ALCOHOL_DII = COHORT2_3$ALCOHOL,
-            VITB12_DII = COHORT2_3$VITB12,
-            VITB6_DII = COHORT2_3$VITB6,
-            BCAROTENE_DII = COHORT2_3$BCAROTENE,
-            CAFFEINE_DII = COHORT2_3$CAFFEINE,
-            CARB_DII = COHORT2_3$CARB,
-            CHOLES_DII = COHORT2_3$CHOLES,
-            KCAL_DII = COHORT2_3$KCAL,
-            TOTALFAT_DII = COHORT2_3$TOTALFAT,
-            FIBER_DII = COHORT2_3$FIBER,
-            FOLICACID_DII = COHORT2_3$FOLICACID,
-            IRON_DII = COHORT2_3$IRON,
-            MG_DII = COHORT2_3$MG,
-            MUFA_DII = COHORT2_3$MUFA,
-            NIACIN_DII = COHORT2_3$NIACIN,
-            N3FAT_DII = COHORT2_3$N3FAT,
-            N6FAT_DII = COHORT2_3$N6FAT,
-            PROTEIN_DII = COHORT2_3$PROTEIN,
-            PUFA_DII = COHORT2_3$PUFA,
-            RIBOFLAVIN_DII = COHORT2_3$RIBOFLAVIN,
-            SATFAT_DII = COHORT2_3$SATFAT,
-            SE_DII = COHORT2_3$SE,
-            THIAMIN_DII = COHORT2_3$THIAMIN,
-            VITA_DII = COHORT2_3$VITA,
-            VITC_DII = COHORT2_3$VITC,
-            VITD_DII = COHORT2_3$VITD,
-            VITE_DII = COHORT2_3$VITE,
-            ZN_DII = COHORT2_3$ZN
+            GENDER = COHORT2_3$RIAGENDR,
+            TOTALKCAL_AHEI = COHORT2_3$DR2TKCAL,
+            VEG_SERV_AHEI = COHORT2_3$VEG_SERV,
+            FRT_SERV_AHEI = COHORT2_3$FRT_SERV,
+            WGRAIN_SERV_AHEI = COHORT2_3$WGRAIN_SERV,
+            NUTSLEG_SERV_AHEI = COHORT2_3$NUTSLEG_SERV,
+            N3FAT_SERV_AHEI = COHORT2_3$N3FAT_SERV,
+            PUFA_SERV_AHEI = COHORT2_3$PUFA_SERV,
+            SSB_FRTJ_SERV_AHEI = COHORT2_3$SSB_FRTJ_SERV,
+            REDPROC_MEAT_SERV_AHEI = COHORT2_3$REDPROC_MEAT_SERV,
+            TRANS_SERV_AHEI = NA,
+            SODIUM_SERV_AHEI = COHORT2_3$SODIUM_SERV,
+            ALCOHOL_SERV_AHEI = COHORT2_3$ALCOHOL_SERV
         )
 
         COHORT2_4 = COHORT2_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
             ) %>%
-            ## ungroup RESPONDENTID
-            ungroup() %>%
-            ## remove RESPONDENTID
-            select(-RESPONDENTID) %>%
-            select(SEQN, DII_ALL:ROSEMARY_DII)
+            dplyr::select(
+                SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
+            )
     }
-
 
     if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT_4)
     } else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT2_4)
     }
-
-    # Check which columns exist in both COHORT and COHORT2
-    common_cols <- intersect(colnames(COHORT_4), colnames(COHORT2_4))
-
-    # Remove 'SEQN' as it is the joining key, not an average-able variable
-    common_cols <- setdiff(common_cols, "SEQN")
-
-    # Initialize an empty data frame for the joined and averaged data
-    COHORT12 <- data.frame()
-
-    # Perform the join and averaging only if both data sets are non-null and have common columns
-    if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2) & length(common_cols) > 0) {
-        # Perform inner join to merge the two data sets
-        COHORT12 <- inner_join(COHORT_4, COHORT2_4, by = "SEQN")
-
-        # Dynamically generate the mutate expressions for averaging the common columns between the two data sets
-        avg_exprs <- setNames(lapply(common_cols, function(col) {
-            rlang::parse_expr(paste0(col, " = (", col, ".x + ", col, ".y) / 2"))
-        }), common_cols)
-
-        # Perform the averaging calculations
-        COHORT12 <- COHORT12 %>%
-            mutate(!!!avg_exprs)
-
-        # Explicitly select the columns of interest
-        COHORT12 <- COHORT12 %>%
-            dplyr::select(SEQN, !!!common_cols)
-
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+    # merge two days data if they both exist
+    else if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
+        COHORT12 = inner_join(COHORT_4, COHORT2_4, by = "SEQN") %>%
+            dplyr::mutate(
+                AHEI_ALL = (AHEI_ALL.x + AHEI_ALL.y) / 2,
+                AHEI_NOETOH = (AHEI_NOETOH.x + AHEI_NOETOH.y) / 2,
+                AHEI_VEG = (AHEI_VEG.x + AHEI_VEG.y) / 2,
+                AHEI_FRT = (AHEI_FRT.x + AHEI_FRT.y) / 2,
+                AHEI_WGRAIN = (AHEI_WGRAIN.x + AHEI_WGRAIN.y) / 2,
+                AHEI_NUTSLEG = (AHEI_NUTSLEG.x + AHEI_NUTSLEG.y) / 2,
+                AHEI_N3FAT = (AHEI_N3FAT.x + AHEI_N3FAT.y) / 2,
+                AHEI_PUFA = (AHEI_PUFA.x + AHEI_PUFA.y) / 2,
+                AHEI_SSB_FRTJ = (AHEI_SSB_FRTJ.x + AHEI_SSB_FRTJ.y) / 2,
+                AHEI_REDPROC_MEAT = (AHEI_REDPROC_MEAT.x + AHEI_REDPROC_MEAT.y) / 2,
+                AHEI_SODIUM = (AHEI_SODIUM.x + AHEI_SODIUM.y) / 2,
+                AHEI_ALCOHOL = (AHEI_ALCOHOL.x + AHEI_ALCOHOL.y) / 2
+            ) %>%
+            dplyr::select(
+                SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
+            )
         return(COHORT12)
     }
 }

@@ -1,6 +1,6 @@
 #' HEI2015_NHANES_MPED
 #'
-#' Calculate the HEI2015 for the NHANES_MPED data (after 2005) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
+#' Calculate the HEI2015 for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
 #' @import dplyr
 #' @import readr
 #' @import haven

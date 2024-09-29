@@ -96,7 +96,7 @@ DASH_BLOCK = function(RAW_DATA) {
         )
     }
 
-    print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+    message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
 
     ## DASH calculation
     SERV_DATA %>%

@@ -73,10 +73,10 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_AHEI, VEG_SERV_AHEI, 
     SERV_DATA = SERV_DATA %>%
         mutate(SODIUM_SERV_AHEI = SODIUM_SERV_AHEI / (TOTALKCAL_AHEI / 2000))
 
-    SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV_AHEI, probs = seq(0, 1, by = 1 / 11))
+    SODIUM_DECILE = quantile(SERV_DATA$SODIUM_SERV_AHEI, probs = seq(0, 1, by = 1 / 11), na.rm = TRUE)
 
     ## AHEI calculation
-    SERV_DATA %>%
+    SERV_DATA = SERV_DATA %>%
         dplyr::mutate(
             RESPONDENTID = RESPONDENTID,
             GENDER = GENDER,
@@ -124,14 +124,36 @@ AHEI = function(SERV_DATA, RESPONDENTID, GENDER, TOTALKCAL_AHEI, VEG_SERV_AHEI, 
                 GENDER == 1 & ALCOHOL_SERV_AHEI <= 2 & ALCOHOL_SERV_AHEI >= 0.5 ~ 10,
                 GENDER == 1 & ALCOHOL_SERV_AHEI < 0.5 & ALCOHOL_SERV_AHEI > 0.125 ~ 0 + (ALCOHOL_SERV_AHEI - 0) * 10 / (0.5 - 0),
                 GENDER == 1 & ALCOHOL_SERV_AHEI <= 0.125 ~ 2.5,
-            ),
-            AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
-                AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL,
-            AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
-                AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
-        ) %>%
-        dplyr::select(
-            RESPONDENTID, GENDER, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
-            AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL
-        )
+            )
+        ) 
+    
+
+    ## when the column of AHEI_TRANS has all missing values, the AHEI_ALL and AHEI_NOETOH are calculated by the sum of all components except AHEI_TRANS
+    if (all(is.na(SERV_DATA$AHEI_TRANS))) {
+        SERV_DATA_FINAL = SERV_DATA %>%
+            mutate(
+                AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
+                    AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_SODIUM + AHEI_ALCOHOL,
+                AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
+                    AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_SODIUM
+                ) %>%
+            dplyr::select(
+                RESPONDENTID, GENDER, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL
+            )
+    } else {
+        SERV_DATA_FINAL = SERV_DATA %>%
+            mutate(
+                AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
+                    AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM + AHEI_ALCOHOL,
+                AHEI_NOETOH = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN + AHEI_NUTSLEG + AHEI_N3FAT +
+                    AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_TRANS + AHEI_SODIUM
+            ) %>%
+            dplyr::select(
+                RESPONDENTID, GENDER, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_TRANS, AHEI_SODIUM, AHEI_ALCOHOL
+            )
+    }
+
+    return(SERV_DATA_FINAL)
 }

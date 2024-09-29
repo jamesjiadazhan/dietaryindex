@@ -25,7 +25,7 @@ DII_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
 
     # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
     if (RECALL_SUMMARIZE == TRUE) {
-        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
+        message("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         ## get sum per person of variables of interest if multiple recalls from the same person exist
         COHORT = COHORT %>%
@@ -141,7 +141,7 @@ DII_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
     }
     # if RECALL_SUMMARIZE = FALSE, keep the food group and nutrient intake over all days reported per individual per day
     else {
-        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+        message("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
 
     # Serving size calculation for DII

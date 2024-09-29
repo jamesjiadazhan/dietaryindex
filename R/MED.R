@@ -41,7 +41,7 @@ MED = function(SERV_DATA, RESPONDENTID, FRT_FRTJ_SERV_MED, VEG_SERV_MED, WGRAIN_
         )
     }
 
-    print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+    message("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
 
 
     SERV_DATA %>%

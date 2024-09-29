@@ -1,6 +1,6 @@
-#' DII_NHANES_MPED
+#' DASHI_NHANES_MPED
 #'
-#' Calculate the DII for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
+#' Calculate the DASHI for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -11,45 +11,17 @@
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
 #' @param NUTRIENT_PATH2 The file path for the NUTRIENT2 data for the day 2 data. The file name should be like: DR2TOT_J.XPT
 #' @param NUTRIENT_IND_PATH2 The file path for the NUTRIENT_IND2 data for the day 2 data The file name should be like: DR2IFF_J.XPT
-#' @return The DII and its component scores and serving sizes
+#' @return The DASHI and its component scores and serving sizes
 #' @examples
 #' data("NHANES_20032004")
-#' DII_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+#' DASHI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
 #' @export
 
-DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
-    ## Create variables needed for DII calculation
-    DII_MIN = 0
-    DII_MAX1 = 5
-    DII_MAX2 = 10
-
-    DII_HEALTHY1 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ DII_MAX1,
-            actual <= min ~ DII_MIN,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX1 / (max - min)
-        )
-    }
-
-    DII_HEALTHY2 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ DII_MAX2,
-            actual <= min ~ DII_MIN,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX2 / (max - min)
-        )
-    }
-
-    DII_UNHEALTHY = function(actual, min, max) {
-        case_when(
-            actual >= min ~ DII_MIN,
-            actual <= max ~ DII_MAX2,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX2 / (max - min)
-        )
-    }
+DASHI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
 
     # stop if the input data is not provided for any day
-    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        stop("Please provide the file path for the MPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
+    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_IND_PATH) & is.null(NUTRIENT_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
+        stop("Please provide the file path for the NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
     }
 
     # load the MPED per 100 gram data
@@ -256,34 +228,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TVB12 = DRXTVB12,
-                    DR1TVB6 = DRXTVB6,
-                    DR1TBCAR = DRXTBCAR,
-                    DR1TCAFF = DRXTCAFF,
-                    DR1TCARB = DRXTCARB,
-                    DR1TCHOL = DRXTCHOL,
-                    DR1TTFAT = DRXTTFAT,
-                    DR1TFIBE = DRXTFIBE,
-                    DR1TFA = DRXTFA,
-                    DR1TIRON = DRXTIRON,
-                    DR1TMAGN = DRXTMAGN,
-                    DR1TNIAC = DRXTNIAC,
-                    DR1TP183 = DRXTP183,
-                    DR1TP184 = DRXTP184,
-                    DR1TP204 = DRXTP204,
-                    DR1TP205 = DRXTP205,
-                    DR1TP225 = DRXTP225,
-                    DR1TP226 = DRXTP226,
-                    DR1TPROT = DRXTPROT,
-                    DR1TPFAT = DRXTPFAT,
-                    DR1TVB2 = DRXTVB2,
-                    DR1TSFAT = DRXTSFAT,
-                    DR1TSELE = DRXTSELE,
-                    DR1TVB1 = DRXTVB1,
-                    DR1TVARA = DRXTVARA,
-                    DR1TVC = DRXTVC,
-                    DR1TATOC = DRXTATOC,
-                    DR1TZINC = DRXTZINC
+                    DR1TPFAT = DRXTPFAT
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -303,34 +248,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TVB12 = DRXTVB12,
-                    DR1TVB6 = DRXTVB6,
-                    DR1TBCAR = DRXTCARO,
-                    DR1TCAFF = DRXTCAFF,
-                    DR1TCARB = DRXTCARB,
-                    DR1TCHOL = DRXTCHOL,
-                    DR1TTFAT = DRXTTFAT,
-                    DR1TFIBE = DRXTFIBE,
-                    DR1TFA = DRXTFOLA,
-                    DR1TIRON = DRXTIRON,
-                    DR1TMAGN = DRXTMAGN,
-                    DR1TNIAC = DRXTNIAC,
-                    DR1TP183 = DRXTP183,
-                    DR1TP184 = DRXTP184,
-                    DR1TP204 = DRXTP204,
-                    DR1TP205 = DRXTP205,
-                    DR1TP225 = DRXTP225,
-                    DR1TP226 = DRXTP226,
-                    DR1TPROT = DRXTPROT,
-                    DR1TPFAT = DRXTPFAT,
-                    DR1TVB2 = DRXTVB2,
-                    DR1TSFAT = DRXTSFAT,
-                    DR1TSELE = DRXTSELE,
-                    DR1TVB1 = DRXTVB1,
-                    DR1TVARA = DRXTVARE,
-                    DR1TVC = DRXTVC,
-                    DR1TATOC = DRXTVE,
-                    DR1TZINC = DRXTZINC
+                    DR1TPFAT = DRXTPFAT
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -409,7 +327,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # calculate the sum of each food group for each individual
         MPED <- MPED_IND_2 %>%
             group_by(SEQN) %>%
-            summarise(across(all_of(selected_columns), sum, .names = "{.col}"), na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine nutrient and demographic data on a person level;
         COHORT = inner_join(NUTRIENT_2, DEMO_2, by = "SEQN")
@@ -417,100 +335,40 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # combine all data on a person level;
         COHORT_2 = left_join(COHORT, MPED, by = "SEQN")
 
-        # Check if DR1TVD exists in the data frame
-        has_DR1TVD <- "DR1TVD" %in% colnames(COHORT)
-
-        # calculate the DII food group serving size / 1000 kcal
+        # calculate the DASHI food group serving size / 1000 kcal
         COHORT_3 = COHORT_2 %>%
             dplyr::mutate(
-                ALCOHOL = DR1TALCO,
-                VITB12 = DR1TVB12,
-                VITB6 = DR1TVB6,
-                BCAROTENE = DR1TBCAR,
-                CAFFEINE = DR1TCAFF / 1000,
-                CARB = DR1TCARB,
-                CHOLES = DR1TCHOL,
-                KCAL = DR1TKCAL,
-                TOTALFAT = DR1TTFAT,
-                FIBER = DR1TFIBE,
-                FOLICACID = DR1TFA,
-                IRON = DR1TIRON,
-                MG = DR1TMAGN,
-                MUFA = DR1TMFAT,
-                NIACIN = DR1TNIAC,
-                N3FAT = DR1TP183 + DR1TP184 + DR1TP205 + DR1TP225 + DR1TP226,
-                N6FAT = DR1TP183 + DR1TP204,
-                PROTEIN = DR1TPROT,
-                PUFA = DR1TPFAT,
-                RIBOFLAVIN = DR1TVB2,
-                SATFAT = DR1TSFAT,
-                SE = DR1TSELE,
-                THIAMIN = DR1TVB1,
-                VITA = DR1TVARA,
-                VITC = DR1TVC,
-                VITD = if (has_DR1TVD) DR1TVD * 0.025 else NULL,
-                VITE = DR1TATOC,
-                ZN = DR1TZINC
+                TOTAL_FAT_DASHI = (DR1TTFAT * 9 / DR1TKCAL) * 100,
+                SAT_FAT_DASHI = (DR1TSFAT * 9 / DR1TKCAL) * 100,
+                PROTEIN_DASHI = (DR1TPROT * 4 / DR1TKCAL) * 100,
+                CHOLESTEROL_DASHI = DR1TCHOL / (DR1TKCAL / 2000),
+                FIBER_DASHI = DR1TFIBE / (DR1TKCAL / 2000),
+                POTASSIUM_DASHI = DR1TPOTA / (DR1TKCAL / 2000),
+                MAGNESIUM_DASHI = DR1TMAGN / (DR1TKCAL / 2000),
+                CALCIUM_DASHI = DR1TCALC / (DR1TKCAL / 2000),
+                SODIUM_DASHI = DR1TSODI / (DR1TKCAL / 2000)
             )
 
-        # Columns to select
-        select_cols <- c(
-            "SEQN", "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "TOTALFAT", "FIBER", "FOLICACID",
-            "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "PROTEIN", "PUFA", "RIBOFLAVIN", "SATFAT", "SE", "THIAMIN",
-            "VITA", "VITC", "VITE", "ZN"
-        )
-
-        # Include VITD if it exists
-        if (has_DR1TVD) {
-            message("VITD is included in the calculation in the first day of NHANES data.")
-            # use the DII generic function to calculate the DII total and component scores
-        } else {
-            message("VITD is not included in the calculation in the first day of NHANES data.")
-        }
-
-        COHORT_4 = DII(
-            SERV_DATA = COHORT_3,
-            RESPONDENTID = COHORT_3$SEQN,
-            REPEATNUM = 1,
-            ALCOHOL_DII = COHORT_3$ALCOHOL,
-            VITB12_DII = COHORT_3$VITB12,
-            VITB6_DII = COHORT_3$VITB6,
-            BCAROTENE_DII = COHORT_3$BCAROTENE,
-            CAFFEINE_DII = COHORT_3$CAFFEINE,
-            CARB_DII = COHORT_3$CARB,
-            CHOLES_DII = COHORT_3$CHOLES,
-            KCAL_DII = COHORT_3$KCAL,
-            TOTALFAT_DII = COHORT_3$TOTALFAT,
-            FIBER_DII = COHORT_3$FIBER,
-            FOLICACID_DII = COHORT_3$FOLICACID,
-            IRON_DII = COHORT_3$IRON,
-            MG_DII = COHORT_3$MG,
-            MUFA_DII = COHORT_3$MUFA,
-            NIACIN_DII = COHORT_3$NIACIN,
-            N3FAT_DII = COHORT_3$N3FAT,
-            N6FAT_DII = COHORT_3$N6FAT,
-            PROTEIN_DII = COHORT_3$PROTEIN,
-            PUFA_DII = COHORT_3$PUFA,
-            RIBOFLAVIN_DII = COHORT_3$RIBOFLAVIN,
-            SATFAT_DII = COHORT_3$SATFAT,
-            SE_DII = COHORT_3$SE,
-            THIAMIN_DII = COHORT_3$THIAMIN,
-            VITA_DII = COHORT_3$VITA,
-            VITC_DII = COHORT_3$VITC,
-            VITD_DII = COHORT_3$VITD,
-            VITE_DII = COHORT_3$VITE,
-            ZN_DII = COHORT_3$ZN
+        # use the DASHI generic function to calculate the DASHI total and component scores
+        COHORT_4 = DASHI(
+            SERV_DATA = COHORT_3, 
+            RESPONDENTID = COHORT_3$SEQN, 
+            TOTALKCAL_DASHI = COHORT_3$DR1TKCAL, 
+            TOTAL_FAT_DASHI = COHORT_3$TOTAL_FAT_DASHI, 
+            SAT_FAT_DASHI = COHORT_3$SAT_FAT_DASHI, 
+            PROTEIN_DASHI = COHORT_3$PROTEIN_DASHI, 
+            CHOLESTEROL_DASHI = COHORT_3$CHOLESTEROL_DASHI, 
+            FIBER_DASHI = COHORT_3$FIBER_DASHI, 
+            POTASSIUM_DASHI = COHORT_3$POTASSIUM_DASHI, 
+            MAGNESIUM_DASHI = COHORT_3$MAGNESIUM_DASHI, 
+            CALCIUM_DASHI = COHORT_3$CALCIUM_DASHI, 
+            SODIUM_DASHI = COHORT_3$SODIUM_DASHI
         )
 
         COHORT_4 = COHORT_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
-            ) %>%
-            ## ungroup RESPONDENTID
-            ungroup() %>%
-            ## remove RESPONDENTID
-            select(-RESPONDENTID) %>%
-            select(SEQN, DII_ALL:ROSEMARY_DII)
+            )
     }
 
     # start with the second day data calculation
@@ -533,6 +391,33 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
 
         if ("DR2ILINE" %in% colnames(NUTRIENT2) | "DRXILINE" %in% colnames(NUTRIENT2)) {
             stop("Please use the population-level data for the second day data. The file name should contain: TOT")
+        }
+
+        # if NHANES 2001-2002 data is used as evidenced by the presence of DRDDRSTZ
+        if ("DRDDRSTZ" %in% colnames(NUTRIENT2)) {
+            NUTRIENT2 = NUTRIENT2 %>%
+                mutate(
+                    DR2DRSTZ = DRDDRSTZ,
+                    DR2TKCAL = DRXTKCAL,
+                    DR2TSFAT = DRXTSFAT,
+                    DR2TALCO = DRXTALCO,
+                    DR2TSODI = DRDTSODI,
+                    DR2TMFAT = DRXTMFAT,
+                    DR2TPFAT = DRXTPFAT
+                )
+        }
+        # if NHANES 1999-2000 data is used as evidenced by the presence of DRXDRSTZ
+        else if ("DRDDRSTS" %in% colnames(NUTRIENT2)) {
+            NUTRIENT2 = NUTRIENT2 %>%
+                mutate(
+                    DR2DRSTZ = DRDDRSTS,
+                    DR2TKCAL = DRXTKCAL,
+                    DR2TSFAT = DRXTSFAT,
+                    DR2TALCO = DRXTALCO,
+                    DR2TSODI = DRDTSODI,
+                    DR2TMFAT = DRXTMFAT,
+                    DR2TPFAT = DRXTPFAT
+                )
         }
 
 
@@ -576,7 +461,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # calculate the sum of each food group for each individual
         MPED2 <- MPED_IND2_2 %>%
             group_by(SEQN) %>%
-            summarise_at(vars(selected_columns), sum, na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine NUTRIENT2 and demographic data on a person level;
         COHORT2 = inner_join(NUTRIENT2_2, DEMO_2, by = "SEQN")
@@ -584,134 +469,66 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # combine all data on a person level;
         COHORT2_2 = left_join(COHORT2, MPED2, by = "SEQN")
 
-        # Check if DR2TVD exists in the data frame
-        has_DR2TVD <- "DR2TVD" %in% colnames(COHORT2)
-
-        # calculate the DII food group serving size / 1000 kcal
+        # calculate the DASHI food group serving size / 1000 kcal
         COHORT2_3 = COHORT2_2 %>%
             dplyr::mutate(
-                ALCOHOL = DR2TALCO,
-                VITB12 = DR2TVB12,
-                VITB6 = DR2TVB6,
-                BCAROTENE = DR2TBCAR,
-                CAFFEINE = DR2TCAFF / 1000,
-                CARB = DR2TCARB,
-                CHOLES = DR2TCHOL,
-                KCAL = DR2TKCAL,
-                TOTALFAT = DR2TTFAT,
-                FIBER = DR2TFIBE,
-                FOLICACID = DR2TFA,
-                IRON = DR2TIRON,
-                MG = DR2TMAGN,
-                MUFA = DR2TMFAT,
-                NIACIN = DR2TNIAC,
-                N3FAT = DR2TP183 + DR2TP184 + DR2TP205 + DR2TP225 + DR2TP226,
-                N6FAT = DR2TP183 + DR2TP204,
-                PROTEIN = DR2TPROT,
-                PUFA = DR2TPFAT,
-                RIBOFLAVIN = DR2TVB2,
-                SATFAT = DR2TSFAT,
-                SE = DR2TSELE,
-                THIAMIN = DR2TVB1,
-                VITA = DR2TVARA,
-                VITC = DR2TVC,
-                VITD = if (has_DR2TVD) DR2TVD * 0.025 else NULL,
-                VITE = DR2TATOC,
-                ZN = DR2TZINC
+                TOTAL_FAT_DASHI = (DR2TTFAT * 9 / DR2TKCAL) * 100,
+                SAT_FAT_DASHI = (DR2TSFAT * 9 / DR2TKCAL) * 100,
+                PROTEIN_DASHI = (DR2TPROT * 4 / DR2TKCAL) * 100,
+                CHOLESTEROL_DASHI = DR2TCHOL / (DR2TKCAL / 2000),
+                FIBER_DASHI = DR2TFIBE / (DR2TKCAL / 2000),
+                POTASSIUM_DASHI = DR2TPOTA / (DR2TKCAL / 2000),
+                MAGNESIUM_DASHI = DR2TMAGN / (DR2TKCAL / 2000),
+                CALCIUM_DASHI = DR2TCALC / (DR2TKCAL / 2000),
+                SODIUM_DASHI = DR2TSODI / (DR2TKCAL / 2000)
             )
 
-        # Include VITD if it exists
-        if (has_DR2TVD) {
-            message("VITD is included in the calculation in the first day of NHANES data.")
-        } else {
-            message("VITD is not included in the calculation in the first day of NHANES data.")
-        }
-
-        COHORT2_4 = DII(
-            SERV_DATA = COHORT2_3,
-            RESPONDENTID = COHORT2_3$SEQN,
-            REPEATNUM = 1,
-            ALCOHOL_DII = COHORT2_3$ALCOHOL,
-            VITB12_DII = COHORT2_3$VITB12,
-            VITB6_DII = COHORT2_3$VITB6,
-            BCAROTENE_DII = COHORT2_3$BCAROTENE,
-            CAFFEINE_DII = COHORT2_3$CAFFEINE,
-            CARB_DII = COHORT2_3$CARB,
-            CHOLES_DII = COHORT2_3$CHOLES,
-            KCAL_DII = COHORT2_3$KCAL,
-            TOTALFAT_DII = COHORT2_3$TOTALFAT,
-            FIBER_DII = COHORT2_3$FIBER,
-            FOLICACID_DII = COHORT2_3$FOLICACID,
-            IRON_DII = COHORT2_3$IRON,
-            MG_DII = COHORT2_3$MG,
-            MUFA_DII = COHORT2_3$MUFA,
-            NIACIN_DII = COHORT2_3$NIACIN,
-            N3FAT_DII = COHORT2_3$N3FAT,
-            N6FAT_DII = COHORT2_3$N6FAT,
-            PROTEIN_DII = COHORT2_3$PROTEIN,
-            PUFA_DII = COHORT2_3$PUFA,
-            RIBOFLAVIN_DII = COHORT2_3$RIBOFLAVIN,
-            SATFAT_DII = COHORT2_3$SATFAT,
-            SE_DII = COHORT2_3$SE,
-            THIAMIN_DII = COHORT2_3$THIAMIN,
-            VITA_DII = COHORT2_3$VITA,
-            VITC_DII = COHORT2_3$VITC,
-            VITD_DII = COHORT2_3$VITD,
-            VITE_DII = COHORT2_3$VITE,
-            ZN_DII = COHORT2_3$ZN
+        # use the DASHI generic function to calculate the DASHI total and component scores
+        COHORT2_4 = DASHI(
+            SERV_DATA = COHORT2_3, 
+            RESPONDENTID = COHORT2_3$SEQN, 
+            TOTALKCAL_DASHI = COHORT2_3$DR2TKCAL, 
+            TOTAL_FAT_DASHI = COHORT2_3$TOTAL_FAT_DASHI, 
+            SAT_FAT_DASHI = COHORT2_3$SAT_FAT_DASHI, 
+            PROTEIN_DASHI = COHORT2_3$PROTEIN_DASHI, 
+            CHOLESTEROL_DASHI = COHORT2_3$CHOLESTEROL_DASHI, 
+            FIBER_DASHI = COHORT2_3$FIBER_DASHI, 
+            POTASSIUM_DASHI = COHORT2_3$POTASSIUM_DASHI, 
+            MAGNESIUM_DASHI = COHORT2_3$MAGNESIUM_DASHI, 
+            CALCIUM_DASHI = COHORT2_3$CALCIUM_DASHI, 
+            SODIUM_DASHI = COHORT2_3$SODIUM_DASHI
         )
 
         COHORT2_4 = COHORT2_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
-            ) %>%
-            ## ungroup RESPONDENTID
-            ungroup() %>%
-            ## remove RESPONDENTID
-            select(-RESPONDENTID) %>%
-            select(SEQN, DII_ALL:ROSEMARY_DII)
+            )
     }
-
 
     if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT_4)
     } else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT2_4)
     }
-
-    # Check which columns exist in both COHORT and COHORT2
-    common_cols <- intersect(colnames(COHORT_4), colnames(COHORT2_4))
-
-    # Remove 'SEQN' as it is the joining key, not an average-able variable
-    common_cols <- setdiff(common_cols, "SEQN")
-
-    # Initialize an empty data frame for the joined and averaged data
-    COHORT12 <- data.frame()
-
-    # Perform the join and averaging only if both data sets are non-null and have common columns
-    if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2) & length(common_cols) > 0) {
-        # Perform inner join to merge the two data sets
-        COHORT12 <- inner_join(COHORT_4, COHORT2_4, by = "SEQN")
-
-        # Dynamically generate the mutate expressions for averaging the common columns between the two data sets
-        avg_exprs <- setNames(lapply(common_cols, function(col) {
-            rlang::parse_expr(paste0(col, " = (", col, ".x + ", col, ".y) / 2"))
-        }), common_cols)
-
-        # Perform the averaging calculations
-        COHORT12 <- COHORT12 %>%
-            mutate(!!!avg_exprs)
-
-        # Explicitly select the columns of interest
-        COHORT12 <- COHORT12 %>%
-            dplyr::select(SEQN, !!!common_cols)
-
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+    # merge two days data if they both exist
+    else if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
+        COHORT12 = inner_join(COHORT_4, COHORT2_4, by = "SEQN") %>%
+            mutate(
+                DASHI_ALL = (DASHI_ALL.x + DASHI_ALL.y) / 2,
+                DASHI_TOTAL_FAT = (DASHI_TOTAL_FAT.x + DASHI_TOTAL_FAT.y) / 2,
+                DASHI_SAT_FAT = (DASHI_SAT_FAT.x + DASHI_SAT_FAT.y) / 2,
+                DASHI_CHOLESTEROL = (DASHI_CHOLESTEROL.x + DASHI_CHOLESTEROL.y) / 2,
+                DASHI_SODIUM = (DASHI_SODIUM.x + DASHI_SODIUM.y) / 2,
+                DASHI_PROTEIN = (DASHI_PROTEIN.x + DASHI_PROTEIN.y) / 2,
+                DASHI_FIBER = (DASHI_FIBER.x + DASHI_FIBER.y) / 2,
+                DASHI_POTASSIUM = (DASHI_POTASSIUM.x + DASHI_POTASSIUM.y) / 2,
+                DASHI_MAGNESIUM = (DASHI_MAGNESIUM.x + DASHI_MAGNESIUM.y) / 2,
+                DASHI_CALCIUM = (DASHI_CALCIUM.x + DASHI_CALCIUM.y) / 2
+            ) %>%
+            dplyr::select(
+                SEQN, DASHI_ALL, DASHI_TOTAL_FAT, DASHI_SAT_FAT, DASHI_CHOLESTEROL, DASHI_SODIUM,
+                DASHI_PROTEIN, DASHI_FIBER, DASHI_POTASSIUM, DASHI_MAGNESIUM, DASHI_CALCIUM
+            )
         return(COHORT12)
     }
 }

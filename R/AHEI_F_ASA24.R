@@ -31,7 +31,7 @@ AHEI_F_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
             95323000
         )
         SSB = c(COFFEE_TEA, DRINK)
-        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+        message("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
         # If SSB code is provided, use the provided SSB code
         SSB = SSB_code
@@ -71,7 +71,7 @@ AHEI_F_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
 
     # if RECALL_SUMMARIZE = TRUE, summarize each individual food pattern variables into one row per person for all days reported
     if (RECALL_SUMMARIZE == TRUE) {
-        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
+        message("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         COHORT = COHORT %>%
             # average across all days reported to results per person per day
@@ -94,7 +94,7 @@ AHEI_F_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     }
     # if RECALL_SUMMARIZE = FALSE, keep the original data structure and do not summarize
     else {
-        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+        message("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
 
 
@@ -176,7 +176,7 @@ AHEI_F_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
                 AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_SODIUM
         )
 
-    print("Reminder: this AHEI index is for female only. Please stratify your data first and provide female only data.")
+    message("Reminder: this AHEI index is for female only. Please stratify your data first and provide female only data.")
 
     # Return the AHEI score result
     COHORT %>%

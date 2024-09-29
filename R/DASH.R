@@ -26,7 +26,7 @@ DASH = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASH, FRT_FRTJ_SERV_DASH, VEG
                 SODIUM_SERV_DASH, REDPROC_MEAT_SERV_DASH, SSB_FRTJ_SERV_DASH) {
     ## Create variables and functions needed for DASH calculation
     quintile_healthy = function(actual) {
-        quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
+        quintile = quantile(actual, probs = seq(0, 1, by = 0.2), na.rm = TRUE)
         case_when(
             actual <= quintile[6] & actual >= quintile[5] ~ 5,
             actual < quintile[5] & actual >= quintile[4] ~ 4,
@@ -37,7 +37,7 @@ DASH = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASH, FRT_FRTJ_SERV_DASH, VEG
     }
 
     quintile_unhealthy = function(actual) {
-        quintile = quantile(actual, probs = seq(0, 1, by = 0.2))
+        quintile = quantile(actual, probs = seq(0, 1, by = 0.2), na.rm = TRUE)
         case_when(
             actual <= quintile[6] & actual >= quintile[5] ~ 1,
             actual < quintile[5] & actual >= quintile[4] ~ 2,
@@ -47,7 +47,7 @@ DASH = function(SERV_DATA, RESPONDENTID, TOTALKCAL_DASH, FRT_FRTJ_SERV_DASH, VEG
         )
     }
 
-    print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+    message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
 
     ## DASH calculation
     SERV_DATA %>%

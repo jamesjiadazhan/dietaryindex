@@ -26,7 +26,7 @@ HEI2015_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
 
     # If RECALL_SUMMARIZE is TRUE, the function calculates total food group and nutrient intake over all possible days and then average them by reporting dietary index per individual per day.
     if (RECALL_SUMMARIZE == TRUE) {
-        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
+        message("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         ## get sum per person of variables of interest if multiple recalls from the same person exist
         COHORT = COHORT %>%
@@ -143,7 +143,7 @@ HEI2015_ASA24 = function(DATA_PATH, RECALL_SUMMARIZE = TRUE) {
     # If RECALL_SUMMARIZE is FALSE, the function calculates total food group and nutrient intake over all possible days reported per individual per day.
     else {
         # do nothing
-        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+        message("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
 
     # Calculate serving size needed for HEI2015 calculation

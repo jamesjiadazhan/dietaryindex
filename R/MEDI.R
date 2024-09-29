@@ -1,6 +1,6 @@
 #' MEDI Calculation
 #'
-#' Calculate the MEDI dietary index (serving size-based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
+#' Calculate the MEDI dietary index (serving size-based and 0/1 point based), Mediterranean, using given the serving sizes of foods and nutrients consumed per 1 day
 #' @import dplyr
 #' @import readr
 #' @import haven

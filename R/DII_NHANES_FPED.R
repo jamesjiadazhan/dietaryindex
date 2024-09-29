@@ -136,9 +136,9 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         # Include VITD if it exists
         if (has_DR1TVD) {
             select_cols <- c(select_cols, "VITD")
-            print("VITD is included in the calculation in the first day of NHANES data.")
+            message("VITD is included in the calculation in the first day of NHANES data.")
         } else {
-            print("VITD is not included in the calculation in the first day of NHANES data.")
+            message("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
 
@@ -255,9 +255,9 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         # Include VITD if it exists
         if (has_DR2TVD) {
             select_cols <- c(select_cols, "VITD")
-            print("VITD is included in the calculation in the second day of NHANES data.")
+            message("VITD is included in the calculation in the second day of NHANES data.")
         } else {
-            print("VITD is not included in the calculation in the second day of NHANES data.")
+            message("VITD is not included in the calculation in the second day of NHANES data.")
         }
 
 
@@ -288,14 +288,14 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
     }
 
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2)) {
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT)
     }
 
     if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT2)
     }
 
@@ -326,8 +326,8 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         COHORT12 <- COHORT12 %>%
             dplyr::select(SEQN, !!!common_cols)
 
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT12)
     }
 }
