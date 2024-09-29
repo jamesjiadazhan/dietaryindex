@@ -25,7 +25,7 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
         # load the SSB codes from 17-18 FNDDS file as default
         data("SSB_FNDDS_1718")
         SSB = unique(SSB_FNDDS_1718$`Food code`)
-        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+        message("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
         # use the provided SSB code
         SSB = SSB_code
@@ -88,10 +88,6 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
             stop("Please use individual-level first day data. Individual-level nutrient data should be like DR1IFF_J.XPT. Individual-level FPED data should be like fped_dr1iff_1718.sas7bdat")
         }
 
-        # if (is.null(NUTRIENT_IND_PATH$DR1ILINE) | is.null(FPED_IND_PATH$DR1ILINE)) {
-        #   stop("Please use individual-level data for this function. Individual-level nutrient data should be like DR1IFF_J.XPT. Individual-level FPED data should be like fped_dr1iff_1718.sas7bdat")
-        # }
-
         # Select only the high quality data
         NUTRIENT_IND = NUTRIENT_IND %>%
             filter(DR1DRSTZ == 1) %>%
@@ -132,7 +128,7 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
             )
 
         # Rank the sodium by decile
-        SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11))
+        SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11), na.rm = TRUE)
 
         ## AHEI score calculation
         COHORT = COHORT %>%
@@ -241,7 +237,7 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 ALCOHOL_SERV = sum(DR2I_A_DRINKS)
             )
 
-        SODIUM_DECILE = quantile(COHORT2$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11))
+        SODIUM_DECILE = quantile(COHORT2$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11), na.rm = TRUE)
 
         ## AHEI calculation
         COHORT2 = COHORT2 %>%
@@ -296,10 +292,12 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
     }
 
     if (!is.null(FPED_IND_PATH) & !is.null(NUTRIENT_IND_PATH) & is.null(FPED_IND_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
+        message("Trans fat is not avaiable for NHANES, so it is not included in the AHEI score.")
         return(COHORT)
     }
 
     if (is.null(FPED_IND_PATH) & is.null(NUTRIENT_IND_PATH) & !is.null(FPED_IND_PATH2) & !is.null(NUTRIENT_IND_PATH2)) {
+        message("Trans fat is not avaiable for NHANES, so it is not included in the AHEI score.")
         return(COHORT2)
     }
 
@@ -324,6 +322,7 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
                 AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
             )
+        message("Trans fat is not avaiable for NHANES, so it is not included in the AHEI score.")
         return(COHORT12)
     }
 }

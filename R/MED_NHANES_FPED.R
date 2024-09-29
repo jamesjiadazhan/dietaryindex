@@ -74,7 +74,7 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 LEGUMES_SERV = (DR1T_PF_LEGUMES) + DR1T_PF_SOY,
                 NUTS_SERV = DR1T_PF_NUTSDS,
                 FISH_SERV = DR1T_PF_SEAFD_HI + DR1T_PF_SEAFD_LOW,
-                REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT / 1.5) + ((DR1T_PF_MEAT + DR1T_PF_ORGAN + DR1T_PF_POULT) / 4),
+                REDPROC_MEAT_SERV = (DR1T_PF_CUREDMEAT / 1.5) + ((DR1T_PF_MEAT + DR1T_PF_ORGAN) / 4),
                 MONSATFAT_SERV = case_when(
                     DR1TSFAT == 0 ~ 0,
                     TRUE ~ DR1TMFAT / DR1TSFAT
@@ -176,7 +176,7 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 LEGUMES_SERV = (DR2T_PF_LEGUMES) + DR2T_PF_SOY,
                 NUTS_SERV = DR2T_PF_NUTSDS,
                 FISH_SERV = DR2T_PF_SEAFD_HI + DR2T_PF_SEAFD_LOW,
-                REDPROC_MEAT_SERV = (DR2T_PF_CUREDMEAT / 1.5) + ((DR2T_PF_MEAT + DR2T_PF_ORGAN + DR2T_PF_POULT) / 4),
+                REDPROC_MEAT_SERV = (DR2T_PF_CUREDMEAT / 1.5) + ((DR2T_PF_MEAT + DR2T_PF_ORGAN) / 4),
                 MONSATFAT_SERV = case_when(
                     DR2TSFAT == 0 ~ 0,
                     TRUE ~ DR2TMFAT / DR2TSFAT
@@ -226,12 +226,12 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
     }
 
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2)) {
-        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+        message("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT)
     }
 
     if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
-        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+        message("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT2)
     }
 
@@ -255,7 +255,7 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 SEQN, MED_ALL, MED_NOETOH, MED_FRT, MED_VEG, MED_WGRAIN, MED_LEGUMES, MED_NUTS,
                 MED_FISH, MED_REDPROC_MEAT, MED_MONSATFAT, MED_ALCOHOL
             )
-        print("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+        message("Reminder: this MED index uses medians to rank participants' food/drink serving sizes and then calculate MED component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT12)
     }
 }

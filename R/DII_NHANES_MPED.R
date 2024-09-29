@@ -1,6 +1,6 @@
 #' DII_NHANES_MPED
 #'
-#' Calculate the DII for the NHANES_MPED data (after 2005) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
+#' Calculate the DII for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -464,10 +464,10 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
 
         # Include VITD if it exists
         if (has_DR1TVD) {
-            print("VITD is included in the calculation in the first day of NHANES data.")
+            message("VITD is included in the calculation in the first day of NHANES data.")
             # use the DII generic function to calculate the DII total and component scores
         } else {
-            print("VITD is not included in the calculation in the first day of NHANES data.")
+            message("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
         COHORT_4 = DII(
@@ -536,35 +536,6 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         if ("DR2ILINE" %in% colnames(NUTRIENT2) | "DRXILINE" %in% colnames(NUTRIENT2)) {
             stop("Please use the population-level data for the second day data. The file name should contain: TOT")
         }
-
-        # # if NHANES 2001-2002 data is used as evidenced by the presence of DRDDRSTZ
-        # if ("DRDDRSTZ" %in% colnames(NUTRIENT2)) {
-        #     NUTRIENT2 = NUTRIENT2 %>%
-        #         mutate(
-        #             DR2DRSTZ = DRDDRSTZ,
-
-        #             DR2TKCAL = DRXTKCAL,
-        #             DR2TSFAT = DRXTSFAT,
-        #             DR2TALCO = DRXTALCO,
-        #             DR2TSODI = DRDTSODI,
-        #             DR2TMFAT = DRXTMFAT,
-        #             DR2TPFAT = DRXTPFAT
-        #         )
-        # }
-        # # if NHANES 1999-2000 data is used as evidenced by the presence of DRXDRSTZ
-        # else if ("DRDDRSTS" %in% colnames(NUTRIENT2)) {
-        #     NUTRIENT2 = NUTRIENT2 %>%
-        #         mutate(
-        #             DR2DRSTZ = DRDDRSTS,
-
-        #             DR2TKCAL = DRXTKCAL,
-        #             DR2TSFAT = DRXTSFAT,
-        #             DR2TALCO = DRXTALCO,
-        #             DR2TSODI = DRDTSODI,
-        #             DR2TMFAT = DRXTMFAT,
-        #             DR2TPFAT = DRXTPFAT
-        #         )
-        # }
 
 
         # get individual food intake data for people with reliable dietary recall status
@@ -653,9 +624,9 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
 
         # Include VITD if it exists
         if (has_DR2TVD) {
-            print("VITD is included in the calculation in the first day of NHANES data.")
+            message("VITD is included in the calculation in the first day of NHANES data.")
         } else {
-            print("VITD is not included in the calculation in the first day of NHANES data.")
+            message("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
         COHORT2_4 = DII(
@@ -703,19 +674,14 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             select(SEQN, DII_ALL:ROSEMARY_DII)
     }
 
-    # if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-    #     return(COHORT_4)
-    # } else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
-    #     return(COHORT2_4)
-    # }
 
     if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT_4)
     } else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT2_4)
     }
 
@@ -746,8 +712,8 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         COHORT12 <- COHORT12 %>%
             dplyr::select(SEQN, !!!common_cols)
 
-        # print a reminder that this function does not use all the original DII variables
-        print("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
         return(COHORT12)
     }
 }

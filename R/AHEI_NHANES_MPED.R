@@ -1,6 +1,6 @@
-#' HEI2015_NHANES_MPED
+#' AHEI_NHANES_MPED
 #'
-#' Calculate the HEI2015 for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
+#' Calculate the AHEI for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -11,45 +11,28 @@
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
 #' @param NUTRIENT_PATH2 The file path for the NUTRIENT2 data for the day 2 data. The file name should be like: DR2TOT_J.XPT
 #' @param NUTRIENT_IND_PATH2 The file path for the NUTRIENT_IND2 data for the day 2 data The file name should be like: DR2IFF_J.XPT
-#' @return The HEI2015 and its component scores and serving sizes
+#' @param SSB_code The food code for sugar sweetened beverage, default is the SSB code from 17-18 FNDDS file.
+#' @return The AHEI and its component scores and serving sizes
 #' @examples
 #' data("NHANES_20032004")
-#' HEI2015_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+#' AHEI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
 #' @export
 
-HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
-    ## Create variables needed for HEI2015 calculation
-    HEI2015_MIN = 0
-    HEI2015_MAX1 = 5
-    HEI2015_MAX2 = 10
-
-    HEI2015_HEALTHY1 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ HEI2015_MAX1,
-            actual <= min ~ HEI2015_MIN,
-            TRUE ~ HEI2015_MIN + (actual - min) * HEI2015_MAX1 / (max - min)
-        )
-    }
-
-    HEI2015_HEALTHY2 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ HEI2015_MAX2,
-            actual <= min ~ HEI2015_MIN,
-            TRUE ~ HEI2015_MIN + (actual - min) * HEI2015_MAX2 / (max - min)
-        )
-    }
-
-    HEI2015_UNHEALTHY = function(actual, min, max) {
-        case_when(
-            actual >= min ~ HEI2015_MIN,
-            actual <= max ~ HEI2015_MAX2,
-            TRUE ~ HEI2015_MIN + (actual - min) * HEI2015_MAX2 / (max - min)
-        )
-    }
+AHEI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL, SSB_code = NULL) {
 
     # stop if the input data is not provided for any day
-    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        stop("Please provide the file path for the MPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
+    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_IND_PATH) & is.null(NUTRIENT_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
+        stop("Please provide the file path for the NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
+    }
+
+    if (is.null(SSB_code)) {
+        # load the SSB codes from 17-18 FNDDS file as default
+        data("SSB_FNDDS_1718")
+        SSB = unique(SSB_FNDDS_1718$`Food code`)
+        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+    } else {
+        # use the provided SSB code
+        SSB = SSB_code
     }
 
     # load the MPED per 100 gram data
@@ -351,11 +334,24 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # arrange the data by SEQN
         MPED_IND_2 <- MPED_IND %>%
             arrange(SEQN)
+        
+        # Create the variable for added sugars from SSB
+        MPED_IND_2 = MPED_IND_2 %>%
+            dplyr::mutate(
+                # create the variable for added sugars from SSB
+                ADDED_SUGAR_SSB_SERV = case_when(
+                    DR1IFDCD %in% SSB ~ ADD_SUG,
+                    TRUE ~ 0
+                )
+            )
+        
+        # Add ADDED_SUGAR_SSB_SERV to the list
+        selected_columns <- c(selected_columns, "ADDED_SUGAR_SSB_SERV")
 
         # calculate the sum of each food group for each individual
         MPED <- MPED_IND_2 %>%
             group_by(SEQN) %>%
-            summarise(across(all_of(selected_columns), sum, .names = "{.col}"), na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine nutrient and demographic data on a person level;
         COHORT = inner_join(NUTRIENT_2, DEMO_2, by = "SEQN")
@@ -363,55 +359,48 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # combine all data on a person level;
         COHORT_2 = left_join(COHORT, MPED, by = "SEQN")
 
-        # calculate the HEI2015 food group serving size / 1000 kcal
+        # calculate the AHEI food group serving size / 1000 kcal
         COHORT_3 = COHORT_2 %>%
             dplyr::mutate(
-                RIDAGEYR = RIDAGEYR,
-                TOTALFRT_SERV = F_TOTAL,
+                VEG_SERV = V_DRKGR + ((V_ORANGE + V_TOMATO + V_OTHER + V_STARCY) / 0.5),
                 FRT_SERV = WHOLEFRT,
-                VEG_SERV = V_TOTAL + LEGUMES,
-                GREENNBEAN_SERV = V_DRKGR + LEGUMES,
-                M_LEGUMES = LEGUMES * 4,
-                TOTALPRO_SERV = M_MPF + M_EGG + M_NUTSD + M_SOY + M_LEGUMES,
-                SEAPLANTPRO_SERV = M_FISH_HI + M_FISH_LO + M_NUTSD + M_SOY + M_LEGUMES,
-                WHOLEGRAIN_SERV = G_WHL,
-                DAIRY_SERV = D_TOTAL,
-                FATTYACID_SERV = case_when(
-                    DR1TSFAT == 0 ~ 0,
-                    TRUE ~ (DR1TMFAT + DR1TPFAT) / DR1TSFAT
-                ),
-                REFINEDGRAIN_SERV = G_NWHL,
-                SODIUM_SERV = DR1TSODI / 1000,
-                ADDEDSUGAR_SERV = ((ADD_SUG * 4 * 4) / DR1TKCAL) * 100,
-                SATFAT_SERV = ((DR1TSFAT * 9) / DR1TKCAL) * 100,
-                TOTALKCAL = DR1TKCAL
+                WGRAIN_SERV = G_WHL / 0.035274,
+                NUTSLEG_SERV = M_NUTSD + M_SOY + LEGUMES*4,
+                PUFA_SERV = (((DR1TP182 + DR1TP183 + DR1TP184 + DR1TP204 + DR1TP225) * 9) / DR1TKCAL) * 100,
+                N3FAT_SERV = (DR1TP205 + DR1TP226) * 1000,
+                SSB_FRTJ_SERV = (ADDED_SUGAR_SSB_SERV * 4 / 26),
+                REDPROC_MEAT_SERV = (M_FRANK / 1.5) + ((M_MEAT + M_ORGAN) / 4),
+                SODIUM_SERV = DR1TSODI / (DR1TKCAL / 2000),
+                ALCOHOL_SERV = A_BEV
             )
 
-        # use the HEI2015 generic function to calculate the HEI2015 total and component scores
-        COHORT_4 = HEI2015(
-            SERV_DATA = COHORT_3,
-            RESPONDENTID = COHORT_3$SEQN,
-            TOTALKCAL_HEI2015 = COHORT_3$TOTALKCAL,
-            TOTALFRT_SERV_HEI2015 = COHORT_3$TOTALFRT_SERV,
-            FRT_SERV_HEI2015 = COHORT_3$FRT_SERV,
-            VEG_SERV_HEI2015 = COHORT_3$VEG_SERV,
-            GREENNBEAN_SERV_HEI2015 = COHORT_3$GREENNBEAN_SERV,
-            TOTALPRO_SERV_HEI2015 = COHORT_3$TOTALPRO_SERV,
-            SEAPLANTPRO_SERV_HEI2015 = COHORT_3$SEAPLANTPRO_SERV,
-            WHOLEGRAIN_SERV_HEI2015 = COHORT_3$WHOLEGRAIN_SERV,
-            DAIRY_SERV_HEI2015 = COHORT_3$DAIRY_SERV,
-            FATTYACID_SERV_HEI2015 = COHORT_3$FATTYACID_SERV,
-            REFINEDGRAIN_SERV_HEI2015 = COHORT_3$REFINEDGRAIN_SERV,
-            SODIUM_SERV_HEI2015 = COHORT_3$SODIUM_SERV,
-            ADDEDSUGAR_SERV_HEI2015 = COHORT_3$ADDEDSUGAR_SERV,
-            SATFAT_SERV_HEI2015 = COHORT_3$SATFAT_SERV
+        # use the AHEI generic function to calculate the AHEI total and component scores
+        COHORT_4 = AHEI(
+            SERV_DATA = COHORT_3, 
+            RESPONDENTID = COHORT_3$SEQN, 
+            GENDER = COHORT_3$RIAGENDR, 
+            TOTALKCAL_AHEI = COHORT_3$DR1TKCAL, 
+            VEG_SERV_AHEI = COHORT_3$VEG_SERV, 
+            FRT_SERV_AHEI = COHORT_3$FRT_SERV, 
+            WGRAIN_SERV_AHEI = COHORT_3$WGRAIN_SERV, 
+            NUTSLEG_SERV_AHEI = COHORT_3$NUTSLEG_SERV, 
+            N3FAT_SERV_AHEI = COHORT_3$N3FAT_SERV, 
+            PUFA_SERV_AHEI = COHORT_3$PUFA_SERV, 
+            SSB_FRTJ_SERV_AHEI = COHORT_3$SSB_FRTJ_SERV, 
+            REDPROC_MEAT_SERV_AHEI = COHORT_3$REDPROC_MEAT_SERV, 
+            TRANS_SERV_AHEI = NA, 
+            SODIUM_SERV_AHEI = COHORT_3$SODIUM_SERV, 
+            ALCOHOL_SERV_AHEI = COHORT_3$ALCOHOL_SERV
         )
 
         COHORT_4 = COHORT_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
             ) %>%
-            select(SEQN, TOTALKCAL_HEI2015, HEI2015_ALL:HEI2015_SATFAT)
+            dplyr::select(
+                SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
+            )
     }
 
     # start with the second day data calculation
@@ -500,11 +489,24 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # arrange the data by SEQN
         MPED_IND2_2 <- MPED_IND2 %>%
             arrange(SEQN)
+        
+        # Create the variable for added sugars from SSB
+        MPED_IND2_2 = MPED_IND2_2 %>%
+            dplyr::mutate(
+                # create the variable for added sugars from SSB
+                ADDED_SUGAR_SSB_SERV = case_when(
+                    DR2IFDCD %in% SSB ~ ADD_SUG,
+                    TRUE ~ 0
+                )
+            )
+
+        # Add ADDED_SUGAR_SSB_SERV to the list
+        selected_columns <- c(selected_columns, "ADDED_SUGAR_SSB_SERV")
 
         # calculate the sum of each food group for each individual
         MPED2 <- MPED_IND2_2 %>%
             group_by(SEQN) %>%
-            summarise_at(vars(selected_columns), sum, na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine NUTRIENT2 and demographic data on a person level;
         COHORT2 = inner_join(NUTRIENT2_2, DEMO_2, by = "SEQN")
@@ -512,55 +514,48 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # combine all data on a person level;
         COHORT2_2 = left_join(COHORT2, MPED2, by = "SEQN")
 
-        # calculate the HEI2015 food group serving size / 1000 kcal
+        # calculate the AHEI food group serving size / 1000 kcal
         COHORT2_3 = COHORT2_2 %>%
             dplyr::mutate(
-                RIDAGEYR = RIDAGEYR,
-                TOTALFRT_SERV = F_TOTAL,
+                VEG_SERV = V_DRKGR + ((V_ORANGE + V_TOMATO + V_OTHER + V_STARCY) / 0.5),
                 FRT_SERV = WHOLEFRT,
-                VEG_SERV = V_TOTAL + LEGUMES,
-                GREENNBEAN_SERV = V_DRKGR + LEGUMES,
-                M_LEGUMES = LEGUMES * 4,
-                TOTALPRO_SERV = M_MPF + M_EGG + M_NUTSD + M_SOY + M_LEGUMES,
-                SEAPLANTPRO_SERV = M_FISH_HI + M_FISH_LO + M_NUTSD + M_SOY + M_LEGUMES,
-                WHOLEGRAIN_SERV = G_WHL,
-                DAIRY_SERV = D_TOTAL,
-                FATTYACID_SERV = case_when(
-                    DR2TSFAT == 0 ~ 0,
-                    TRUE ~ (DR2TMFAT + DR2TPFAT) / DR2TSFAT
-                ),
-                REFINEDGRAIN_SERV = G_NWHL,
-                SODIUM_SERV = DR2TSODI / 1000,
-                ADDEDSUGAR_SERV = ((ADD_SUG * 4 * 4) / DR2TKCAL) * 100,
-                SATFAT_SERV = ((DR2TSFAT * 9) / DR2TKCAL) * 100,
-                TOTALKCAL = DR2TKCAL
+                WGRAIN_SERV = G_WHL / 0.035274,
+                NUTSLEG_SERV = M_NUTSD + M_SOY + LEGUMES*4,
+                PUFA_SERV = (((DR2TP182 + DR2TP183 + DR2TP184 + DR2TP204 + DR2TP225) * 9) / DR2TKCAL) * 100,
+                N3FAT_SERV = (DR2TP205 + DR2TP226) * 1000,
+                SSB_FRTJ_SERV = (ADDED_SUGAR_SSB_SERV * 4 / 26),
+                REDPROC_MEAT_SERV = (M_FRANK / 1.5) + ((M_MEAT + M_ORGAN) / 4),
+                SODIUM_SERV = DR2TSODI / (DR2TKCAL / 2000),
+                ALCOHOL_SERV = A_BEV
             )
 
-        # use the HEI2015 generic function to calculate the HEI2015 total and component scores
-        COHORT2_4 = HEI2015(
+        # use the AHEI generic function to calculate the AHEI total and component scores
+        COHORT2_4 = AHEI(
             SERV_DATA = COHORT2_3,
             RESPONDENTID = COHORT2_3$SEQN,
-            TOTALKCAL_HEI2015 = COHORT2_3$TOTALKCAL,
-            TOTALFRT_SERV_HEI2015 = COHORT2_3$TOTALFRT_SERV,
-            FRT_SERV_HEI2015 = COHORT2_3$FRT_SERV,
-            VEG_SERV_HEI2015 = COHORT2_3$VEG_SERV,
-            GREENNBEAN_SERV_HEI2015 = COHORT2_3$GREENNBEAN_SERV,
-            TOTALPRO_SERV_HEI2015 = COHORT2_3$TOTALPRO_SERV,
-            SEAPLANTPRO_SERV_HEI2015 = COHORT2_3$SEAPLANTPRO_SERV,
-            WHOLEGRAIN_SERV_HEI2015 = COHORT2_3$WHOLEGRAIN_SERV,
-            DAIRY_SERV_HEI2015 = COHORT2_3$DAIRY_SERV,
-            FATTYACID_SERV_HEI2015 = COHORT2_3$FATTYACID_SERV,
-            REFINEDGRAIN_SERV_HEI2015 = COHORT2_3$REFINEDGRAIN_SERV,
-            SODIUM_SERV_HEI2015 = COHORT2_3$SODIUM_SERV,
-            ADDEDSUGAR_SERV_HEI2015 = COHORT2_3$ADDEDSUGAR_SERV,
-            SATFAT_SERV_HEI2015 = COHORT2_3$SATFAT_SERV
+            GENDER = COHORT2_3$RIAGENDR,
+            TOTALKCAL_AHEI = COHORT2_3$DR2TKCAL,
+            VEG_SERV_AHEI = COHORT2_3$VEG_SERV,
+            FRT_SERV_AHEI = COHORT2_3$FRT_SERV,
+            WGRAIN_SERV_AHEI = COHORT2_3$WGRAIN_SERV,
+            NUTSLEG_SERV_AHEI = COHORT2_3$NUTSLEG_SERV,
+            N3FAT_SERV_AHEI = COHORT2_3$N3FAT_SERV,
+            PUFA_SERV_AHEI = COHORT2_3$PUFA_SERV,
+            SSB_FRTJ_SERV_AHEI = COHORT2_3$SSB_FRTJ_SERV,
+            REDPROC_MEAT_SERV_AHEI = COHORT2_3$REDPROC_MEAT_SERV,
+            TRANS_SERV_AHEI = NA,
+            SODIUM_SERV_AHEI = COHORT2_3$SODIUM_SERV,
+            ALCOHOL_SERV_AHEI = COHORT2_3$ALCOHOL_SERV
         )
 
         COHORT2_4 = COHORT2_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
             ) %>%
-            select(SEQN, TOTALKCAL_HEI2015, HEI2015_ALL:HEI2015_SATFAT)
+            dplyr::select(
+                SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
+            )
     }
 
     if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
@@ -571,29 +566,23 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
     # merge two days data if they both exist
     else if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
         COHORT12 = inner_join(COHORT_4, COHORT2_4, by = "SEQN") %>%
-            mutate(
-                SEQN = SEQN,
-                TOTALKCAL_HEI2015 = (TOTALKCAL_HEI2015.x + TOTALKCAL_HEI2015.y) / 2,
-                HEI2015_ALL = (HEI2015_ALL.x + HEI2015_ALL.y) / 2,
-                HEI2015_TOTALFRT = (HEI2015_TOTALFRT.x + HEI2015_TOTALFRT.y) / 2,
-                HEI2015_FRT = (HEI2015_FRT.x + HEI2015_FRT.y) / 2,
-                HEI2015_VEG = (HEI2015_VEG.x + HEI2015_VEG.y) / 2,
-                HEI2015_GREENNBEAN = (HEI2015_GREENNBEAN.x + HEI2015_GREENNBEAN.y) / 2,
-                HEI2015_TOTALPRO = (HEI2015_TOTALPRO.x + HEI2015_TOTALPRO.y) / 2,
-                HEI2015_SEAPLANTPRO = (HEI2015_SEAPLANTPRO.x + HEI2015_SEAPLANTPRO.y) / 2,
-                HEI2015_WHOLEGRAIN = (HEI2015_WHOLEGRAIN.x + HEI2015_WHOLEGRAIN.y) / 2,
-                HEI2015_DAIRY = (HEI2015_DAIRY.x + HEI2015_DAIRY.y) / 2,
-                HEI2015_FATTYACID = (HEI2015_FATTYACID.x + HEI2015_FATTYACID.y) / 2,
-                HEI2015_REFINEDGRAIN = (HEI2015_REFINEDGRAIN.x + HEI2015_REFINEDGRAIN.y) / 2,
-                HEI2015_SODIUM = (HEI2015_SODIUM.x + HEI2015_SODIUM.y) / 2,
-                HEI2015_ADDEDSUGAR = (HEI2015_ADDEDSUGAR.x + HEI2015_ADDEDSUGAR.y) / 2,
-                HEI2015_SATFAT = (HEI2015_SATFAT.x + HEI2015_SATFAT.y) / 2
+            dplyr::mutate(
+                AHEI_ALL = (AHEI_ALL.x + AHEI_ALL.y) / 2,
+                AHEI_NOETOH = (AHEI_NOETOH.x + AHEI_NOETOH.y) / 2,
+                AHEI_VEG = (AHEI_VEG.x + AHEI_VEG.y) / 2,
+                AHEI_FRT = (AHEI_FRT.x + AHEI_FRT.y) / 2,
+                AHEI_WGRAIN = (AHEI_WGRAIN.x + AHEI_WGRAIN.y) / 2,
+                AHEI_NUTSLEG = (AHEI_NUTSLEG.x + AHEI_NUTSLEG.y) / 2,
+                AHEI_N3FAT = (AHEI_N3FAT.x + AHEI_N3FAT.y) / 2,
+                AHEI_PUFA = (AHEI_PUFA.x + AHEI_PUFA.y) / 2,
+                AHEI_SSB_FRTJ = (AHEI_SSB_FRTJ.x + AHEI_SSB_FRTJ.y) / 2,
+                AHEI_REDPROC_MEAT = (AHEI_REDPROC_MEAT.x + AHEI_REDPROC_MEAT.y) / 2,
+                AHEI_SODIUM = (AHEI_SODIUM.x + AHEI_SODIUM.y) / 2,
+                AHEI_ALCOHOL = (AHEI_ALCOHOL.x + AHEI_ALCOHOL.y) / 2
             ) %>%
             dplyr::select(
-                SEQN, TOTALKCAL_HEI2015, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
-                HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
-                HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
-                HEI2015_SATFAT
+                SEQN, AHEI_ALL, AHEI_NOETOH, AHEI_VEG, AHEI_FRT, AHEI_WGRAIN, AHEI_NUTSLEG, AHEI_N3FAT,
+                AHEI_PUFA, AHEI_SSB_FRTJ, AHEI_REDPROC_MEAT, AHEI_SODIUM, AHEI_ALCOHOL
             )
         return(COHORT12)
     }

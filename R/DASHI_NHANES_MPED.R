@@ -1,6 +1,6 @@
-#' HEI2015_NHANES_MPED
+#' DASHI_NHANES_MPED
 #'
-#' Calculate the HEI2015 for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
+#' Calculate the DASHI for the NHANES_MPED data (before 2005, 1999-2004) within 1 step for day 1, day 2, or day 1 and 2 combined (age >= 2 only)
 #' @import dplyr
 #' @import readr
 #' @import haven
@@ -11,45 +11,17 @@
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
 #' @param NUTRIENT_PATH2 The file path for the NUTRIENT2 data for the day 2 data. The file name should be like: DR2TOT_J.XPT
 #' @param NUTRIENT_IND_PATH2 The file path for the NUTRIENT_IND2 data for the day 2 data The file name should be like: DR2IFF_J.XPT
-#' @return The HEI2015 and its component scores and serving sizes
+#' @return The DASHI and its component scores and serving sizes
 #' @examples
 #' data("NHANES_20032004")
-#' HEI2015_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+#' DASHI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
 #' @export
 
-HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
-    ## Create variables needed for HEI2015 calculation
-    HEI2015_MIN = 0
-    HEI2015_MAX1 = 5
-    HEI2015_MAX2 = 10
-
-    HEI2015_HEALTHY1 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ HEI2015_MAX1,
-            actual <= min ~ HEI2015_MIN,
-            TRUE ~ HEI2015_MIN + (actual - min) * HEI2015_MAX1 / (max - min)
-        )
-    }
-
-    HEI2015_HEALTHY2 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ HEI2015_MAX2,
-            actual <= min ~ HEI2015_MIN,
-            TRUE ~ HEI2015_MIN + (actual - min) * HEI2015_MAX2 / (max - min)
-        )
-    }
-
-    HEI2015_UNHEALTHY = function(actual, min, max) {
-        case_when(
-            actual >= min ~ HEI2015_MIN,
-            actual <= max ~ HEI2015_MAX2,
-            TRUE ~ HEI2015_MIN + (actual - min) * HEI2015_MAX2 / (max - min)
-        )
-    }
+DASHI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
 
     # stop if the input data is not provided for any day
-    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
-        stop("Please provide the file path for the MPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
+    if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_IND_PATH) & is.null(NUTRIENT_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
+        stop("Please provide the file path for the NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
     }
 
     # load the MPED per 100 gram data
@@ -355,7 +327,7 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # calculate the sum of each food group for each individual
         MPED <- MPED_IND_2 %>%
             group_by(SEQN) %>%
-            summarise(across(all_of(selected_columns), sum, .names = "{.col}"), na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine nutrient and demographic data on a person level;
         COHORT = inner_join(NUTRIENT_2, DEMO_2, by = "SEQN")
@@ -363,55 +335,40 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # combine all data on a person level;
         COHORT_2 = left_join(COHORT, MPED, by = "SEQN")
 
-        # calculate the HEI2015 food group serving size / 1000 kcal
+        # calculate the DASHI food group serving size / 1000 kcal
         COHORT_3 = COHORT_2 %>%
             dplyr::mutate(
-                RIDAGEYR = RIDAGEYR,
-                TOTALFRT_SERV = F_TOTAL,
-                FRT_SERV = WHOLEFRT,
-                VEG_SERV = V_TOTAL + LEGUMES,
-                GREENNBEAN_SERV = V_DRKGR + LEGUMES,
-                M_LEGUMES = LEGUMES * 4,
-                TOTALPRO_SERV = M_MPF + M_EGG + M_NUTSD + M_SOY + M_LEGUMES,
-                SEAPLANTPRO_SERV = M_FISH_HI + M_FISH_LO + M_NUTSD + M_SOY + M_LEGUMES,
-                WHOLEGRAIN_SERV = G_WHL,
-                DAIRY_SERV = D_TOTAL,
-                FATTYACID_SERV = case_when(
-                    DR1TSFAT == 0 ~ 0,
-                    TRUE ~ (DR1TMFAT + DR1TPFAT) / DR1TSFAT
-                ),
-                REFINEDGRAIN_SERV = G_NWHL,
-                SODIUM_SERV = DR1TSODI / 1000,
-                ADDEDSUGAR_SERV = ((ADD_SUG * 4 * 4) / DR1TKCAL) * 100,
-                SATFAT_SERV = ((DR1TSFAT * 9) / DR1TKCAL) * 100,
-                TOTALKCAL = DR1TKCAL
+                TOTAL_FAT_DASHI = (DR1TTFAT * 9 / DR1TKCAL) * 100,
+                SAT_FAT_DASHI = (DR1TSFAT * 9 / DR1TKCAL) * 100,
+                PROTEIN_DASHI = (DR1TPROT * 4 / DR1TKCAL) * 100,
+                CHOLESTEROL_DASHI = DR1TCHOL / (DR1TKCAL / 2000),
+                FIBER_DASHI = DR1TFIBE / (DR1TKCAL / 2000),
+                POTASSIUM_DASHI = DR1TPOTA / (DR1TKCAL / 2000),
+                MAGNESIUM_DASHI = DR1TMAGN / (DR1TKCAL / 2000),
+                CALCIUM_DASHI = DR1TCALC / (DR1TKCAL / 2000),
+                SODIUM_DASHI = DR1TSODI / (DR1TKCAL / 2000)
             )
 
-        # use the HEI2015 generic function to calculate the HEI2015 total and component scores
-        COHORT_4 = HEI2015(
-            SERV_DATA = COHORT_3,
-            RESPONDENTID = COHORT_3$SEQN,
-            TOTALKCAL_HEI2015 = COHORT_3$TOTALKCAL,
-            TOTALFRT_SERV_HEI2015 = COHORT_3$TOTALFRT_SERV,
-            FRT_SERV_HEI2015 = COHORT_3$FRT_SERV,
-            VEG_SERV_HEI2015 = COHORT_3$VEG_SERV,
-            GREENNBEAN_SERV_HEI2015 = COHORT_3$GREENNBEAN_SERV,
-            TOTALPRO_SERV_HEI2015 = COHORT_3$TOTALPRO_SERV,
-            SEAPLANTPRO_SERV_HEI2015 = COHORT_3$SEAPLANTPRO_SERV,
-            WHOLEGRAIN_SERV_HEI2015 = COHORT_3$WHOLEGRAIN_SERV,
-            DAIRY_SERV_HEI2015 = COHORT_3$DAIRY_SERV,
-            FATTYACID_SERV_HEI2015 = COHORT_3$FATTYACID_SERV,
-            REFINEDGRAIN_SERV_HEI2015 = COHORT_3$REFINEDGRAIN_SERV,
-            SODIUM_SERV_HEI2015 = COHORT_3$SODIUM_SERV,
-            ADDEDSUGAR_SERV_HEI2015 = COHORT_3$ADDEDSUGAR_SERV,
-            SATFAT_SERV_HEI2015 = COHORT_3$SATFAT_SERV
+        # use the DASHI generic function to calculate the DASHI total and component scores
+        COHORT_4 = DASHI(
+            SERV_DATA = COHORT_3, 
+            RESPONDENTID = COHORT_3$SEQN, 
+            TOTALKCAL_DASHI = COHORT_3$DR1TKCAL, 
+            TOTAL_FAT_DASHI = COHORT_3$TOTAL_FAT_DASHI, 
+            SAT_FAT_DASHI = COHORT_3$SAT_FAT_DASHI, 
+            PROTEIN_DASHI = COHORT_3$PROTEIN_DASHI, 
+            CHOLESTEROL_DASHI = COHORT_3$CHOLESTEROL_DASHI, 
+            FIBER_DASHI = COHORT_3$FIBER_DASHI, 
+            POTASSIUM_DASHI = COHORT_3$POTASSIUM_DASHI, 
+            MAGNESIUM_DASHI = COHORT_3$MAGNESIUM_DASHI, 
+            CALCIUM_DASHI = COHORT_3$CALCIUM_DASHI, 
+            SODIUM_DASHI = COHORT_3$SODIUM_DASHI
         )
 
         COHORT_4 = COHORT_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
-            ) %>%
-            select(SEQN, TOTALKCAL_HEI2015, HEI2015_ALL:HEI2015_SATFAT)
+            )
     }
 
     # start with the second day data calculation
@@ -504,7 +461,7 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # calculate the sum of each food group for each individual
         MPED2 <- MPED_IND2_2 %>%
             group_by(SEQN) %>%
-            summarise_at(vars(selected_columns), sum, na.rm = TRUE)
+            summarise(across(all_of(selected_columns), ~ sum(.x, na.rm = TRUE)))
 
         # combine NUTRIENT2 and demographic data on a person level;
         COHORT2 = inner_join(NUTRIENT2_2, DEMO_2, by = "SEQN")
@@ -512,55 +469,40 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
         # combine all data on a person level;
         COHORT2_2 = left_join(COHORT2, MPED2, by = "SEQN")
 
-        # calculate the HEI2015 food group serving size / 1000 kcal
+        # calculate the DASHI food group serving size / 1000 kcal
         COHORT2_3 = COHORT2_2 %>%
             dplyr::mutate(
-                RIDAGEYR = RIDAGEYR,
-                TOTALFRT_SERV = F_TOTAL,
-                FRT_SERV = WHOLEFRT,
-                VEG_SERV = V_TOTAL + LEGUMES,
-                GREENNBEAN_SERV = V_DRKGR + LEGUMES,
-                M_LEGUMES = LEGUMES * 4,
-                TOTALPRO_SERV = M_MPF + M_EGG + M_NUTSD + M_SOY + M_LEGUMES,
-                SEAPLANTPRO_SERV = M_FISH_HI + M_FISH_LO + M_NUTSD + M_SOY + M_LEGUMES,
-                WHOLEGRAIN_SERV = G_WHL,
-                DAIRY_SERV = D_TOTAL,
-                FATTYACID_SERV = case_when(
-                    DR2TSFAT == 0 ~ 0,
-                    TRUE ~ (DR2TMFAT + DR2TPFAT) / DR2TSFAT
-                ),
-                REFINEDGRAIN_SERV = G_NWHL,
-                SODIUM_SERV = DR2TSODI / 1000,
-                ADDEDSUGAR_SERV = ((ADD_SUG * 4 * 4) / DR2TKCAL) * 100,
-                SATFAT_SERV = ((DR2TSFAT * 9) / DR2TKCAL) * 100,
-                TOTALKCAL = DR2TKCAL
+                TOTAL_FAT_DASHI = (DR2TTFAT * 9 / DR2TKCAL) * 100,
+                SAT_FAT_DASHI = (DR2TSFAT * 9 / DR2TKCAL) * 100,
+                PROTEIN_DASHI = (DR2TPROT * 4 / DR2TKCAL) * 100,
+                CHOLESTEROL_DASHI = DR2TCHOL / (DR2TKCAL / 2000),
+                FIBER_DASHI = DR2TFIBE / (DR2TKCAL / 2000),
+                POTASSIUM_DASHI = DR2TPOTA / (DR2TKCAL / 2000),
+                MAGNESIUM_DASHI = DR2TMAGN / (DR2TKCAL / 2000),
+                CALCIUM_DASHI = DR2TCALC / (DR2TKCAL / 2000),
+                SODIUM_DASHI = DR2TSODI / (DR2TKCAL / 2000)
             )
 
-        # use the HEI2015 generic function to calculate the HEI2015 total and component scores
-        COHORT2_4 = HEI2015(
-            SERV_DATA = COHORT2_3,
-            RESPONDENTID = COHORT2_3$SEQN,
-            TOTALKCAL_HEI2015 = COHORT2_3$TOTALKCAL,
-            TOTALFRT_SERV_HEI2015 = COHORT2_3$TOTALFRT_SERV,
-            FRT_SERV_HEI2015 = COHORT2_3$FRT_SERV,
-            VEG_SERV_HEI2015 = COHORT2_3$VEG_SERV,
-            GREENNBEAN_SERV_HEI2015 = COHORT2_3$GREENNBEAN_SERV,
-            TOTALPRO_SERV_HEI2015 = COHORT2_3$TOTALPRO_SERV,
-            SEAPLANTPRO_SERV_HEI2015 = COHORT2_3$SEAPLANTPRO_SERV,
-            WHOLEGRAIN_SERV_HEI2015 = COHORT2_3$WHOLEGRAIN_SERV,
-            DAIRY_SERV_HEI2015 = COHORT2_3$DAIRY_SERV,
-            FATTYACID_SERV_HEI2015 = COHORT2_3$FATTYACID_SERV,
-            REFINEDGRAIN_SERV_HEI2015 = COHORT2_3$REFINEDGRAIN_SERV,
-            SODIUM_SERV_HEI2015 = COHORT2_3$SODIUM_SERV,
-            ADDEDSUGAR_SERV_HEI2015 = COHORT2_3$ADDEDSUGAR_SERV,
-            SATFAT_SERV_HEI2015 = COHORT2_3$SATFAT_SERV
+        # use the DASHI generic function to calculate the DASHI total and component scores
+        COHORT2_4 = DASHI(
+            SERV_DATA = COHORT2_3, 
+            RESPONDENTID = COHORT2_3$SEQN, 
+            TOTALKCAL_DASHI = COHORT2_3$DR2TKCAL, 
+            TOTAL_FAT_DASHI = COHORT2_3$TOTAL_FAT_DASHI, 
+            SAT_FAT_DASHI = COHORT2_3$SAT_FAT_DASHI, 
+            PROTEIN_DASHI = COHORT2_3$PROTEIN_DASHI, 
+            CHOLESTEROL_DASHI = COHORT2_3$CHOLESTEROL_DASHI, 
+            FIBER_DASHI = COHORT2_3$FIBER_DASHI, 
+            POTASSIUM_DASHI = COHORT2_3$POTASSIUM_DASHI, 
+            MAGNESIUM_DASHI = COHORT2_3$MAGNESIUM_DASHI, 
+            CALCIUM_DASHI = COHORT2_3$CALCIUM_DASHI, 
+            SODIUM_DASHI = COHORT2_3$SODIUM_DASHI
         )
 
         COHORT2_4 = COHORT2_4 %>%
-            mutate(
+            dplyr::rename(
                 SEQN = RESPONDENTID
-            ) %>%
-            select(SEQN, TOTALKCAL_HEI2015, HEI2015_ALL:HEI2015_SATFAT)
+            )
     }
 
     if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
@@ -572,28 +514,20 @@ HEI2015_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTR
     else if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
         COHORT12 = inner_join(COHORT_4, COHORT2_4, by = "SEQN") %>%
             mutate(
-                SEQN = SEQN,
-                TOTALKCAL_HEI2015 = (TOTALKCAL_HEI2015.x + TOTALKCAL_HEI2015.y) / 2,
-                HEI2015_ALL = (HEI2015_ALL.x + HEI2015_ALL.y) / 2,
-                HEI2015_TOTALFRT = (HEI2015_TOTALFRT.x + HEI2015_TOTALFRT.y) / 2,
-                HEI2015_FRT = (HEI2015_FRT.x + HEI2015_FRT.y) / 2,
-                HEI2015_VEG = (HEI2015_VEG.x + HEI2015_VEG.y) / 2,
-                HEI2015_GREENNBEAN = (HEI2015_GREENNBEAN.x + HEI2015_GREENNBEAN.y) / 2,
-                HEI2015_TOTALPRO = (HEI2015_TOTALPRO.x + HEI2015_TOTALPRO.y) / 2,
-                HEI2015_SEAPLANTPRO = (HEI2015_SEAPLANTPRO.x + HEI2015_SEAPLANTPRO.y) / 2,
-                HEI2015_WHOLEGRAIN = (HEI2015_WHOLEGRAIN.x + HEI2015_WHOLEGRAIN.y) / 2,
-                HEI2015_DAIRY = (HEI2015_DAIRY.x + HEI2015_DAIRY.y) / 2,
-                HEI2015_FATTYACID = (HEI2015_FATTYACID.x + HEI2015_FATTYACID.y) / 2,
-                HEI2015_REFINEDGRAIN = (HEI2015_REFINEDGRAIN.x + HEI2015_REFINEDGRAIN.y) / 2,
-                HEI2015_SODIUM = (HEI2015_SODIUM.x + HEI2015_SODIUM.y) / 2,
-                HEI2015_ADDEDSUGAR = (HEI2015_ADDEDSUGAR.x + HEI2015_ADDEDSUGAR.y) / 2,
-                HEI2015_SATFAT = (HEI2015_SATFAT.x + HEI2015_SATFAT.y) / 2
+                DASHI_ALL = (DASHI_ALL.x + DASHI_ALL.y) / 2,
+                DASHI_TOTAL_FAT = (DASHI_TOTAL_FAT.x + DASHI_TOTAL_FAT.y) / 2,
+                DASHI_SAT_FAT = (DASHI_SAT_FAT.x + DASHI_SAT_FAT.y) / 2,
+                DASHI_CHOLESTEROL = (DASHI_CHOLESTEROL.x + DASHI_CHOLESTEROL.y) / 2,
+                DASHI_SODIUM = (DASHI_SODIUM.x + DASHI_SODIUM.y) / 2,
+                DASHI_PROTEIN = (DASHI_PROTEIN.x + DASHI_PROTEIN.y) / 2,
+                DASHI_FIBER = (DASHI_FIBER.x + DASHI_FIBER.y) / 2,
+                DASHI_POTASSIUM = (DASHI_POTASSIUM.x + DASHI_POTASSIUM.y) / 2,
+                DASHI_MAGNESIUM = (DASHI_MAGNESIUM.x + DASHI_MAGNESIUM.y) / 2,
+                DASHI_CALCIUM = (DASHI_CALCIUM.x + DASHI_CALCIUM.y) / 2
             ) %>%
             dplyr::select(
-                SEQN, TOTALKCAL_HEI2015, HEI2015_ALL, HEI2015_TOTALFRT, HEI2015_FRT, HEI2015_VEG, HEI2015_GREENNBEAN,
-                HEI2015_TOTALPRO, HEI2015_SEAPLANTPRO, HEI2015_WHOLEGRAIN, HEI2015_DAIRY,
-                HEI2015_FATTYACID, HEI2015_REFINEDGRAIN, HEI2015_SODIUM, HEI2015_ADDEDSUGAR,
-                HEI2015_SATFAT
+                SEQN, DASHI_ALL, DASHI_TOTAL_FAT, DASHI_SAT_FAT, DASHI_CHOLESTEROL, DASHI_SODIUM,
+                DASHI_PROTEIN, DASHI_FIBER, DASHI_POTASSIUM, DASHI_MAGNESIUM, DASHI_CALCIUM
             )
         return(COHORT12)
     }

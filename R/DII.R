@@ -119,7 +119,7 @@ DII = function(SERV_DATA, RESPONDENTID, REPEATNUM = 1, ALCOHOL_DII = NULL, VITB1
             ROSEMARY_DII = ROSEMARY_DII
         )
 
-    print("It is normal to see warnings if you do not provide all arguments using DII. The algorithm will only count the arguments you enter to calculate the DII. All warnings are about the first column you don't use. For example, if you only entered alcohol, vitamin b12, and vitamin b6, all warnings would remind you that bcarotene is not found.")
+    message("It is normal to see warnings if you do not provide all arguments using DII. The algorithm will only count the arguments you enter to calculate the DII. All warnings are about the first column you don't use. For example, if you only entered alcohol, vitamin b12, and vitamin b6, all warnings would remind you that bcarotene is not found.")
 
     COHORT = SERV_DATA %>%
         dplyr::select(

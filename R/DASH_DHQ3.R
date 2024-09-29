@@ -81,10 +81,9 @@ DASH_DHQ3 = function(DATA_PATH) {
             actual <= quintile[6] & actual >= quintile[5] & actual != 0 ~ 1
         )
     }
+
+    message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
     
-    print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
-
-
     ## DASH calculation
     COHORT %>%
         dplyr::mutate(

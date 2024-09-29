@@ -34,7 +34,7 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
             95323000
         )
         SSB = c(COFFEE_TEA, DRINK)
-        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+        message("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
         # use the provided SSB code
         SSB = SSB_code
@@ -42,14 +42,14 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
 
     if (is.null(SKIM_MILK_code)) {
         SKIM_MILK = c(11111170, 11113000, 11114320, 11115000, 11120000, 11121300, 11212050)
-        print("Since no skim milk code is provided, the default skim milk code from 17-18 FNDDS file is used.")
+        message("Since no skim milk code is provided, the default skim milk code from 17-18 FNDDS file is used.")
     } else {
         SKIM_MILK = SKIM_MILK_code
     }
 
     if (is.null(LOWF_CHEESE_code)) {
         LOWF_CHEESE = c(14204010, 14204020, 14206010, 14207010)
-        print("Since no low-fat cheese code is provided, the default low-fat cheese code from 17-18 FNDDS file is used.")
+        message("Since no low-fat cheese code is provided, the default low-fat cheese code from 17-18 FNDDS file is used.")
     } else {
         LOWF_CHEESE = LOWF_CHEESE_code
     }
@@ -262,12 +262,12 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
     }
 
     if (!is.null(FPED_IND_PATH) & !is.null(NUTRIENT_IND_PATH) & is.null(FPED_IND_PATH2) & is.null(NUTRIENT_IND_PATH2)) {
-        print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+        message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT)
     }
 
     if (is.null(FPED_IND_PATH) & is.null(NUTRIENT_IND_PATH) & !is.null(FPED_IND_PATH2) & !is.null(NUTRIENT_IND_PATH2)) {
-        print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+        message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT2)
     }
 
@@ -290,7 +290,7 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 DASH_SODIUM, DASH_REDPROC_MEAT, DASH_SSB_FRTJ
             )
 
-        print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+        message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
         return(COHORT12)
     }
 }

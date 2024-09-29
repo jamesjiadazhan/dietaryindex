@@ -26,23 +26,23 @@ DASHI(
 
 \item{TOTALKCAL_DASHI}{The total energy intake, unit = kcal/day}
 
-\item{TOTAL_FAT_DASHI}{The total fat intake, unit = g/day}
+\item{TOTAL_FAT_DASHI}{The total fat intake, unit = percent of total daily kcal}
 
-\item{SAT_FAT_DASHI}{The saturated fat intake, unit = g/day}
+\item{SAT_FAT_DASHI}{The saturated fat intake, unit = percent of total daily kcal}
 
-\item{PROTEIN_DASHI}{The protein intake, unit = g/day}
+\item{PROTEIN_DASHI}{The protein intake, unit = percent of total daily kcal}
 
-\item{CHOLESTEROL_DASHI}{The cholesterol intake, unit = mg/day}
+\item{CHOLESTEROL_DASHI}{The cholesterol intake, unit = mg/day per 2000 kcal}
 
-\item{FIBER_DASHI}{The fiber intake, unit = g/day}
+\item{FIBER_DASHI}{The fiber intake, unit = g/day per 2000 kcal}
 
-\item{POTASSIUM_DASHI}{The potassium intake, unit = mg/day}
+\item{POTASSIUM_DASHI}{The potassium intake, unit = mg/day per 2000 kcal}
 
-\item{MAGNESIUM_DASHI}{The magnesium intake, unit = mg/day}
+\item{MAGNESIUM_DASHI}{The magnesium intake, unit = mg/day per 2000 kcal}
 
-\item{CALCIUM_DASHI}{The calcium intake, unit = mg/day}
+\item{CALCIUM_DASHI}{The calcium intake, unit = mg/day per 2000 kcal}
 
-\item{SODIUM_DASHI}{The sodium intake, unit = mg/day}
+\item{SODIUM_DASHI}{The sodium intake, unit = mg/day per 2000 kcal}
 }
 \value{
 The DASHI index/score

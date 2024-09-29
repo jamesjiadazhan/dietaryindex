@@ -30,21 +30,21 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL,
         COFFEE_TEA = c(COFFEE, TEA)
         DRINK = c(11511100, 11511200, 11511300, 11511400, 11511550, 11511600, 11511610, 11511700, 11512010, 11512020, 11512030, 11512100, 11512110, 11512120, 11553130, 11560000, 64134030, 67260000, 75200700, 91301130, 92101920, 92101921, 92101923, 92101925, 92101926, 92101928, 92101930, 92101931, 92101933, 92101935, 92101936, 92101938, 92102000, 92102010, 92102020, 92102030, 92102040, 92102050, 92102060, 92102070, 92102080, 92102090, 92102100, 92102110, 92307500, 92307510, 92307520, 92400000, 92400100, 92410310, 92410315, 92410320, 92410340, 92410350, 92410360, 92410370, 92410390, 92410400, 92410410, 92410420, 92410510, 92410520, 92410550, 92410560, 92410610, 92410620, 92410710, 92410720, 92410810, 92410820, 92411510, 92411520, 92411610, 92411620, 92432000, 92433000, 92510610, 92510650, 92510955, 92510960, 92511015, 92513000, 92513010, 92530410, 92530510, 92530610, 92530950, 92531030, 92541010, 92542000, 92550030, 92550035, 92550040, 92550110, 92550200, 92550370, 92550400, 92550405, 92550610, 92550620, 92552000, 92552010, 92552020, 92552030, 92582100, 92582110, 92900100, 92900110, 92900200, 92900300, 93301216, 95101000, 95101010, 95102000, 95103000, 95103010, 95104000, 95105000, 95106000, 95106010, 95110000, 95110010, 95110020, 95120000, 95120010, 95120020, 95120050, 95310200, 95310400, 95310500, 95310550, 95310555, 95310560, 95310600, 95310700, 95310750, 95310800, 95311000, 95312400, 95312410, 95312500, 95312550, 95312555, 95312560, 95312600, 95312700, 95312800, 95312900, 95312905, 95313200, 95320200, 95320500, 95321000, 95322200, 95322500, 95323000)
         SSB = c(COFFEE_TEA, DRINK)
-        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+        message("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
         SSB = SSB_code
     }
 
     if (is.null(SKIM_MILK_code)) {
         SKIM_MILK = c(11111170, 11113000, 11114320, 11115000, 11120000, 11121300, 11212050, 11511000, 11511300, 11511610, 11512020, 11512110, 11513300, 11513370, 11513384, 11513394, 11513700, 11513804, 11513854, 11514140, 11514350, 11519205)
-        print("Since no skim milk code is provided, the default skim milk code from 17-18 FNDDS file is used.")
+        message("Since no skim milk code is provided, the default skim milk code from 17-18 FNDDS file is used.")
     } else {
         SKIM_MILK = SKIM_MILK_code
     }
 
     if (is.null(LOWF_CHEESE_code)) {
         LOWF_CHEESE = c(14204010, 14204020, 14206010, 14207010)
-        print("Since no low-fat cheese code is provided, the default low-fat cheese code from 17-18 FNDDS file is used.")
+        message("Since no low-fat cheese code is provided, the default low-fat cheese code from 17-18 FNDDS file is used.")
     } else {
         LOWF_CHEESE = LOWF_CHEESE_code
     }
@@ -88,7 +88,7 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL,
 
     # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
     if (RECALL_SUMMARIZE == TRUE) {
-        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
+        message("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         COHORT = COHORT %>%
             # average across all days reported to results per person per day
@@ -109,7 +109,7 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL,
     }
     # if RECALL_SUMMARIZE = FALSE, keep the food group and nutrient intake over all days reported per individual per day
     else {
-        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+        message("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
 
     ## Create variables and functions needed for DASH calculation
@@ -135,7 +135,7 @@ DASH_ASA24 = function(DATA_PATH, SKIM_MILK_code = NULL, LOWF_CHEESE_code = NULL,
         )
     }
 
-    print("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
+    message("Reminder: this DASH index uses quintiles to rank participants' food/drink serving sizes and then calculate DASH component scores, which may generate results that are specific to your study population but not comparable to other populations.")
 
     ## DASH calculation
     COHORT %>%

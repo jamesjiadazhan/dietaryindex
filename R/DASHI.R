@@ -7,15 +7,15 @@
 #' @param SERV_DATA The raw data file that includes all the serving sizes of foods and nutrients
 #' @param RESPONDENTID The unique participant ID for each participant
 #' @param TOTALKCAL_DASHI The total energy intake, unit = kcal/day
-#' @param TOTAL_FAT_DASHI The total fat intake, unit = g/day
-#' @param SAT_FAT_DASHI The saturated fat intake, unit = g/day
-#' @param PROTEIN_DASHI The protein intake, unit = g/day
-#' @param CHOLESTEROL_DASHI The cholesterol intake, unit = mg/day
-#' @param FIBER_DASHI The fiber intake, unit = g/day
-#' @param POTASSIUM_DASHI The potassium intake, unit = mg/day
-#' @param MAGNESIUM_DASHI The magnesium intake, unit = mg/day
-#' @param CALCIUM_DASHI The calcium intake, unit = mg/day
-#' @param SODIUM_DASHI The sodium intake, unit = mg/day
+#' @param TOTAL_FAT_DASHI The total fat intake, unit = percent of total daily kcal
+#' @param SAT_FAT_DASHI The saturated fat intake, unit = percent of total daily kcal
+#' @param PROTEIN_DASHI The protein intake, unit = percent of total daily kcal
+#' @param CHOLESTEROL_DASHI The cholesterol intake, unit = mg/day per 2000 kcal
+#' @param FIBER_DASHI The fiber intake, unit = g/day per 2000 kcal
+#' @param POTASSIUM_DASHI The potassium intake, unit = mg/day per 2000 kcal
+#' @param MAGNESIUM_DASHI The magnesium intake, unit = mg/day per 2000 kcal
+#' @param CALCIUM_DASHI The calcium intake, unit = mg/day per 2000 kcal
+#' @param SODIUM_DASHI The sodium intake, unit = mg/day per 2000 kcal
 #' @return The DASHI index/score
 #' @examples
 #' data("DASH_trial")

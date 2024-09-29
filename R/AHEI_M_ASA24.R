@@ -31,7 +31,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
             95323000
         )
         SSB = c(COFFEE_TEA, DRINK)
-        print("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
+        message("Since no SSB code is provided, the default SSB code from 17-18 FNDDS file is used.")
     } else {
         # If SSB code is provided, use the provided SSB code
         SSB = SSB_code
@@ -70,7 +70,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
 
     # if RECALL_SUMMARIZE = TRUE, summarize the food group and nutrient intake over all days reported per individual per day
     if (RECALL_SUMMARIZE == TRUE) {
-        print("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
+        message("RECALL_SUMMARIZE = TRUE, summarizing HEI2015 for ASA24 data by averaging over all possible recalls per person per day...")
 
         COHORT = COHORT %>%
             # average across all days reported to results per person per day
@@ -93,7 +93,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
     }
     # if RECALL_SUMMARIZE = FALSE, keep the food group and nutrient intake over all days reported per individual per day
     else {
-        print("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
+        message("RECALL_SUMMARIZE is FALSE, skipping summarization step...")
     }
 
     ## Create variables needed for AHEI calculation
@@ -174,7 +174,7 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
                 AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_SODIUM
         )
 
-    print("Reminder: this AHEI index is for male only. Please stratify your data first and provide male only data.")
+    message("Reminder: this AHEI index is for male only. Please stratify your data first and provide male only data.")
 
     COHORT %>%
         dplyr::select(
