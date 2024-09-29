@@ -84,17 +84,17 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
 
         ## Create variables and functions needed for MED
         median_healthy = function(actual) {
-            median_score = median(actual)
+            median_score = median(actual, na.rm = TRUE)
             case_when(
-                actual < median_score ~ 0,
+                actual < median_score | actual == 0 ~ 0,
                 actual >= median_score ~ 1
             )
         }
-
+    
         median_unhealthy = function(actual) {
-            median_score = median(actual)
+            median_score = median(actual, na.rm = TRUE)
             case_when(
-                actual < median_score ~ 1,
+                actual < median_score | actual == 0 ~ 1,
                 actual >= median_score ~ 0
             )
         }
@@ -186,17 +186,17 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
 
         ## Create variables and functions needed for MED
         median_healthy = function(actual) {
-            median_score = median(actual)
+            median_score = median(actual, na.rm = TRUE)
             case_when(
-                actual < median_score ~ 0,
+                actual < median_score | actual == 0 ~ 0,
                 actual >= median_score ~ 1
             )
         }
-
+    
         median_unhealthy = function(actual) {
-            median_score = median(actual)
+            median_score = median(actual, na.rm = TRUE)
             case_when(
-                actual < median_score ~ 1,
+                actual < median_score | actual == 0 ~ 1,
                 actual >= median_score ~ 0
             )
         }

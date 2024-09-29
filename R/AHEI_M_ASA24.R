@@ -165,8 +165,8 @@ AHEI_M_ASA24 = function(DATA_PATH, SSB_code = NULL, RECALL_SUMMARIZE = TRUE) {
                 ALCOHOL_SERV >= 3.5 ~ 0,
                 ALCOHOL_SERV < 3.5 & ALCOHOL_SERV > 2 ~ 0 + (ALCOHOL_SERV - 3.5) * 10 / (2 - 3.5),
                 ALCOHOL_SERV <= 2 & ALCOHOL_SERV >= 0.5 ~ 10,
-                ALCOHOL_SERV <= 0.125 ~ 2.5,
-                TRUE ~ 0 + (ALCOHOL_SERV - 0) * 10 / (0.5 - 0)
+                ALCOHOL_SERV < 0.5 & ALCOHOL_SERV > 0.125 ~ 0 + (ALCOHOL_SERV - 0) * 10 / (0.5 - 0),
+                ALCOHOL_SERV <= 0.125 ~ 2.5
             ),
             AHEI_ALL = AHEI_VEG + AHEI_FRT + AHEI_WGRAIN_M + AHEI_NUTSLEG + AHEI_N3FAT +
                 AHEI_PUFA + AHEI_SSB_FRTJ + AHEI_REDPROC_MEAT + AHEI_SODIUM + AHEI_ALCOHOL_M,
