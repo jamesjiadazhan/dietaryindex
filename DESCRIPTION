@@ -1,7 +1,7 @@
 Package: dietaryindex
 Type: Package
 Title: Dietary Pattern Index Calculation Package 
-Version: 1.0.3
+Version: 2.0.0
 Authors@R: c(
     person("James", "Zhan", , "jzha832@emory.edu", role = c("aut", "cre"),
       comment = c(ORCID = "0000-0003-2480-8760")
@@ -11,13 +11,13 @@ Authors@R: c(
     )
   )
 Maintainer: James Jiada Zhan <jzha832@emory.edu>
-Date: 2023-08-17
+Date: 2024-11-03
 Description: Currently, the package works for the following 5 dietary assessment tools to calculate many dietary indexes within 1 steps without data-preprocessing.
-    1. It can calculate HEI2020, HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES_FPED (after 2005).
+    1. It can calculate HEI2020, HEI2015, AHEI, DASH, DASHI, MED, MEDI, and DII for the NHANES.
     2. It can calculate HEI2020, HEI2015, AHEI, DASH, MED, and DII for the ASA24.
     3. It can calculate HEI2015, AHEI, DASH, and MED for the DHQ3.
     4. It can calculate HEI2015, AHEI, AHEIP, DASH, MED, and DII for the Block FFQ.
-    This package can also help you calculating dietary pattern indexes (Healthy Eating Index-2020 and Healthy Eating Index-Toddlers-2020 (HEI2020), Healthy Eating Index-2015 (HEI2015), Alternative Healthy Eating Index 2010 (AHEI), Alternate Healthy Eating Index, slightly modified for pregnancy (AHEI-P), Dietary Approaches to Stop Hypertension Index (DASH, quintile-based), DASH Index in serving sizes adapted from the DASH trial (DASHI), Alternate Mediterranean Diet Score (aMED, median-based), MED Index in serving sizes from the PREDIMED trial (MEDI), Dietary Inflammatory Index (DII), American Cancer Society 2020 dietary index (ACS 2020), and Planetary Health Diet Index based on the EAT-Lancet Commission (PHDI)) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
+    This package can also help you calculating HEI2020, HEI2015, AHEI, AHEI-P, DASH (quintile-based), DASHI (serving size-based), aMED (median-based), MEDI (serving size-based), DII, American Cancer Society 2020 dietary index (ACS 2020), and Planetary Health Diet Index based on the EAT-Lancet Commission (PHDI)) using all other dietary assessments, if you provide the relevant serving sizes for each food/nutrient category.
     Outputs include the dietary index total score and component scores (for dataset-specific functions).
 Depends: 
     R (>= 2.10)
