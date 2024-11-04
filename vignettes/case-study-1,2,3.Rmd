@@ -35,7 +35,7 @@ data("PREDIMED_trial")
 data("NHANES_20172018")
 
 # set up working dictionary
-setwd("/Users/yan/Desktop/NHANES_combined")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/NHANES_combined/dietaryindex_NHANES/data/NHANES_combined")
 
 # Load the NHANES data from 2005 to 2018
 ## NHANES 2005-2006

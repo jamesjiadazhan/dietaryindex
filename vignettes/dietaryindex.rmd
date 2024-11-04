@@ -39,33 +39,25 @@ The **dietaryindex** package currently contains the following key functions:
   - `PHDI()`, Planetary Health Diet Index from the EAT-Lancet Commission
     - Ref: https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(18)31788-4/fulltext
 
-- NHANES_FPED (after 2005) 
-  - `HEI2020_NHANES_FPED()`, Calculating HEI2020 & HEI-Toddlers-2020 with 1 step using the NHANES_FPED data (after 2005)
-  - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data (after 2005)
-  - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data (after 2005)
-  - `DASH_NHANES_FPED()`, Calculating DASH (quintile-based) with 1 step using the NHANES_FPED data (after 2005)
-  - `DASHI_NHANES_FPED()`, Calculating DASHI (nutrient-based from the DASH trial) with 1 step using the NHANES_FPED data (after 2005)
-  - `MED_NHANES_FPED()`, Calculating aMED (median-based) with 1 step using the NHANES_FPED data (after 2005)
-  - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data (after 2005)
-  - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data (after 2005)
-
-Note: all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. See examples later. 
-
-**dietaryindex** has compiled NHANES data from 2005 - 2020 for your convenience. This includes NHANES 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
-
-- Download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D)
-
-- Download the **NHANES_combined** folder from the GitHub dietaryindex_NHANES page (https://github.com/jamesjiadazhan/dietaryindex_NHANES/tree/main/data/NHANES_combined)
-
-
-Then, you may use the following codes to load the data:
-```
-# set up working dictionary
-setwd("/Users/yan/Desktop/NHANES_combined")
-
-## NHANES 2005-2006, for example
-load("NHANES_20052006.rda")
-```
+- NHANES
+  - For NHANES data starting at the 2005-2006 cycle
+    - `HEI2020_NHANES_FPED()`, Calculating HEI2020 & HEI-Toddlers-2020 with 1 step using the NHANES_FPED datasets
+    - `HEI2015_NHANES_FPED()`, Calculating HEI2015 with 1 step using the NHANES_FPED data 
+    - `AHEI_NHANES_FPED()`, Calculating AHEI with 1 step using the NHANES_FPED data
+    - `DASH_NHANES_FPED()`, Calculating DASH (quintile-based) with 1 step using the NHANES_FPED data
+    - `DASHI_NHANES_FPED()`, Calculating DASHI (nutrient-based from the DASH trial) with 1 step using the NHANES_FPED data
+    - `MED_NHANES_FPED()`, Calculating aMED (median-based) with 1 step using the NHANES_FPED data
+    - `MEDI_NHANES_FPED()`, Calculating MEDI (serving size-based from the PREDIMED trial) with 1 step using the NHANES_FPED data
+    - `DII_NHANES_FPED()`, Calculating DII with 1 step using the NHANES_FPED data
+  - For NHANES data between 1999-2004
+    - `HEI2020_NHANES_MPED()`, Calculating HEI2020 with 1 step using the NHANES_MPED data
+    - `HEI2015_NHANES_MPED()`, Calculating HEI2015 with 1 step using the NHANES_MPED data
+    - `AHEI_NHANES_MPED()`, Calculating AHEI with 1 step using the NHANES_MPED data
+    - `DASH_NHANES_MPED()`, Calculating DASH with 1 step using the NHANES_MPED data
+    - `DASHI_NHANES_MPED()`, Calculating DASHI with 1 step using the NHANES_MPED data
+    - `MED_NHANES_MPED()`, Calculating aMED with 1 step using the NHANES_MPED data
+    - `MEDI_NHANES_MPED()`, Calculating MEDI with 1 step using the NHANES_MPED data
+    - `DII_NHANES_MPED()`, Calculating DII with 1 step using the NHANES_MPED data
 
 - ASA24
   - `HEI2020_ASA24()`, Calculating HEI2020 for non-toddlers (age > 2 years) with 1 step using the ASA24 data
@@ -92,11 +84,29 @@ load("NHANES_20052006.rda")
   - `AHEIP_BLOCK()`, Calculating AHEIP with 1 step using the BLOCK data
 
 
+Note: all NHANES functions allow users to enter the first day data, or the second day data, or first day + second day data and return the results accordingly. See examples later. 
+
+**dietaryindex** has compiled NHANES data from 2005 - 2020 for your convenience. This includes NHANES 2005-2006, 2007-2008, 2009-2010, 2011-2012, 2013-2014, 2015-2016, 2017-2018, 2017-2020. To retrieve the data:
+
+- Download the **NHANES_combined** folder from the Google Drive (https://drive.google.com/drive/u/2/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D)
+
+- Download the **NHANES_combined** folder from the GitHub dietaryindex_NHANES page (https://github.com/jamesjiadazhan/dietaryindex_NHANES/tree/main/data/NHANES_combined)
+
+
+Then, you may use the following codes to load the data:
+```
+# set up working dictionary
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/NHANES_combined/dietaryindex_NHANES/data/NHANES_combined")
+
+## NHANES 2005-2006, for example
+load("NHANES_20052006.rda")
+```
+
 ### Examples for data format:
 ___
 
 #### NHANES data format
-```{r, layout="l-body-outset"}
+```{r, layout="l-body-outset", message=FALSE}
 # install.packages("devtools") #If you don't have "devtools" installed already
 # devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
@@ -189,7 +199,7 @@ knitr::kable(head(HEI2020_VALIDATION))
 Remember, when using dietaryindex's functions for NHANES, the complex survey design has to be taken into account! See the examples below.
 ___
 
-#### Calculating HEI2020 for NHANES_FPED
+#### Calculating HEI2020 for NHANES_FPED (after 2005)
 ```
 # Using the first day nutrition data
 FPED_PATH_1 = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
@@ -269,11 +279,14 @@ tbl_svysummary(
 # the sequence of DEMO, FPED, NUTRIENT data entry do not matter if you use "DEMO_PATH", "FPED_PATH2", "NUTRIENT_PATH2" to specify the data input
 ```
 
-#### Calculating HEI2015 for NHANES_MPED (betweeen 1999-2004)
+
+#### Calculating HEI2020 for NHANES_MPED (before 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
+
 ```{r, layout="l-body-outset"}
+# Use the NHANES example data in 2003-2004 using the first day + second day nutrition data
 data("NHANES_20032004")
-HEI2015_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+HEI2020_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
 ```
 
 #### Calculating HEI2015 for NHANES_FPED (after 2005)
@@ -293,7 +306,15 @@ data("NHANES_20172018")
 HEI2015_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
-#### Calculating AHEI for NHANES_FPED
+#### Calculating HEI2015 for NHANES_MPED (betweeen 1999-2004)
+##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
+```{r, layout="l-body-outset"}
+data("NHANES_20032004")
+HEI2015_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+```
+
+
+#### Calculating AHEI for NHANES_FPED (after 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
 ```
 FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
@@ -308,7 +329,14 @@ data("NHANES_20172018")
 AHEI_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 ```
 
-#### Calculating aMED for NHANES_FPED
+#### Calculating AHEI for NHANES_MPED (1999-2004)
+```{r, layout="l-body-outset"}
+# Use the NHANES example data in 2003-2004 using the first day + second day nutrition data
+data("NHANES_20032004")
+AHEI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+```
+
+#### Calculating aMED for NHANES_FPED (after 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
 ```
 FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
@@ -317,14 +345,20 @@ DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 MED_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 ```
-
 ```{r, layout="l-body-outset"}
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
 MED_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
 ```
 
-#### Calculating MEDI for NHANES_FPED
+#### Calculating aMED for NHANES_MPED (1999-2004)
+```{r, layout="l-body-outset"}
+# Use the NHANES example data in 2003-2004 using the first day + second day nutrition data
+data("NHANES_20032004")
+MED_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+```
+
+#### Calculating MEDI for NHANES_FPED (after 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
 ```
 FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
@@ -332,14 +366,20 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 MEDI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 ```
-
 ```{r, layout="l-body-outset"}
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
 MEDI_NHANES_FPED(FPED_IND_PATH=NHANES_20172018$FPED_IND, NUTRIENT_IND_PATH=NHANES_20172018$NUTRIENT_IND, FPED_IND_PATH2=NHANES_20172018$FPED_IND2, NUTRIENT_IND_PATH2=NHANES_20172018$NUTRIENT_IND2)
 ```
 
-#### Calculating DASH for NHANES_FPED
+#### Calculating MEDI for NHANES_MPED (1999-2004)
+```{r, layout="l-body-outset"}
+# Use the NHANES example data in 2003-2004 using the first day + second day nutrition data
+data("NHANES_20032004")
+MEDI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+```
+
+#### Calculating DASH for NHANES_FPED (after 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
 ```
 FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
@@ -347,14 +387,20 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 DASH_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 ```
-
 ```{r, layout="l-body-outset"}
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
 DASH_NHANES_FPED(NHANES_20172018$FPED_IND, NHANES_20172018$NUTRIENT_IND, NHANES_20172018$FPED_IND2, NHANES_20172018$NUTRIENT_IND2)
 ```
 
-#### Calculating DASHI for NHANES_FPED
+#### Calculating DASH for NHANES_MPED (1999-2004)
+```{r, layout="l-body-outset"}
+# Use the NHANES example data in 1999-2004 using the first day + second day nutrition data
+data("NHANES_20032004")
+DASH_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+```
+
+#### Calculating DASHI for NHANES_FPED (after 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
 ```
 FPED_IND_PATH = "/Users/james/Desktop/data/fped_dr1iff.sas7bdat"
@@ -362,15 +408,23 @@ NUTRIENT_IND_PATH = "/Users/james/Desktop/data/DR1IFF_J"
 
 DASHI_NHANES_FPED(FPED_IND_PATH, NUTRIENT_IND_PATH)
 ```
-
 ```{r, layout="l-body-outset"}
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
 DASHI_NHANES_FPED(NUTRIENT_PATH = NHANES_20172018$NUTRIENT, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2)
 ```
 
-#### Calculating DII for NHANES_FPED
+#### Calculating DASHI for NHANES_FPED (1999-2004)
+```{r, layout="l-body-outset"}
+# Use the NHANES example data in 1999-2004 using the first day + second day nutrition data
+data("NHANES_20032004")
+DASHI_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+```
+
+
+#### Calculating DII for NHANES_FPED (after 2005)
 ##### Calculating dietary index is just the first step. Please include complex survey design when analzying NHANES data as shown above.
+#### This function was improved by Zhe Xu (zxu@cmu.edu.cn) to include the other DII ingredients, including Garlic, Ginger, Onion, Pepper, Thyme/oregano, and other Flavonoids, in the calculation.
 ```
 FPED_PATH = "/Users/james/Desktop/fped_dr1tot_1718.sas7bdat"
 NUTRIENT_PATH = "/Users/james/Desktop/DR1TOT_J.XPT"
@@ -378,11 +432,21 @@ DEMO_PATH = "/Users/james/Desktop/DEMO_J.XPT"
 
 DII_NHANES_FPED(FPED_PATH, NUTRIENT_PATH, DEMO_PATH)
 ```
-
 ```{r, layout="l-body-outset"}
 # Use the NHANES example data in 2017-2018 using the first day + second day nutrition data
 data("NHANES_20172018")
-DII_NHANES_FPED(FPED_PATH=NHANES_20172018$FPED, NUTRIENT_PATH=NHANES_20172018$NUTRIENT, DEMO_PATH=NHANES_20172018$DEMO, FPED_PATH2=NHANES_20172018$FPED2, NUTRIENT_PATH2=NHANES_20172018$NUTRIENT2)
+data("DII_OTHER_INGREDIENTS_day1")
+data("DII_OTHER_INGREDIENTS_day2")
+DII_NHANES_FPED(FPED_PATH = NHANES_20172018$FPED, NUTRIENT_PATH = NHANES_20172018$NUTRIENT, DEMO_PATH = NHANES_20172018$DEMO, FPED_PATH2 = NHANES_20172018$FPED2, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2, OTHER_INGREDIENTS1 = DII_OTHER_INGREDIENTS_day1, OTHER_INGREDIENTS2 = DII_OTHER_INGREDIENTS_day2)
+```
+
+#### Calculating DII for NHANES_MPED (1999-2004)
+```{r, layout="l-body-outset"}
+# Use the NHANES example data in 2003-2004 using the first day + second day nutrition data
+data("NHANES_20032004")
+data("DII_OTHER_INGREDIENTS_day1")
+data("DII_OTHER_INGREDIENTS_day2")
+DII_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2, OTHER_INGREDIENTS1 = DII_OTHER_INGREDIENTS_day1, OTHER_INGREDIENTS2 = DII_OTHER_INGREDIENTS_day2)
 ```
 
 #### Calculating HEI2020 for ASA24

@@ -7,13 +7,17 @@
 #' @param FPED_PATH The file path for the FPED data. The file name should be like: fpre_dr1tot_1718.sas7bdat
 #' @param NUTRIENT_PATH The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
+#' @param OTHER_INGREDIENTS1 The file path for the DII other ingredients data for the day 1 data. 
+#' @param OTHER_INGREDIENTS2 The file path for the DII other ingredients data for the day 2 data.
 #' @return The DII and its component scores: DII is the total DII score (the sum of all component scores); DII_NOETOH is the DII score without alcohol
 #' @examples
 #' data("NHANES_20172018")
-#' DII_NHANES_FPED(FPED_PATH = NHANES_20172018$FPED, NUTRIENT_PATH = NHANES_20172018$NUTRIENT, DEMO_PATH = NHANES_20172018$DEMO, FPED_PATH2 = NHANES_20172018$FPED2, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2)
+#' data("DII_OTHER_INGREDIENTS_day1")
+#' data("DII_OTHER_INGREDIENTS_day2")
+#' DII_NHANES_FPED(FPED_PATH = NHANES_20172018$FPED, NUTRIENT_PATH = NHANES_20172018$NUTRIENT, DEMO_PATH = NHANES_20172018$DEMO, FPED_PATH2 = NHANES_20172018$FPED2, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2, OTHER_INGREDIENTS1 = DII_OTHER_INGREDIENTS_day1, OTHER_INGREDIENTS2 = DII_OTHER_INGREDIENTS_day2)
 #' @export
 
-DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FPED_PATH2 = NULL, NUTRIENT_PATH2 = NULL) {
+DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FPED_PATH2 = NULL, NUTRIENT_PATH2 = NULL, OTHER_INGREDIENTS1 = NULL, OTHER_INGREDIENTS2 = NULL) {
     # stop if the input data is not provided for any day
     if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2)) {
         stop("Please provide the file path for the FPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
@@ -24,7 +28,7 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "EUGENOL",
         "TOTALFAT", "FIBER", "FOLICACID", "GARLIC", "GINGER", "IRON", "MG", "MUFA", "NIACIN", "N3FAT", "N6FAT", "ONION", "PROTEIN", "PUFA",
         "RIBOFLAVIN", "SAFFRON", "SATFAT", "SE", "THIAMIN", "TRANSFAT", "TURMERIC", "VITA", "VITC", "VITD", "VITE", "ZN", "TEA",
-        "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME", "ROSEMARY"
+        "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME_OREGANO", "ROSEMARY"
     )
 
     Overall_inflammatory_score = c(
@@ -88,6 +92,12 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         COHORT = NUTRIENT %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             left_join(FPED, by = c("SEQN" = "SEQN"))
+        
+        # If the user provides the other ingredients data, merge it with the cohort data
+        if (!is.null(OTHER_INGREDIENTS1)) {
+            COHORT = COHORT %>%
+                left_join(OTHER_INGREDIENTS1, by = c("SEQN" = "SEQN"))
+        }
 
         # Check if DR1TVD exists in the data frame
         has_DR1TVD <- "DR1TVD" %in% colnames(COHORT)
@@ -125,6 +135,25 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 VITE = DR1TATOC,
                 ZN = DR1TZINC
             )
+        
+        ## If the DII other ingredients data is provided, the following variables are also included if they exist in the data frame
+        ### Garlic, Ginger, Onion, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano
+        if (!is.null(OTHER_INGREDIENTS1)) {
+            COHORT = COHORT %>%
+                mutate(
+                    GARLIC = DR1TGARLIC,
+                    GINGER = DR1TGINGER,
+                    ONION = DR1TONION,
+                    FLA3OL = dr1t_fl_3_ols,
+                    FLAVONES = dr1t_fl_ones,
+                    FLAVONOLS = dr1t_fl_ols,
+                    FLAVONONES = dr1t_fl_nones,
+                    ANTHOC = dr1t_fl_antho,
+                    ISOFLAVONES = dr1t_fl_iso,
+                    PEPPER = DR1TPEPPER,
+                    THYME_OREGANO = DR1TTHYME + DR1TOREGANO
+                )
+        }
 
         # Columns to select
         select_cols <- c(
@@ -141,6 +170,10 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             message("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
+        # Include other ingredients if they exist
+        if (!is.null(OTHER_INGREDIENTS1)) {
+            select_cols <- c(select_cols, "GARLIC", "GINGER", "ONION", "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME_OREGANO")
+        }
 
         COHORT = COHORT %>%
             # Select only the necessary columns
@@ -207,6 +240,12 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         COHORT2 = NUTRIENT2 %>%
             inner_join(DEMO, by = c("SEQN" = "SEQN")) %>%
             left_join(FPED2, by = c("SEQN" = "SEQN"))
+        
+        # If the user provides the other ingredients data, merge it with the cohort data
+        if (!is.null(OTHER_INGREDIENTS2)) {
+            COHORT2 = COHORT2 %>%
+                left_join(OTHER_INGREDIENTS2, by = c("SEQN" = "SEQN"))
+        }
 
         # Check if DR2TVD exists in the data frame
         has_DR2TVD <- "DR2TVD" %in% colnames(COHORT2)
@@ -245,6 +284,25 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
                 ZN = DR2TZINC
             )
 
+        ## If the DII other ingredients data is provided, the following variables are also included if they exist in the data frame
+        ### Garlic, Ginger, Onion, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano
+        if (!is.null(OTHER_INGREDIENTS2)) {
+            COHORT2 = COHORT2 %>%
+                mutate(
+                    GARLIC = DR2TGARLIC,
+                    GINGER = DR2TGINGER,
+                    ONION = DR2TONION,
+                    FLA3OL = dr2t_fl_3_ols,
+                    FLAVONES = dr2t_fl_ones,
+                    FLAVONOLS = dr2t_fl_ols,
+                    FLAVONONES = dr2t_fl_nones,
+                    ANTHOC = dr2t_fl_antho,
+                    ISOFLAVONES = dr2t_fl_iso,
+                    PEPPER = DR2TPEPPER,
+                    THYME_OREGANO = DR2TTHYME + DR2TOREGANO
+                )
+        }
+
         # Columns to select
         select_cols <- c(
             "SEQN", "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "TOTALFAT", "FIBER", "FOLICACID",
@@ -260,6 +318,10 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             message("VITD is not included in the calculation in the second day of NHANES data.")
         }
 
+        # Include other ingredients if they exist
+        if (!is.null(OTHER_INGREDIENTS2)) {
+            select_cols <- c(select_cols, "GARLIC", "GINGER", "ONION", "FLA3OL", "FLAVONES", "FLAVONOLS", "FLAVONONES", "ANTHOC", "ISOFLAVONES", "PEPPER", "THYME_OREGANO")
+        }
 
         COHORT2 = COHORT2 %>%
             # Select only the necessary columns
@@ -287,15 +349,39 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             )
     }
 
+    # if the user does NOT provide the other ingredients data, the following message will be shown for using day 1 data
     if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2)) {
         # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included.")
+        message("Day 1 data is used for the calculation.")
         return(COHORT)
     }
 
+    # if the user does provide the other ingredients data, the following message will be shown for using day 1 data
+    if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & is.null(FPED_PATH2) & is.null(NUTRIENT_PATH2) & !is.null(OTHER_INGREDIENTS1)) {
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, trans fat, turmeric, Green/black tea, Rosemary are not included.")
+        # print a message to remind that flavonoid data is only available for NHANES 2007-2010 and 2017-2018
+        message("Note: Flavonoid data is only available for NHANES 2007-2010 and 2017-2018.")
+        message("Day 1 data is used for the calculation.")
+        return(COHORT)
+    }
+
+    # if the user does NOT provide the other ingredients data, the following message will be shown for using day 2 data
     if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2)) {
         # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included.")
+        message("Day 2 data is used for the calculation.")
+        return(COHORT2)
+    }
+
+    # if the user does provide the other ingredients data, the following message will be shown for using day 2 data
+    if (is.null(FPED_PATH) & is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2) & !is.null(OTHER_INGREDIENTS2)) {
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, trans fat, turmeric, Green/black tea, Rosemary are not included.")
+        # print a message to remind that flavonoid data is only available for NHANES 2007-2010 and 2017-2018
+        message("Note: Flavonoid data is only available for NHANES 2007-2010 and 2017-2018.")
+        message("Day 2 data is used for the calculation.")
         return(COHORT2)
     }
 
@@ -326,8 +412,22 @@ DII_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
         COHORT12 <- COHORT12 %>%
             dplyr::select(SEQN, !!!common_cols)
 
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
-        return(COHORT12)
+        # if the user does NOT provide the other ingredients data, the following message will be shown
+        if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2) & is.null(OTHER_INGREDIENTS1) & is.null(OTHER_INGREDIENTS2)) {
+            # message a reminder that this function does not use all the original DII variables
+            message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+            message("Day 1 and Day 2 data are used for the calculation.")
+            return(COHORT12)
+        }
+
+        # if the user does provide the other ingredients data, the following message will be shown
+        if (!is.null(FPED_PATH) & !is.null(NUTRIENT_PATH) & !is.null(FPED_PATH2) & !is.null(NUTRIENT_PATH2) & !is.null(OTHER_INGREDIENTS1) & !is.null(OTHER_INGREDIENTS2)) {
+            # message a reminder that this function does not use all the original DII variables
+            message("Reminder: This function does not use all the original DII variables. Eugenol, trans fat, turmeric, Green/black tea, Rosemary are not included.")
+            message("Day 1 and Day 2 data are used for the calculation.")
+            # print a message to remind that flavonoid data is only available for NHANES 2007-2010 and 2017-2018
+            message("Note: Flavonoid data is only available for NHANES 2007-2010 and 2017-2018.")
+            return(COHORT12)
+        }
     }
 }

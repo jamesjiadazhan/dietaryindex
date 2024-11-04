@@ -29,7 +29,7 @@ library(haven)
 
 # Load the data
 ## set up the working directory
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/Raw validation files")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/Raw validation files")
 
 ACS2020_V1_VALIDATION = read_csv("ACS2020_V1_validation.csv")
 ACS2020_V2_VALIDATION = read_csv("ACS2020_V2_validation.csv")
@@ -49,7 +49,7 @@ PHDI_VALIDATION = read_csv("PHDI_validation.csv")
 ## Calculate multiple dietart indexes using the simulation datasets (sample sizes range from 10 to 26).
 ```{r}
 # Generate the validation results and save them
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/Final validation files")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/Final validation files")
 
 ## ACS2020 validation (Version 1)
 ACS2020_V1_VALIDATION_RESULT = ACS2020_V1(
@@ -356,7 +356,7 @@ data("NHANES_20172018")
 
 head(NHANES_20172018)
 
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_NHANES_1718")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_NHANES_1718")
 ## HEI2015_NHANES_FPED validation using the SAS codes from National Cancer Institute (https://epi.grants.cancer.gov/hei/sas-code.html)
 # day 1 only
 HEI2015_NHANES_FPED_1718 = HEI2015_NHANES_FPED(
@@ -386,7 +386,7 @@ table(HEI2015_NHANES_FPED_1718$HEI2015_ALL == HEI2015_NHANES_SAS_1718$HEI2015_TO
 ## Use dietaryindex to calculate HEI2015 using ASA24 example data (n=21).
 ```{r}
 # set working directory
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_ASA24_example_data")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_ASA24_example_data")
 
 # Read in the ASA24 data
 ASA24_exp = read_csv("THR_2022-09-13_86071_Totals.csv")
@@ -405,7 +405,7 @@ write_csv(HEI2015_ASA24_exp, "HEI2015_ASA24_dietaryindex.csv")
 ## Use dietaryindex to calculate HEI2015 using DHQ3 example data (n=23).
 ```{r}
 # set working directory
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_DHQ3_example_data")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_DHQ3_example_data")
 
 # Read in the DHQ3 data
 DHQ3_exp = read_csv("Sample total daily results.csv", skip = 1)
@@ -427,7 +427,7 @@ write_csv(HEI2015_DHQ3_exp, "HEI2015_DHQ3_dietaryindex.csv")
 library(ggplot2)
 
 # set up working directory
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/Final validation files")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/Final validation files")
 
 # read in dietaryindex-calculated and hand-calculated validation results
 ACS2020_V1_validation_result = read_csv("ACS2020_V1_validation_result.csv")
@@ -445,15 +445,15 @@ MEDI_V2_validation_result = read_csv("MEDI_V2_validation_result.csv")
 PHDI_validation_result = read_csv("PHDI_validation_result.csv")
 
 # read in NHANES NCI SAS and dietaryindex-calculated validation results
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_NHANES_1718")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_NHANES_1718")
 SAS_HEI2015_1718 = read_csv("SAS_HEI2015_1718.csv")
 dietaryindex_HEI2015_1718 = read_csv("dietaryindex_HEI2015_1718.csv")
 
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_ASA24_example_data")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_ASA24_example_data")
 HEI2015_ASA24_NCI_SAS = read_csv("HEI2015_ASA24_NCI_SAS.csv")
 HEI2015_ASA24_dietaryindex = read_csv("HEI2015_ASA24_dietaryindex.csv")
 
-setwd("/Users/yan/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_DHQ3_example_data")
+setwd("/Users/james/Library/Mobile Documents/com~apple~CloudDocs/Desktop/Emory University - Ph.D./dietaryindex_package/Validation file for publication/HEI2015_DHQ3_example_data")
 HEI2015_DHQ3_NCI_SAS = read_csv("Sample total daily results.csv", skip = 1)
 HEI2015_DHQ3_dietaryindex = read_csv("HEI2015_DHQ3_dietaryindex.csv")
 

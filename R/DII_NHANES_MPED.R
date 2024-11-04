@@ -11,42 +11,17 @@
 #' @param DEMO_PATH The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT
 #' @param NUTRIENT_PATH2 The file path for the NUTRIENT2 data for the day 2 data. The file name should be like: DR2TOT_J.XPT
 #' @param NUTRIENT_IND_PATH2 The file path for the NUTRIENT_IND2 data for the day 2 data The file name should be like: DR2IFF_J.XPT
+#' @param OTHER_INGREDIENTS1 The file path for the DII other ingredients data for the day 1 data. 
+#' @param OTHER_INGREDIENTS2 The file path for the DII other ingredients data for the day 2 data.
 #' @return The DII and its component scores and serving sizes
 #' @examples
 #' data("NHANES_20032004")
-#' DII_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2)
+#' data("DII_OTHER_INGREDIENTS_day1")
+#' data("DII_OTHER_INGREDIENTS_day2")
+#' DII_NHANES_MPED(MPED_PER_100_GRAM_PATH = NHANES_20032004$MPED_PER_100_GRAM, WJFRT = NHANES_20032004$WJFRT, NUTRIENT_PATH = NHANES_20032004$NUTRIENT, NUTRIENT_IND_PATH = NHANES_20032004$NUTRIENT_IND, DEMO_PATH = NHANES_20032004$DEMO, NUTRIENT_PATH2 = NHANES_20032004$NUTRIENT2, NUTRIENT_IND_PATH2 = NHANES_20032004$NUTRIENT_IND2, OTHER_INGREDIENTS1 = DII_OTHER_INGREDIENTS_day1, OTHER_INGREDIENTS2 = DII_OTHER_INGREDIENTS_day2)
 #' @export
 
-DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL) {
-    ## Create variables needed for DII calculation
-    DII_MIN = 0
-    DII_MAX1 = 5
-    DII_MAX2 = 10
-
-    DII_HEALTHY1 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ DII_MAX1,
-            actual <= min ~ DII_MIN,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX1 / (max - min)
-        )
-    }
-
-    DII_HEALTHY2 = function(actual, min, max) {
-        case_when(
-            actual >= max ~ DII_MAX2,
-            actual <= min ~ DII_MIN,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX2 / (max - min)
-        )
-    }
-
-    DII_UNHEALTHY = function(actual, min, max) {
-        case_when(
-            actual >= min ~ DII_MIN,
-            actual <= max ~ DII_MAX2,
-            TRUE ~ DII_MIN + (actual - min) * DII_MAX2 / (max - min)
-        )
-    }
-
+DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT_PATH = NULL, NUTRIENT_IND_PATH = NULL, DEMO_PATH, NUTRIENT_PATH2 = NULL, NUTRIENT_IND_PATH2 = NULL, OTHER_INGREDIENTS1 = NULL, OTHER_INGREDIENTS2 = NULL) {
     # stop if the input data is not provided for any day
     if (is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
         stop("Please provide the file path for the MPED and NUTRIENT data, day 1 or day 2 or day 1 and day 2.")
@@ -225,7 +200,7 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         arrange(SEQN)
 
     # start with the first day data calculation
-    if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_IND_PATH)) {
+    suppressWarnings(if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_IND_PATH)) {
         # load the NUTRIENT data
         if (is.character(NUTRIENT_PATH) == TRUE) {
             NUTRIENT = read_xpt(NUTRIENT_PATH)
@@ -419,6 +394,12 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # combine all data on a person level;
         COHORT_2 = left_join(COHORT, MPED, by = "SEQN")
 
+        # If the user provides the other ingredients data, merge it with the cohort data
+        if (!is.null(OTHER_INGREDIENTS1)) {
+            COHORT_2 = COHORT_2 %>%
+                left_join(OTHER_INGREDIENTS1, by = c("SEQN" = "SEQN"))
+        }
+
         # Check if DR1TVD exists in the data frame
         has_DR1TVD <- "DR1TVD" %in% colnames(COHORT)
 
@@ -455,6 +436,25 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 ZN = DR1TZINC
             )
 
+        ## If the DII other ingredients data is provided, the following variables are also included if they exist in the data frame
+        ### Garlic, Ginger, Onion, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano
+        if (!is.null(OTHER_INGREDIENTS1)) {
+            COHORT_3 = COHORT_3 %>%
+                mutate(
+                    GARLIC = DR1TGARLIC,
+                    GINGER = DR1TGINGER,
+                    ONION = DR1TONION,
+                    FLA3OL = dr1t_fl_3_ols,
+                    FLAVONES = dr1t_fl_ones,
+                    FLAVONOLS = dr1t_fl_ols,
+                    FLAVONONES = dr1t_fl_nones,
+                    ANTHOC = dr1t_fl_antho,
+                    ISOFLAVONES = dr1t_fl_iso,
+                    PEPPER = DR1TPEPPER,
+                    THYME_OREGANO = DR1TTHYME + DR1TOREGANO
+                )
+        }
+
         # Columns to select
         select_cols <- c(
             "SEQN", "ALCOHOL", "VITB12", "VITB6", "BCAROTENE", "CAFFEINE", "CARB", "CHOLES", "KCAL", "TOTALFAT", "FIBER", "FOLICACID",
@@ -470,39 +470,84 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             message("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
-        COHORT_4 = DII(
-            SERV_DATA = COHORT_3,
-            RESPONDENTID = COHORT_3$SEQN,
-            REPEATNUM = 1,
-            ALCOHOL_DII = COHORT_3$ALCOHOL,
-            VITB12_DII = COHORT_3$VITB12,
-            VITB6_DII = COHORT_3$VITB6,
-            BCAROTENE_DII = COHORT_3$BCAROTENE,
-            CAFFEINE_DII = COHORT_3$CAFFEINE,
-            CARB_DII = COHORT_3$CARB,
-            CHOLES_DII = COHORT_3$CHOLES,
-            KCAL_DII = COHORT_3$KCAL,
-            TOTALFAT_DII = COHORT_3$TOTALFAT,
-            FIBER_DII = COHORT_3$FIBER,
-            FOLICACID_DII = COHORT_3$FOLICACID,
-            IRON_DII = COHORT_3$IRON,
-            MG_DII = COHORT_3$MG,
-            MUFA_DII = COHORT_3$MUFA,
-            NIACIN_DII = COHORT_3$NIACIN,
-            N3FAT_DII = COHORT_3$N3FAT,
-            N6FAT_DII = COHORT_3$N6FAT,
-            PROTEIN_DII = COHORT_3$PROTEIN,
-            PUFA_DII = COHORT_3$PUFA,
-            RIBOFLAVIN_DII = COHORT_3$RIBOFLAVIN,
-            SATFAT_DII = COHORT_3$SATFAT,
-            SE_DII = COHORT_3$SE,
-            THIAMIN_DII = COHORT_3$THIAMIN,
-            VITA_DII = COHORT_3$VITA,
-            VITC_DII = COHORT_3$VITC,
-            VITD_DII = COHORT_3$VITD,
-            VITE_DII = COHORT_3$VITE,
-            ZN_DII = COHORT_3$ZN
-        )
+        # if other ingredients do NOT exist
+        if (is.null(OTHER_INGREDIENTS1)) {
+            COHORT_4 = DII(
+                SERV_DATA = COHORT_3,
+                RESPONDENTID = COHORT_3$SEQN,
+                REPEATNUM = 1,
+                ALCOHOL_DII = COHORT_3$ALCOHOL,
+                VITB12_DII = COHORT_3$VITB12,
+                VITB6_DII = COHORT_3$VITB6,
+                BCAROTENE_DII = COHORT_3$BCAROTENE,
+                CAFFEINE_DII = COHORT_3$CAFFEINE,
+                CARB_DII = COHORT_3$CARB,
+                CHOLES_DII = COHORT_3$CHOLES,
+                KCAL_DII = COHORT_3$KCAL,
+                TOTALFAT_DII = COHORT_3$TOTALFAT,
+                FIBER_DII = COHORT_3$FIBER,
+                FOLICACID_DII = COHORT_3$FOLICACID,
+                IRON_DII = COHORT_3$IRON,
+                MG_DII = COHORT_3$MG,
+                MUFA_DII = COHORT_3$MUFA,
+                NIACIN_DII = COHORT_3$NIACIN,
+                N3FAT_DII = COHORT_3$N3FAT,
+                N6FAT_DII = COHORT_3$N6FAT,
+                PROTEIN_DII = COHORT_3$PROTEIN,
+                PUFA_DII = COHORT_3$PUFA,
+                RIBOFLAVIN_DII = COHORT_3$RIBOFLAVIN,
+                SATFAT_DII = COHORT_3$SATFAT,
+                SE_DII = COHORT_3$SE,
+                THIAMIN_DII = COHORT_3$THIAMIN,
+                VITA_DII = COHORT_3$VITA,
+                VITC_DII = COHORT_3$VITC,
+                VITD_DII = COHORT_3$VITD,
+                VITE_DII = COHORT_3$VITE,
+                ZN_DII = COHORT_3$ZN
+            )
+        }
+
+        # if other ingredients do exist
+        if (!is.null(OTHER_INGREDIENTS1)) {
+            COHORT_4 = DII(
+                SERV_DATA = COHORT_3,
+                RESPONDENTID = COHORT_3$SEQN,
+                REPEATNUM = 1,
+                ALCOHOL_DII = COHORT_3$ALCOHOL,
+                VITB12_DII = COHORT_3$VITB12,
+                VITB6_DII = COHORT_3$VITB6,
+                BCAROTENE_DII = COHORT_3$BCAROTENE,
+                CAFFEINE_DII = COHORT_3$CAFFEINE,
+                CARB_DII = COHORT_3$CARB,
+                CHOLES_DII = COHORT_3$CHOLES,
+                KCAL_DII = COHORT_3$KCAL,
+                TOTALFAT_DII = COHORT_3$TOTALFAT,
+                FIBER_DII = COHORT_3$FIBER,
+                FOLICACID_DII = COHORT_3$FOLICACID,
+                IRON_DII = COHORT_3$IRON,
+                MG_DII = COHORT_3$MG,
+                MUFA_DII = COHORT_3$MUFA,
+                NIACIN_DII = COHORT_3$NIACIN,
+                N3FAT_DII = COHORT_3$N3FAT,
+                N6FAT_DII = COHORT_3$N6FAT,
+                PROTEIN_DII = COHORT_3$PROTEIN,
+                PUFA_DII = COHORT_3$PUFA,
+                RIBOFLAVIN_DII = COHORT_3$RIBOFLAVIN,
+                SATFAT_DII = COHORT_3$SATFAT,
+                SE_DII = COHORT_3$SE,
+                THIAMIN_DII = COHORT_3$THIAMIN,
+                VITA_DII = COHORT_3$VITA,
+                VITC_DII = COHORT_3$VITC,
+                VITD_DII = COHORT_3$VITD,
+                VITE_DII = COHORT_3$VITE,
+                ZN_DII = COHORT_3$ZN,
+                GARLIC_DII = COHORT_3$GARLIC,
+                GINGER_DII = COHORT_3$GINGER,
+                ONION_DII = COHORT_3$ONION,
+                PEPPER_DII = COHORT_3$PEPPER,
+                THYME_DII = COHORT_3$THYME_OREGANO
+            )
+        }
 
         COHORT_4 = COHORT_4 %>%
             mutate(
@@ -512,11 +557,13 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             ungroup() %>%
             ## remove RESPONDENTID
             select(-RESPONDENTID) %>%
+            ## remove REPEATNUM
+            select(-REPEATNUM) %>%
             select(SEQN, DII_ALL:ROSEMARY_DII)
-    }
+    })
 
     # start with the second day data calculation
-    if (!is.null(NUTRIENT_PATH2) & !is.null(NUTRIENT_IND_PATH2)) {
+    suppressWarnings(if (!is.null(NUTRIENT_PATH2) & !is.null(NUTRIENT_IND_PATH2)) {
         # load the NUTRIENT data
         if (is.character(NUTRIENT_PATH2) == TRUE) {
             NUTRIENT2 = read_xpt(NUTRIENT_PATH2)
@@ -589,6 +636,12 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # Check if DR2TVD exists in the data frame
         has_DR2TVD <- "DR2TVD" %in% colnames(COHORT2)
 
+        # If the user provides the other ingredients data, merge it with the cohort data
+        if (!is.null(OTHER_INGREDIENTS2)) {
+            COHORT2_2 = COHORT2_2 %>%
+                left_join(OTHER_INGREDIENTS2, by = c("SEQN" = "SEQN"))
+        }
+
         # calculate the DII food group serving size / 1000 kcal
         COHORT2_3 = COHORT2_2 %>%
             dplyr::mutate(
@@ -622,6 +675,26 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 ZN = DR2TZINC
             )
 
+        ## If the DII other ingredients data is provided, the following variables are also included if they exist in the data frame
+        ### Garlic, Ginger, Onion, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano
+        if (!is.null(OTHER_INGREDIENTS2)) {
+            COHORT2_3 = COHORT2_3 %>%
+                mutate(
+                    GARLIC = DR2TGARLIC,
+                    GINGER = DR2TGINGER,
+                    ONION = DR2TONION,
+                    FLA3OL = dr2t_fl_3_ols,
+                    FLAVONES = dr2t_fl_ones,
+                    FLAVONOLS = dr2t_fl_ols,
+                    FLAVONONES = dr2t_fl_nones,
+                    ANTHOC = dr2t_fl_antho,
+                    ISOFLAVONES = dr2t_fl_iso,
+                    PEPPER = DR2TPEPPER,
+                    THYME_OREGANO = DR2TTHYME + DR2TOREGANO
+                )
+        }
+
+
         # Include VITD if it exists
         if (has_DR2TVD) {
             message("VITD is included in the calculation in the first day of NHANES data.")
@@ -629,39 +702,84 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             message("VITD is not included in the calculation in the first day of NHANES data.")
         }
 
-        COHORT2_4 = DII(
-            SERV_DATA = COHORT2_3,
-            RESPONDENTID = COHORT2_3$SEQN,
-            REPEATNUM = 1,
-            ALCOHOL_DII = COHORT2_3$ALCOHOL,
-            VITB12_DII = COHORT2_3$VITB12,
-            VITB6_DII = COHORT2_3$VITB6,
-            BCAROTENE_DII = COHORT2_3$BCAROTENE,
-            CAFFEINE_DII = COHORT2_3$CAFFEINE,
-            CARB_DII = COHORT2_3$CARB,
-            CHOLES_DII = COHORT2_3$CHOLES,
-            KCAL_DII = COHORT2_3$KCAL,
-            TOTALFAT_DII = COHORT2_3$TOTALFAT,
-            FIBER_DII = COHORT2_3$FIBER,
-            FOLICACID_DII = COHORT2_3$FOLICACID,
-            IRON_DII = COHORT2_3$IRON,
-            MG_DII = COHORT2_3$MG,
-            MUFA_DII = COHORT2_3$MUFA,
-            NIACIN_DII = COHORT2_3$NIACIN,
-            N3FAT_DII = COHORT2_3$N3FAT,
-            N6FAT_DII = COHORT2_3$N6FAT,
-            PROTEIN_DII = COHORT2_3$PROTEIN,
-            PUFA_DII = COHORT2_3$PUFA,
-            RIBOFLAVIN_DII = COHORT2_3$RIBOFLAVIN,
-            SATFAT_DII = COHORT2_3$SATFAT,
-            SE_DII = COHORT2_3$SE,
-            THIAMIN_DII = COHORT2_3$THIAMIN,
-            VITA_DII = COHORT2_3$VITA,
-            VITC_DII = COHORT2_3$VITC,
-            VITD_DII = COHORT2_3$VITD,
-            VITE_DII = COHORT2_3$VITE,
-            ZN_DII = COHORT2_3$ZN
-        )
+        # If other ingredients do NOT exist
+        if (is.null(OTHER_INGREDIENTS2)) {
+            COHORT2_4 = DII(
+                SERV_DATA = COHORT2_3,
+                RESPONDENTID = COHORT2_3$SEQN,
+                REPEATNUM = 1,
+                ALCOHOL_DII = COHORT2_3$ALCOHOL,
+                VITB12_DII = COHORT2_3$VITB12,
+                VITB6_DII = COHORT2_3$VITB6,
+                BCAROTENE_DII = COHORT2_3$BCAROTENE,
+                CAFFEINE_DII = COHORT2_3$CAFFEINE,
+                CARB_DII = COHORT2_3$CARB,
+                CHOLES_DII = COHORT2_3$CHOLES,
+                KCAL_DII = COHORT2_3$KCAL,
+                TOTALFAT_DII = COHORT2_3$TOTALFAT,
+                FIBER_DII = COHORT2_3$FIBER,
+                FOLICACID_DII = COHORT2_3$FOLICACID,
+                IRON_DII = COHORT2_3$IRON,
+                MG_DII = COHORT2_3$MG,
+                MUFA_DII = COHORT2_3$MUFA,
+                NIACIN_DII = COHORT2_3$NIACIN,
+                N3FAT_DII = COHORT2_3$N3FAT,
+                N6FAT_DII = COHORT2_3$N6FAT,
+                PROTEIN_DII = COHORT2_3$PROTEIN,
+                PUFA_DII = COHORT2_3$PUFA,
+                RIBOFLAVIN_DII = COHORT2_3$RIBOFLAVIN,
+                SATFAT_DII = COHORT2_3$SATFAT,
+                SE_DII = COHORT2_3$SE,
+                THIAMIN_DII = COHORT2_3$THIAMIN,
+                VITA_DII = COHORT2_3$VITA,
+                VITC_DII = COHORT2_3$VITC,
+                VITD_DII = COHORT2_3$VITD,
+                VITE_DII = COHORT2_3$VITE,
+                ZN_DII = COHORT2_3$ZN
+            )
+        }
+
+        # If other ingredients do exist
+        if (!is.null(OTHER_INGREDIENTS2)) {
+            COHORT2_4 = DII(
+                SERV_DATA = COHORT2_3,
+                RESPONDENTID = COHORT2_3$SEQN,
+                REPEATNUM = 1,
+                ALCOHOL_DII = COHORT2_3$ALCOHOL,
+                VITB12_DII = COHORT2_3$VITB12,
+                VITB6_DII = COHORT2_3$VITB6,
+                BCAROTENE_DII = COHORT2_3$BCAROTENE,
+                CAFFEINE_DII = COHORT2_3$CAFFEINE,
+                CARB_DII = COHORT2_3$CARB,
+                CHOLES_DII = COHORT2_3$CHOLES,
+                KCAL_DII = COHORT2_3$KCAL,
+                TOTALFAT_DII = COHORT2_3$TOTALFAT,
+                FIBER_DII = COHORT2_3$FIBER,
+                FOLICACID_DII = COHORT2_3$FOLICACID,
+                IRON_DII = COHORT2_3$IRON,
+                MG_DII = COHORT2_3$MG,
+                MUFA_DII = COHORT2_3$MUFA,
+                NIACIN_DII = COHORT2_3$NIACIN,
+                N3FAT_DII = COHORT2_3$N3FAT,
+                N6FAT_DII = COHORT2_3$N6FAT,
+                PROTEIN_DII = COHORT2_3$PROTEIN,
+                PUFA_DII = COHORT2_3$PUFA,
+                RIBOFLAVIN_DII = COHORT2_3$RIBOFLAVIN,
+                SATFAT_DII = COHORT2_3$SATFAT,
+                SE_DII = COHORT2_3$SE,
+                THIAMIN_DII = COHORT2_3$THIAMIN,
+                VITA_DII = COHORT2_3$VITA,
+                VITC_DII = COHORT2_3$VITC,
+                VITD_DII = COHORT2_3$VITD,
+                VITE_DII = COHORT2_3$VITE,
+                ZN_DII = COHORT2_3$ZN,
+                GARLIC_DII = COHORT2_3$GARLIC,
+                GINGER_DII = COHORT2_3$GINGER,
+                ONION_DII = COHORT2_3$ONION,
+                PEPPER_DII = COHORT2_3$PEPPER,
+                THYME_DII = COHORT2_3$THYME_OREGANO
+            )
+        }
 
         COHORT2_4 = COHORT2_4 %>%
             mutate(
@@ -671,17 +789,40 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             ungroup() %>%
             ## remove RESPONDENTID
             select(-RESPONDENTID) %>%
+            ## remove REPEATNUM
+            select(-REPEATNUM) %>%
             select(SEQN, DII_ALL:ROSEMARY_DII)
-    }
+    })
 
-
+    # if the user does NOT provide the other ingredients data, the following message will be shown for using day 1 data
     if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2)) {
         # message a reminder that this function does not use all the original DII variables
         message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        message("Day 1 data is used for the calculation.")
         return(COHORT_4)
-    } else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
+    } 
+    # if the user does provide the other ingredients data, the following message will be shown for using day 1 data
+    else if (!is.null(NUTRIENT_PATH) & is.null(NUTRIENT_PATH2) & !is.null(OTHER_INGREDIENTS1)) {
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, trans fat, turmeric, Green/black tea, Rosemary are not included.")
+        # print a message to remind that flavonoid data is only available for NHANES 2007-2010 and 2017-2018
+        message("Note: Flavonoid data is only available for NHANES 2007-2010 and 2017-2018.")
+        message("Day 1 data is used for the calculation.")
+        return(COHORT_4)
+    }
+    # if the user does NOT provide the other ingredients data, the following message will be shown for using day 2 data
+    else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2)) {
         # message a reminder that this function does not use all the original DII variables
         message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+        message("Day 2 data is used for the calculation.")
+        return(COHORT2_4)
+    }
+    # if the user does provide the other ingredients data, the following message will be shown for using day 2 data
+    else if (is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2) & !is.null(OTHER_INGREDIENTS2)) {
+        # message a reminder that this function does not use all the original DII variables
+        message("Reminder: This function does not use all the original DII variables. Eugenol, trans fat, turmeric, Green/black tea, Rosemary are not included.")
+        message("Note: Flavonoid data is only available for NHANES 2007-2010 and 2017-2018.")
+        message("Day 2 data is used for the calculation.")
         return(COHORT2_4)
     }
 
@@ -712,8 +853,22 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         COHORT12 <- COHORT12 %>%
             dplyr::select(SEQN, !!!common_cols)
 
-        # message a reminder that this function does not use all the original DII variables
-        message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
-        return(COHORT12)
+        # if the user does NOT provide the other ingredients data, the following message will be shown
+        if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2) & is.null(OTHER_INGREDIENTS1) & is.null(OTHER_INGREDIENTS2)) {
+            # message a reminder that this function does not use all the original DII variables
+            message("Reminder: This function does not use all the original DII variables. Eugenol, garlic, ginger, onion, trans fat, turmeric, Green/black tea, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano, Rosemary are not included because they are not available in NHANES.")
+            message("Day 1 and Day 2 data are used for the calculation.")
+            return(COHORT12)
+        }
+
+        # if the user does provide the other ingredients data, the following message will be shown
+        if (!is.null(NUTRIENT_PATH) & !is.null(NUTRIENT_PATH2) & !is.null(OTHER_INGREDIENTS1) & !is.null(OTHER_INGREDIENTS2)) {
+            # message a reminder that this function does not use all the original DII variables
+            message("Reminder: This function does not use all the original DII variables. Eugenol, trans fat, turmeric, Green/black tea, Rosemary are not included.")
+            message("Day 1 and Day 2 data are used for the calculation.")
+            # print a message to remind that flavonoid data is only available for NHANES 2007-2010 and 2017-2018
+            message("Note: Flavonoid data is only available for NHANES 2007-2010 and 2017-2018.")
+            return(COHORT12)
+        }
     }
 }

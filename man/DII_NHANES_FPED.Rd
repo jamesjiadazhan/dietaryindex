@@ -9,7 +9,9 @@ DII_NHANES_FPED(
   NUTRIENT_PATH = NULL,
   DEMO_PATH,
   FPED_PATH2 = NULL,
-  NUTRIENT_PATH2 = NULL
+  NUTRIENT_PATH2 = NULL,
+  OTHER_INGREDIENTS1 = NULL,
+  OTHER_INGREDIENTS2 = NULL
 )
 }
 \arguments{
@@ -18,6 +20,10 @@ DII_NHANES_FPED(
 \item{NUTRIENT_PATH}{The file path for the NUTRIENT data. The file name should be like: DR1TOT_J.XPT}
 
 \item{DEMO_PATH}{The file path for the DEMOGRAPHIC data. The file name should be like: DEMO_J.XPT}
+
+\item{OTHER_INGREDIENTS1}{The file path for the DII other ingredients data for the day 1 data.}
+
+\item{OTHER_INGREDIENTS2}{The file path for the DII other ingredients data for the day 2 data.}
 }
 \value{
 The DII and its component scores: DII is the total DII score (the sum of all component scores); DII_NOETOH is the DII score without alcohol
@@ -27,5 +33,7 @@ Calculate the DII for the NHANES_FPED data (after 2005) within 1 step
 }
 \examples{
 data("NHANES_20172018")
-DII_NHANES_FPED(FPED_PATH = NHANES_20172018$FPED, NUTRIENT_PATH = NHANES_20172018$NUTRIENT, DEMO_PATH = NHANES_20172018$DEMO, FPED_PATH2 = NHANES_20172018$FPED2, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2)
+data("DII_OTHER_INGREDIENTS_day1")
+data("DII_OTHER_INGREDIENTS_day2")
+DII_NHANES_FPED(FPED_PATH = NHANES_20172018$FPED, NUTRIENT_PATH = NHANES_20172018$NUTRIENT, DEMO_PATH = NHANES_20172018$DEMO, FPED_PATH2 = NHANES_20172018$FPED2, NUTRIENT_PATH2 = NHANES_20172018$NUTRIENT2, OTHER_INGREDIENTS1 = DII_OTHER_INGREDIENTS_day1, OTHER_INGREDIENTS2 = DII_OTHER_INGREDIENTS_day2)
 }
