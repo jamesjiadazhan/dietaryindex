@@ -239,7 +239,14 @@ AHEI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TPFAT = DRXTPFAT
+                    DR1TPFAT = DRXTPFAT,
+                    DR1TP182 = DRXTP182,
+                    DR1TP183 = DRXTP183,
+                    DR1TP184 = DRXTP184,
+                    DR1TP204 = DRXTP204,
+                    DR1TP225 = DRXTP225,
+                    DR1TP205 = DRXTP205,
+                    DR1TP226 = DRXTP226
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -259,7 +266,14 @@ AHEI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TPFAT = DRXTPFAT
+                    DR1TPFAT = DRXTPFAT,
+                    DR1TP182 = DRXTP182,
+                    DR1TP183 = DRXTP183,
+                    DR1TP184 = DRXTP184,
+                    DR1TP204 = DRXTP204,
+                    DR1TP205 = DRXTP205,
+                    DR1TP225 = DRXTP225,
+                    DR1TP226 = DRXTP226
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -304,6 +318,9 @@ AHEI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
             ## merge the two datasets
             # combine food intake and MPED plus WHOLE FRUIT data on a food level
             MPED_PER_100_GRAM_5 <- inner_join(NUTRIENT_IND, MPED_PER_100_GRAM_4, by = c("FOODCODE"), relationship = "many-to-many")
+        
+            # rename V_DPYEL to V_ORANGE
+            colnames(MPED_PER_100_GRAM_5)[colnames(MPED_PER_100_GRAM_5) == "V_DPYEL"] <- "V_ORANGE"
         }
 
 
@@ -340,7 +357,7 @@ AHEI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
             dplyr::mutate(
                 # create the variable for added sugars from SSB
                 ADDED_SUGAR_SSB_SERV = case_when(
-                    DR1IFDCD %in% SSB ~ ADD_SUG,
+                    FOODCODE %in% SSB ~ ADD_SUG,
                     TRUE ~ 0
                 )
             )

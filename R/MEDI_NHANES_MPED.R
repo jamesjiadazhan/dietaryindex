@@ -338,6 +338,9 @@ MEDI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
             ## merge the two datasets
             # combine food intake and MPED plus WHOLE FRUIT data on a food level
             MPED_PER_100_GRAM_5 <- inner_join(NUTRIENT_IND, MPED_PER_100_GRAM_4, by = c("FOODCODE"), relationship = "many-to-many")
+
+            # rename V_DPYEL to V_ORANGE
+            colnames(MPED_PER_100_GRAM_5)[colnames(MPED_PER_100_GRAM_5) == "V_DPYEL"] <- "V_ORANGE"
         }
 
 
@@ -361,8 +364,11 @@ MEDI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
         }
         ## check if DRXIGRMS is in the MPED_PER_100_GRAM_5 colnames
         else if ("DRXIGRMS" %in% colnames(MPED_PER_100_GRAM_5)) {
+            # rename the column name from DRXIGRMS to DR1IGRMS
+            colnames(MPED_PER_100_GRAM_5)[colnames(MPED_PER_100_GRAM_5) == "DRXIGRMS"] <- "DR1IGRMS"
+
             MPED_IND <- MPED_PER_100_GRAM_5 %>%
-                mutate(across(all_of(selected_columns), ~ .x * (DRXIGRMS / 100)))
+                mutate(across(all_of(selected_columns), ~ .x * (DR1IGRMS / 100)))
         }
 
         # arrange the data by SEQN
@@ -374,22 +380,22 @@ MEDI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
             dplyr::mutate(
                 # create the variable for olive oil from OLIVE_OIL_code
                 OLIVE_OIL_SERV = case_when(
-                    DR1IFDCD %in% OLIVE_OIL ~ DR1IGRMS / 10,
+                    FOODCODE %in% OLIVE_OIL ~ DR1IGRMS / 10,
                     TRUE ~ 0
                 ),
                 # create the variable for sweets from SWEETS_SERV_IND
                 SWEETS_SERV_IND = case_when(
-                    DR1IFDCD %in% SWEETS ~ DR1IGRMS / 50,
+                    FOODCODE %in% SWEETS ~ DR1IGRMS / 50,
                     TRUE ~ 0
                 ),
                 # create the variable for fat oil from FAT_OIL_SERV
                 FAT_OIL_SERV = case_when(
-                    DR1IFDCD %in% FAT_OIL ~ DR1IGRMS / 10,
+                    FOODCODE %in% FAT_OIL ~ DR1IGRMS / 10,
                     TRUE ~ 0
                 ),
                 # create the variable for added sugars from SSB
                 ADDED_SUGAR_SSB_SERV = case_when(
-                    DR1IFDCD %in% SSB ~ ADD_SUG,
+                    FOODCODE %in% SSB ~ ADD_SUG,
                     TRUE ~ 0
                 )
             )

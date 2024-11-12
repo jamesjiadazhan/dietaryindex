@@ -328,6 +328,9 @@ DASH_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
             ## merge the two datasets
             # combine food intake and MPED plus WHOLE FRUIT data on a food level
             MPED_PER_100_GRAM_5 <- inner_join(NUTRIENT_IND, MPED_PER_100_GRAM_4, by = c("FOODCODE"), relationship = "many-to-many")
+
+            # rename V_DPYEL to V_ORANGE
+            colnames(MPED_PER_100_GRAM_5)[colnames(MPED_PER_100_GRAM_5) == "V_DPYEL"] <- "V_ORANGE"
         }
 
 
@@ -364,17 +367,17 @@ DASH_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIEN
             dplyr::mutate(
                 # create the variable for added sugars from SSB
                 ADDED_SUGAR_SSB_SERV = case_when(
-                    DR1IFDCD %in% SSB ~ ADD_SUG,
+                    FOODCODE %in% SSB ~ ADD_SUG,
                     TRUE ~ 0
                 ),
                 # create the variable for skim milk from SKIM_MILK_code
                 SKIM_MILK_SERV = case_when(
-                    DR1IFDCD %in% SKIM_MILK ~ D_MILK,
+                    FOODCODE %in% SKIM_MILK ~ D_MILK,
                     TRUE ~ 0
                 ),
                 # create the variable for low fat cheese and cream from LOWF_CHEESE_code
                 LOWF_CHEESECREAM_SERV = case_when(
-                    DR1IFDCD %in% LOWF_CHEESE ~ D_CHEESE * 4,
+                    FOODCODE %in% LOWF_CHEESE ~ D_CHEESE * 4,
                     TRUE ~ 0
                 )
             )
