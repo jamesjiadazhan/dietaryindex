@@ -293,6 +293,9 @@ MED_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             ## merge the two datasets
             # combine food intake and MPED plus WHOLE FRUIT data on a food level
             MPED_PER_100_GRAM_5 <- inner_join(NUTRIENT_IND, MPED_PER_100_GRAM_4, by = c("FOODCODE"), relationship = "many-to-many")
+
+            # rename V_DPYEL to V_ORANGE
+            colnames(MPED_PER_100_GRAM_5)[colnames(MPED_PER_100_GRAM_5) == "V_DPYEL"] <- "V_ORANGE"
         }
 
 

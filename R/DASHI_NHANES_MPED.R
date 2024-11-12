@@ -228,7 +228,14 @@ DASHI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIE
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TPFAT = DRXTPFAT
+                    DR1TPFAT = DRXTPFAT,
+                    DR1TTFAT = DRXTTFAT,
+                    DR1TCHOL = DRXTCHOL,
+                    DR1TPROT = DRXTPROT,
+                    DR1TFIBE = DRXTFIBE,
+                    DR1TPOTA = DRXTPOTA,
+                    DR1TMAGN = DRXTMAGN,
+                    DR1TCALC = DRXTCALC
                 )
 
             # rename the variables in NUTRIENT_IND
@@ -248,7 +255,14 @@ DASHI_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIE
                     DR1TALCO = DRXTALCO,
                     DR1TSODI = DRDTSODI,
                     DR1TMFAT = DRXTMFAT,
-                    DR1TPFAT = DRXTPFAT
+                    DR1TPFAT = DRXTPFAT,
+                    DR1TTFAT = DRXTTFAT,
+                    DR1TCHOL = DRXTCHOL,
+                    DR1TPROT = DRXTPROT,
+                    DR1TFIBE = DRXTFIBE,
+                    DR1TPOTA = DRXTPOTA,
+                    DR1TMAGN = DRXTMAGN,
+                    DR1TCALC = DRXTCALC
                 )
 
             # rename the variables in NUTRIENT_IND
