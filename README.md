@@ -7,7 +7,7 @@ ___
 
 ## User-friendly tutorial page
 ___
-### We have created a modern, user-friendly tutorial page for the dietaryindex package.
+### We have created a modern, user-friendly tutorial page for the dietaryindex package. Check it out!
 - ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/index.html)
 
 
