@@ -16,6 +16,7 @@ ___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
 - **American Journal of Clinical Nutrition**:
   - Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. (2024) 'Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies', *The American Journal of Clinical Nutrition*. doi: 10.1016/j.ajcnut.2024.08.021.
+  - Zhe Xu. (2024) 'Improving the dietaryindex R Package: A Proposal to Include Additional Components for More Accurate DII Computation in NHANES', *The American Journal of Clinical Nutrition*. doi: 10.1016/j.ajcnut.2024.10.023.
 - **Biorxiv Preprint**:
   - Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. 'Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies'. *bioRxiv*. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466
 
