@@ -436,6 +436,10 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 ZN = DR1TZINC
             )
 
+        # select only participants with more than 0 kcal intake
+        COHORT_3 = COHORT_3 %>%
+            filter(DR1TKCAL > 0)
+
         ## If the DII other ingredients data is provided, the following variables are also included if they exist in the data frame
         ### Garlic, Ginger, Onion, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano
         if (!is.null(OTHER_INGREDIENTS1)) {
@@ -674,6 +678,10 @@ DII_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
                 VITE = DR2TATOC,
                 ZN = DR2TZINC
             )
+
+        # select only participants with more than 0 kcal intake
+        COHORT2_3 = COHORT2_3 %>%
+            filter(DR2TKCAL > 0)
 
         ## If the DII other ingredients data is provided, the following variables are also included if they exist in the data frame
         ### Garlic, Ginger, Onion, Flavan-3-ol, Flavones, Flavonols, Flavonones, Anthocyanidins, Isoflavones, Pepper, Thyme/oregano

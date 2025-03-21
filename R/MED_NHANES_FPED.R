@@ -50,6 +50,10 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)
 
+        # select only participants with more than 0 kcal intake
+        NUTRIENT = NUTRIENT %>%
+            filter(DR1TKCAL > 0)
+
         DEMO = DEMO %>%
             filter(RIDAGEYR >= 2) %>%
             dplyr::select(SEQN, RIDAGEYR, RIAGENDR, SDDSRVYR, SDMVPSU, SDMVSTRA) %>%
@@ -151,6 +155,9 @@ MED_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH, FP
             filter(DR2DRSTZ == 1) %>%
             arrange(SEQN)
 
+        # select only participants with more than 0 kcal intake
+        NUTRIENT2 = NUTRIENT2 %>%
+            filter(DR2TKCAL > 0)
 
         DEMO = DEMO %>%
             filter(RIDAGEYR >= 2) %>%

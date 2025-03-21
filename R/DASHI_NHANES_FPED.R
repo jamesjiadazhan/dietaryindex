@@ -75,6 +75,10 @@ DASHI_NHANES_FPED = function(NUTRIENT_PATH = NULL, NUTRIENT_PATH2 = NULL) {
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)
 
+        # select only participants with more than 0 kcal intake
+        COHORT = COHORT %>%
+            filter(DR1TKCAL > 0)
+
         # Specify variables for DASHI seving size
         COHORT = COHORT %>%
             mutate(
@@ -125,6 +129,10 @@ DASHI_NHANES_FPED = function(NUTRIENT_PATH = NULL, NUTRIENT_PATH2 = NULL) {
         COHORT2 = NUTRIENT2 %>%
             filter(DR2DRSTZ == 1) %>%
             arrange(SEQN)
+
+        # select only participants with more than 0 kcal intake
+        COHORT2 = COHORT2 %>%
+            filter(DR2TKCAL > 0)
 
         # Specify variables for DASHI seving size
         COHORT2 = COHORT2 %>%

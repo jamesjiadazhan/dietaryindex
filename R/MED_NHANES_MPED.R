@@ -335,6 +335,10 @@ MED_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
         # combine nutrient and demographic data on a person level;
         COHORT = inner_join(NUTRIENT_2, DEMO_2, by = "SEQN")
 
+        # select only participants with more than 0 kcal intake
+        COHORT = COHORT %>%
+            filter(DR1TKCAL > 0)
+
         # combine all data on a person level;
         COHORT_2 = left_join(COHORT, MPED, by = "SEQN")
 
@@ -471,6 +475,10 @@ MED_NHANES_MPED = function(MPED_PER_100_GRAM_PATH = NULL, WJFRT = NULL, NUTRIENT
             
         # combine NUTRIENT2 and demographic data on a person level;
         COHORT2 = inner_join(NUTRIENT2_2, DEMO_2, by = "SEQN")
+
+        # select only participants with more than 0 kcal intake
+        COHORT2 = COHORT2 %>%
+            filter(DR2TKCAL > 0)
 
         # combine all data on a person level;
         COHORT2_2 = left_join(COHORT2, MPED2, by = "SEQN")
