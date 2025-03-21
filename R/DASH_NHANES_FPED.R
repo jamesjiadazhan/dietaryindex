@@ -114,6 +114,9 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV * 4 / 26)),
             )
 
+        # select only participants with more than 0 kcal intake
+        COHORT = COHORT %>%
+            filter(ENERGY > 0)
 
         ## Create variables and functions needed for DASH calculation
         quintile_healthy = function(actual) {
@@ -216,6 +219,9 @@ DASH_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 SSB_FRTJ_SERV = sum((ADDED_SUGAR_SSB_SERV * 4 / 26))
             )
 
+        # select only participants with more than 0 kcal intake
+        COHORT2 = COHORT2 %>%
+            filter(ENERGY > 0)
 
         ## Create variables and functions needed for DASH calculation
         quintile_healthy = function(actual) {

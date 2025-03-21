@@ -127,6 +127,10 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 ALCOHOL_SERV = sum(DR1I_A_DRINKS)
             )
 
+        # select only participants with more than 0 kcal intake
+        COHORT = COHORT %>%
+            filter(ENERGY > 0)
+
         # Rank the sodium by decile
         SODIUM_DECILE = quantile(COHORT$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11), na.rm = TRUE)
 
@@ -236,6 +240,10 @@ AHEI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
                 SODIUM_SERV = sum(DR2ISODI) / (ENERGY / 2000),
                 ALCOHOL_SERV = sum(DR2I_A_DRINKS)
             )
+
+        # select only participants with more than 0 kcal intake
+        COHORT2 = COHORT2 %>%
+            filter(ENERGY > 0)
 
         SODIUM_DECILE = quantile(COHORT2$SODIUM_SERV, probs = seq(0, 1, by = 1 / 11), na.rm = TRUE)
 

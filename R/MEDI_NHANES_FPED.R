@@ -87,6 +87,10 @@ MEDI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
             filter(DR1DRSTZ == 1) %>%
             arrange(SEQN)
 
+        # select only participants with more than 0 kcal intake
+        NUTRIENT_IND = NUTRIENT_IND %>%
+            filter(DR1IKCAL > 0)
+
         FPED_IND = FPED_IND %>%
             arrange(SEQN)
 
@@ -173,6 +177,10 @@ MEDI_NHANES_FPED = function(FPED_IND_PATH = NULL, NUTRIENT_IND_PATH = NULL, FPED
         NUTRIENT_IND2 = NUTRIENT_IND2 %>%
             filter(DR2DRSTZ == 1) %>%
             arrange(SEQN)
+
+        # select only participants with more than 0 kcal intake
+        NUTRIENT_IND2 = NUTRIENT_IND2 %>%
+            filter(DR2IKCAL > 0)
 
         FPED_IND2 = FPED_IND2 %>%
             arrange(SEQN)

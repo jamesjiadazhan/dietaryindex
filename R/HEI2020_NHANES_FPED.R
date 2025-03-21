@@ -133,11 +133,15 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             stop("Please use the population-level data for the first day data. The file name should contain: TOT")
         }
 
+        # select only reliable recall data
         NUTRIENT = NUTRIENT %>%
             filter(DR1DRSTZ == 1) %>%
             dplyr::select(SEQN, DR1TKCAL, DR1TSFAT, DR1TALCO, DR1TSODI, DR1DRSTZ, DR1TMFAT, DR1TPFAT) %>%
             arrange(SEQN)
 
+        # select only participants with more than 0 kcal intake
+        NUTRIENT = NUTRIENT %>%
+            filter(DR1TKCAL > 0)
 
         DEMO = DEMO %>%
             # only calculate HEI2020 for toddlers 1 year and older and adults
@@ -292,11 +296,16 @@ HEI2020_NHANES_FPED = function(FPED_PATH = NULL, NUTRIENT_PATH = NULL, DEMO_PATH
             stop("Please use the population-level data for the second day data. The file name should contain: TOT")
         }
 
+
+        # select only reliable recall data
         NUTRIENT2 = NUTRIENT2 %>%
             filter(DR2DRSTZ == 1) %>%
             dplyr::select(SEQN, DR2TKCAL, DR2TSFAT, DR2TALCO, DR2TSODI, DR2DRSTZ, DR2TMFAT, DR2TPFAT) %>%
             arrange(SEQN)
 
+        # select only participants with more than 0 kcal intake
+        NUTRIENT2 = NUTRIENT2 %>%
+            filter(DR2TKCAL > 0)
 
         DEMO = DEMO %>%
             # only select the people who are 1 years old or older
