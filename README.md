@@ -72,35 +72,6 @@ For a detailed explanation of these indexes, please check the attached Excel fil
 
 - [dietaryindex_SCORING_ALGORITHM.xlsx](https://github.com/jamesjiadazhan/dietaryindex/blob/main/dietaryindex_SCORING_ALGORITHM.xlsx)
 
-## Validation
-___
-**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions in the **dietaryindex** work as expected. 
-
-### Validation R codes can be found in the Validation page within Article header on the top of the page
-- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/articles/validation.html)
-
-- For validation details, download the **Validation file for publication.zip** to obtain the following files:
-
-  - **Validation.r**: This R script contains all code used to generate the final validation files during the validation process.
-
-  - **Validation figures.r**: This R script contains all codes used to produce validation figures during the validation.
-
-  - **Raw validation files**: This folder houses all the raw simulation data files utilized in our validation.
-
-  - **Final validation files**: This folder contains the final output files from our validation process. Columns prefixed with "EXP" represent the manually computed dietary index results, which serve as our gold standard. The subsequent columns show results produced by the dietaryindex package.
-
-  - **HEI2015_NHANES_SAS_1718**: This folder includes all data files used in validating the HEI2015 results. We compared the SAS results (obtained using SAS codes from https://epi.grants.cancer.gov/hei/sas-code.html) and the dietaryindex results using the NHANES 1718 dataset. The results were found to be a 100% match, after rounding to two decimal places.
-
-  - **Figure 1. Comparison of Accuracy**: dietaryindex-calculated vs. hand-calculated Dietary Index Values using the simulation datasets (sample sizes range from 10 to 26).
-
-  - **Figure 2. Accuracy of HEI2015 in NHANES**: dietaryindex-calculated vs. SAS-calculated results from National Cancer Institute using the NHANES 2017-2018 data (n=7122).
-
-  - **Figure 3. Accuracy of HEI2015 in ASA24**: dietaryindex-calculated vs. SAS-calculated results from National Cancer Institute using the ASA24 example data (n=21).
-
-  - **Figure 4. Accuracy of HEI2015 in DHQ3**: dietaryindex-calculated vs. internal-calculated results from National Cancer Institute using the DHQ3 example data (n=23).
-  
-  - **Supplementary Material 3 Validation Figures.docx**: This word document includes all figures for the detailed validation of each dietary index, including the total dietary index and individual component dietary indexes. 
-
 
 
 ## Installation
@@ -170,6 +141,37 @@ For NHANES data:
 FPED, NUTRIENT, and DEMO files are available within the package and in the another GitHub repository and Google Drive collected by the package developer for your convenience
 - https://github.com/jamesjiadazhan/dietaryindex_manual
 - https://drive.google.com/drive/folders/1umjhuS22aHEW_bU5AjYa8vrae91gsb0D?usp=share_link 
+
+### Validation
+___
+**dietaryindex** has been thoroughly validated for accuracy and reliability. We've ensured that all functions in the **dietaryindex** work as expected. 
+
+#### Validation R codes can be found in the Validation page within Article header on the top of the page
+- ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/articles/validation.html)
+
+- For validation details, download the **Validation file for publication.zip** to obtain the following files:
+
+  - **Validation.r**: This R script contains all code used to generate the final validation files during the validation process.
+
+  - **Validation figures.r**: This R script contains all codes used to produce validation figures during the validation.
+
+  - **Raw validation files**: This folder houses all the raw simulation data files utilized in our validation.
+
+  - **Final validation files**: This folder contains the final output files from our validation process. Columns prefixed with "EXP" represent the manually computed dietary index results, which serve as our gold standard. The subsequent columns show results produced by the dietaryindex package.
+
+  - **HEI2015_NHANES_SAS_1718**: This folder includes all data files used in validating the HEI2015 results. We compared the SAS results (obtained using SAS codes from https://epi.grants.cancer.gov/hei/sas-code.html) and the dietaryindex results using the NHANES 1718 dataset. The results were found to be a 100% match, after rounding to two decimal places.
+
+  - **Figure 1. Comparison of Accuracy**: dietaryindex-calculated vs. hand-calculated Dietary Index Values using the simulation datasets (sample sizes range from 10 to 26).
+
+  - **Figure 2. Accuracy of HEI2015 in NHANES**: dietaryindex-calculated vs. SAS-calculated results from National Cancer Institute using the NHANES 2017-2018 data (n=7122).
+
+  - **Figure 3. Accuracy of HEI2015 in ASA24**: dietaryindex-calculated vs. SAS-calculated results from National Cancer Institute using the ASA24 example data (n=21).
+
+  - **Figure 4. Accuracy of HEI2015 in DHQ3**: dietaryindex-calculated vs. internal-calculated results from National Cancer Institute using the DHQ3 example data (n=23).
+  
+  - **Supplementary Material 3 Validation Figures.docx**: This word document includes all figures for the detailed validation of each dietary index, including the total dietary index and individual component dietary indexes. 
+
+
 
 ### Contributing & Notes
 ___
