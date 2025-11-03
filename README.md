@@ -3,11 +3,11 @@
 ## Overview
 ___
 
-**dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies. It has been peer-reviewed and published in the **American Journal of Clinical Nutrition**.
+**dietaryindex** is an R package that provides user-friendly, streamlined methods for standardizing the compilation of dietary intake data into index-based dietary patterns to enable the assessment of adherence to these patterns in epidemiologic and clinical studies. It has been peer-reviewed and published in the **[American Journal of Clinical Nutrition](https://ajcn.nutrition.org/article/S0002-9165(24)00672-5/abstract)**.
 
 ## User-friendly tutorial page
 ___
-### We have created a modern, user-friendly tutorial page for the dietaryindex package.
+### We have created a modern, user-friendly tutorial page for the dietaryindex package. Check it out!
 - ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/index.html)
 
 
