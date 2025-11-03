@@ -14,11 +14,9 @@ ___
 ## Citation
 ___
 If you are using the Dietaryindex package in your research, **please be sure to cite our original work**. By doing so, you not only add credibility to your findings but also recognize and appreciate our intellectual efforts and contributions. The appropriate citation is as follows:
-- **American Journal of Clinical Nutrition**:
-  - https://doi.org/10.1016/j.ajcnut.2024.08.021
-- Preprint:
-  - *Jiada James Zhan, Rebecca A Hodge, Anne Dunlop, et al. Dietaryindex: A User-Friendly and Versatile R Package for Standardizing Dietary Pattern Analysis in Epidemiological and Clinical Studies. bioRxiv. Published online August 07, 2023:2023.08.07.548466. doi:10.1101/2023.08.07.548466*
-  - https://www.biorxiv.org/content/10.1101/2023.08.07.548466v2
+
+- Zhan JJ, Hodge RA, Dunlop AL, et al. Dietaryindex: a user-friendly and versatile R package for standardizing dietary pattern analysis in epidemiological and clinical studies. Am J Clin Nutr. 2024;120(5):1165-1174. doi:10.1016/j.ajcnut.2024.08.021
+  
 
 ## How dietaryindex works
 ___
@@ -28,9 +26,13 @@ The **dietaryindex** package performs calculations in two steps:
 
 2. Computation of the individual dietary index using the serving size information.
 
-## What dietaryindex can do
+## What dietaryindex can calculate
 ___
 This package can calculate the following dietary pattern indexes. For more details, [check here](https://jamesjiadazhan.github.io/dietaryindex_manual/reference/index.html)
+
+- Dietary Index for Gut Microbiota (DI-GM)
+
+- Dietary Inflammation Index (DII)
 
 - Healthy Eating Index 2020 (HEI2020 & HEI-Toddlers-2020) 
 
@@ -46,11 +48,21 @@ This package can calculate the following dietary pattern indexes. For more detai
 
 - MED Index in serving sizes from the PREDIMED trial (MEDI)
 
-- Dietary Inflammation Index (DII)
-
 - American Cancer Society 2020 diet score (ACS2020_V1 and ACS2020_V2)
 
 - Planetary Health Diet Index from the EAT-Lancet Commission (PHDI)
+
+## Which dietary assessments are directly supported
+
+- National Health and Nutrition Examination Survey (NHANES, the nutrition and health database in the United States)
+
+- Automated Self-Administered 24-Hour Dietary Assessment Tool (ASA24)
+
+- Diet History Questionnaire III (DHQ III)
+
+- Block Food Frequency Questionnaire (Block FFQ)
+
+- ANY dietary assessment tools (indirect support via generic functions, which require users to do data preprocessing by themselves) 
 
 ## How to use dietaryindex functions appropriately with specific data inputs
 ___
@@ -96,21 +108,25 @@ ___
 
 Currently, **dietaryindex** is not available on [CRAN]
 
-To install from this GitHub repository, use the **devtools** package:
+To install from this GitHub repository, use the **remotes** package (remotes package is better than devtools as it has a faster installation speed):
 
 Package dependencies: **dplyr**, **readr**, **haven** (automatically installed).
 
 ```
-install.packages("devtools") #If you don't have "devtools" installed already
-devtools::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
+install.packages("remotes") #If you don't have "remotes" installed already
+remotes::install_github("jamesjiadazhan/dietaryindex") # Install the package from GitHub
 ```
 
 If the previous steps are not working, you can try the following steps:
 ```
-library(devtools) # Load devtools
+library(remotes) # Load remotes
 install_github("jamesjiadazhan/dietaryindex")
 ```
 
+If package download speed is suboptimal, you can install the package from a downloaded package archive file (ZIP file):
+```
+install.packages("path/to/your_package_name.zip", repos = NULL, type = "source")
+```
 
 If something happens like the following, first try to enter 1 in the terminal (lower box). If not successful, then try to enter 2. **It will take a while if you are a new R user.**
 ```
@@ -128,6 +144,9 @@ If something happens like the following, first try to enter 1 in the terminal (l
 
 ## Getting Started
 ___
+```
+library(dietaryindex)
+```
 ### Check the "Get started" header on the top of the page
 - ### [Click here](https://jamesjiadazhan.github.io/dietaryindex_manual/articles/dietaryindex.html)
 
