@@ -15,7 +15,7 @@ DASHI_NHANES_MPED(
 )
 }
 \arguments{
-\item{MPED_PER_100_GRAM_PATH}{The file path for the MPED per 100 gram data for the day 1 and day 2 data. The file name should be like: pyr_tot_d1.sas7bdat}
+\item{MPED_PER_100_GRAM_PATH}{The file path for the MPED per 100 gram data for the day 1 and day 2 data. The file name should be like: equiv0304.sas7bdat}
 
 \item{WJFRT}{The file path for the WJFRT data for the day 1 and day2 data. The file name should be like: wjfrt.sas7bdat}
 

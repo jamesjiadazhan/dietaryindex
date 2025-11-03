@@ -1,6 +1,6 @@
 #' DII_DHQ3
 #'
-#' Calculate the Dietary Inflammation Index (DII) for the DHQ3 data within 1 step
+#' Calculate the Dietary Inflammation Index (DII) for the DHQ3 data within 1 step (authors: Morgan Wolff, James Zhan)
 #' @import dplyr
 #' @import readr
 #' @import haven
