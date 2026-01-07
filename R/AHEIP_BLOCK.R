@@ -37,7 +37,8 @@ AHEIP_BLOCK = function(RAW_DATA) {
     # Match participant response food frequency to the standard food frequency response code
     SERV_DATA = RAW_DATA %>%
         dplyr::mutate(
-            VEG_SERV = V_DRKGR + (V_DPYEL + V_OTHER + V_STARCY + V_TOMATO) / 0.5,
+            TOFU = foodfreq(TOFUFREQ) * foodport(TOFUQUAN),
+            VEG_SERV = V_DRKGR + (V_DPYEL + V_OTHER + V_STARCY + V_TOMATO + TOFU) / 0.5,
             F_BERRIES = foodfreq(STRAWBERRIESFREQ) * foodport(STRAWBERRIESQUAN),
             F_WHOLE = F_SOLID - F_BERRIES + F_BERRIES * 2,
             FRT_SERV = F_WHOLE,
