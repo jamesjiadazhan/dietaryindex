@@ -94,9 +94,9 @@ library(remotes) # Load remotes
 install_github("jamesjiadazhan/dietaryindex")
 ```
 
-If package download speed is suboptimal, you can install the package from a downloaded package archive file (ZIP file):
+If package download speed is suboptimal, you can install the package from a downloaded package file (remember to unzip the ZIP file first):
 ```
-install.packages("path/to/your_package_name.zip", repos = NULL, type = "source")
+install.packages("path/to/your_package_folder_name", repos = NULL, type = "source")
 ```
 
 If something happens like the following, first try to enter 1 in the terminal (lower box). If not successful, then try to enter 2. **It will take a while if you are a new R user.**
